@@ -11,7 +11,7 @@
                     </el-menu-item>
                 <el-menu-item index="1">                       
                     <i class="el-icon-s-home"></i>
-                     <span slot="title">我的主页</span>           
+                     <span slot="title">个人主页</span>           
                 </el-menu-item>
                 <el-menu-item index="2">
                     <i class="el-icon-menu"></i>
@@ -23,43 +23,35 @@
                 </el-menu-item>
                 <el-menu-item index="4">
                     <i class="el-icon-setting"></i>
-                    <span slot="title">审批管理</span>
+                    <span slot="title">考勤管理</span>
                 </el-menu-item>
                 <el-menu-item index="5">
                     <i class="el-icon-notebook-1"></i>
-                    <span slot="title">工作报告</span>
+                    <span slot="title">审批管理</span>
                 </el-menu-item>
                 <el-menu-item index="6">
                     <i class="el-icon-takeaway-box"></i>
-                    <span slot="title">自定义表单</span>
+                    <span slot="title">社团活动</span>
                 </el-menu-item>
                 <el-menu-item index="7">
                     <i class="el-icon-setting"></i>
-                    <span slot="title">日程管理</span>
+                    <span slot="title">社团相册</span>
                 </el-menu-item>
                 <el-menu-item index="8">
                     <i class="el-icon-setting"></i>
-                    <span slot="title">客户管理</span>
+                    <span slot="title">商家链接</span>
                 </el-menu-item>
                 <el-menu-item index="9">
                     <i class="el-icon-s-promotion"></i>
-                    <span slot="title">销售管理</span>
+                    <span slot="title">在线投票</span>
                 </el-menu-item>
                 <el-menu-item index="10">
                     <i class="el-icon-setting"></i>
-                    <span slot="title">知识社区</span>
+                    <span slot="title">纳新管理</span>
                 </el-menu-item>
                 <el-menu-item index="11">
                     <i class="el-icon-picture"></i>
-                    <span slot="title">员工相册</span>
-                </el-menu-item>
-                <el-menu-item index="12">
-                    <i class="el-icon-folder"></i>
-                    <span slot="title">文档管理</span>
-                </el-menu-item>
-                <el-menu-item index="13">
-                    <i class="el-icon-setting"></i>
-                    <span slot="title">简历管理</span>
+                    <span slot="title">组织结构</span>
                 </el-menu-item>
             </el-menu>     
         </el-aside>
