@@ -96,4 +96,15 @@ public class SysUserEntity implements Serializable {
 	 */
 	@TableField(exist=false)
 	private String deptName;
+
+	private String persionnum;
+	private String wechart;
+	private String college;
+	private String faculty;
+	private String major;
+	private String gender;
+	private String openid;
+	private String descs;
+	private Long fileid;
+	private String filename;
 }
