@@ -56,6 +56,16 @@ var vm = new Vue({
 				postData:{'key': vm.q.key},
                 page:page
             }).trigger("reloadGrid");
+			console.log()
+            $.ajax({
+                type:"GET",
+                url:"sys/getTitleName",
+                data:"",
+                dataType:"json",
+                success:function (result) {
+                    console.log(result)
+                }
+            })
 		}
 	}
 });

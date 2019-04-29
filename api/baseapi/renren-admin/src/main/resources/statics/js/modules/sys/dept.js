@@ -105,7 +105,7 @@ var vm = new Vue({
                 area: ['300px', '450px'],
                 shade: 0,
                 shadeClose: false,
-                content: jQuery("#deptLayer"),
+                content: jQuery("#addLayer"),
                 btn: ['确定', '取消'],
                 btn1: function (index) {
                     var node = ztree.getSelectedNodes();
