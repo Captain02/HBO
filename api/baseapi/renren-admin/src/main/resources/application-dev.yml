@@ -5,7 +5,7 @@ spring:
       driver-class-name: com.mysql.jdbc.Driver
       url: jdbc:mysql://140.143.201.244:3306/webframev2_db?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false
       username: root
-      password: 123456
+      password: huihui+142624
       initial-size: 10
       max-active: 100
       min-idle: 10
