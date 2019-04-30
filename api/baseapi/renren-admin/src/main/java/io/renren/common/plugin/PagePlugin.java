@@ -39,14 +39,31 @@ import java.util.Properties;
 * 修改时间：2016年2月1日
 * @version 1.0
  */
-@Intercepts({@Signature(type=StatementHandler.class,method="prepare",args={Connection.class})})
+//@Intercepts用于表明当前的对象是一个Interceptor，
+// 而@Signature则表明要拦截的接口、方法以及对应的参数类型。来看一个自定义的简单Interceptor：
+/*
+*
+* @Signature将拦截StatementHandler接口中参数为Connection的prepare方法
+* Mybatis拦截器只能拦截四种类型的接口：Executor、StatementHandler、ParameterHandler
+* 和ResultSetHandler。这是在Mybatis的Configuration中写死了的，
+* 如果要支持拦截其他接口就需要我们重写Mybatis的Configuration。Mybatis可以对这四个接口中所有的方法进行拦截。
+* */
+@Intercepts({@Signature(type=StatementHandler.class,method="prepare",args={Connection.class,Integer.class})})
 public class PagePlugin implements Interceptor {
 
 	private static String dialect = "";	//数据库方言
 	private static String pageSqlId = ""; //mapper.xml中需要拦截的ID(正则匹配)
-	
+
+	//拦截之后执行什么样的方法
+	/*
+	* StatementHandler代理对象在执行参数类型为Connection的prepare方法时就
+	* 会触发当前的拦截器的intercept方法进行拦截，而执行这两个接口对象的其他方
+	* 法时都只是做一个简单的代理
+	* */
 	public Object intercept(Invocation ivk) throws Throwable {
 		// TODO Auto-generated method stub
+		Class<?> aClass = ivk.getTarget().getClass();
+		System.out.println("+++++++++++++++++++++++++++++++++++++++++"+ivk.getTarget().getClass());
 		if(ivk.getTarget() instanceof RoutingStatementHandler){
 			RoutingStatementHandler statementHandler = (RoutingStatementHandler)ivk.getTarget();
 			BaseStatementHandler delegate = (BaseStatementHandler) ReflectHelper.getValueByFieldName(statementHandler, "delegate");
@@ -77,8 +94,8 @@ public class PagePlugin implements Interceptor {
 					Page page = null;
 					if(parameterObject instanceof Page){	//参数就是Page实体
 						 page = (Page) parameterObject;
-						 page.setEntityOrField(true);	 
-						 page.setTotalResult(count);
+						 page.setEntityOrField(true);
+						 page.setTotalCount(count);
 					}else{	//参数为某个实体，该实体拥有Page属性
 						Field pageField = ReflectHelper.getFieldByFieldName(parameterObject,"page");
 						if(pageField!=null){
@@ -86,7 +103,7 @@ public class PagePlugin implements Interceptor {
 							if(page==null)
 								page = new Page();
 							page.setEntityOrField(false); 
-							page.setTotalResult(count);
+							page.setTotalCount(count);
 							ReflectHelper.setValueByFieldName(parameterObject,"page", page); //通过反射，对实体对象设置分页对象
 						}else{
 							throw new NoSuchFieldException(parameterObject.getClass().getName()+"不存在 page 属性！");
@@ -157,19 +174,22 @@ public class PagePlugin implements Interceptor {
 			StringBuffer pageSql = new StringBuffer();
 			if("mysql".equals(dialect)){
 				pageSql.append(sql);
-				pageSql.append(" limit "+page.getCurrentResult()+","+page.getShowCount());
+				pageSql.append(" limit "+page.getCurrentResult()+","+page.getPageSize());
 			}
 			return pageSql.toString();
 		}else{
 			return sql;
 		}
 	}
-	
+	//拦截器用于封装目标对象的，通过该方法我们可以返回目标对象本身，也可以返回一个它的代理（返回一个什么样的对象）
+	//次拦截器是返回一个代理对象
 	public Object plugin(Object arg0) {
 		// TODO Auto-generated method stub
 		return Plugin.wrap(arg0, this);
 	}
 
+	//setProperties方法是用于在Mybatis配置文件中指定一些属性的。
+	//这个方法在Configuration初始化当前的Interceptor时就会执行
 	public void setProperties(Properties p) {
 		dialect = p.getProperty("dialect");
 		if (Tools.isEmpty(dialect)) {
