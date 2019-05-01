@@ -36,10 +36,10 @@ paths:
           in: query
           type: string
           required: true
-        - name: captcha
-          description: 验证码
+        - name: corId
+          description: 社团ID
           in: query
-          type: string
+          type: Integer
           required: true
       responses:
         '200':

@@ -27,6 +27,7 @@ public class TestController extends BaseController{
 
     @RequestMapping(value = "test", method = RequestMethod.GET)
     public void test() throws Exception {
+        /*this.getPageData()*/
         //new Query<SysDictEntity>().getPage(null);
         Page page = new Page();
         page.setPageSize(10);
@@ -40,9 +41,9 @@ public class TestController extends BaseController{
 //        PageData pageData = new PageData();
 //        pageData.put("page",page);
         System.out.println("+69++++++++++++" + sqlSessionTemplate);
+        PageData pageData = new PageData();
 
-
-        List<PageData> object = (List<PageData>) dao.findForList("Demo01Dao.selectlistPage", page);
+        List<PageData> object = (List<PageData>) dao.findForList("Demo01Dao.selectlistPage", pageData);
         System.out.println("----------------------------------" + object);
 
     }
