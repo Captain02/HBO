@@ -60,4 +60,6 @@ mybatis-plus:
     call-setters-on-nulls: true
     jdbc-type-for-null: 'null'
 
-
+#分页信息
+dialect: 'mysql'
+pageSqlId: '.*listPage.*'
