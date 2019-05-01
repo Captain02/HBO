@@ -39,7 +39,7 @@ paths:
         - name: corId
           description: 社团ID
           in: query
-          type: Integer
+          type: integer
           required: true
       responses:
         '200':
