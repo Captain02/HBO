@@ -84,7 +84,6 @@ public class SysLoginController {
 				return R.error("验证码不正确");
 			}
 		}
-
 		try{
 			Subject subject = ShiroUtils.getSubject();
 			UsernamePasswordToken token = new UsernamePasswordToken(username, password);
