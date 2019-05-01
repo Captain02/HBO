@@ -76,7 +76,7 @@ public class SysLoginController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/sys/login", method = RequestMethod.POST)
-	public R login(String username, String password, String captcha) {
+	public R login(String username, String password, String captcha,Integer corId) {
 		String titleName = titleService.getTitleName();
 		if (titleName.equals("是")){
 			String kaptcha = ShiroUtils.getKaptcha(Constants.KAPTCHA_SESSION_KEY);
