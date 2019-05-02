@@ -15,6 +15,7 @@ import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.apache.shiro.web.servlet.ShiroHttpServletRequest;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.apache.shiro.web.session.mgt.ServletContainerSessionManager;
 import org.springframework.beans.factory.annotation.Value;
@@ -38,14 +39,13 @@ public class ShiroConfig {
      */
     @Bean
     @ConditionalOnProperty(prefix = "renren", name = "cluster", havingValue = "false")
-    public DefaultWebSessionManager sessionManager(@Value("${renren.globalSessionTimeout:3600}") long globalSessionTimeout){
-        DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
-        sessionManager.setSessionValidationSchedulerEnabled(true);
-        sessionManager.setSessionIdUrlRewritingEnabled(false);
-        sessionManager.setSessionValidationInterval(globalSessionTimeout * 1000);
-        sessionManager.setGlobalSessionTimeout(globalSessionTimeout * 1000);
-
-        return sessionManager;
+    public MySessionManager sessionManager(@Value("${renren.globalSessionTimeout:3600}") long globalSessionTimeout){
+//        DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
+//        sessionManager.setSessionValidationSchedulerEnabled(true);
+//        sessionManager.setSessionIdUrlRewritingEnabled(false);
+//        sessionManager.setSessionValidationInterval(globalSessionTimeout * 1000);
+//        sessionManager.setGlobalSessionTimeout(globalSessionTimeout * 1000);
+        return new MySessionManager();
     }
 
     /**
@@ -58,7 +58,7 @@ public class ShiroConfig {
     }
 
     @Bean("securityManager")
-    public SecurityManager securityManager(UserRealm userRealm, SessionManager sessionManager) {
+    public SecurityManager securityManager(UserRealm userRealm, MySessionManager sessionManager) {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         securityManager.setRealm(userRealm);
         securityManager.setSessionManager(sessionManager);
