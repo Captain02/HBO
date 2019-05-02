@@ -96,6 +96,7 @@ public class UserRealm extends AuthorizingRealm {
 		}
 
 		SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user, user.getPassword(), ByteSource.Util.bytes(user.getSalt()), getName());
+
 		return info;
 	}
 
