@@ -10,14 +10,21 @@ package io.renren.modules.sys.controller;
 
 
 import com.google.code.kaptcha.Producer;
+import io.renren.common.controller.BaseController;
 import io.renren.common.utils.JWTUtil;
 import io.renren.common.utils.R;
+import io.renren.modules.sys.entity.SysUserEntity;
 import io.renren.modules.sys.service.IsVerificationService;
+import io.renren.modules.sys.service.SysUserService;
 import io.renren.modules.sys.service.TitleService;
+import io.renren.modules.sys.shiro.JWTToken;
+import io.renren.modules.sys.shiro.ShiroUtils;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,13 +43,15 @@ import java.io.IOException;
  * @author Mark sunlightcs@gmail.com
  */
 @Controller
-public class SysLoginController {
+public class SysLoginController extends BaseController {
 	@Autowired
 	private Producer producer;
 	@Autowired
 	private TitleService titleService;
 	@Autowired
 	private IsVerificationService isVerificationService;
+	@Autowired
+	private SysUserService sysUserService;
 
 	
 	@RequestMapping("captcha.jpg")
@@ -86,9 +95,9 @@ public class SysLoginController {
 		}
 
 		try{
-//			Subject subject = ShiroUtils.getSubject();
-//			UsernamePasswordToken token = new UsernamePasswordToken(username, password);
-//			subject.login(token);
+			Subject subject = ShiroUtils.getSubject();
+			JWTToken token = new JWTToken(username, password);
+			subject.login(token);
 		}catch (UnknownAccountException e) {
 			return R.error(e.getMessage());
 		}catch (IncorrectCredentialsException e) {
@@ -98,8 +107,8 @@ public class SysLoginController {
 		}catch (AuthenticationException e) {
 			return R.error("账户验证失败");
 		}
-	    
-		return R.ok().put("token", JWTUtil.sign(username,password));
+
+		return R.ok().put("token", ((SysUserEntity) SecurityUtils.getSubject().getPrincipal()).getToken());
 	}
 	
 	/**

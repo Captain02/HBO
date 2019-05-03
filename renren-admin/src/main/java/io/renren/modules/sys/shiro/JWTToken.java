@@ -4,8 +4,15 @@ import org.apache.shiro.authc.AuthenticationToken;
 
 public class JWTToken implements AuthenticationToken {
 
+    private String password;
+    private String username;
     // 密钥
     private String token;
+
+    public JWTToken(String password, String username) {
+        this.password = password;
+        this.username = username;
+    }
 
     public JWTToken(String token) {
         this.token = token;
@@ -18,6 +25,22 @@ public class JWTToken implements AuthenticationToken {
 
     @Override
     public Object getCredentials() {
-        return token;
+        return token==null?password:token;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

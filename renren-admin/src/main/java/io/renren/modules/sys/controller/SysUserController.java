@@ -19,6 +19,7 @@ import io.renren.common.validator.group.UpdateGroup;
 import io.renren.modules.sys.entity.SysUserEntity;
 import io.renren.modules.sys.service.SysUserRoleService;
 import io.renren.modules.sys.service.SysUserService;
+import io.renren.modules.sys.shiro.ShiroUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,9 +70,9 @@ public class SysUserController extends AbstractController {
 		Assert.isBlank(newPassword, "新密码不为能空");
 
 		//原密码
-		//password = ShiroUtils.sha256(password, getUser().getSalt());
+		password = ShiroUtils.sha256(password, getUser().getSalt());
 		//新密码
-		//newPassword = ShiroUtils.sha256(newPassword, getUser().getSalt());
+		newPassword = ShiroUtils.sha256(newPassword, getUser().getSalt());
 				
 		//更新密码
 		boolean flag = sysUserService.updatePassword(getUserId(), password, newPassword);

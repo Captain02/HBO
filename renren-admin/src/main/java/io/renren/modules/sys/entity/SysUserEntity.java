@@ -96,4 +96,7 @@ public class SysUserEntity implements Serializable {
 	 */
 	@TableField(exist=false)
 	private String deptName;
+
+	@TableField(exist=false)
+	private String token;
 }

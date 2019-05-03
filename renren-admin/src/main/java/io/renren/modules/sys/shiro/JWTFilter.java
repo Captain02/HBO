@@ -1,5 +1,6 @@
 package io.renren.modules.sys.shiro;
 
+import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.authc.BasicHttpAuthenticationFilter;
 import org.slf4j.Logger;
@@ -38,9 +39,9 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
 
         JWTToken token = new JWTToken(authorization);
         // 提交给realm进行登入，如果错误他会抛出异常并被捕获
-//        getSubject(request, response).login(token);
         Subject subject = ShiroUtils.getSubject();
         subject.login(token);
+
         // 如果没有抛出异常则代表登入成功，返回true
         return true;
     }
@@ -61,6 +62,7 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
                 executeLogin(request, response);
             } catch (Exception e) {
                 response401(request, response);
+                return false;
             }
         }
         return true;
