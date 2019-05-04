@@ -9,8 +9,10 @@
 package io.renren.modules.sys.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import io.renren.common.entity.PageData;
 import io.renren.modules.sys.entity.SysUserEntity;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -33,4 +35,5 @@ public interface SysUserDao extends BaseMapper<SysUserEntity> {
 	 */
 	List<Long> queryAllMenuId(Long userId);
 
+    String geUserPassword(@Param("pagedate") PageData pagedate);
 }

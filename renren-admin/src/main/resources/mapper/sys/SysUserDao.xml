@@ -18,4 +18,8 @@
 		where ur.user_id = #{userId}
 	</select>
 
+	<select id="geUserPassword" resultType="String">
+		SELECT `password` FROM sys_user WHERE `username` = #{pagedate.username}
+	</select>
+
 </mapper>

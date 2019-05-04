@@ -56,8 +56,6 @@ public class SysLoginController extends BaseController {
     private IsVerificationService isVerificationService;
     @Autowired
     private SysUserService sysUserService;
-    @Autowired
-    private SysUserDao sysUserDao;
 
 
     @RequestMapping("captcha.jpg")
@@ -127,16 +125,14 @@ public class SysLoginController extends BaseController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "refreshToken", method = RequestMethod.POST)
+    @RequestMapping(value = "/sys/refreshToken", method = RequestMethod.POST)
     public R refreshToken(HttpServletRequest req) {
         String tokenreq = req.getHeader("Authorization");
         String username = JWTUtil.getUsername(tokenreq);
-//		PageData pageData = new PageData();
-//		pageData.put("username",username);
-//		String password = sysUserService.geUserPassword(pageData);
-        SysUserEntity user = sysUserDao.selectOne(new QueryWrapper<SysUserEntity>().eq("username", username));
-        String token = JWTUtil.sign(username, user.getPassword());
-        return R.ok().put("token", token);
+		PageData pageData = new PageData();
+		pageData.put("username",username);
+		String password = sysUserService.geUserPassword(pageData);
+        return R.ok().put("token", JWTUtil.sign(username, password));
     }
 
 }

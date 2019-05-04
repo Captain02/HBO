@@ -46,6 +46,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 	private SysUserRoleService sysUserRoleService;
 	@Autowired
 	private SysDeptService sysDeptService;
+	@Autowired
+	SysUserDao sysUserDao;
 //	@Autowired
 //	SqlSessionTemplate sqlSessionTemplate;
 
@@ -114,8 +116,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 
 	@Override
 	public String geUserPassword(PageData pagedate) {
-//		return sqlSessionTemplate.;
-		return null;
+		return sysUserDao.geUserPassword(pagedate);
 	}
 
 }
