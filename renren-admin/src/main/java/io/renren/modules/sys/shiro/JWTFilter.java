@@ -7,6 +7,8 @@ import org.apache.shiro.web.filter.authc.BasicHttpAuthenticationFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
@@ -19,11 +21,21 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-
+@Component
 public class JWTFilter extends BasicHttpAuthenticationFilter {
 
     private Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
+    //@Value("${errorPath}")
+//    private String errorPath;
+//
+//    public String getErrorPath() {
+//        return errorPath;
+//    }
+//
+//    public void setErrorPath(String errorPath) {
+//        this.errorPath = errorPath;
+//    }
 
     /**
      * 判断用户是否想要登入。
@@ -101,7 +113,7 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
     private void response401(ServletRequest req, ServletResponse resp) {
         try {
             HttpServletResponse httpServletResponse = (HttpServletResponse) resp;
-            httpServletResponse.sendRedirect("/renren-admin/401");
+            httpServletResponse.sendRedirect("/HBO/401");
         } catch (IOException e) {
             System.out.println(e.toString());
             //LOGGER.error(e.getMessage());

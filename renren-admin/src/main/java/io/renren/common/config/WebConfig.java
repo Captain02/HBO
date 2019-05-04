@@ -8,6 +8,7 @@
 
 package io.renren.common.config;
 
+import io.renren.modules.sys.shiro.JWTFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
@@ -43,5 +44,10 @@ public class WebConfig implements WebMvcConfigurer {
         source.registerCorsConfiguration("/**", buildConfig()); // 4
         return new CorsFilter(source);
     }
+
+//    @Bean
+//    public JWTFilter jwtFilter(){
+//        return new JWTFilter();
+//    }
 
 }
