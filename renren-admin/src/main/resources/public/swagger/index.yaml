@@ -11,6 +11,13 @@ schemes:
 
 #定义接口数据
 paths:
+  /sys/refreshToken:
+    get:
+      tags:
+        -用户登录
+        summary: 获取最新Token
+        produces:
+                - application/json
   /captcha.jpg:
     get:
       tags:

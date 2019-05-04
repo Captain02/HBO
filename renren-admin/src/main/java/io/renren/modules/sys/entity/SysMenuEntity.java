@@ -81,4 +81,34 @@ public class SysMenuEntity implements Serializable {
 
 	@TableField(exist=false)
 	private List<?> list;
+
+	/**
+	 * 设定是否在侧边栏中显示
+	 */
+	private Integer hidden;
+
+	/*
+	* 菜单显示的文字
+	* */
+	private String title;
+
+	/*
+	* 重定向地址
+	* */
+	private String redirect;
+
+	/*
+	* 只有一个子路由时是否显示其父路由
+	* */
+	private Integer alwaysShow;
+
+	/*
+	* 标识该路由是否能被缓存
+	* */
+	private Integer useCache;
+
+	/*
+	*
+	* */
+	private String query;
 }
