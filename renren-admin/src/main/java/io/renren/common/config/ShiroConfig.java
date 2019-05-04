@@ -81,7 +81,7 @@ public class ShiroConfig {
 
 
     @Bean("shiroFilter")
-    public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager) {
+    public ShiroFilterFactoryBean shiroFilter(DefaultWebSecurityManager securityManager) {
         ShiroFilterFactoryBean shiroFilter = new ShiroFilterFactoryBean();
 
         Map<String, Filter> filterMap = new HashMap<>();
@@ -90,7 +90,8 @@ public class ShiroConfig {
 
         shiroFilter.setSecurityManager(securityManager);
         //shiroFilter.setLoginUrl("/login.html");
-        shiroFilter.setUnauthorizedUrl("/login.html");
+        shiroFilter.setUnauthorizedUrl("/401");
+        shiroFilter.setLoginUrl("/401");
 
         Map<String, String> filterRuleMap = new LinkedHashMap<>();
         filterRuleMap.put("/swagger/**", "anon");
@@ -101,14 +102,15 @@ public class ShiroConfig {
 
         filterRuleMap.put("/statics/**", "anon");
         filterRuleMap.put("/renren-admin/statics/**", "anon");
-        filterRuleMap.put("/login.html", "anon");
+        //filterRuleMap.put("/login.html", "anon");
+        filterRuleMap.put("/401", "anon");
         filterRuleMap.put("/sys/login", "anon");
         filterRuleMap.put("/sys/getTitleName", "anon");
         filterRuleMap.put("/favicon.ico", "anon");
         filterRuleMap.put("/captcha.jpg", "anon");
         //filterMap.put("/**", "authc");
-
         filterRuleMap.put("/**", "jwt");
+
         shiroFilter.setFilterChainDefinitionMap(filterRuleMap);
 
         return shiroFilter;

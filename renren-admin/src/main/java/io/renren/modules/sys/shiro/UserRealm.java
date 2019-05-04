@@ -150,13 +150,6 @@ public class UserRealm extends AuthorizingRealm {
 //		return info;
     }
 
-//    @Override
-//    public void setCredentialsMatcher(CredentialsMatcher credentialsMatcher) {
-//        HashedCredentialsMatcher shaCredentialsMatcher = new HashedCredentialsMatcher();
-//        shaCredentialsMatcher.setHashAlgorithmName(ShiroUtils.hashAlgorithmName);
-//        shaCredentialsMatcher.setHashIterations(ShiroUtils.hashIterations);
-//        super.setCredentialsMatcher(shaCredentialsMatcher);
-//    }
 
     private void verifyUser(SysUserEntity user){
         if (user == null) {

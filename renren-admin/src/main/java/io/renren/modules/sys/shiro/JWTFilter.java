@@ -1,11 +1,16 @@
 package io.renren.modules.sys.shiro;
 
+import io.renren.modules.sys.controller.ExceptionController;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.authc.BasicHttpAuthenticationFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.ServletRequest;
@@ -14,9 +19,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+
 public class JWTFilter extends BasicHttpAuthenticationFilter {
 
     private Logger LOGGER = LoggerFactory.getLogger(this.getClass());
+
 
     /**
      * 判断用户是否想要登入。
@@ -61,8 +68,10 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
             try {
                 executeLogin(request, response);
             } catch (Exception e) {
+//                throw new AuthenticationException("Username or password error");
+//                exceptionController.handler401();
                 response401(request, response);
-                return false;
+              //  return false;
             }
         }
         return true;
@@ -92,9 +101,10 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
     private void response401(ServletRequest req, ServletResponse resp) {
         try {
             HttpServletResponse httpServletResponse = (HttpServletResponse) resp;
-            httpServletResponse.sendRedirect("/login.html");
+            httpServletResponse.sendRedirect("/renren-admin/401");
         } catch (IOException e) {
-            LOGGER.error(e.getMessage());
+            System.out.println(e.toString());
+            //LOGGER.error(e.getMessage());
         }
     }
 }
