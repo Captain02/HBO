@@ -175,6 +175,13 @@ public class PagePlugin implements Interceptor {
 			if("mysql".equals(dialect)){
 				pageSql.append(sql);
 				pageSql.append(" limit "+page.getCurrentResult()+","+page.getPageSize());
+			}else if ("oracle".equals(dialect)){
+				int offset = (page.getCurrPage() - 1) * page.getPageSize() + 1;
+				pageSql.insert(0, "select u.*, rownum r from (").append(") u where rownum < ").append(offset + page.getPageSize());
+				pageSql.insert(0, "select * from (").append(") where r >= ").append(offset);
+				//上面的Sql语句拼接之后大概是这个样子：
+				//select * from (select u.*, rownum r from (select * from t_user) u where rownum < 31) where r >= 16
+				return pageSql.toString();
 			}
 			return pageSql.toString();
 		}else{
