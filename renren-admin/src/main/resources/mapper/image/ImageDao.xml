@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ImageDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="io.renren.modules.sys.entity.Demo01Entity" id="demo01Map">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+    </resultMap>
+
+    <select id="selectImageList" resultType="io.renren.common.entity.PageData">
+        SELECT * FROM images where corid = ${pd.corid}
+    </select>
+
+    <insert id="save">
+        INSERT INTO images(imagename,createtime,url) VALUES (#{imagename},#{createtime},#{url})
+    </insert>
+
+</mapper>
