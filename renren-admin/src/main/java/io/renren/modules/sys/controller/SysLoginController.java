@@ -89,7 +89,7 @@ public class SysLoginController extends BaseController {
      */
     @ResponseBody
     @RequestMapping(value = "/sys/login", method = RequestMethod.POST)
-    public R login(String username, String password, String captcha, Integer corip) {
+    public R login(String username, String password, String captcha, Integer corid) {
         String titleName = isVerificationService.getIsVerification();
         if (titleName.equals("是")) {
             //String kaptcha = ShiroUtils.getKaptcha(Constants.KAPTCHA_SESSION_KEY);
@@ -112,7 +112,7 @@ public class SysLoginController extends BaseController {
             return R.error("账户验证失败");
         }
 
-        return R.ok().put("token", ((SysUserEntity) SecurityUtils.getSubject().getPrincipal()).getToken());
+        return R.ok().put("token", ((SysUserEntity) SecurityUtils.getSubject().getPrincipal()).getToken()).put("corId",corid);
     }
 
     /**
