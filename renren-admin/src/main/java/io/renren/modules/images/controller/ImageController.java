@@ -8,6 +8,7 @@ import io.renren.common.utils.R;
 import io.renren.modules.corporation.service.impl.CorporationServiceImpl;
 import io.renren.modules.images.service.ImageService;
 import io.renren.modules.images.service.impl.ImageServiceImpl;
+import io.swagger.models.auth.In;
 import javafx.collections.ObservableFloatArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -49,11 +50,44 @@ public class ImageController extends BaseController {
     }
 
     /**
+     * 删除图片
+     * 参数：
+     *   imagename：图片名
+     *   id：图片id
+     * @param request
+     * @return
+     */
+    @PostMapping("/del")
+    public R delImage(HttpServletRequest request){
+        PageData pageData = this.getPageData();
+        System.out.println(pageData.toString());
+        String path = request.getSession().getServletContext().getRealPath("/upload/");
+        pageData.put("filePath",path+pageData.get("imagename"));
+        pageData.put("id", Integer.parseInt(pageData.get("id").toString()));
+        System.out.println(pageData);
+        try {
+            //删除实际的文件
+            File file = new File((String) pageData.get("filePath"));
+            if (file.delete()){
+                //删除数据库中的字段
+                imageService.delImage(pageData);
+                return R.ok();
+            }else {
+                return R.error("文件删除失败");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return R.error(e.getMessage());
+        }
+    }
+
+    /**
      * 单个文件上传
      * @return
      */
     @PostMapping("/save")
     public R save(@RequestParam("picture") MultipartFile picture, HttpServletRequest request){
+        System.out.println("执行了单个文件上传");
         //获取文件名和保存的文件
         String fileName = (String) this.uploadImage(picture,request).get("fileName");
         File targetFile = (File) this.uploadImage(picture,request).get("targetFile");
@@ -63,11 +97,12 @@ public class ImageController extends BaseController {
             picture.transferTo(targetFile);
             System.out.println("上传成功");
             //将路径、文件名保存到数据库
-            PageData pageData = new PageData();
+            PageData pageData = this.getPageData();
             pageData.put("url","/upload/"+fileName);
             pageData.put("imagename",fileName);
             pageData.put("createtime", DateUtil.getTime());
             imageService.save(pageData);
+            System.out.println(pageData.toString());
             //将文件在服务器的存储路径返回
             return R.ok().put("data",pageData);
         } catch (IOException e) {
@@ -86,6 +121,7 @@ public class ImageController extends BaseController {
      */
     @PostMapping("/batch")
     public R batch(@RequestParam("picture") MultipartFile[] picture, HttpServletRequest request){
+        System.out.println("执行了多个文件上传");
 
         Map<String ,Object> pageDataMap = new HashMap<>();
 
@@ -99,10 +135,11 @@ public class ImageController extends BaseController {
                 picture[i].transferTo(targetFile);
                 System.out.println("上传成功");
                 //将路径、文件名保存到数据库
-                PageData pageData = new PageData();
+                PageData pageData = this.getPageData();
                 pageData.put("url","/upload/"+fileName);
                 pageData.put("imagename",fileName);
                 pageData.put("createtime", DateUtil.getTime());
+                System.out.println(pageData.toString());
                 imageService.save(pageData);
                 //存放到pageDataList中返回
                 pageDataMap.put(Integer.toString(i),pageData);

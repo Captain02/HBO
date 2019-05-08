@@ -11,4 +11,6 @@ public interface ImageService {
     List<PageData> getList(Page page) throws Exception;
 
     void save(PageData pageData) throws Exception;
+
+    void delImage(PageData pageData) throws Exception;
 }

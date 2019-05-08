@@ -9,12 +9,16 @@
         <result property="name" column="name"/>
     </resultMap>
 
-    <select id="selectImageList" resultType="io.renren.common.entity.PageData">
-        SELECT * FROM images where corid = ${pd.corid}
+    <select id="imagelistPage" resultType="io.renren.common.entity.PageData">
+        SELECT * FROM images where corid = #{pd.corid}
     </select>
 
     <insert id="save">
-        INSERT INTO images(imagename,createtime,url) VALUES (#{imagename},#{createtime},#{url})
+        INSERT INTO images(imagename,createtime,url,corid) VALUES (#{imagename},#{createtime},#{url},#{corid})
     </insert>
+
+    <delete id="delete">
+        DELETE FROM images WHERE id = #{id}
+    </delete>
 
 </mapper>
