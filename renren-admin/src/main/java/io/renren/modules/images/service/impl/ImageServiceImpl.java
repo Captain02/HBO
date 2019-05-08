@@ -17,12 +17,17 @@ public class ImageServiceImpl implements ImageService{
 
     @Override
     public List<PageData> getList(Page page) throws Exception {
-        return (List<PageData>)daoSupport.findForList("ImageDao.selectImageList",page);
+        return (List<PageData>)daoSupport.findForList("ImageDao.imagelistPage",page);
     }
 
     @Override
     public void save(PageData pageData) throws Exception {
         daoSupport.save("ImageDao.save",pageData);
+    }
+
+    @Override
+    public void delImage(PageData pageData) throws Exception {
+        daoSupport.delete("ImageDao.delete",pageData);
     }
 
 }
