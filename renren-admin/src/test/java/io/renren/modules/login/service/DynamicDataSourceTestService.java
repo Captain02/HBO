@@ -6,7 +6,7 @@
  * 版权所有，侵权必究！
  */
 
-package io.renren.service;
+package io.renren.modules.login.service;
 
 import io.renren.commons.dynamic.datasource.annotation.DataSource;
 import io.renren.modules.sys.dao.SysUserDao;

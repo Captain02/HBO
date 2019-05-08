@@ -8,7 +8,7 @@
 
 package io.renren.controller;
 
-import io.renren.service.SysGeneratorService;
+import io.renren.modules.login.service.SysGeneratorService;
 import io.renren.utils.PageUtils;
 import io.renren.utils.Query;
 import io.renren.utils.R;
