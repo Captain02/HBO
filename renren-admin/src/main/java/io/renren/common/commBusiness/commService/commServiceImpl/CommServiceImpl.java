@@ -51,6 +51,18 @@ public class CommServiceImpl implements CommService {
         }
     }
 
+    //文件删除
+    @Override
+    public boolean deleteFile(String filenameAndPath){
+        File delFile = new File(filenameAndPath);
+        if(delFile.isFile() && delFile.exists()) {
+            delFile.delete();
+            return true;
+        }else {
+            return false;
+        }
+    }
+
 //    public PageData uploadFile(MultipartFile picture, HttpServletRequest request,PageData pageData) throws Exception {
 //        //根据社团id查出对应的学院、社团名称
 //        List<PageData> pageDataList = (List<PageData>) daoSupport.findForList("corporationDao.selectCor", pageData);

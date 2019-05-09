@@ -12,4 +12,6 @@ public interface CommService {
 //    PageData uploadFile(MultipartFile picture, HttpServletRequest request, PageData pageData) throws Exception;
 
     public String uploadFile(MultipartFile picture, HttpServletRequest request,String path);
+
+    public boolean deleteFile(String filenameAndPath);
 }
