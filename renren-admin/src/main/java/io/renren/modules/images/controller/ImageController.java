@@ -3,13 +3,12 @@ package io.renren.modules.images.controller;
 import io.renren.common.controller.BaseController;
 import io.renren.common.entity.Page;
 import io.renren.common.entity.PageData;
-import io.renren.common.util.DateUtil;
 import io.renren.common.utils.R;
-import io.renren.modules.corporation.service.impl.CorporationServiceImpl;
 import io.renren.modules.images.service.ImageService;
-import io.renren.modules.images.service.impl.ImageServiceImpl;
-import io.swagger.models.auth.In;
-import javafx.collections.ObservableFloatArray;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,14 +16,13 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/img")
+@Api("社团相册的控制器")
 public class ImageController extends BaseController {
 
     @Autowired
@@ -32,17 +30,22 @@ public class ImageController extends BaseController {
 
     /**
      * 根据社团id获取社团相册
+     *
      * @return
      */
-    @ResponseBody
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public R list(Page page){
+    @GetMapping("/list")
+    @ApiOperation(value = "根据社团id获取社团相册", notes = "根据社团id获取社团相册", httpMethod = "GET")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", name = "corid", value = "社团id", required = true, dataType = "Integer"),
+            @ApiImplicitParam(paramType = "query", name = "pageSize", value = "每页显示记录数", required = true, dataType = "Integer"),
+            @ApiImplicitParam(paramType = "query", name = "currPage", value = "当前页", required = true, dataType = "Integer"),
+    })
+    public R list(Page page) {
         PageData pageData = this.getPageData();
         page.setPd(pageData);
-
         try {
             List<PageData> images = imageService.getList(page);
-            return R.ok().put("page",page).put("date",images);
+            return R.ok().put("page", page).put("date", images);
         } catch (Exception e) {
             e.printStackTrace();
             return R.error(e.getMessage());
@@ -52,29 +55,24 @@ public class ImageController extends BaseController {
     /**
      * 删除图片
      * 参数：
-     *   imagename：图片名
-     *   id：图片id
+     * imagename：图片名
+     * id：图片id
+     *
      * @param request
      * @return
      */
     @PostMapping("/del")
-    public R delImage(HttpServletRequest request){
+    @ApiOperation(value = "删除图片", notes = "删除图片", httpMethod = "POST")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", name = "imagename", value = "图片名称", required = true, dataType = "String"),
+            @ApiImplicitParam(paramType = "query", name = "id", value = "图片id", required = true, dataType = "Integer")
+    })
+    public R delImage(HttpServletRequest request) {
         PageData pageData = this.getPageData();
         System.out.println(pageData.toString());
-        String path = request.getSession().getServletContext().getRealPath("/upload/");
-        pageData.put("filePath",path+pageData.get("imagename"));
-        pageData.put("id", Integer.parseInt(pageData.get("id").toString()));
-        System.out.println(pageData);
         try {
-            //删除实际的文件
-            File file = new File((String) pageData.get("filePath"));
-            if (file.delete()){
-                //删除数据库中的字段
-                imageService.delImage(pageData);
-                return R.ok();
-            }else {
-                return R.error("文件删除失败");
-            }
+            imageService.delImage(pageData, request);
+            return R.ok("删除成功");
         } catch (Exception e) {
             e.printStackTrace();
             return R.error(e.getMessage());
@@ -83,28 +81,20 @@ public class ImageController extends BaseController {
 
     /**
      * 单个文件上传
+     *
      * @return
      */
     @PostMapping("/save")
-    public R save(@RequestParam("picture") MultipartFile picture, HttpServletRequest request){
+    @ApiOperation(value = "单个文件上传", notes = "单个文件上传", httpMethod = "POST")
+    @ApiImplicitParam(paramType = "query", name = "picture", value = "图片文件", required = true, dataType = "String")
+    public R save(@RequestParam("picture") MultipartFile picture, HttpServletRequest request) {
         System.out.println("执行了单个文件上传");
-        //获取文件名和保存的文件
-        String fileName = (String) this.uploadImage(picture,request).get("fileName");
-        File targetFile = (File) this.uploadImage(picture,request).get("targetFile");
-
-        //将文件保存到服务器指定位置
         try {
-            picture.transferTo(targetFile);
-            System.out.println("上传成功");
-            //将路径、文件名保存到数据库
             PageData pageData = this.getPageData();
-            pageData.put("url","/upload/"+fileName);
-            pageData.put("imagename",fileName);
-            pageData.put("createtime", DateUtil.getTime());
-            imageService.save(pageData);
+            pageData = imageService.save(pageData, picture, request);
             System.out.println(pageData.toString());
             //将文件在服务器的存储路径返回
-            return R.ok().put("data",pageData);
+            return R.ok().put("data", pageData);
         } catch (IOException e) {
             System.out.println("上传失败");
             e.printStackTrace();
@@ -117,32 +107,21 @@ public class ImageController extends BaseController {
 
     /**
      * 批量文件上传
+     *
      * @return
      */
     @PostMapping("/batch")
-    public R batch(@RequestParam("picture") MultipartFile[] picture, HttpServletRequest request){
+    @ApiOperation(value = "批量文件上传", notes = "批量文件上传", httpMethod = "POST")
+    @ApiImplicitParam(paramType = "query", name = "picture", value = "多个图片文件", required = true, dataType = "String")
+    public R batch(@RequestParam("picture") MultipartFile[] picture, HttpServletRequest request) {
         System.out.println("执行了多个文件上传");
 
-        Map<String ,Object> pageDataMap = new HashMap<>();
-
-        for (int i=0; i<picture.length; i++){
-            //获取文件名和保存的文件
-            String fileName = (String) this.uploadImage(picture[i],request).get("fileName");
-            File targetFile = (File) this.uploadImage(picture[i],request).get("targetFile");
-
-            //将文件保存到服务器指定位置
+        Map<String, Object> pageDataMap = new HashMap<>();
+        for (int i = 0; i < picture.length; i++) {
             try {
-                picture[i].transferTo(targetFile);
-                System.out.println("上传成功");
-                //将路径、文件名保存到数据库
                 PageData pageData = this.getPageData();
-                pageData.put("url","/upload/"+fileName);
-                pageData.put("imagename",fileName);
-                pageData.put("createtime", DateUtil.getTime());
-                System.out.println(pageData.toString());
-                imageService.save(pageData);
-                //存放到pageDataList中返回
-                pageDataMap.put(Integer.toString(i),pageData);
+                pageData = imageService.save(pageData, picture[i], request);
+                pageDataMap.put(Integer.toString(i), pageData);
             } catch (IOException e) {
                 System.out.println("上传失败");
                 e.printStackTrace();
@@ -152,49 +131,8 @@ public class ImageController extends BaseController {
                 return R.error(e.getMessage());
             }
         }
+        System.out.println(pageDataMap);
         //将文件在服务器的存储路径返回
-        return R.ok().put("data",pageDataMap);
-    }
-
-    /**
-     * 共用方法
-     * @param picture
-     * @param request
-     * @return
-     */
-    private Map<String ,Object> uploadImage(MultipartFile picture, HttpServletRequest request){
-        //获取文件在服务器的储存位置
-        String path = request.getSession().getServletContext().getRealPath("/upload");
-        File filePath = new File(path);
-        System.out.println("文件的保存路径：" + path);
-        if (!filePath.exists() && !filePath.isDirectory()) {
-            System.out.println("目录不存在，创建目录:" + filePath);
-            filePath.mkdir();
-        }
-
-        //获取原始文件名称(包含格式)
-        String originalFileName = picture.getOriginalFilename();
-        System.out.println("原始文件名称：" + originalFileName);
-
-        //获取文件类型，以最后一个`.`为标识
-        String type = originalFileName.substring(originalFileName.lastIndexOf(".") + 1);
-        System.out.println("文件类型：" + type);
-        //获取文件名称（不包含格式）
-        String name = originalFileName.substring(0, originalFileName.lastIndexOf("."));
-
-        //设置文件新名称: 当前时间+文件名称（不包含格式）
-        Date d = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-        String date = sdf.format(d);
-        String fileName = date + name + "." + type;
-        System.out.println("新文件名称：" + fileName);
-
-        //在指定路径下创建一个文件
-        File targetFile = new File(path, fileName);
-
-        Map<String ,Object> map = new HashMap<>();
-        map.put("targetFile",targetFile);
-        map.put("fileName",fileName);
-        return map;
+        return R.ok().put("data", pageDataMap);
     }
 }

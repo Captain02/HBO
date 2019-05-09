@@ -13,7 +13,16 @@
         SELECT * FROM images where corid = #{pd.corid}
     </select>
 
-    <insert id="save">
+    <insert id="save" useGeneratedKeys="true" keyProperty="id">
+        <!--
+            新插入一条数据返回新插入的id
+                方法一：
+                    useGeneratedKeys="true" keyProperty="id" keyColumn="id"
+                方法二：
+                <selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
+                    <select Last_insert_id() as id
+                </selectKey>
+        -->
         INSERT INTO images(imagename,createtime,url,corid) VALUES (#{imagename},#{createtime},#{url},#{corid})
     </insert>
 
