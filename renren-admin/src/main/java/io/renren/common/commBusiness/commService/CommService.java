@@ -9,5 +9,7 @@ import java.util.List;
 public interface CommService {
     List<PageData> getselectes(PageData pageData) throws Exception;
 
-    PageData uploadFile(MultipartFile picture, HttpServletRequest request, PageData pageData) throws Exception;
+//    PageData uploadFile(MultipartFile picture, HttpServletRequest request, PageData pageData) throws Exception;
+
+    public String uploadFile(MultipartFile picture, HttpServletRequest request,String path);
 }
