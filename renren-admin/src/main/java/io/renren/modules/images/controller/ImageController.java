@@ -1,5 +1,6 @@
 package io.renren.modules.images.controller;
 
+import io.renren.common.commBusiness.commService.CommService;
 import io.renren.common.controller.BaseController;
 import io.renren.common.entity.Page;
 import io.renren.common.entity.PageData;
@@ -27,6 +28,8 @@ public class ImageController extends BaseController {
 
     @Autowired
     private ImageService imageService;
+    @Autowired
+    private CommService commService;
 
     /**
      * 根据社团id获取社团相册
@@ -64,18 +67,17 @@ public class ImageController extends BaseController {
     @PostMapping("/del")
     @ApiOperation(value = "删除图片", notes = "删除图片", httpMethod = "POST")
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "query", name = "imagename", value = "图片名称", required = true, dataType = "String"),
+            @ApiImplicitParam(paramType = "query", name = "url", value = "图片路径", required = true, dataType = "String"),
             @ApiImplicitParam(paramType = "query", name = "id", value = "图片id", required = true, dataType = "Integer")
     })
     public R delImage(HttpServletRequest request) {
         PageData pageData = this.getPageData();
         System.out.println(pageData.toString());
-        try {
-            imageService.delImage(pageData, request);
+        String url = (String) pageData.get("url");
+        if(commService.deleteFile(url)&&imageService.del(pageData)){
             return R.ok("删除成功");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return R.error(e.getMessage());
+        }else {
+            return R.error("删除失败");
         }
     }
 
@@ -89,19 +91,19 @@ public class ImageController extends BaseController {
     @ApiImplicitParam(paramType = "query", name = "picture", value = "图片文件", required = true, dataType = "String")
     public R save(@RequestParam("picture") MultipartFile picture, HttpServletRequest request) {
         System.out.println("执行了单个文件上传");
-        try {
-            PageData pageData = this.getPageData();
-            pageData = imageService.save(pageData, picture, request);
-            System.out.println(pageData.toString());
-            //将文件在服务器的存储路径返回
+        //文件上传
+        PageData pageData = this.getPageData();
+        String path = commService.uploadFile(picture,request,"C:/study/image/");
+        if(path==null){
+            return R.error("文件上传失败");
+        }
+        //保存到数据库
+        pageData.put("url",path);
+        pageData.put("imagename",picture.getOriginalFilename());
+        if(imageService.save(pageData)==null){
+            return R.error("保存图片失败");
+        }else {
             return R.ok().put("data", pageData);
-        } catch (IOException e) {
-            System.out.println("上传失败");
-            e.printStackTrace();
-            return R.error(e.getMessage());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return R.error(e.getMessage());
         }
     }
 
@@ -117,18 +119,21 @@ public class ImageController extends BaseController {
         System.out.println("执行了多个文件上传");
 
         Map<String, Object> pageDataMap = new HashMap<>();
+
         for (int i = 0; i < picture.length; i++) {
-            try {
-                PageData pageData = this.getPageData();
-                pageData = imageService.save(pageData, picture[i], request);
+            //文件上传
+            PageData pageData = this.getPageData();
+            String path = commService.uploadFile(picture[i],request,"C:/study/image/");
+            if(path==null){
+                return R.error("文件上传失败");
+            }
+            //保存到数据库
+            pageData.put("url",path);
+            pageData.put("imagename",picture[i].getOriginalFilename());
+            if(imageService.save(pageData)==null){
+                return R.error("保存图片失败");
+            }else {
                 pageDataMap.put(Integer.toString(i), pageData);
-            } catch (IOException e) {
-                System.out.println("上传失败");
-                e.printStackTrace();
-                return R.error(e.getMessage());
-            } catch (Exception e) {
-                e.printStackTrace();
-                return R.error(e.getMessage());
             }
         }
         System.out.println(pageDataMap);

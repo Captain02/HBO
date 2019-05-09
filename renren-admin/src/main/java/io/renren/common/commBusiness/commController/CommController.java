@@ -15,36 +15,36 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController("sys/comm")
-public class CommController extends BaseController{
+public class CommController extends BaseController {
 
     @Autowired
     CommService commService;
 
     @GetMapping("/getselectes/{colume1}/{table}")
-    public R getselectes(@PathVariable("colume1")String colume1, @PathVariable("table")String table) throws Exception {
+    public R getselectes(@PathVariable("colume1") String colume1, @PathVariable("table") String table) throws Exception {
         PageData pageData = new PageData();
-        pageData.put("colume1",colume1);
-        pageData.put("table",table);
+        pageData.put("colume1", colume1);
+        pageData.put("table", table);
         List<PageData> data = commService.getselectes(pageData);
-        return R.ok().put("data",data);
+        return R.ok().put("data", data);
     }
 
     /**
      * 上传文件
+     *
      * @param picture：文件名
-     * @param request：请求
-     *        corId：社团id
+     * @param request：请求  corId：社团id
      * @throws Exception
      */
-    public R uploadFile(@RequestParam("picture") MultipartFile picture, HttpServletRequest request){
-        try {
-            PageData pageData = this.getPageData();
-            pageData = commService.uploadFile(picture,request,pageData);
-            return R.ok().put("data",pageData);
-        } catch (Exception e) {
-            System.out.println("上传文件失败");
-            e.printStackTrace();
-            return R.error(e.getMessage());
+    public R uploadFile(@RequestParam("picture") MultipartFile picture, HttpServletRequest request) {
+        PageData pageData = this.getPageData();
+        String path = (String) pageData.get("path");
+        path = commService.uploadFile(picture, request, path);
+        if (path != null) {
+            return R.ok().put("data", path);
+        }else {
+            return R.error("文件上传失败");
         }
     }
+
 }

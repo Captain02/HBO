@@ -23,7 +23,7 @@
                     <select Last_insert_id() as id
                 </selectKey>
         -->
-        INSERT INTO images(imagename,createtime,url,corid) VALUES (#{imagename},#{createtime},#{url},#{corid})
+        INSERT INTO images(imagename,url,corid) VALUES (#{imagename},#{url},#{corid})
     </insert>
 
     <delete id="delete">
