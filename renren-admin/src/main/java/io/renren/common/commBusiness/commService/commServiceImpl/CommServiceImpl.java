@@ -24,7 +24,7 @@ public class CommServiceImpl implements CommService {
 
     @Override
     public List<PageData> getselectes(PageData pageData) throws Exception {
-        return (List<PageData>) daoSupport.findForList("commMpper.selectComm",pageData);
+        return (List<PageData>) daoSupport.findForList("commDao.selectComm",pageData);
     }
     @Override
     public String uploadFile(MultipartFile picture, HttpServletRequest request,String path){
