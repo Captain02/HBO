@@ -6,7 +6,7 @@
  * 版权所有，侵权必究！
  */
 
-package io.renren.entity;
+package io.renren.modules.login.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;

@@ -6,13 +6,13 @@
  * 版权所有，侵权必究！
  */
 
-package io.renren.service.impl;
+package io.renren.modules.login.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import io.renren.dao.TokenDao;
-import io.renren.entity.TokenEntity;
-import io.renren.service.TokenService;
+import io.renren.modules.login.dao.TokenDao;
+import io.renren.modules.login.entity.TokenEntity;
+import io.renren.modules.login.service.TokenService;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;

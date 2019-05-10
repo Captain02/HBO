@@ -6,10 +6,10 @@
  * 版权所有，侵权必究！
  */
 
-package io.renren.service;
+package io.renren.modules.login.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import io.renren.entity.TokenEntity;
+import io.renren.modules.login.entity.TokenEntity;
 
 /**
  * 用户Token

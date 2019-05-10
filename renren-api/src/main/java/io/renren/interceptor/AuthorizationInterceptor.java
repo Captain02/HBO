@@ -11,8 +11,8 @@ package io.renren.interceptor;
 
 import io.renren.annotation.Login;
 import io.renren.common.exception.RRException;
-import io.renren.entity.TokenEntity;
-import io.renren.service.TokenService;
+import io.renren.modules.login.entity.TokenEntity;
+import io.renren.modules.login.service.TokenService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

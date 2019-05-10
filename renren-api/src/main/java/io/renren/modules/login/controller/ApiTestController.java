@@ -6,12 +6,12 @@
  * 版权所有，侵权必究！
  */
 
-package io.renren.controller;
+package io.renren.modules.login.controller;
 
 import io.renren.annotation.Login;
 import io.renren.annotation.LoginUser;
 import io.renren.common.utils.R;
-import io.renren.entity.UserEntity;
+import io.renren.modules.login.entity.UserEntity;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -6,18 +6,18 @@
  * 版权所有，侵权必究！
  */
 
-package io.renren.dao;
+package io.renren.modules.login.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import io.renren.entity.UserEntity;
+import io.renren.modules.login.entity.TokenEntity;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
- * 用户
+ * 用户Token
  *
  * @author Mark sunlightcs@gmail.com
  */
 @Mapper
-public interface UserDao extends BaseMapper<UserEntity> {
-
+public interface TokenDao extends BaseMapper<TokenEntity> {
+	
 }

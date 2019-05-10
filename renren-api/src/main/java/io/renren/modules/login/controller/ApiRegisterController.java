@@ -6,13 +6,13 @@
  * 版权所有，侵权必究！
  */
 
-package io.renren.controller;
+package io.renren.modules.login.controller;
 
 import io.renren.common.utils.R;
 import io.renren.common.validator.ValidatorUtils;
-import io.renren.entity.UserEntity;
+import io.renren.modules.login.entity.UserEntity;
 import io.renren.form.RegisterForm;
-import io.renren.service.UserService;
+import io.renren.modules.login.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.codec.digest.DigestUtils;
