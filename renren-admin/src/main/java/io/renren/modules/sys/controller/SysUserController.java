@@ -104,7 +104,7 @@ public class SysUserController extends AbstractController {
 	@SysLog("保存用户")
 	@RequestMapping("/save")
 	@RequiresPermissions("sys:user:save")
-	public R save(@RequestBody SysUserEntity user,@RequestBody Integer corid){
+	public R save(SysUserEntity user,Integer corid){
 		System.out.println("---------------"+corid);
 		ValidatorUtils.validateEntity(user, AddGroup.class);
 		
