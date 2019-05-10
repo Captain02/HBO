@@ -108,11 +108,11 @@ public class SysUserEntity implements Serializable {
 
 	private Long fileid;
 
-	private Integer college;
+	private String college;
 
-	private Integer collegetie;
+	private String collegetie;
 
-	private Integer collegemajor;
+	private String collegemajor;
 
 	private String gender;
 
