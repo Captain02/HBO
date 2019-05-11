@@ -156,7 +156,7 @@ public class SysUserController extends AbstractController {
 	public R delete(String userIds){
         String[] strings = Tools.str2StrArray(userIds, ",");
         List<Long> collect = Arrays.stream(strings).map(x -> Long.parseLong(x)).collect(Collectors.toList());
-        Long[] array = (Long[]) collect.toArray();
+        Long[] array = collect.stream().toArray(Long[]::new);
 
         if(ArrayUtils.contains(array, 1L)){
 			return R.error("系统管理员不能删除");
