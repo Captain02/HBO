@@ -10,7 +10,11 @@
     </resultMap>
 
     <select id="corporationlistPage" resultType="io.renren.common.entity.PageData">
-        SELECT * FROM corporation WHERE id = #{pd.corid}
+        SELECT id,corname,corleading FROM corporation
+    </select>
+
+    <select id="selectByCorId" resultType="io.renren.common.entity.PageData">
+        SELECT corname,corleading,corcrowdpeople,corcollege,corfaculty, FROM corporation WHERE id = #{pd.corid}
     </select>
 
     <insert id="add" useGeneratedKeys="true" keyProperty="id">

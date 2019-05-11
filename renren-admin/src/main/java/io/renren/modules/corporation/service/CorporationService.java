@@ -18,4 +18,6 @@ public interface CorporationService {
     void delCor(PageData pageData) throws Exception;
 
     void updateCor(PageData pageData) throws Exception;
+
+    List<PageData> selectByCorId(PageData pageData) throws Exception;
 }
