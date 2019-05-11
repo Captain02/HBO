@@ -13,4 +13,8 @@
         SELECT id FROM sys_dict WHERE `value` = #{value}
     </select>
 
+    <select id="selectValueById" resultType="io.renren.common.entity.PageData">
+        SELECT `value` FROM sys_dict WHERE id = #{id}
+    </select>
+
 </mapper>
