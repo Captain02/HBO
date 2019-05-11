@@ -65,22 +65,27 @@ public class CorporationController extends BaseController {
      */
     @GetMapping("/selectByCorId")
     @ApiOperation(value = "根据社团id获取社团详情", notes = "根据社团id获取社团详情", httpMethod = "GET")
-    @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "query", name = "corid", value = "社团id", required = true, dataType = "Integer")
-    })
+    @ApiImplicitParam(paramType = "query", name = "corid", value = "社团id", required = true, dataType = "Integer")
     public R selectByCorId() {
         PageData pageData = this.getPageData();
         if (StringUtils.isEmpty(pageData.get("corid"))) {
             return R.error("社团id不为空");
         }
         try {
+            //获取社团详情
             List<PageData> corporation = corporationService.selectByCorId(pageData);
+            //根据corcollege获取所在学院
+            corporation.get(0).put("id",corporation.get(0).get("corcollege"));
+            corporation = dictService.selectValueById(corporation.get(0));
+//            corporation.get(0).get("corcollege")=corporation.get(0).get("value");
+            //根据corfaculty获取所在系别
+            corporation.get(0).put("id",corporation.get(0).get("corfaculty"));
+            corporation = dictService.selectValueById(corporation.get(0));
             return R.ok().put("data", corporation);
         } catch (Exception e) {
             e.printStackTrace();
             return R.error(e.getMessage());
         }
-//        int i = 10/0;
     }
 
     /**
