@@ -23,7 +23,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/img")
-@Api("社团相册的控制器")
+@Api(value = "/img", tags = "社团相册模块")
 public class ImageController extends BaseController {
 
     @Autowired
@@ -40,8 +40,8 @@ public class ImageController extends BaseController {
     @ApiOperation(value = "根据社团id获取社团相册", notes = "根据社团id获取社团相册", httpMethod = "GET")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query", name = "corid", value = "社团id", required = true, dataType = "Integer"),
-            @ApiImplicitParam(paramType = "query", name = "pageSize", value = "每页显示记录数", required = true, dataType = "Integer"),
-            @ApiImplicitParam(paramType = "query", name = "currPage", value = "当前页", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "pageSize", value = "每页显示记录数", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "currPage", value = "当前页", required = true, dataType = "Integer"),
     })
     public R list(Page page) {
         PageData pageData = this.getPageData();
@@ -74,9 +74,9 @@ public class ImageController extends BaseController {
         PageData pageData = this.getPageData();
         System.out.println(pageData.toString());
         String url = (String) pageData.get("url");
-        if(commService.deleteFile(url)&&imageService.del(pageData)){
+        if (commService.deleteFile(url) && imageService.del(pageData)) {
             return R.ok("删除成功");
-        }else {
+        } else {
             return R.error("删除失败");
         }
     }
@@ -93,16 +93,16 @@ public class ImageController extends BaseController {
         System.out.println("执行了单个文件上传");
         //文件上传
         PageData pageData = this.getPageData();
-        String path = commService.uploadFile(picture,request,request.getContextPath()+"/image/");
-        if(path==null){
+        String path = commService.uploadFile(picture, request, request.getContextPath() + "/image/");
+        if (path == null) {
             return R.error("文件上传失败");
         }
         //保存到数据库
-        pageData.put("url",path);
-        pageData.put("imagename",picture.getOriginalFilename());
-        if(imageService.save(pageData)==null){
+        pageData.put("url", path);
+        pageData.put("imagename", picture.getOriginalFilename());
+        if (imageService.save(pageData) == null) {
             return R.error("保存图片失败");
-        }else {
+        } else {
             return R.ok().put("data", pageData);
         }
     }
@@ -123,16 +123,16 @@ public class ImageController extends BaseController {
         for (int i = 0; i < picture.length; i++) {
             //文件上传
             PageData pageData = this.getPageData();
-            String path = commService.uploadFile(picture[i],request,"C:/study/image/");
-            if(path==null){
+            String path = commService.uploadFile(picture[i], request, "C:/study/image/");
+            if (path == null) {
                 return R.error("文件上传失败");
             }
             //保存到数据库
-            pageData.put("url",path);
-            pageData.put("imagename",picture[i].getOriginalFilename());
-            if(imageService.save(pageData)==null){
+            pageData.put("url", path);
+            pageData.put("imagename", picture[i].getOriginalFilename());
+            if (imageService.save(pageData) == null) {
                 return R.error("保存图片失败");
-            }else {
+            } else {
                 pageDataMap.put(Integer.toString(i), pageData);
             }
         }

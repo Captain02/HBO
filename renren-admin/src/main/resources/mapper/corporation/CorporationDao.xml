@@ -1,16 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="corporationDao">
+<mapper namespace="CorporationDao">
 
-	<!-- 可根据自己的需求，是否要使用 -->
+    <!-- 可根据自己的需求，是否要使用 -->
     <resultMap type="io.renren.modules.sys.entity.Demo01Entity" id="demo01Map">
         <result property="id" column="id"/>
         <result property="name" column="name"/>
     </resultMap>
 
-    <select id="selectCor" resultType="io.renren.common.entity.PageData">
-        SELECT corname,corcollege FROM corporation WHERE id = #{corId}
+    <select id="corporationlistPage" resultType="io.renren.common.entity.PageData">
+        SELECT * FROM corporation WHERE id = #{pd.corid}
     </select>
+
+    <insert id="add" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO corporation(corname,corleading,cortercher,corworkspace,corcollege,corfaculty,corscale,fileid,iscor)
+	    VALUES (#{corname},#{corleading},#{cortercher},#{corworkspace},#{corcollege},#{corfaculty},#{corscale},#{id},1)
+    </insert>
+
+    <update id="update">
+        UPDATE corporation set iscor = 0 WHERE id = #{corid}
+    </update>
+
+    <update id="updateCor">
+        UPDATE corporation
+        <set>
+            <if test="corname!=null">
+                corname = #{corname,jdbcType=VARCHAR},
+            </if>
+            <if test="corleading!=null">
+                corleading = #{corleading,jdbcType=VARCHAR},
+            </if>
+            <if test="cortercher!=null">
+                cortercher = #{cortercher,jdbcType=VARCHAR},
+            </if>
+            <if test="corworkspace!=null">
+                corworkspace = #{corworkspace,jdbcType=VARCHAR},
+            </if>
+            <if test="corcollege!=null">
+                corcollege = #{corcollege,jdbcType=INTEGER},
+            </if>
+            <if test="corfaculty!=null">
+                corfaculty = #{corfaculty,jdbcType=INTEGER},
+            </if>
+            <if test="corcollege!=null">
+                corcollege = #{corcollege,jdbcType=INTEGER},
+            </if>
+            <if test="corscale!=null">
+                corscale = #{corscale,jdbcType=INTEGER},
+            </if>
+            <if test="descs!=null">
+                descs = #{descs,jdbcType=VARCHAR}
+            </if>
+        </set>
+        WHERE id = #{corid}
+    </update>
 
 </mapper>
