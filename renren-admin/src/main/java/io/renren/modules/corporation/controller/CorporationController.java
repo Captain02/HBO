@@ -33,19 +33,23 @@ public class CorporationController extends BaseController {
     private DictService dictService;
 
     /**
-     * 获取社团详情
+     * 根据社团id获取社团详情
      *
      * @param page
      * @return
      */
     @GetMapping("/list")
-    @ApiOperation(value = "获取社团详情", notes = "获取社团详情", httpMethod = "GET")
+    @ApiOperation(value = "根据社团id获取社团详情", notes = "根据社团id获取社团详情", httpMethod = "GET")
     @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", name = "corid", value = "社团id", required = true, dataType = "Integer"),
             @ApiImplicitParam(name = "pageSize", value = "每页显示记录数", required = true, dataType = "Integer"),
             @ApiImplicitParam(name = "currPage", value = "当前页", required = true, dataType = "Integer"),
     })
     public R list(Page page) {
         PageData pageData = this.getPageData();
+        if (StringUtils.isEmpty(pageData.get("corid"))) {
+            return R.error("社团id不为空");
+        }
         page.setPd(pageData);
         try {
             List<PageData> corporations = corporationService.getList(page);
@@ -58,6 +62,8 @@ public class CorporationController extends BaseController {
     }
 
     /**
+<<<<<<< HEAD
+=======
      * 获取社团详情
      *
      * @param
@@ -65,31 +71,26 @@ public class CorporationController extends BaseController {
      */
     @GetMapping("/selectByCorId")
     @ApiOperation(value = "根据社团id获取社团详情", notes = "根据社团id获取社团详情", httpMethod = "GET")
-    @ApiImplicitParam(paramType = "query", name = "corid", value = "社团id", required = true, dataType = "Integer")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", name = "corid", value = "社团id", required = true, dataType = "Integer")
+    })
     public R selectByCorId() {
         PageData pageData = this.getPageData();
         if (StringUtils.isEmpty(pageData.get("corid"))) {
             return R.error("社团id不为空");
         }
         try {
-            //获取社团详情
             List<PageData> corporation = corporationService.selectByCorId(pageData);
-            //根据corcollege获取所在学院
-            corporation.get(0).put("id",corporation.get(0).get("corcollege"));
-            corporation = dictService.selectValueById(corporation.get(0));
-            corporation.get(0).put("corcollege",corporation.get(0).get("value"));
-            //根据corfaculty获取所在系别
-            corporation.get(0).put("id",corporation.get(0).get("corfaculty"));
-            corporation = dictService.selectValueById(corporation.get(0));
-            corporation.get(0).put("corfaculty",corporation.get(0).get("value"));
             return R.ok().put("data", corporation);
         } catch (Exception e) {
             e.printStackTrace();
             return R.error(e.getMessage());
         }
+//        int i = 10/0;
     }
 
     /**
+>>>>>>> parent of 832552a... 修改bug
      * 添加社团
      *
      * @return
@@ -136,9 +137,8 @@ public class CorporationController extends BaseController {
         //添加社团
         try {
             //创建二维码
-            String qrCode = qrCodeService.crateQRCode("https://www.baidu.com", 200, 200);
+            StringBuffer qrCode = qrCodeService.crateQRCode("https://www.baidu.com", 200, 200);
             pageData.put("qrCode", qrCode);
-            System.out.println(qrCode);
             if (pageData.get("qrCode") != null) {
                 Pattern p = Pattern.compile("\\s*|\t|\r|\n");
                 Matcher m = p.matcher(pageData.get("qrCode").toString());

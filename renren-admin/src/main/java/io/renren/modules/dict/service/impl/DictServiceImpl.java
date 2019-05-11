@@ -20,9 +20,4 @@ public class DictServiceImpl implements DictService {
     public List<PageData> selectByValue(PageData pageData) throws Exception {
         return (List<PageData>) daoSupport.findForList("DictDao.selectByValue", pageData);
     }
-
-    @Override
-    public List<PageData> selectValueById(PageData pageData) throws Exception {
-        return (List<PageData>) daoSupport.findForList("DictDao.selectValueById", pageData);
-    }
 }

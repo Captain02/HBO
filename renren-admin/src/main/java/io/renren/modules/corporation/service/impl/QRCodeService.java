@@ -7,8 +7,8 @@ import com.google.zxing.common.BitMatrix;
 
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
+import com.sun.org.apache.xml.internal.security.utils.Base64;
 import org.springframework.stereotype.Service;
-import org.bouncycastle.util.encoders.Base64;
 import org.springframework.util.StringUtils;
 
 
@@ -22,9 +22,9 @@ import java.util.HashMap;
 
 @Service
 public class QRCodeService {
-    public String crateQRCode(String content, int width, int height) throws IOException {
+    public StringBuffer crateQRCode(String content, int width, int height) throws IOException {
 
-        String resultImage = "";
+        StringBuffer resultImage = new StringBuffer("data:image/png;base64,");
         if (!StringUtils.isEmpty(content)) {
             ServletOutputStream stream = null;
             ByteArrayOutputStream os = new ByteArrayOutputStream();
@@ -45,8 +45,8 @@ public class QRCodeService {
                 /**
                  * 原生转码前面没有 data:image/png;base64 这些字段，返回给前端是无法被解析，可以让前端加，也可以在下面加上
                  */
-//                resultImage.append(Base64.encode("data:image/png;base64,"os.toByteArray()));
-                resultImage = new String("data:image/png;base64,"+Base64.encode(os.toByteArray()));
+                resultImage.append(Base64.encode(os.toByteArray()));
+
                 return resultImage;
             } catch (Exception e) {
                 e.printStackTrace();
