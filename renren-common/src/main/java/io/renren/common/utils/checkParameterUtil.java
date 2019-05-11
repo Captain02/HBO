@@ -2,12 +2,7 @@ package io.renren.common.utils;
 
 import java.util.Map;
 
-/**
- * 说明：检查参数是否为空，减少冗余代码。
- * 创建人：陈法磊
- * @version
- */
-public class checkParameterUtil {
+public class CheckParameterUtil {
 
     public static void checkParameterMap(Map map,String...parameters){
         if(parameters.length!=0){
