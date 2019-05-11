@@ -10,8 +10,6 @@ package io.renren.modules.sys.controller;
 
 
 import io.renren.common.annotation.SysLog;
-import io.renren.common.entity.Page;
-import io.renren.common.entity.PageData;
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.R;
 import io.renren.common.validator.Assert;
@@ -22,10 +20,6 @@ import io.renren.modules.sys.entity.SysUserEntity;
 import io.renren.modules.sys.service.SysUserRoleService;
 import io.renren.modules.sys.service.SysUserService;
 import io.renren.modules.sys.shiro.ShiroUtils;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +34,6 @@ import java.util.Map;
  *
  * @author Mark sunlightcs@gmail.com
  */
-@Api(tags = "用户")
 @RestController
 @RequestMapping("/sys/user")
 public class SysUserController extends AbstractController {
@@ -52,22 +45,12 @@ public class SysUserController extends AbstractController {
 	/**
 	 * 所有用户列表
 	 */
-
-	@ApiOperation(value = "用户列表", tags = {"用户"})
-    @ApiImplicitParams({
-            @ApiImplicitParam(dataType = "Integer",paramType = "query",name = "pn",value = "当前页",required = true),
-            @ApiImplicitParam( dataType = "Integer",paramType = "query",name = "size",value = "当前页大小",required = true)
-    })
-	@GetMapping("/list")
+	@RequestMapping("/list")
 	@RequiresPermissions("sys:user:list")
-	public R list(@RequestParam Map<String, Object> params) throws Exception {
-		Page page = new Page();
-        PageData pageData = new PageData();
-        page.setPd(pageData);
-		//PageUtils page = sysUserService.queryPage(params);
-        List<PageData> list = sysUserService.userlistPage(page);
+	public R list(@RequestParam Map<String, Object> params){
+		PageUtils page = sysUserService.queryPage(params);
 
-		return R.ok().put("page", page).put("data",list);
+		return R.ok().put("page", page);
 	}
 	
 	/**

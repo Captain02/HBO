@@ -13,8 +13,6 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import io.renren.common.annotation.DataFilter;
-import io.renren.common.dao.DaoSupport;
-import io.renren.common.entity.Page;
 import io.renren.common.entity.PageData;
 import io.renren.common.utils.Constant;
 import io.renren.common.utils.PageUtils;
@@ -50,9 +48,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 	private SysDeptService sysDeptService;
 	@Autowired
 	SysUserDao sysUserDao;
-
-	@Autowired
-	private DaoSupport daoSupport;
 //	@Autowired
 //	SqlSessionTemplate sqlSessionTemplate;
 
@@ -122,13 +117,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 	@Override
 	public String geUserPassword(PageData pagedate) {
 		return sysUserDao.geUserPassword(pagedate);
-	}
-
-	@Override
-	public List<PageData> userlistPage(Page page) throws Exception {
-		List<PageData> list = (List<PageData>) daoSupport.
-				findForList("io.renren.modules.sys.dao.SysUserDao.userlistPage",page);
-		return list;
 	}
 
 }
