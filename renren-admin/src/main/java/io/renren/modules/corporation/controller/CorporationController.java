@@ -77,10 +77,11 @@ public class CorporationController extends BaseController {
             //根据corcollege获取所在学院
             corporation.get(0).put("id",corporation.get(0).get("corcollege"));
             corporation = dictService.selectValueById(corporation.get(0));
-//            corporation.get(0).get("corcollege")=corporation.get(0).get("value");
+            corporation.get(0).put("corcollege",corporation.get(0).get("value"));
             //根据corfaculty获取所在系别
             corporation.get(0).put("id",corporation.get(0).get("corfaculty"));
             corporation = dictService.selectValueById(corporation.get(0));
+            corporation.get(0).put("corfaculty",corporation.get(0).get("value"));
             return R.ok().put("data", corporation);
         } catch (Exception e) {
             e.printStackTrace();
