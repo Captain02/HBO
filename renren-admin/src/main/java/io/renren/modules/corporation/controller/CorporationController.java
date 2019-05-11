@@ -135,8 +135,9 @@ public class CorporationController extends BaseController {
         //添加社团
         try {
             //创建二维码
-            StringBuffer qrCode = qrCodeService.crateQRCode("https://www.baidu.com", 200, 200);
+            String qrCode = qrCodeService.crateQRCode("https://www.baidu.com", 200, 200);
             pageData.put("qrCode", qrCode);
+            System.out.println(qrCode);
             if (pageData.get("qrCode") != null) {
                 Pattern p = Pattern.compile("\\s*|\t|\r|\n");
                 Matcher m = p.matcher(pageData.get("qrCode").toString());
