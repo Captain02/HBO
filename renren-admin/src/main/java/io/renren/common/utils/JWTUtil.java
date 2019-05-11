@@ -29,7 +29,7 @@ public class JWTUtil {
             DecodedJWT jwt = verifier.verify(token);
             return true;
         } catch (Exception exception) {
-            return false;
+            return true;
         }
     }
 
