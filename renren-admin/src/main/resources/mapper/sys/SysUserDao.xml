@@ -22,4 +22,13 @@
 		SELECT `password` FROM sys_user WHERE `username` = #{pagedate.username}
 	</select>
 
+	<!--List<PageData> list = (List<PageData>) daoSupport.
+				findForList("io.renren.modules.sys.dao.SysUserDao.userlistPage",page);-->
+	<select resultType="io.renren.common.entity.PageData" id="userlistPage">
+		SELECT user_id,username,email,mobile,create_time,persionnum,wechart,QQ,college,
+		collegetie,gender,descs,filetable.filename,filetable.filepath
+		FROM sys_user
+		LEFT JOIN filetable ON filetable.id = sys_user.fileid
+	</select>
+
 </mapper>
