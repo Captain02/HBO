@@ -33,27 +33,49 @@ public class CorporationController extends BaseController {
     private DictService dictService;
 
     /**
-     * 根据社团id获取社团详情
+     * 获取社团详情
      *
      * @param page
      * @return
      */
     @GetMapping("/list")
-    @ApiOperation(value = "根据社团id获取社团详情", notes = "根据社团id获取社团详情", httpMethod = "GET")
+    @ApiOperation(value = "获取社团详情", notes = "获取社团详情", httpMethod = "GET")
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "query", name = "corid", value = "社团id", required = true, dataType = "Integer"),
             @ApiImplicitParam(name = "pageSize", value = "每页显示记录数", required = true, dataType = "Integer"),
             @ApiImplicitParam(name = "currPage", value = "当前页", required = true, dataType = "Integer"),
     })
     public R list(Page page) {
         PageData pageData = this.getPageData();
-        if (StringUtils.isEmpty(pageData.get("corid"))) {
-            return R.error("社团id不为空");
-        }
         page.setPd(pageData);
         try {
             List<PageData> corporations = corporationService.getList(page);
             return R.ok().put("page", page).put("data", corporations);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return R.error(e.getMessage());
+        }
+//        int i = 10/0;
+    }
+
+    /**
+     * 获取社团详情
+     *
+     * @param
+     * @return
+     */
+    @GetMapping("/selectByCorId")
+    @ApiOperation(value = "根据社团id获取社团详情", notes = "根据社团id获取社团详情", httpMethod = "GET")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", name = "corid", value = "社团id", required = true, dataType = "Integer")
+    })
+    public R selectByCorId() {
+        PageData pageData = this.getPageData();
+        if (StringUtils.isEmpty(pageData.get("corid"))) {
+            return R.error("社团id不为空");
+        }
+        try {
+            List<PageData> corporation = corporationService.selectByCorId(pageData);
+            return R.ok().put("data", corporation);
         } catch (Exception e) {
             e.printStackTrace();
             return R.error(e.getMessage());
@@ -67,7 +89,7 @@ public class CorporationController extends BaseController {
      * @return
      */
     @PostMapping("/add")
-    @ApiOperation(value = "添加社团", notes = "添加社团", httpMethod = "PSOT")
+    @ApiOperation(value = "添加社团", notes = "添加社团", httpMethod = "POST")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query", name = "corname", value = "社团名称", required = true, dataType = "String"),
             @ApiImplicitParam(paramType = "query", name = "corleading", value = "负责人", required = true, dataType = "String"),
