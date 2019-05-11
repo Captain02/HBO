@@ -12,6 +12,7 @@ package io.renren.modules.sys.controller;
 import io.renren.common.annotation.SysLog;
 import io.renren.common.entity.Page;
 import io.renren.common.entity.PageData;
+import io.renren.common.util.Tools;
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.R;
 import io.renren.common.validator.Assert;
@@ -34,6 +35,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 系统用户
@@ -151,12 +153,16 @@ public class SysUserController extends AbstractController {
 	@SysLog("删除用户")
 	@RequestMapping("/delete")
 	@RequiresPermissions("sys:user:delete")
-	public R delete(@RequestBody Long[] userIds){
-		if(ArrayUtils.contains(userIds, 1L)){
+	public R delete(String userIds){
+        String[] strings = Tools.str2StrArray(userIds, ",");
+        List<Long> collect = Arrays.stream(strings).map(x -> Long.parseLong(x)).collect(Collectors.toList());
+        Long[] array = (Long[]) collect.toArray();
+
+        if(ArrayUtils.contains(array, 1L)){
 			return R.error("系统管理员不能删除");
 		}
 		
-		if(ArrayUtils.contains(userIds, getUserId())){
+		if(ArrayUtils.contains(array, getUserId())){
 			return R.error("当前用户不能删除");
 		}
 
