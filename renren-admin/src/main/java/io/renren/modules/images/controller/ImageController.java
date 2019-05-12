@@ -93,7 +93,7 @@ public class ImageController extends BaseController {
         System.out.println("执行了单个文件上传");
         //文件上传
         PageData pageData = this.getPageData();
-        String path = commService.uploadFile(picture, request, request.getContextPath() + "/image/");
+        String path = commService.uploadFile(picture, request, request.getSession().getServletContext().getRealPath("/upload/image/"));
         if (path == null) {
             return R.error("文件上传失败");
         }
@@ -123,7 +123,7 @@ public class ImageController extends BaseController {
         for (int i = 0; i < picture.length; i++) {
             //文件上传
             PageData pageData = this.getPageData();
-            String path = commService.uploadFile(picture[i], request, "C:/study/image/");
+            String path = commService.uploadFile(picture[i], request, request.getSession().getServletContext().getRealPath("/upload/image/"));
             if (path == null) {
                 return R.error("文件上传失败");
             }

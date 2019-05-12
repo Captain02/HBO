@@ -10,11 +10,31 @@
     </resultMap>
 
     <select id="corporationlistPage" resultType="io.renren.common.entity.PageData">
-        SELECT id,corname,corleading FROM corporation
+        SELECT cor.`id`,`corname`,`corleading`,cor.`createtime`,cor.`corscale`,`descs`,
+            f1.`filepath` bannerfile,
+            f2.`filepath` videofile
+        FROM `corporation` cor
+        LEFT JOIN  filetable f1 ON f1.`id` = cor.`bannerid`
+        LEFT JOIN filetable f2 ON f2.`id` = cor.`videofile`
+        WHERE cor.`iscor` = 1
     </select>
 
     <select id="selectByCorId" resultType="io.renren.common.entity.PageData">
-        SELECT corname,corleading,corcrowdpeople,corcollege,corfaculty, FROM corporation WHERE id = #{pd.corid}
+        SELECT cor.`id`,`corname`,`corleading`,`cortercher`,`corworkspace`,cor.`createtime`,`descs`,
+                sd1.`value` corforcollege,
+                sd2.`value` corcollege,
+                sd3.`value` corfaculty,
+                f1.`filepath` filefile,
+                f2.`filepath` bannerfile,
+                f3.`filepath` videofile
+        FROM `corporation` cor
+        LEFT JOIN `sys_dict` sd1 ON sd1.`id` = cor.`corforcollege`
+        LEFT JOIN `sys_dict` sd2 ON sd2.`id` = cor.`corcollege`
+        LEFT JOIN `sys_dict` sd3 ON sd3.`id` = cor.`corfaculty`
+        LEFT JOIN `filetable` f1 ON f1.`id` = cor.`fileid`
+        LEFT JOIN  filetable f2 ON f2.`id` = cor.`bannerid`
+        LEFT JOIN filetable f3 ON f3.`id` = cor.`videofile`
+        WHERE cor.`id`=#{corid} AND cor.`iscor` = 1
     </select>
 
     <insert id="add" useGeneratedKeys="true" keyProperty="id">

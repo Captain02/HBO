@@ -3,20 +3,27 @@ package io.renren.modules.corporation.controller;
 import io.renren.common.controller.BaseController;
 import io.renren.common.entity.Page;
 import io.renren.common.entity.PageData;
+import io.renren.common.util.DateTool;
+import io.renren.common.utils.CheckParameterUtil;
 import io.renren.common.utils.R;
 import io.renren.modules.corporation.service.CorporationService;
 import io.renren.modules.corporation.service.impl.QRCodeService;
+import io.renren.modules.corporation.service.impl.QrCodeUtils;
 import io.renren.modules.dict.service.DictService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.apache.http.HttpResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -33,23 +40,19 @@ public class CorporationController extends BaseController {
     private DictService dictService;
 
     /**
-     * 根据社团id获取社团详情
+     * 获取社团详情
      *
      * @param page
      * @return
      */
     @GetMapping("/list")
-    @ApiOperation(value = "根据社团id获取社团详情", notes = "根据社团id获取社团详情", httpMethod = "GET")
+    @ApiOperation(value = "获取社团详情", notes = "获取社团详情", httpMethod = "GET")
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "query", name = "corid", value = "社团id", required = true, dataType = "Integer"),
             @ApiImplicitParam(name = "pageSize", value = "每页显示记录数", required = true, dataType = "Integer"),
             @ApiImplicitParam(name = "currPage", value = "当前页", required = true, dataType = "Integer"),
     })
     public R list(Page page) {
         PageData pageData = this.getPageData();
-        if (StringUtils.isEmpty(pageData.get("corid"))) {
-            return R.error("社团id不为空");
-        }
         page.setPd(pageData);
         try {
             List<PageData> corporations = corporationService.getList(page);
@@ -58,35 +61,29 @@ public class CorporationController extends BaseController {
             e.printStackTrace();
             return R.error(e.getMessage());
         }
-//        int i = 10/0;
     }
 
     /**
-<<<<<<< HEAD
-=======
-     * 获取社团详情
+     * 根据社团id获取社团详情
      *
      * @param
      * @return
      */
     @GetMapping("/selectByCorId")
     @ApiOperation(value = "根据社团id获取社团详情", notes = "根据社团id获取社团详情", httpMethod = "GET")
-    @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "query", name = "corid", value = "社团id", required = true, dataType = "Integer")
-    })
+    @ApiImplicitParam(paramType = "query", name = "corid", value = "社团id", required = true, dataType = "Integer")
     public R selectByCorId() {
         PageData pageData = this.getPageData();
-        if (StringUtils.isEmpty(pageData.get("corid"))) {
-            return R.error("社团id不为空");
-        }
+        //校验参数
+        CheckParameterUtil.checkParameterMap(pageData,"corid");
         try {
+            //获取社团详情
             List<PageData> corporation = corporationService.selectByCorId(pageData);
             return R.ok().put("data", corporation);
         } catch (Exception e) {
             e.printStackTrace();
             return R.error(e.getMessage());
         }
-//        int i = 10/0;
     }
 
     /**
@@ -107,46 +104,20 @@ public class CorporationController extends BaseController {
             @ApiImplicitParam(paramType = "query", name = "corscale", value = "社团规模", required = true, dataType = "Integer"),
             @ApiImplicitParam(paramType = "query", name = "url", value = "社团主页连接", required = true, dataType = "String")
     })
-    public R add() {
+    public R add(HttpServletRequest request) {
         PageData pageData = this.getPageData();
-//        if(StringUtils.isEmpty(pageData.get("url"))){
-//            String url = pageData.get("url").toString();
-//            return R.error("社团主页连接不能为空");
-//        }
-        if (StringUtils.isEmpty(pageData.get("corname"))) {
-            return R.error("社团名称不能为空");
-        }
-        if (StringUtils.isEmpty(pageData.get("corleading"))) {
-            return R.error("负责人不能为空");
-        }
-        if (StringUtils.isEmpty(pageData.get("cortercher"))) {
-            return R.error("负责老师不能为空");
-        }
-        if (StringUtils.isEmpty(pageData.get("corworkspace"))) {
-            return R.error("工作地点不能为空");
-        }
-        if (StringUtils.isEmpty(pageData.get("corcollege"))) {
-            return R.error("学院不能为空");
-        }
-        if (StringUtils.isEmpty(pageData.get("corfaculty"))) {
-            return R.error("系别不能为空");
-        }
-        if (StringUtils.isEmpty(pageData.get("corscale"))) {
-            return R.error("社团规模不能为空");
-        }
+        //校验参数
+        String[] parameters = {"url","corname","corleading","cortercher","corworkspace","corcollege","corfaculty","corscale"};
+        CheckParameterUtil.checkParameterMap(pageData,parameters);
         //添加社团
         try {
             //创建二维码
-            StringBuffer qrCode = qrCodeService.crateQRCode("https://www.baidu.com", 200, 200);
-            pageData.put("qrCode", qrCode);
-            if (pageData.get("qrCode") != null) {
-                Pattern p = Pattern.compile("\\s*|\t|\r|\n");
-                Matcher m = p.matcher(pageData.get("qrCode").toString());
-                pageData.put("qrCode", m.replaceAll(""));
-//                StringUtils.delete(pageData.get("qrCode").toString(),"\\s*|\t|\r|\n");
-            } else {
-                return R.error("生成二维码失败");
-            }
+            String url = "https://www.baidu.com";
+            String path = QrCodeUtils.encodeByqrCodeName(url,request.getSession().getServletContext().getRealPath("/HBO/upload/QrCode/"),pageData.get("corname").toString());
+//            System.out.println("request.getContextPath(): "+request.getContextPath()+"/upload/QrCode/");
+            System.out.println("文件存放位置："+request.getSession().getServletContext().getRealPath("/HBO/upload/QrCode/"));
+            pageData.put("filePath", path);
+            pageData.put("fileName", DateTool.dateToStringYYHHDD(new Date())+pageData.get("corname").toString()+".jpg");
             //获取所属学院id
             pageData.put("value", pageData.get("corcollege").toString());
             List<PageData> pageDataList = dictService.selectByValue(pageData);
@@ -174,9 +145,8 @@ public class CorporationController extends BaseController {
     @ApiImplicitParam(paramType = "query", name = "corid", value = "社团id", required = true, dataType = "Integer")
     public R del() {
         PageData pageData = this.getPageData();
-        if (StringUtils.isEmpty(pageData.get("corid"))) {
-            return R.error("社团id不为空");
-        }
+        //校验参数
+        CheckParameterUtil.checkParameterMap(pageData,"corid");
         try {
             corporationService.delCor(pageData);
             return R.ok();
@@ -195,9 +165,8 @@ public class CorporationController extends BaseController {
     @ApiOperation(value = "根据社团id更新社团", notes = "根据社团id更新社团", httpMethod = "POST")
     public R update() {
         PageData pageData = this.getPageData();
-        if (StringUtils.isEmpty(pageData.get("corid"))) {
-            return R.error("社团id不为空");
-        }
+        //校验参数
+        CheckParameterUtil.checkParameterMap(pageData,"corid");
         try {
             //是否更新所在学院
             if (!StringUtils.isEmpty(pageData.get("corcollege"))) {
