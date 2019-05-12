@@ -10,6 +10,8 @@ package io.renren.modules.login.controller;
 
 
 import io.renren.annotation.Login;
+import io.renren.common.controller.BaseController;
+import io.renren.common.entity.PageData;
 import io.renren.common.utils.R;
 import io.renren.common.validator.ValidatorUtils;
 import io.renren.form.LoginForm;
@@ -31,23 +33,28 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api")
 @Api(tags="登录接口")
-public class ApiLoginController {
+public class ApiLoginController extends BaseController {
     @Autowired
     private UserService userService;
     @Autowired
     private TokenService tokenService;
 
 
-    @PostMapping("login")
+    @PostMapping("/login")
     @ApiOperation("登录")
-    public R login(@RequestBody LoginForm form){
+    public R login() throws Exception {
+        PageData pageData = this.getPageData();
+        String token = userService.userLogin(pageData);
+        if (token == null){
+            return R.error(401,"登录失败");
+        }
         //表单校验
-        ValidatorUtils.validateEntity(form);
+//        ValidatorUtils.validateEntity(form);
 
-        //用户登录
-        Map<String, Object> map = userService.login(form);
+//        //用户登录
+//        Map<String, Object> map = userService.login(form);
 
-        return R.ok(map);
+        return R.ok().put("token",token);
     }
 
     @Login
@@ -57,5 +64,7 @@ public class ApiLoginController {
         tokenService.expireToken(userId);
         return R.ok();
     }
+
+
 
 }

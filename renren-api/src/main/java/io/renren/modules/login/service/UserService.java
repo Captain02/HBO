@@ -9,8 +9,9 @@
 package io.renren.modules.login.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import io.renren.modules.login.entity.UserEntity;
+import io.renren.common.entity.PageData;
 import io.renren.form.LoginForm;
+import io.renren.modules.login.entity.UserEntity;
 
 import java.util.Map;
 
@@ -29,4 +30,7 @@ public interface UserService extends IService<UserEntity> {
 	 * @return        返回登录信息
 	 */
 	Map<String, Object> login(LoginForm form);
+
+
+	String userLogin(PageData pageData) throws Exception;
 }
