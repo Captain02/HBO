@@ -2,7 +2,7 @@ package io.renren.common.utils;
 
 import java.util.Map;
 
-class CheckParameterUtil {
+public class CheckParameterUtil {
 
     public static void checkParameterMap(Map map, String... parameters) {
         if (parameters.length != 0) {
