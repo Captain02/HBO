@@ -153,20 +153,20 @@ public class SysUserController extends AbstractController {
 	@SysLog("删除用户")
 	@RequestMapping("/delete")
 	@RequiresPermissions("sys:user:delete")
-	public R delete(String userIds){
+	public R delete(String userIds) throws Exception {
         String[] strings = Tools.str2StrArray(userIds, ",");
         List<Long> collect = Arrays.stream(strings).map(x -> Long.parseLong(x)).collect(Collectors.toList());
-        Long[] array = collect.stream().toArray(Long[]::new);
+//        Long[] array = collect.stream().toArray(Long[]::new);
+//
+//        if(ArrayUtils.contains(array, 1L)){
+//			return R.error("系统管理员不能删除");
+//		}
+//
+//		if(ArrayUtils.contains(array, getUserId())){
+//			return R.error("当前用户不能删除");
+//		}
 
-        if(ArrayUtils.contains(array, 1L)){
-			return R.error("系统管理员不能删除");
-		}
-		
-		if(ArrayUtils.contains(array, getUserId())){
-			return R.error("当前用户不能删除");
-		}
-
-		sysUserService.removeByIds(Arrays.asList(userIds));
+		sysUserService.removeUserByIds(collect);
 		
 		return R.ok();
 	}

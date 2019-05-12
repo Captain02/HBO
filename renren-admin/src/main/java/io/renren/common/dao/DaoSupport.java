@@ -52,6 +52,10 @@ public class DaoSupport implements DAO {
 		return sqlSessionTemplate.update(str, obj);
 	}
 
+	public int batchUpdateBylist(String str, List objs )throws Exception{
+		return sqlSessionTemplate.update(str, objs);
+	}
+
 	/**
 	 * 批量更新
 	 * @param str

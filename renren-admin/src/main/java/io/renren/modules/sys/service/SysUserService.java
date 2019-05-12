@@ -53,4 +53,6 @@ public interface SysUserService extends IService<SysUserEntity> {
     String geUserPassword(PageData username);
 
     List<PageData> userlistPage(Page page) throws Exception;
+
+    void removeUserByIds(List<Long> collect) throws Exception;
 }

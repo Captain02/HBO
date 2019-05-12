@@ -29,6 +29,15 @@
 		collegetie,gender,descs,filetable.filename,filetable.filepath
 		FROM sys_user
 		LEFT JOIN filetable ON filetable.id = sys_user.fileid
+		WHERE status = 1
 	</select>
+
+	<update id="removeUserByIds" parameterType="java.util.List">
+		UPDATE sys_user SET  status = 0
+		WHERE user_id IN
+		<foreach collection="list" index="index" item="ids" open="(" separator="," close=")">
+			#{ids}
+		</foreach>
+	</update>
 
 </mapper>

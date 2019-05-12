@@ -27,6 +27,7 @@ import io.renren.modules.sys.service.SysUserRoleService;
 import io.renren.modules.sys.service.SysUserService;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.ibatis.annotations.Param;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -129,6 +130,11 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 		List<PageData> list = (List<PageData>) daoSupport.
 				findForList("io.renren.modules.sys.dao.SysUserDao.userlistPage",page);
 		return list;
+	}
+
+	@Override
+	public void removeUserByIds(List<Long> list) throws Exception {
+		daoSupport.batchUpdateBylist("io.renren.modules.sys.dao.SysUserDao.removeUserByIds",list);
 	}
 
 }
