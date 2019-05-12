@@ -4,7 +4,7 @@ server:
     uri-encoding: UTF-8
     max-threads: 1000
     min-spare-threads: 30
-  port: 8081
+  port: 8082
   servlet:
     context-path: /HBOFRONT
 
@@ -20,7 +20,7 @@ spring:
       enabled: true
   redis:
     database: 0
-    host: localhost
+    host: 140.143.201.244
     port: 6379
     password:      # 密码（默认为空）
     timeout: 6000ms  # 连接超时时长（毫秒）
@@ -33,7 +33,7 @@ spring:
 
 renren:
   redis:
-    open: false  # 是否开启redis缓存  true开启   false关闭
+    open: true  # 是否开启redis缓存  true开启   false关闭
 
 
 #mybatis
@@ -60,4 +60,6 @@ mybatis-plus:
     call-setters-on-nulls: true
     jdbc-type-for-null: 'null'
 
-
+#分页信息
+dialect: 'mysql'
+pageSqlId: '.*listPage.*'
