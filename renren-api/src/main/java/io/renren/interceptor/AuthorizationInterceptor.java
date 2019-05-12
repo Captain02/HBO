@@ -11,6 +11,8 @@ package io.renren.interceptor;
 
 import io.renren.annotation.Login;
 import io.renren.common.exception.RRException;
+import io.renren.common.utils.JWTUtil;
+import io.renren.common.utils.RedisUtils;
 import io.renren.modules.login.entity.TokenEntity;
 import io.renren.modules.login.service.TokenService;
 import org.apache.commons.lang.StringUtils;
@@ -31,6 +33,8 @@ import javax.servlet.http.HttpServletResponse;
 public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
     @Autowired
     private TokenService tokenService;
+    @Autowired
+    private RedisUtils redisUtils;
 
     public static final String USER_KEY = "userId";
 
@@ -48,26 +52,38 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
         }
 
         //从header中获取token
-        String token = request.getHeader("token");
+        String token = request.getHeader("Authorization");
         //如果header中不存在token，则从参数中获取token
         if(StringUtils.isBlank(token)){
-            token = request.getParameter("token");
+            token = request.getParameter("Authorization");
+        }
+        if (token == null || "".equals(token)){
+            throw new RRException("没有token，重新登录",401);
         }
 
-        //token为空
-        if(StringUtils.isBlank(token)){
-            throw new RRException("token不能为空");
+
+        String username = JWTUtil.getUsername(token);
+        //redis中取出token
+        String redisToken = redisUtils.get(username);
+        if (redisToken == null || "".equals(redisToken)){
+            throw new RRException("token过期，重新登录",401);
         }
+
+        if (redisToken.equals(token)){
+            return true;
+        }else {
+            throw new RRException("非法的token",401);
+        }
+
 
         //查询token信息
-        TokenEntity tokenEntity = tokenService.queryByToken(token);
-        if(tokenEntity == null || tokenEntity.getExpireTime().getTime() < System.currentTimeMillis()){
-            throw new RRException("token失效，请重新登录");
-        }
+//        TokenEntity tokenEntity = tokenService.queryByToken(token);
+//        if(tokenEntity == null || tokenEntity.getExpireTime().getTime() < System.currentTimeMillis()){
+//            throw new RRException("token失效，请重新登录");
+//        }
 
         //设置userId到request里，后续根据userId，获取用户信息
-        request.setAttribute(USER_KEY, tokenEntity.getUserId());
+//        request.setAttribute(USER_KEY, tokenEntity.getUserId());
 
-        return true;
     }
 }

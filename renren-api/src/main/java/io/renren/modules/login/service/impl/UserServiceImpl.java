@@ -76,7 +76,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
 			String passWordSha256 = ShiroUtils.sha256(password, forObject.getValueOfString("salt"));
 			if (passWordSha256.equals(forObject.getValueOfString("password"))){
 				String token = JWTUtil.sign(forObject.getValueOfString("username"), password);
-				redisUtils.set(pageData.getValueOfString("username"),token,60 * 60 * 24);
+				redisUtils.set(pageData.getValueOfString("username"),token,60 * 60 * 1);
 				return token;
 			}
 		}

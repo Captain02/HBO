@@ -33,22 +33,22 @@ import java.util.Date;
 @RequestMapping("/api")
 @Api(tags="注册接口")
 public class ApiRegisterController {
-    @Autowired
-    private UserService userService;
-
-    @PostMapping("register")
-    @ApiOperation("注册")
-    public R register(@RequestBody RegisterForm form){
-        //表单校验
-        ValidatorUtils.validateEntity(form);
-
-        UserEntity user = new UserEntity();
-        user.setMobile(form.getMobile());
-        user.setUsername(form.getMobile());
-        user.setPassword(DigestUtils.sha256Hex(form.getPassword()));
-        user.setCreateTime(new Date());
-        userService.save(user);
-
-        return R.ok();
-    }
+//    @Autowired
+//    private UserService userService;
+//
+//    @PostMapping("register")
+//    @ApiOperation("注册")
+//    public R register(@RequestBody RegisterForm form){
+//        //表单校验
+//        ValidatorUtils.validateEntity(form);
+//
+//        UserEntity user = new UserEntity();
+//        user.setMobile(form.getMobile());
+//        user.setUsername(form.getMobile());
+//        user.setPassword(DigestUtils.sha256Hex(form.getPassword()));
+//        user.setCreateTime(new Date());
+//        userService.save(user);
+//
+//        return R.ok();
+//    }
 }

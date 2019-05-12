@@ -26,17 +26,18 @@ import org.springframework.web.method.support.ModelAndViewContainer;
  *
  * @author Mark sunlightcs@gmail.com
  */
+//implements HandlerMethodArgumentResolver
 @Component
-public class LoginUserHandlerMethodArgumentResolver implements HandlerMethodArgumentResolver {
+public class LoginUserHandlerMethodArgumentResolver  {
     @Autowired
     private UserService userService;
 
-    @Override
+    //@Override
     public boolean supportsParameter(MethodParameter parameter) {
         return parameter.getParameterType().isAssignableFrom(UserEntity.class) && parameter.hasParameterAnnotation(LoginUser.class);
     }
 
-    @Override
+    //@Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer container,
                                   NativeWebRequest request, WebDataBinderFactory factory) throws Exception {
         //获取用户ID

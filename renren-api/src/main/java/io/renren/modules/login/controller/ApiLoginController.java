@@ -12,7 +12,9 @@ package io.renren.modules.login.controller;
 import io.renren.annotation.Login;
 import io.renren.common.controller.BaseController;
 import io.renren.common.entity.PageData;
+import io.renren.common.utils.JWTUtil;
 import io.renren.common.utils.R;
+import io.renren.common.utils.RedisUtils;
 import io.renren.common.validator.ValidatorUtils;
 import io.renren.form.LoginForm;
 import io.renren.modules.login.service.TokenService;
@@ -23,7 +25,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * 登录接口
@@ -38,9 +42,10 @@ public class ApiLoginController extends BaseController {
     private UserService userService;
     @Autowired
     private TokenService tokenService;
+    @Autowired
+    RedisUtils redisUtils;
 
-
-    @PostMapping("/login")
+    @PostMapping("/sys/login")
     @ApiOperation("登录")
     public R login() throws Exception {
         PageData pageData = this.getPageData();
@@ -58,7 +63,18 @@ public class ApiLoginController extends BaseController {
     }
 
     @Login
-    @PostMapping("logout")
+    @GetMapping("/sys/refreshToken")
+    public R refresh(HttpServletRequest req){
+        String tokenReq = req.getHeader("Authorization");
+        String username = JWTUtil.getUsername(tokenReq);
+        String uuidPassword = UUID.randomUUID().toString().replace("-","");
+        String newToken = JWTUtil.sign(username, uuidPassword);
+        redisUtils.set(username,newToken,60 * 60 * 1);
+        return R.ok().put("token",newToken);
+    }
+
+    @Login
+    @PostMapping("/logout")
     @ApiOperation("退出")
     public R logout(@ApiIgnore @RequestAttribute("userId") long userId){
         tokenService.expireToken(userId);

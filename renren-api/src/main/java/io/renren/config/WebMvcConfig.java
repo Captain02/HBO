@@ -35,8 +35,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addInterceptor(authorizationInterceptor).addPathPatterns("/api/**");
     }
 
-    @Override
-    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
-        argumentResolvers.add(loginUserHandlerMethodArgumentResolver);
-    }
+//    @Override
+//    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
+//        argumentResolvers.add(loginUserHandlerMethodArgumentResolver);
+//    }
 }
