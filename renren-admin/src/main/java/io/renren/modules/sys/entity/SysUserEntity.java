@@ -106,7 +106,7 @@ public class SysUserEntity implements Serializable {
 
 	private String qq;
 
-	private Long picture;
+	private Long fileid;
 
 	private String college;
 
