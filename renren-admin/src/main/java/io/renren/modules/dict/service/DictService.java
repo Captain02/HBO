@@ -8,4 +8,6 @@ import java.util.List;
 public interface DictService {
 
     List<PageData> selectByValue(PageData pageData) throws Exception;
+
+    List<PageData> selectValueById(PageData pageData) throws Exception;
 }

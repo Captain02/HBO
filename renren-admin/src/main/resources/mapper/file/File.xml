@@ -19,7 +19,7 @@
                     <select Last_insert_id() as id
                 </selectKey>
         -->
-        INSERT INTO filetable(filename,filepath) VALUES (#{corname},#{qrCode})
+        INSERT INTO filetable(filename,filepath) VALUES (#{fileName},#{filePath})
     </insert>
 
     <delete id="delete">
