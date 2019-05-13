@@ -10,9 +10,13 @@ package io.renren.modules.sys.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import io.renren.common.annotation.DataFilter;
+import io.renren.common.dao.DaoSupport;
+import io.renren.common.entity.Page;
+import io.renren.common.entity.PageData;
 import io.renren.modules.sys.dao.SysDeptDao;
 import io.renren.modules.sys.entity.SysDeptEntity;
 import io.renren.modules.sys.service.SysDeptService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -22,6 +26,9 @@ import java.util.Map;
 
 @Service("sysDeptService")
 public class SysDeptServiceImpl extends ServiceImpl<SysDeptDao, SysDeptEntity> implements SysDeptService {
+
+	@Autowired
+	private DaoSupport daoSupport;
 	
 	@Override
 	@DataFilter(subDept = true, user = false, tableAlias = "t1")
@@ -44,6 +51,13 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptDao, SysDeptEntity> i
 		getDeptTreeList(subIdList, deptIdList);
 
 		return deptIdList;
+	}
+
+	@Override
+	public List<PageData> deptlistPage(Page page) throws Exception {
+		List<PageData> list = (List<PageData>) daoSupport.
+				findForList("io.renren.modules.sys.dao.SysDeptDao.deptlistPage",page);
+		return list;
 	}
 
 	/**
