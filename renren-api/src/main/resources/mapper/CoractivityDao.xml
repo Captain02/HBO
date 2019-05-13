@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="CoractivityDao">
+    <!-- 可根据自己的需求，是否要使用 -->
+
+    <select id="coractivitylistPage" resultType="io.renren.common.entity.PageData">
+       SELECT
+       images,
+	(
+		SELECT
+			fileid
+		FROM
+			sys_user
+		WHERE
+			user_id = C.actleading
+	) userFileid,
+	actname,
+	PROFILE,
+	(
+		SELECT
+			COUNT(topicid)
+		FROM
+			bbs_like
+		WHERE
+			topicid = C.actid
+	) topicCount,
+	(
+		SELECT
+			corname
+		FROM
+			corporation
+		WHERE
+			id = C.actcorid
+	) corname,
+	createtime
+FROM
+	coractivity C
+    </select>
+</mapper>
