@@ -10,6 +10,8 @@ package io.renren.modules.sys.service;
 
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import io.renren.common.entity.Page;
+import io.renren.common.entity.PageData;
 import io.renren.modules.sys.entity.SysDeptEntity;
 
 import java.util.List;
@@ -35,4 +37,5 @@ public interface SysDeptService extends IService<SysDeptEntity> {
 	 */
 	List<Long> getSubDeptIdList(Long deptId);
 
+	List<PageData> deptlistPage(Page page) throws Exception;
 }

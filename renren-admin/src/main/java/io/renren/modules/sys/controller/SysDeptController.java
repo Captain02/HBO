@@ -8,19 +8,25 @@
 
 package io.renren.modules.sys.controller;
 
+import io.renren.common.entity.Page;
+import io.renren.common.entity.PageData;
 import io.renren.common.utils.Constant;
 import io.renren.common.utils.R;
 import io.renren.modules.sys.entity.SysDeptEntity;
 import io.renren.modules.sys.service.SysDeptService;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -33,16 +39,27 @@ import java.util.List;
 public class SysDeptController extends AbstractController {
 	@Autowired
 	private SysDeptService sysDeptService;
-	
+
 	/**
 	 * 列表
 	 */
-	@RequestMapping("/list")
-	@RequiresPermissions("sys:dept:list")
-	public List<SysDeptEntity> list(){
-		List<SysDeptEntity> deptList = sysDeptService.queryList(new HashMap<String, Object>());
+	@ApiOperation(value = "用户列表", tags = {"用户"})
+	@ApiImplicitParams({
+			@ApiImplicitParam(dataType = "Integer",paramType = "query",name = "currPage",value = "当前页",required = true),
+			@ApiImplicitParam( dataType = "Integer",paramType = "query",name = "pageSize",value = "每页显示记录数",required = true)
+	})
+	@RequestMapping(value = "/list",method = RequestMethod.GET)
+//	@RequiresPermissions("sys:dept:list")
+	public R list(Page page) throws Exception {
+		System.out.println("进入list。。");
+//		Page page = new Page();
+		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+		PageData pageData = new PageData(request);
+		page.setPd(pageData);
+//		List<SysDeptEntity> deptList = sysDeptService.queryList(new HashMap<String, Object>());
+		List<PageData> list = sysDeptService.deptlistPage(page);
 
-		return deptList;
+		return R.ok().put("page", page).put("data", list);
 	}
 
 	/**
