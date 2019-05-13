@@ -64,11 +64,14 @@ public class PageData extends HashMap implements Map{
 		return obj;
 	}
 	
-	public String getString(Object key) {
-		return (String)get(key);
-	}
+//	public String getString(Object key) {
+//		return (String)get(key);
+//	}
 	public String getValueOfString(Object key) {
 		return String.valueOf(get(key));
+	}
+	public Integer getValueOfInteger(Object key) {
+		return Integer.parseInt(String.valueOf(get(key)));
 	}
 	
 	@SuppressWarnings("unchecked")
