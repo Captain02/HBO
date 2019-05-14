@@ -10,6 +10,7 @@ package io.renren.modules.sys.controller;
 
 import io.renren.common.entity.Page;
 import io.renren.common.entity.PageData;
+import io.renren.common.util.Tools;
 import io.renren.common.utils.CheckParameterUtil;
 import io.renren.common.utils.Constant;
 import io.renren.common.utils.R;
@@ -125,16 +126,16 @@ public class SysDeptController extends AbstractController {
     /**
      * 保存
      */
-    @RequestMapping("/save")
+    @PostMapping("/save")
     @RequiresPermissions("sys:dept:save")
-    public R save(SysDeptEntity dept) {
+    public R save() throws Exception {
         //接收并校验参数
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         PageData pageData = new PageData(request);
-        String[] parameters = {"url","corname","corleading","cortercher","corworkspace","corcollege","corfaculty","corscale"};
+        String[] parameters = {"parentId","name","orderNum","corId"};
         CheckParameterUtil.checkParameterMap(pageData,parameters);
-        System.out.println(dept);
-        sysDeptService.save(dept);
+        //插入
+        sysDeptService.save(pageData);
 
         return R.ok();
     }
@@ -142,27 +143,42 @@ public class SysDeptController extends AbstractController {
     /**
      * 修改
      */
-    @RequestMapping("/update")
+    @PostMapping("/update")
     @RequiresPermissions("sys:dept:update")
-    public R update(@RequestBody SysDeptEntity dept) {
-        sysDeptService.updateById(dept);
-
+    public R update() throws Exception {
+//        sysDeptService.updateById(dept);
+        //接收并校验参数
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        PageData pageData = new PageData(request);
+        CheckParameterUtil.checkParameterMap(pageData,"deptId");
+        //更新
+        sysDeptService.update(pageData);
         return R.ok();
     }
 
     /**
      * 删除
      */
-    @RequestMapping("/delete")
+    @GetMapping("/delete")
     @RequiresPermissions("sys:dept:delete")
-    public R delete(long deptId) {
-        //判断是否有子部门
-        List<Long> deptList = sysDeptService.queryDetpIdList(deptId);
-        if (deptList.size() > 0) {
-            return R.error("请先删除子部门");
+    public R delete() throws Exception {
+        //接收并校验参数
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        PageData pageData = new PageData(request);
+        CheckParameterUtil.checkParameterMap(pageData,"deptId");
+        //判断是否是批量删除
+        String[] strings = Tools.str2StrArray(pageData.get("deptId").toString(), ",");
+        for(int i=0; i<strings.length; i++){
+            //判断是否有子部门
+            List<Long> deptList = sysDeptService.queryDetpIdList(Long.parseLong(strings[i]));
+            if (deptList.size() > 0) {
+                return R.error("请先删除子部门");
+            }
+            pageData.put("delFlag",-1);
+            pageData.put("deptId",strings[i]);
+            //删除
+            sysDeptService.update(pageData);
         }
-
-        sysDeptService.removeById(deptId);
 
         return R.ok();
     }

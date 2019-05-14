@@ -13,6 +13,33 @@
         </if>
     </select>
 
+    <insert id="save">
+        INSERT INTO sys_dept(`parent_id`,`name`,`order_num`,`corid`)
+        VALUES (#{parentId,jdbcType=INTEGER},#{name,jdbcType=VARCHAR},#{orderNum,jdbcType=INTEGER},#{corId,jdbcType=INTEGER})
+    </insert>
+
+    <update id="update">
+        UPDATE sys_dept
+        <set>
+            <if test="parentId!=null">
+                parent_id=#{parentId,jdbcType=INTEGER},
+            </if>
+            <if test="name!=null">
+                `name`=#{name,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNum!=null">
+                `order_num`=#{orderNum,jdbcType=INTEGER},
+            </if>
+            <if test="delFlag!=null">
+                `del_flag`=#{delFlag,jdbcType=INTEGER},
+            </if>
+            <if test="corId!=null">
+                `corid`=#{corId,jdbcType=INTEGER}
+            </if>
+        </set>
+        WHERE  dept_id = #{deptId,jdbcType=INTEGER}
+    </update>
+
     <select id="queryList" resultType="io.renren.modules.sys.entity.SysDeptEntity">
         select t1.*,(select t2.name from sys_dept t2 where t2.dept_id=t1.parent_id)parentName from sys_dept t1 where
         t1.del_flag = 0
