@@ -38,4 +38,8 @@ public interface SysDeptService extends IService<SysDeptEntity> {
 	List<Long> getSubDeptIdList(Long deptId);
 
 	List<PageData> deptlistPage(Page page) throws Exception;
+
+    void save(PageData pageData) throws Exception;
+
+    void update(PageData pageData) throws Exception;
 }

@@ -60,6 +60,16 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptDao, SysDeptEntity> i
 		return list;
 	}
 
+	@Override
+	public void save(PageData pageData) throws Exception {
+		daoSupport.save("io.renren.modules.sys.dao.SysDeptDao.save",pageData);
+	}
+
+	@Override
+	public void update(PageData pageData) throws Exception {
+		daoSupport.update("io.renren.modules.sys.dao.SysDeptDao.update",pageData);
+	}
+
 	/**
 	 * 递归
 	 */
