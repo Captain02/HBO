@@ -26,8 +26,9 @@
 	</resultMap>
 
 	<sql id="user_sql">
-		user_id,username,email,mobile,create_time,persionnum,wechart,QQ,college,
-		collegetie,gender,descs,filetable.filename,filetable.filepath,salt
+		sys_user.user_id,sys_user.username,sys_user.email,
+		sys_user.mobile,sys_user.create_time,sys_user.persionnum,sys_user.wechart,sys_user.QQ,sys_user.college,
+		sys_user.collegetie,sys_user.gender,sys_user.descs,filetable.filename,filetable.filepath,sys_user.salt,sys_user.`name`
 	</sql>
 
 	<!-- 查询用户的所有权限 -->
@@ -57,6 +58,8 @@
 		FROM sys_user
 		LEFT JOIN filetable ON filetable.id = sys_user.fileid
 		LEFT JOIN cor_user ON cor_user.userid = sys_user.user_id
+		LEFT JOIN sys_user_dept ON sys_user_dept.deptid = sys_user.user_id
+		LEFT JOIN sys_dept ON sys_dept.dept_id = sys_user_dept.deptid
 		WHERE status = 1
 		AND cor_user.corid = #{pd.corid}
 	</select>

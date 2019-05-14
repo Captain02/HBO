@@ -149,7 +149,7 @@ public class SysUserController extends BaseController{
 	@SysLog("修改用户")
 	@RequestMapping("/update")
 	@RequiresPermissions("sys:user:update")
-	public R update(SysUserEntity user,String roles){
+	public R update(SysUserEntity user,String roles) throws Exception {
 
 //		ValidatorUtils.validateEntity(user, UpdateGroup.class);
 		String[] strings = Tools.str2StrArray(roles, ",");
