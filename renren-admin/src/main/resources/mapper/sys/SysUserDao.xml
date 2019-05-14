@@ -109,4 +109,13 @@
 		INSERT INTO sys_user_dept (userid,deptid)VALUES (#{userid},#{deptid})
 	</insert>
 
+	<!--selectUserByUsername-->
+	<select id="selectUserByUsername" resultMap="userAll">
+		SELECT
+		<include refid="user_sql"></include>,
+		filetable.`filepath` headpath,#{corid} corid
+		FROM sys_user
+		LEFT JOIN filetable ON filetable.id = sys_user.fileid
+		WHERE username = #{username}
+	</select>
 </mapper>
