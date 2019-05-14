@@ -15,6 +15,7 @@ import io.renren.common.controller.BaseController;
 import io.renren.common.entity.Page;
 import io.renren.common.entity.PageData;
 import io.renren.common.util.Tools;
+import io.renren.common.utils.JWTUtil;
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.R;
 import io.renren.common.validator.Assert;
@@ -34,6 +35,7 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -79,7 +81,7 @@ public class SysUserController extends BaseController{
 	/**
 	 * 获取登录的用户信息
 	 */
-	@RequestMapping("/info")
+	@RequestMapping("/infoById")
 	public R info() throws Exception {
         PageData pageData = this.getPageData();
         PageData data = sysUserService.getinfoByid(pageData);
@@ -114,17 +116,19 @@ public class SysUserController extends BaseController{
 	/**
 	 * 用户信息
 	 */
-//	@RequestMapping("/info/{userId}")
+	@RequestMapping("/info")
 //	@RequiresPermissions("sys:user:info")
-//	public R info(@PathVariable("userId") Long userId){
-//		SysUserEntity user = sysUserService.getById(userId);
-//
-//		//获取用户所属的角色列表
-//		List<Long> roleIdList = sysUserRoleService.queryRoleIdList(userId);
-//		user.setRoleIdList(roleIdList);
-//
-//		return R.ok().put("user", user);
-//	}
+	public R info(HttpServletRequest req) throws Exception {
+		String tokenreq = req.getHeader("Authorization");
+		String username = JWTUtil.getUsername(tokenreq);
+		PageData pageData = this.getPageData();
+		pageData.put("username",username);
+		PageData user = sysUserService.selectUserByUsername(pageData);
+		//获取用户所属的角色列表
+
+
+		return R.ok().put("user", user);
+	}
 	
 	/**
 	 * 保存用户

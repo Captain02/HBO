@@ -57,4 +57,6 @@ public interface SysUserService extends IService<SysUserEntity> {
     void removeUserByIds(List<Long> collect) throws Exception;
 
 	PageData getinfoByid(PageData pageData) throws Exception;
+
+	PageData selectUserByUsername(PageData username) throws Exception;
 }

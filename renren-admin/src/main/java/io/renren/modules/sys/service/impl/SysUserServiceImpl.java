@@ -153,4 +153,13 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 		return forObject;
 	}
 
+	@Override
+	public PageData selectUserByUsername(PageData username) throws Exception {
+		PageData forObject = (PageData) daoSupport.
+				findForObject("io.renren.modules.sys.dao.SysUserDao.selectUserByUsername", username);
+		return forObject;
+	}
+
+
+
 }
