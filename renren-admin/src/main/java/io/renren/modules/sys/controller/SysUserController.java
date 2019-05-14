@@ -9,7 +9,9 @@
 package io.renren.modules.sys.controller;
 
 
+import com.sun.org.apache.bcel.internal.generic.RETURN;
 import io.renren.common.annotation.SysLog;
+import io.renren.common.controller.BaseController;
 import io.renren.common.entity.Page;
 import io.renren.common.entity.PageData;
 import io.renren.common.util.Tools;
@@ -45,7 +47,7 @@ import java.util.stream.Collectors;
 @Api(tags = "用户")
 @RestController
 @RequestMapping("/sys/user")
-public class SysUserController extends AbstractController {
+public class SysUserController extends BaseController{
 	@Autowired
 	private SysUserService sysUserService;
 	@Autowired
@@ -55,17 +57,19 @@ public class SysUserController extends AbstractController {
 	 * 所有用户列表
 	 */
 
-	@ApiOperation(value = "用户列表", tags = {"用户"})
-    @ApiImplicitParams({
-            @ApiImplicitParam(dataType = "Integer",paramType = "query",name = "pn",value = "当前页",required = true),
-            @ApiImplicitParam( dataType = "Integer",paramType = "query",name = "size",value = "当前页大小",required = true)
-    })
+//	@ApiOperation(value = "用户列表", tags = {"用户"})
+//    @ApiImplicitParams({
+//            @ApiImplicitParam(dataType = "Integer",paramType = "query",name = "pn",value = "当前页",required = true),
+//            @ApiImplicitParam( dataType = "Integer",paramType = "query",name = "size",value = "当前页大小",required = true)
+//    })
 	@GetMapping("/list")
 	@RequiresPermissions("sys:user:list")
-	public R list(@RequestParam Map<String, Object> params) throws Exception {
+	public R list() throws Exception {
 		Page page = new Page();
-        PageData pageData = new PageData();
-        page.setPd(pageData);
+		PageData pageData = this.getPageData();
+		page.setPageSize(pageData.getValueOfInteger("size"));
+		page.setCurrPage(pageData.getValueOfInteger("page"));
+		page.setPd(pageData);
 		//PageUtils page = sysUserService.queryPage(params);
         List<PageData> list = sysUserService.userlistPage(page);
 
@@ -76,8 +80,11 @@ public class SysUserController extends AbstractController {
 	 * 获取登录的用户信息
 	 */
 	@RequestMapping("/info")
-	public R info(){
-		return R.ok().put("user", getUser());
+	public R info() throws Exception {
+        PageData pageData = this.getPageData();
+        PageData data = sysUserService.getinfoByid(pageData);
+        //return R.ok().put("user", getUser());
+		return R.ok().put("data",data);
 	}
 	
 	/**
@@ -85,16 +92,18 @@ public class SysUserController extends AbstractController {
 	 */
 	@SysLog("修改密码")
 	@RequestMapping("/password")
-	public R password(String password, String newPassword){
+	public R password() throws Exception {
+		PageData pageData = this.getPageData();
+		String newPassword = pageData.getValueOfString("newPassword");
 		Assert.isBlank(newPassword, "新密码不为能空");
-
-		//原密码
-		password = ShiroUtils.sha256(password, getUser().getSalt());
+		PageData user = sysUserService.getinfoByid(pageData);
+        //原密码
+		 String password = ShiroUtils.sha256(pageData.getValueOfString("password"), user.getValueOfString("salt"));
 		//新密码
-		newPassword = ShiroUtils.sha256(newPassword, getUser().getSalt());
-				
-		//更新密码
-		boolean flag = sysUserService.updatePassword(getUserId(), password, newPassword);
+		newPassword = ShiroUtils.sha256(newPassword,  user.getValueOfString("salt"));
+        //更新密码
+		boolean flag = sysUserService.
+				updatePassword(Long.parseLong(user.getValueOfString("user_id")), password, newPassword);
 		if(!flag){
 			return R.error("原密码不正确");
 		}
@@ -105,17 +114,17 @@ public class SysUserController extends AbstractController {
 	/**
 	 * 用户信息
 	 */
-	@RequestMapping("/info/{userId}")
-	@RequiresPermissions("sys:user:info")
-	public R info(@PathVariable("userId") Long userId){
-		SysUserEntity user = sysUserService.getById(userId);
-		
-		//获取用户所属的角色列表
-		List<Long> roleIdList = sysUserRoleService.queryRoleIdList(userId);
-		user.setRoleIdList(roleIdList);
-		
-		return R.ok().put("user", user);
-	}
+//	@RequestMapping("/info/{userId}")
+//	@RequiresPermissions("sys:user:info")
+//	public R info(@PathVariable("userId") Long userId){
+//		SysUserEntity user = sysUserService.getById(userId);
+//
+//		//获取用户所属的角色列表
+//		List<Long> roleIdList = sysUserRoleService.queryRoleIdList(userId);
+//		user.setRoleIdList(roleIdList);
+//
+//		return R.ok().put("user", user);
+//	}
 	
 	/**
 	 * 保存用户
@@ -123,11 +132,11 @@ public class SysUserController extends AbstractController {
 	@SysLog("保存用户")
 	@RequestMapping("/save")
 	@RequiresPermissions("sys:user:save")
-	public R save(SysUserEntity user,Integer corid){
+	public R save(SysUserEntity user,Long corid) throws Exception {
 		System.out.println("---------------"+corid);
 		ValidatorUtils.validateEntity(user, AddGroup.class);
 		
-		sysUserService.saveUser(user);
+		sysUserService.saveUser(user,corid);
 		
 		return R.ok();
 	}

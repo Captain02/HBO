@@ -35,7 +35,7 @@ public interface SysUserService extends IService<SysUserEntity> {
 	/**
 	 * 保存用户
 	 */
-	void saveUser(SysUserEntity user);
+	void saveUser(SysUserEntity user,Long corid) throws Exception;
 	
 	/**
 	 * 修改用户
@@ -55,4 +55,6 @@ public interface SysUserService extends IService<SysUserEntity> {
     List<PageData> userlistPage(Page page) throws Exception;
 
     void removeUserByIds(List<Long> collect) throws Exception;
+
+	PageData getinfoByid(PageData pageData) throws Exception;
 }

@@ -25,6 +25,7 @@ import io.renren.modules.sys.entity.SysUserEntity;
 import io.renren.modules.sys.service.SysDeptService;
 import io.renren.modules.sys.service.SysUserRoleService;
 import io.renren.modules.sys.service.SysUserService;
+import io.renren.modules.sys.shiro.ShiroUtils;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.annotations.Param;
@@ -51,7 +52,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 	private SysDeptService sysDeptService;
 	@Autowired
 	SysUserDao sysUserDao;
-
 	@Autowired
 	private DaoSupport daoSupport;
 //	@Autowired
@@ -84,14 +84,20 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public void saveUser(SysUserEntity user) {
+	public void saveUser(SysUserEntity user,Long corid) throws Exception {
 		user.setCreateTime(new Date());
 		//sha256加密
 		String salt = RandomStringUtils.randomAlphanumeric(20);
 		user.setSalt(salt);
-		//user.setPassword(ShiroUtils.sha256(user.getPassword(), user.getSalt()));
+		user.setPassword(ShiroUtils.sha256(user.getPassword(), user.getSalt()));
 		this.save(user);
-		
+
+		PageData pageData = new PageData();
+		pageData.put("userid", user.getUserId());
+		pageData.put("corid", corid);
+		pageData.put("deptid", user.getDeptId());
+		daoSupport.save("io.renren.modules.sys.dao.SysUserDao.saveUserCor",pageData);
+		daoSupport.save("io.renren.modules.sys.dao.SysUserDao.saveUserDept",pageData);
 		//保存用户与角色关系
 		sysUserRoleService.saveOrUpdate(user.getUserId(), user.getRoleIdList());
 	}
@@ -103,10 +109,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 			user.setPassword(null);
 		}else{
 			SysUserEntity userEntity = this.getById(user.getUserId());
-			//user.setPassword(ShiroUtils.sha256(user.getPassword(), userEntity.getSalt()));
+			user.setPassword(ShiroUtils.sha256(user.getPassword(), userEntity.getSalt()));
 		}
 		this.updateById(user);
-		
+
 		//保存用户与角色关系
 		sysUserRoleService.saveOrUpdate(user.getUserId(), user.getRoleIdList());
 	}
@@ -135,6 +141,12 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 	@Override
 	public void removeUserByIds(List<Long> list) throws Exception {
 		daoSupport.batchUpdateBylist("io.renren.modules.sys.dao.SysUserDao.removeUserByIds",list);
+	}
+
+	@Override
+	public PageData getinfoByid(PageData pageData) throws Exception {
+		PageData forObject = (PageData) daoSupport.findForObject("io.renren.modules.sys.dao.SysUserDao.getinfoByid", pageData);
+		return forObject;
 	}
 
 }

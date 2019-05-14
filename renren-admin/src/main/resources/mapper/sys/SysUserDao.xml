@@ -2,7 +2,34 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="io.renren.modules.sys.dao.SysUserDao">
-	
+
+	<resultMap id="userAll" type="io.renren.common.entity.PageData">
+		<id column="user_id" property="user_id" />
+		<result column="username" property="username" />
+		<result column="email" property="email" />
+		<result column="mobile" property="mobile" />
+		<result column="create_time" property="create_time" />
+		<result column="persionnum" property="persionnum" />
+		<result column="wechart" property="wechart" />
+		<result column="QQ" property="QQ" />
+		<result column="college" property="college" />
+		<result column="collegetie" property="collegetie" />
+		<result column="gender" property="gender" />
+		<result column="descs" property="descs" />
+		<result column="filetable" property="filetable" />
+		<result column="filename" property="filename" />
+		<result column="filetable" property="filetable" />
+		<result column="filepath" property="filepath" />
+		<result column="corid" property="corid" />
+		<collection property="roles" select="selectRoleByUserRole" column="{user_id=user_id,corid=corid}"></collection>
+		<collection property="depts" select="selectDeptByUserRole" column="{user_id=user_id,corid=corid}"></collection>
+	</resultMap>
+
+	<sql id="user_sql">
+		user_id,username,email,mobile,create_time,persionnum,wechart,QQ,college,
+		collegetie,gender,descs,filetable.filename,filetable.filepath,salt
+	</sql>
+
 	<!-- 查询用户的所有权限 -->
 	<select id="queryAllPerms" resultType="string">
 		select m.perms from sys_user_role ur 
@@ -25,11 +52,13 @@
 	<!--List<PageData> list = (List<PageData>) daoSupport.
 				findForList("io.renren.modules.sys.dao.SysUserDao.userlistPage",page);-->
 	<select resultType="io.renren.common.entity.PageData" id="userlistPage">
-		SELECT user_id,username,email,mobile,create_time,persionnum,wechart,QQ,college,
-		collegetie,gender,descs,filetable.filename,filetable.filepath
+		SELECT
+		<include refid="user_sql"></include>
 		FROM sys_user
 		LEFT JOIN filetable ON filetable.id = sys_user.fileid
+		LEFT JOIN cor_user ON cor_user.userid = sys_user.user_id
 		WHERE status = 1
+		AND cor_user.corid = #{pd.corid}
 	</select>
 
 	<update id="removeUserByIds" parameterType="java.util.List">
@@ -39,5 +68,42 @@
 			#{ids}
 		</foreach>
 	</update>
+
+	<!--
+	PageData forObject = (PageData) daoSupport.findForObject("io.renren.modules.sys.dao.SysUserDao.getinfoByid", pageData);
+	-->
+	<select id="getinfoByid" resultMap="userAll">
+		SELECT
+		<include refid="user_sql"></include>,
+		filetable.`filepath` headpath,#{corid} corid
+		FROM sys_user
+		LEFT JOIN filetable ON filetable.id = sys_user.fileid
+		WHERE user_id = #{id}
+	</select>
+	<select id="selectRoleByUserRole" resultType="io.renren.common.entity.PageData">
+		SELECT sys_role.role_id,role_name,remark,sys_role.create_time,corid
+		FROM sys_role
+		LEFT JOIN sys_user_role ON sys_user_role.role_id = sys_role.role_id
+		WHERE
+		sys_user_role.user_id = #{user_id}
+		AND sys_role.corid = #{corid}
+	</select>
+	<select id="selectDeptByUserRole" resultType="io.renren.common.entity.PageData">
+		SELECT dept_id,parent_id,`name`,order_num,del_flag,corid
+		FROM sys_dept
+		LEFT JOIN sys_user_dept ON sys_user_dept.deptid = sys_dept.dept_id
+		WHERE
+		sys_user_dept.userid = #{user_id}
+		AND sys_dept.corid = #{corid}
+	</select>
+
+	<!--saveUserCor-->
+	<insert id="saveUserCor">
+		INSERT INTO cor_user (userid,corid)VALUES (#{userid},#{corid})
+	</insert>
+	<!--saveUserCor-->
+	<insert id="saveUserDept">
+		INSERT INTO sys_user_dept (userid,deptid)VALUES (#{userid},#{deptid})
+	</insert>
 
 </mapper>
