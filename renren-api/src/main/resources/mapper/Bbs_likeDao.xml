@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Bbs_likeDao">
+    <insert id="save" useGeneratedKeys="true" keyProperty="id">
+          INSERT INTO bbs_like(userid,topicid,createtime) VALUES (#{userId},#{topicid},#{timestamp})
+    </insert>
+    <select id="selectId" resultType="java.lang.Long">
+        SELECT user_id FROM sys_user WHERE username=#{username}
+    </select>
+</mapper>
