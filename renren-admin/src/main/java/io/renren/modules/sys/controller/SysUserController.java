@@ -132,10 +132,12 @@ public class SysUserController extends BaseController{
 	@SysLog("保存用户")
 	@RequestMapping("/save")
 	@RequiresPermissions("sys:user:save")
-	public R save(SysUserEntity user,Long corid) throws Exception {
+	public R save(SysUserEntity user,Long corid, String roles) throws Exception {
+		String[] strings = Tools.str2StrArray(roles, ",");
+		List<Long> collect = Arrays.stream(strings).map(x -> Long.parseLong(x)).collect(Collectors.toList());
 		System.out.println("---------------"+corid);
-		ValidatorUtils.validateEntity(user, AddGroup.class);
-		
+//		ValidatorUtils.validateEntity(user, AddGroup.class);
+		user.setRoleIdList(collect);
 		sysUserService.saveUser(user,corid);
 		
 		return R.ok();
@@ -147,10 +149,12 @@ public class SysUserController extends BaseController{
 	@SysLog("修改用户")
 	@RequestMapping("/update")
 	@RequiresPermissions("sys:user:update")
-	public R update(SysUserEntity user){
+	public R update(SysUserEntity user,String roles){
 
-		ValidatorUtils.validateEntity(user, UpdateGroup.class);
-
+//		ValidatorUtils.validateEntity(user, UpdateGroup.class);
+		String[] strings = Tools.str2StrArray(roles, ",");
+		List<Long> collect = Arrays.stream(strings).map(x -> Long.parseLong(x)).collect(Collectors.toList());
+		user.setRoleIdList(collect);
 		sysUserService.update(user);
 		
 		return R.ok();
