@@ -12,6 +12,9 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import io.renren.common.annotation.DataFilter;
+import io.renren.common.dao.DaoSupport;
+import io.renren.common.entity.Page;
+import io.renren.common.entity.PageData;
 import io.renren.common.utils.Constant;
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.Query;
@@ -26,6 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 
@@ -44,6 +48,8 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleDao, SysRoleEntity> i
 	private SysUserRoleService sysUserRoleService;
 	@Autowired
 	private SysDeptService sysDeptService;
+	@Autowired
+	private DaoSupport daoSupport;
 
 	@Override
 	@DataFilter(subDept = true, user = false)
@@ -107,6 +113,23 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleDao, SysRoleEntity> i
 		//删除角色与用户关联
 		sysUserRoleService.deleteBatch(roleIds);
 	}
+
+	@Override
+	public List<PageData> rolelistPage(Page page) throws Exception {
+		List<PageData> list = (List<PageData>) daoSupport.
+				findForList("io.renren.modules.sys.dao.SysRoleDao.rolelistPage",page);
+		return list;
+	}
+
+    @Override
+    public void update(PageData pageData) throws Exception {
+        daoSupport.update("io.renren.modules.sys.dao.SysRoleDao.update",pageData);
+    }
+
+    @Override
+    public void save(PageData pageData) throws Exception {
+        daoSupport.save("io.renren.modules.sys.dao.SysRoleDao.save",pageData);
+    }
 
 
 }

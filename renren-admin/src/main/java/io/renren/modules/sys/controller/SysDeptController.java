@@ -58,7 +58,7 @@ public class SysDeptController extends AbstractController {
         PageData pageData = new PageData(request);
         //校验参数
         CheckParameterUtil.checkParameterMap(pageData,"corId");
-        //查询、、
+        //查询
         page.setPd(pageData);
         List<PageData> list = sysDeptService.deptlistPage(page);
 
@@ -132,7 +132,7 @@ public class SysDeptController extends AbstractController {
         //接收并校验参数
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         PageData pageData = new PageData(request);
-        String[] parameters = {"parentId","name","orderNum","corId"};
+        String[] parameters = {"parentId","name","corId"};
         CheckParameterUtil.checkParameterMap(pageData,parameters);
         //插入
         sysDeptService.save(pageData);

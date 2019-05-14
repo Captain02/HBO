@@ -2,6 +2,37 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="io.renren.modules.sys.dao.SysRoleDao">
+    <select resultType="io.renren.common.entity.PageData" id="rolelistPage">
+        SELECT r.`role_name`,r.`role_id`,r.`remark`
+        FROM sys_role r
+        WHERE r.`del_flag` = 0
+        AND r.`corid`= #{pd.corId,jdbcType=INTEGER}
+        <if test="pd.roleName != null">
+            AND r.`name` LIKE CONCAT('%',#{pd.roleName,jdbcType=VARCHAR},'%')
+        </if>
+    </select>
 
+    <update id="update">
+        UPDATE sys_role
+        <set>
+            <if test="roleName!=null">
+                `role_name`=#{roleName,jdbcType=VARCHAR},
+            </if>
+            <if test="remark!=null">
+                `remark`=#{orderNum,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag!=null">
+                `del_flag`=#{delFlag,jdbcType=INTEGER},
+            </if>
+            <if test="corId!=null">
+                `corid`=#{corId,jdbcType=INTEGER}
+            </if>
+        </set>
+        WHERE  role_id = #{roleId,jdbcType=INTEGER}
+    </update>
 
+    <insert id="save">
+        INSERT INTO sys_role(`role_name`,`corid`)
+        VALUES (#{roleName,jdbcType=VARCHAR},#{corId,jdbcType=INTEGER})
+    </insert>
 </mapper>

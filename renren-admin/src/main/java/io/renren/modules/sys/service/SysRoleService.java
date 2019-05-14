@@ -10,9 +10,12 @@ package io.renren.modules.sys.service;
 
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import io.renren.common.entity.Page;
+import io.renren.common.entity.PageData;
 import io.renren.common.utils.PageUtils;
 import io.renren.modules.sys.entity.SysRoleEntity;
 
+import java.util.List;
 import java.util.Map;
 
 
@@ -31,4 +34,9 @@ public interface SysRoleService extends IService<SysRoleEntity> {
 	
 	void deleteBatch(Long[] roleIds);
 
+    List<PageData> rolelistPage(Page page) throws Exception;
+
+	void update(PageData pageData) throws Exception;
+
+    void save(PageData pageData) throws Exception;
 }

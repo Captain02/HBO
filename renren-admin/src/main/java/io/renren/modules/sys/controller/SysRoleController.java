@@ -9,6 +9,10 @@
 package io.renren.modules.sys.controller;
 
 import io.renren.common.annotation.SysLog;
+import io.renren.common.entity.Page;
+import io.renren.common.entity.PageData;
+import io.renren.common.util.Tools;
+import io.renren.common.utils.CheckParameterUtil;
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.R;
 import io.renren.common.validator.ValidatorUtils;
@@ -19,7 +23,10 @@ import io.renren.modules.sys.service.SysRoleService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -41,12 +48,18 @@ public class SysRoleController extends AbstractController {
 	/**
 	 * 角色列表
 	 */
-	@RequestMapping("/list")
+	@GetMapping("/list")
 	@RequiresPermissions("sys:role:list")
-	public R list(@RequestParam Map<String, Object> params){
-		PageUtils page = sysRoleService.queryPage(params);
+	public R list(Page page) throws Exception {
+        //接收并校验参数
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        PageData pageData = new PageData(request);
+        CheckParameterUtil.checkParameterMap(pageData,"corId");
+        //查询
+        page.setPd(pageData);
+        List<PageData> list = sysRoleService.rolelistPage(page);
 
-		return R.ok().put("page", page);
+        return R.ok().put("page", page).put("data", list);
 	}
 	
 	/**
@@ -83,39 +96,56 @@ public class SysRoleController extends AbstractController {
 	 * 保存角色
 	 */
 	@SysLog("保存角色")
-	@RequestMapping("/save")
+	@PostMapping("/save")
 	@RequiresPermissions("sys:role:save")
-	public R save(@RequestBody SysRoleEntity role){
-		ValidatorUtils.validateEntity(role);
-		
-		sysRoleService.saveRole(role);
-		
-		return R.ok();
+	public R save() throws Exception {
+        //接收并校验参数
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        PageData pageData = new PageData(request);
+        String[] parameters = {"roleName","corId"};
+        CheckParameterUtil.checkParameterMap(pageData,parameters);
+        //插入
+        sysRoleService.save(pageData);
+
+        return R.ok();
 	}
 	
 	/**
 	 * 修改角色
 	 */
 	@SysLog("修改角色")
-	@RequestMapping("/update")
+	@PostMapping("/update")
 	@RequiresPermissions("sys:role:update")
-	public R update(@RequestBody SysRoleEntity role){
-		ValidatorUtils.validateEntity(role);
-		
-		sysRoleService.update(role);
-		
-		return R.ok();
+	public R update() throws Exception {
+        //接收并校验参数
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        PageData pageData = new PageData(request);
+        CheckParameterUtil.checkParameterMap(pageData,"roleId");
+        //更新
+        sysRoleService.update(pageData);
+        return R.ok();
 	}
 	
 	/**
 	 * 删除角色
 	 */
 	@SysLog("删除角色")
-	@RequestMapping("/delete")
+	@GetMapping("/delete")
 	@RequiresPermissions("sys:role:delete")
-	public R delete(@RequestBody Long[] roleIds){
-		sysRoleService.deleteBatch(roleIds);
-		
-		return R.ok();
+	public R delete() throws Exception {
+        //接收并校验参数
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        PageData pageData = new PageData(request);
+        CheckParameterUtil.checkParameterMap(pageData,"roleId");
+        //判断是否是批量删除
+        String[] strings = Tools.str2StrArray(pageData.get("roleId").toString(), ",");
+        for(int i=0; i<strings.length; i++){
+            pageData.put("delFlag",-1);
+            pageData.put("roleId",strings[i]);
+            //删除
+            sysRoleService.update(pageData);
+        }
+
+        return R.ok();
 	}
 }

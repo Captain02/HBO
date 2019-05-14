@@ -14,8 +14,8 @@
     </select>
 
     <insert id="save">
-        INSERT INTO sys_dept(`parent_id`,`name`,`order_num`,`corid`)
-        VALUES (#{parentId,jdbcType=INTEGER},#{name,jdbcType=VARCHAR},#{orderNum,jdbcType=INTEGER},#{corId,jdbcType=INTEGER})
+        INSERT INTO sys_dept(`parent_id`,`name`,`corid`)
+        VALUES (#{parentId,jdbcType=INTEGER},#{name,jdbcType=VARCHAR},#{corId,jdbcType=INTEGER})
     </insert>
 
     <update id="update">
