@@ -1,8 +1,8 @@
 /**
  * Copyright (c) 2016-2019 人人开源 All rights reserved.
- *
+ * <p>
  * https://www.renren.io
- *
+ * <p>
  * 版权所有，侵权必究！
  */
 
@@ -10,6 +10,7 @@ package io.renren.modules.sys.controller;
 
 import io.renren.common.entity.Page;
 import io.renren.common.entity.PageData;
+import io.renren.common.utils.CheckParameterUtil;
 import io.renren.common.utils.Constant;
 import io.renren.common.utils.R;
 import io.renren.modules.sys.entity.SysDeptEntity;
@@ -37,126 +38,133 @@ import java.util.Map;
 @RestController
 @RequestMapping("/sys/dept")
 public class SysDeptController extends AbstractController {
-	@Autowired
-	private SysDeptService sysDeptService;
+    @Autowired
+    private SysDeptService sysDeptService;
 
-	/**
-	 * 列表
-	 */
-	@ApiOperation(value = "用户列表", tags = {"用户"})
-	@ApiImplicitParams({
-			@ApiImplicitParam(dataType = "Integer",paramType = "query",name = "currPage",value = "当前页",required = true),
-			@ApiImplicitParam( dataType = "Integer",paramType = "query",name = "pageSize",value = "每页显示记录数",required = true)
-	})
-	@RequestMapping(value = "/list",method = RequestMethod.GET)
-//	@RequiresPermissions("sys:dept:list")
-	public R list(Page page) throws Exception {
-		System.out.println("进入list。。");
-//		Page page = new Page();
-		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-		PageData pageData = new PageData(request);
-		page.setPd(pageData);
-//		List<SysDeptEntity> deptList = sysDeptService.queryList(new HashMap<String, Object>());
-		List<PageData> list = sysDeptService.deptlistPage(page);
+    /**
+     * 列表
+     */
+    @ApiOperation(value = "用户列表", tags = {"用户"})
+    @ApiImplicitParams({
+            @ApiImplicitParam(dataType = "Integer", paramType = "query", name = "currPage", value = "当前页", required = true),
+            @ApiImplicitParam(dataType = "Integer", paramType = "query", name = "pageSize", value = "每页显示记录数", required = true)
+    })
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    @RequiresPermissions("sys:dept:list")
+    public R list(Page page) throws Exception {
+//		System.out.println("进入list。。");
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        PageData pageData = new PageData(request);
+        //校验参数
+        CheckParameterUtil.checkParameterMap(pageData,"corId");
+        //查询、、
+        page.setPd(pageData);
+        List<PageData> list = sysDeptService.deptlistPage(page);
 
-		return R.ok().put("page", page).put("data", list);
-	}
+        return R.ok().put("page", page).put("data", list);
+    }
 
-	/**
-	 * 选择部门(添加、修改菜单)
-	 */
-	@RequestMapping("/select")
-	@RequiresPermissions("sys:dept:select")
-	public R select(){
-		List<SysDeptEntity> deptList = sysDeptService.queryList(new HashMap<String, Object>());
+    /**
+     * 选择部门(添加、修改菜单)
+     */
+    @RequestMapping("/select")
+    @RequiresPermissions("sys:dept:select")
+    public R select() {
+        List<SysDeptEntity> deptList = sysDeptService.queryList(new HashMap<String, Object>());
 
-		//添加一级部门
-		if(getUserId() == Constant.SUPER_ADMIN){
-			SysDeptEntity root = new SysDeptEntity();
-			root.setDeptId(0L);
-			root.setName("一级部门");
-			root.setParentId(-1L);
-			root.setOpen(true);
-			deptList.add(root);
-		}
+        //添加一级部门
+        if (getUserId() == Constant.SUPER_ADMIN) {
+            SysDeptEntity root = new SysDeptEntity();
+            root.setDeptId(0L);
+            root.setName("一级部门");
+            root.setParentId(-1L);
+            root.setOpen(true);
+            deptList.add(root);
+        }
 
-		return R.ok().put("deptList", deptList);
-	}
+        return R.ok().put("deptList", deptList);
+    }
 
-	/**
-	 * 上级部门Id(管理员则为0)
-	 */
-	@RequestMapping("/info")
-	@RequiresPermissions("sys:dept:list")
-	public R info(){
-		long deptId = 0;
-		if(getUserId() != Constant.SUPER_ADMIN){
-			List<SysDeptEntity> deptList = sysDeptService.queryList(new HashMap<String, Object>());
-			Long parentId = null;
-			for(SysDeptEntity sysDeptEntity : deptList){
-				if(parentId == null){
-					parentId = sysDeptEntity.getParentId();
-					continue;
-				}
+    /**
+     * 上级部门Id(管理员则为0)
+     */
+    @RequestMapping("/info")
+    @RequiresPermissions("sys:dept:list")
+    public R info() {
+        long deptId = 0;
+        if (getUserId() != Constant.SUPER_ADMIN) {
+            List<SysDeptEntity> deptList = sysDeptService.queryList(new HashMap<String, Object>());
+            Long parentId = null;
+            for (SysDeptEntity sysDeptEntity : deptList) {
+                if (parentId == null) {
+                    parentId = sysDeptEntity.getParentId();
+                    continue;
+                }
 
-				if(parentId > sysDeptEntity.getParentId().longValue()){
-					parentId = sysDeptEntity.getParentId();
-				}
-			}
-			deptId = parentId;
-		}
+                if (parentId > sysDeptEntity.getParentId().longValue()) {
+                    parentId = sysDeptEntity.getParentId();
+                }
+            }
+            deptId = parentId;
+        }
 
-		return R.ok().put("deptId", deptId);
-	}
-	
-	/**
-	 * 信息
-	 */
-	@RequestMapping("/info/{deptId}")
-	@RequiresPermissions("sys:dept:info")
-	public R info(@PathVariable("deptId") Long deptId){
-		SysDeptEntity dept = sysDeptService.getById(deptId);
-		
-		return R.ok().put("dept", dept);
-	}
-	
-	/**
-	 * 保存
-	 */
-	@RequestMapping("/save")
-	@RequiresPermissions("sys:dept:save")
-	public R save(@RequestBody SysDeptEntity dept){
-		sysDeptService.save(dept);
-		
-		return R.ok();
-	}
-	
-	/**
-	 * 修改
-	 */
-	@RequestMapping("/update")
-	@RequiresPermissions("sys:dept:update")
-	public R update(@RequestBody SysDeptEntity dept){
-		sysDeptService.updateById(dept);
-		
-		return R.ok();
-	}
-	
-	/**
-	 * 删除
-	 */
-	@RequestMapping("/delete")
-	@RequiresPermissions("sys:dept:delete")
-	public R delete(long deptId){
-		//判断是否有子部门
-		List<Long> deptList = sysDeptService.queryDetpIdList(deptId);
-		if(deptList.size() > 0){
-			return R.error("请先删除子部门");
-		}
+        return R.ok().put("deptId", deptId);
+    }
 
-		sysDeptService.removeById(deptId);
-		
-		return R.ok();
-	}
-	
+    /**
+     * 信息
+     */
+    @RequestMapping("/info/{deptId}")
+    @RequiresPermissions("sys:dept:info")
+    public R info(@PathVariable("deptId") Long deptId) {
+        SysDeptEntity dept = sysDeptService.getById(deptId);
+
+        return R.ok().put("dept", dept);
+    }
+
+    /**
+     * 保存
+     */
+    @RequestMapping("/save")
+    @RequiresPermissions("sys:dept:save")
+    public R save(SysDeptEntity dept) {
+        //接收并校验参数
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        PageData pageData = new PageData(request);
+        String[] parameters = {"url","corname","corleading","cortercher","corworkspace","corcollege","corfaculty","corscale"};
+        CheckParameterUtil.checkParameterMap(pageData,parameters);
+        System.out.println(dept);
+        sysDeptService.save(dept);
+
+        return R.ok();
+    }
+
+    /**
+     * 修改
+     */
+    @RequestMapping("/update")
+    @RequiresPermissions("sys:dept:update")
+    public R update(@RequestBody SysDeptEntity dept) {
+        sysDeptService.updateById(dept);
+
+        return R.ok();
+    }
+
+    /**
+     * 删除
+     */
+    @RequestMapping("/delete")
+    @RequiresPermissions("sys:dept:delete")
+    public R delete(long deptId) {
+        //判断是否有子部门
+        List<Long> deptList = sysDeptService.queryDetpIdList(deptId);
+        if (deptList.size() > 0) {
+            return R.error("请先删除子部门");
+        }
+
+        sysDeptService.removeById(deptId);
+
+        return R.ok();
+    }
+
 }

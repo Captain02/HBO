@@ -56,4 +56,6 @@ public class SysDeptEntity implements Serializable {
 	private Boolean open;
 	@TableField(exist=false)
 	private List<?> list;
+
+	private Integer corid;
 }
