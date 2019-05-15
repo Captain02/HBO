@@ -30,12 +30,13 @@ public class CommServiceImpl implements CommService {
     @Override
     public String uploadFile(MultipartFile picture, HttpServletRequest request,String RelativePath){
         /*request.getScheme() + "://"+ request.getServerName() + ":" + request.getServerPort()+request.getContextPath();*/
+        //savepath为访问路径
         StringBuffer savepath = new StringBuffer();
         savepath.append(request.getScheme()).append("://").append(request.getServerName())
                 .append(":").append(request.getServerPort()).append(request.getContextPath())
-                .append("/").append(RelativePath);
+                .append(RelativePath);
 
-        String path = request.getSession().getServletContext().getRealPath("/"+RelativePath);
+        String path = request.getSession().getServletContext().getRealPath(RelativePath);
         //文件路径
         StringBuffer stringBuffer = new StringBuffer();
         //拼接文件名
