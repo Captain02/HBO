@@ -25,13 +25,20 @@ public class CommServiceImpl implements CommService {
         return (List<PageData>) daoSupport.findForList("commDao.selectComm",pageData);
     }
     @Override
-    public String uploadFile(MultipartFile picture, HttpServletRequest request,String path){
+    public String uploadFile(MultipartFile picture, HttpServletRequest request,String RelativePath){
+        /*request.getScheme() + "://"+ request.getServerName() + ":" + request.getServerPort()+request.getContextPath();*/
+        //savepath为访问路径
+        StringBuffer savepath = new StringBuffer();
+        savepath.append(request.getScheme()).append("://").append(request.getServerName())
+                .append(":").append(request.getServerPort()).append(request.getContextPath())
+                .append(RelativePath);
 
+        String path = request.getSession().getServletContext().getRealPath(RelativePath);
         //文件路径
         StringBuffer stringBuffer = new StringBuffer();
-
         //拼接文件名
         String date = DateTool.dateToStringYYHHDD(new Date());
+        savepath.append(date).append(picture.getOriginalFilename());
         stringBuffer.append(path).append(date+picture.getOriginalFilename());
         File file = new File(path,date+picture.getOriginalFilename());
 
@@ -42,7 +49,7 @@ public class CommServiceImpl implements CommService {
         try {
             //上传文件
             picture.transferTo(file);
-            return stringBuffer.toString();
+            return savepath.toString();
         } catch (IllegalStateException | IOException e) {
             e.printStackTrace();
             return null;
