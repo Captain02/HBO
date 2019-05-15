@@ -95,9 +95,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 		PageData pageData = new PageData();
 		pageData.put("userid", user.getUserId());
 		pageData.put("corid", corid);
-		pageData.put("deptid", user.getDeptId());
-		daoSupport.save("io.renren.modules.sys.dao.SysUserDao.saveUserCor",pageData);
-		daoSupport.save("io.renren.modules.sys.dao.SysUserDao.saveUserDept",pageData);
+//		pageData.put("deptid", user.getDeptId());
+//		daoSupport.save("io.renren.modules.sys.dao.SysUserDao.saveUserCor",pageData);
+//		daoSupport.save("io.renren.modules.sys.dao.SysUserDao.saveUserDept",pageData);
 		//保存用户与角色关系
 		sysUserRoleService.saveOrUpdate(user.getUserId(), user.getRoleIdList());
 	}
@@ -113,9 +113,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 		}
 		this.updateById(user);
 		PageData pageData = new PageData();
-		pageData.put("deptid",user.getDeptId());
+//		pageData.put("deptid",user.getDeptId());
 		pageData.put("userid",user.getUserId());
-		daoSupport.update("io.renren.modules.sys.dao.SysUserDao.updateUserDept",pageData);
+//		daoSupport.update("io.renren.modules.sys.dao.SysUserDao.updateUserDept",pageData);
 
 		//保存用户与角色关系
 		sysUserRoleService.saveOrUpdate(user.getUserId(), user.getRoleIdList());
