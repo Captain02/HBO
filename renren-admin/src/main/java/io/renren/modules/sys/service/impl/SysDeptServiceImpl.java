@@ -1,8 +1,8 @@
 /**
  * Copyright (c) 2016-2019 人人开源 All rights reserved.
- *
+ * <p>
  * https://www.renren.io
- *
+ * <p>
  * 版权所有，侵权必究！
  */
 
@@ -27,60 +27,65 @@ import java.util.Map;
 @Service("sysDeptService")
 public class SysDeptServiceImpl extends ServiceImpl<SysDeptDao, SysDeptEntity> implements SysDeptService {
 
-	@Autowired
-	private DaoSupport daoSupport;
-	
-	@Override
-	@DataFilter(subDept = true, user = false, tableAlias = "t1")
-	public List<SysDeptEntity> queryList(Map<String, Object> params){
-		return baseMapper.queryList(params);
-	}
+    @Autowired
+    private DaoSupport daoSupport;
 
-	@Override
-	public List<Long> queryDetpIdList(Long parentId) {
-		return baseMapper.queryDetpIdList(parentId);
-	}
+    @Override
+    @DataFilter(subDept = true, user = false, tableAlias = "t1")
+    public List<SysDeptEntity> queryList(Map<String, Object> params) {
+        return baseMapper.queryList(params);
+    }
 
-	@Override
-	public List<Long> getSubDeptIdList(Long deptId){
-		//部门及子部门ID列表
-		List<Long> deptIdList = new ArrayList<>();
+    @Override
+    public List<Long> queryDetpIdList(Long parentId) {
+        return baseMapper.queryDetpIdList(parentId);
+    }
 
-		//获取子部门ID
-		List<Long> subIdList = queryDetpIdList(deptId);
-		getDeptTreeList(subIdList, deptIdList);
+    @Override
+    public List<Long> getSubDeptIdList(Long deptId) {
+        //部门及子部门ID列表
+        List<Long> deptIdList = new ArrayList<>();
 
-		return deptIdList;
-	}
+        //获取子部门ID
+        List<Long> subIdList = queryDetpIdList(deptId);
+        getDeptTreeList(subIdList, deptIdList);
 
-	@Override
-	public List<PageData> deptlistPage(Page page) throws Exception {
-		List<PageData> list = (List<PageData>) daoSupport.
-				findForList("io.renren.modules.sys.dao.SysDeptDao.deptlistPage",page);
-		return list;
-	}
+        return deptIdList;
+    }
 
-	@Override
-	public void save(PageData pageData) throws Exception {
-		daoSupport.save("io.renren.modules.sys.dao.SysDeptDao.save",pageData);
-	}
+    @Override
+    public List<PageData> deptlistPage(Page page) throws Exception {
+        return (List<PageData>) daoSupport.
+                findForList("io.renren.modules.sys.dao.SysDeptDao.deptlistPage", page);
+    }
 
-	@Override
-	public void update(PageData pageData) throws Exception {
-		daoSupport.update("io.renren.modules.sys.dao.SysDeptDao.update",pageData);
-	}
+    @Override
+    public void save(PageData pageData) throws Exception {
+        daoSupport.save("io.renren.modules.sys.dao.SysDeptDao.save", pageData);
+    }
 
-	/**
-	 * 递归
-	 */
-	private void getDeptTreeList(List<Long> subIdList, List<Long> deptIdList){
-		for(Long deptId : subIdList){
-			List<Long> list = queryDetpIdList(deptId);
-			if(list.size() > 0){
-				getDeptTreeList(list, deptIdList);
-			}
+    @Override
+    public void update(PageData pageData) throws Exception {
+        daoSupport.update("io.renren.modules.sys.dao.SysDeptDao.update", pageData);
+    }
 
-			deptIdList.add(deptId);
-		}
-	}
+    @Override
+    public List<PageData> selectDeptById(PageData pageData) throws Exception {
+        return (List<PageData>) daoSupport.
+                findForList("io.renren.modules.sys.dao.SysDeptDao.selectDeptById", pageData);
+    }
+
+    /**
+     * 递归
+     */
+    private void getDeptTreeList(List<Long> subIdList, List<Long> deptIdList) {
+        for (Long deptId : subIdList) {
+            List<Long> list = queryDetpIdList(deptId);
+            if (list.size() > 0) {
+                getDeptTreeList(list, deptIdList);
+            }
+
+            deptIdList.add(deptId);
+        }
+    }
 }

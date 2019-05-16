@@ -87,6 +87,24 @@ public class SysDeptController extends AbstractController {
     }
 
     /**
+     * 根据部门id查询部门
+     * @return
+     */
+    @GetMapping("/selectDeptById")
+    @RequiresPermissions("sys:dept:select")
+    public R selectDeptById() throws Exception {
+        //接收并校验参数
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        PageData pageData = new PageData(request);
+        String[] parameters = {"deptId"};
+        CheckParameterUtil.checkParameterMap(pageData,parameters);
+        //查询
+        List<PageData> list = sysDeptService.selectDeptById(pageData);
+
+        return R.ok().put("data", list);
+    }
+
+    /**
      * 上级部门Id(管理员则为0)
      */
     @RequestMapping("/info")

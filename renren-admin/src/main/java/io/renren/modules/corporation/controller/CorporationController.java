@@ -7,7 +7,6 @@ import io.renren.common.util.DateTool;
 import io.renren.common.utils.CheckParameterUtil;
 import io.renren.common.utils.R;
 import io.renren.modules.corporation.service.CorporationService;
-import io.renren.modules.corporation.service.impl.QRCodeService;
 import io.renren.modules.corporation.service.impl.QrCodeUtils;
 import io.renren.modules.dict.service.DictService;
 import io.swagger.annotations.ApiImplicitParam;
@@ -34,8 +33,6 @@ public class CorporationController extends BaseController {
 
     @Autowired
     private CorporationService corporationService;
-    @Autowired
-    private QRCodeService qrCodeService;
     @Autowired
     private DictService dictService;
 

@@ -72,6 +72,24 @@ public class SysRoleController extends AbstractController {
 		
 		return R.ok().put("list", list);
 	}
+
+	/**
+	 * 根据角色id查询角色
+	 * @return
+	 */
+	@GetMapping("/selectRoleById")
+	@RequiresPermissions("sys:dept:select")
+	public R selectRoleById() throws Exception {
+		//接收并校验参数
+		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+		PageData pageData = new PageData(request);
+		String[] parameters = {"roleId"};
+		CheckParameterUtil.checkParameterMap(pageData,parameters);
+		//查询
+		List<PageData> list = sysRoleService.selectRoleById(pageData);
+
+		return R.ok().put("data", list);
+	}
 	
 	/**
 	 * 角色信息

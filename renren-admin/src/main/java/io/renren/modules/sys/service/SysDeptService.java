@@ -42,4 +42,6 @@ public interface SysDeptService extends IService<SysDeptEntity> {
     void save(PageData pageData) throws Exception;
 
     void update(PageData pageData) throws Exception;
+
+    List<PageData> selectDeptById(PageData pageData) throws Exception;
 }

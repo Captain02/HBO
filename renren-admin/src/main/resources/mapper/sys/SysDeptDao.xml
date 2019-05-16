@@ -13,6 +13,13 @@
         </if>
     </select>
 
+    <select id="selectDeptById" resultType="io.renren.common.entity.PageData">
+        SELECT d.`name`,d.`order_num`,d.`parent_id`,d.`corid`,d.`dept_id`
+        FROM sys_dept d
+        WHERE d.`del_flag`=0
+        AND d.`dept_id`= #{deptId,jdbcType=INTEGER}
+    </select>
+
     <insert id="save">
         INSERT INTO sys_dept(`parent_id`,`name`,`corid`)
         VALUES (#{parentId,jdbcType=INTEGER},#{name,jdbcType=VARCHAR},#{corId,jdbcType=INTEGER})
