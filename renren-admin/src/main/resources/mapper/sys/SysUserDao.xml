@@ -124,6 +124,6 @@
 	</select>
 
     <delete id="delChatHead">
-        DELETE FROM filetable WHERE id = #{id}
+        DELETE FROM filetable WHERE id = #{id,jdbcType=INTEGER}
     </delete>
 </mapper>

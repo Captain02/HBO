@@ -176,7 +176,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
     public boolean delChatHead(PageData pageData) {
         //删除数据库中的字段
         try {
-            daoSupport.delete("sysUserDao.delChatHead", pageData);
+            daoSupport.delete("io.renren.modules.sys.dao.SysUserDao.delChatHead", pageData);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
