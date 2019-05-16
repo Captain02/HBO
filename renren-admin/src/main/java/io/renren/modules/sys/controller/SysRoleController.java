@@ -120,7 +120,7 @@ public class SysRoleController extends AbstractController {
         //接收并校验参数
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         PageData pageData = new PageData(request);
-        String[] parameters = {"roleName","corId"};
+        String[] parameters = {"roleName","corId","deptId"};
         CheckParameterUtil.checkParameterMap(pageData,parameters);
         //插入
         sysRoleService.save(pageData);
