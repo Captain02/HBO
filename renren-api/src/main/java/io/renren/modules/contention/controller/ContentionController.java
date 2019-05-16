@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/contention")
@@ -23,6 +24,7 @@ public class ContentionController  extends BaseController {
 
     @Autowired
     ContentionService contentionService;
+
     /**
      * 根据分页信息对活动信息进行分页
      * @param
@@ -42,14 +44,39 @@ public class ContentionController  extends BaseController {
         page.setPageSize(pageData.getValueOfInteger("pageSize"));
         page.setCurrPage(pageData.getValueOfInteger("currPage"));
         try {
-            List<PageData> coractivity = contentionService.getListPage(page);
+            List<PageData> coractivitys = contentionService.getListPage(page);
             if (currPage != page.getCurrPage()) {
                 return R.ok();
             }
-            return R.ok().put("page", page).put("date", coractivity);
+            return R.ok().put("page", page).put("date", coractivitys);
         } catch (Exception e) {
             e.printStackTrace();
             return R.error(e.getMessage());
+        }
+    }
+
+    /**
+     * 根据活动id获取活动详情
+     * @return
+     */
+    @GetMapping("/getCoractivity")
+    @ApiOperation(value = "活动详情", notes = "活动详情", httpMethod = "GET")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "actid", value = "活动id", required = true, dataType = "Integer")
+    })
+    public  R getCoractivity(){
+        PageData pageData =this.getPageData();
+        try{
+            long actid=pageData.getValueOfInteger("actid");
+            Map coractivity= contentionService.getCoractivity(actid);
+            if (coractivity == null){
+                return R.error("活动详情为空");
+            }else{
+                return R.ok().put("date",coractivity);
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+            return R.error("获取活动详情报错");
         }
     }
 }

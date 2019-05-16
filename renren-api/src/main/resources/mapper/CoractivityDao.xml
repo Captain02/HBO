@@ -6,6 +6,7 @@
 
     <select id="coractivitylistPage" resultType="io.renren.common.entity.PageData">
        SELECT
+       actid,
        images,
 	(
 		SELECT
@@ -37,4 +38,28 @@
 FROM
 	coractivity C
     </select>
+
+	<select id="byPrimaryId" resultType="map" parameterType="java.lang.Long">
+	SELECT  *,
+(
+		SELECT
+			corname
+		FROM
+			corporation
+		WHERE
+			id = C.actleading
+	) corname,
+	(
+		SELECT
+			username
+		FROM
+			sys_user
+		WHERE
+			user_id = C.actcorid
+	) username
+	FROM
+			coractivity C
+		WHERE
+			C.actid = #{actid}
+	</select>
 </mapper>
