@@ -166,5 +166,11 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 
 	}
 
+	@Override
+	public void save(PageData pageData) throws Exception {
+      daoSupport.save("io.renren.modules.sys.dao.SysUserDao.save", pageData);
+
+	}
+
 
 }

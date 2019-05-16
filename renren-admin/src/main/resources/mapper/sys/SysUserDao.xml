@@ -108,6 +108,10 @@
 	<insert id="saveUserDept">
 		INSERT INTO sys_user_dept (userid,deptid)VALUES (#{userid},#{deptid})
 	</insert>
+	<!--上传头像-->
+	<insert id="save">
+        insert into filetable(`filename`,`filepath`) values (#{fileName},#{url})
+	</insert>
 
 	<!--selectUserByUsername-->
 	<select id="selectUserByUsername" resultMap="userAll">
