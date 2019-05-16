@@ -160,6 +160,11 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 		return forObject;
 	}
 
+	@Override
+	public void updataUserDept(PageData pageData) {
+//		daoSupport.update("io.renren.modules.sys.dao.SysUserDao.updateUserDept",pageData);
+
+	}
 
 
 }

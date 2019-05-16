@@ -188,4 +188,12 @@ public class SysUserController extends BaseController{
 		
 		return R.ok();
 	}
+
+	@PostMapping("/updataUserDept")
+	public R updataUserDept(){
+		PageData pageData = this.getPageData();
+		sysUserService.updataUserDept(pageData);
+
+		return R.ok();
+	}
 }
