@@ -3,12 +3,13 @@
 
 <mapper namespace="io.renren.modules.sys.dao.SysRoleDao">
     <select resultType="io.renren.common.entity.PageData" id="rolelistPage">
-        SELECT r.`role_name`,r.`role_id`,r.`remark`
+        SELECT r.`role_name`,r.`role_id`,r.`remark`,r.`create_time`,d1.`name`
         FROM sys_role r
+        LEFT JOIN  `sys_dept` d1 ON d1.`dept_id`=r.`dept_id`
         WHERE r.`del_flag` = 0
         AND r.`corid`= #{pd.corId,jdbcType=INTEGER}
         <if test="pd.roleName != null">
-            AND r.`name` LIKE CONCAT('%',#{pd.roleName,jdbcType=VARCHAR},'%')
+            AND r.`role_name` LIKE CONCAT('%',#{pd.roleName,jdbcType=VARCHAR},'%')
         </if>
     </select>
 
@@ -39,7 +40,7 @@
     </update>
 
     <insert id="save">
-        INSERT INTO sys_role(`role_name`,`corid`)
-        VALUES (#{roleName,jdbcType=VARCHAR},#{corId,jdbcType=INTEGER})
+        INSERT INTO sys_role(`role_name`,`corid`,`dept_id`)
+        VALUES (#{roleName,jdbcType=VARCHAR},#{corId,jdbcType=INTEGER},#{deptId,jdbcType=INTEGER})
     </insert>
 </mapper>
