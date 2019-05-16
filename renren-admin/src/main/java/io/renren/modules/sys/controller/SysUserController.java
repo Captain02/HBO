@@ -16,6 +16,7 @@ import io.renren.common.controller.BaseController;
 import io.renren.common.entity.Page;
 import io.renren.common.entity.PageData;
 import io.renren.common.util.Tools;
+import io.renren.common.utils.CheckParameterUtil;
 import io.renren.common.utils.JWTUtil;
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.R;
@@ -181,6 +182,7 @@ public class SysUserController extends BaseController {
         System.out.println("上传头像");
         //文件上传
         PageData pageData = this.getPageData();
+        CheckParameterUtil.checkParameterMap(pageData,"chatHead");
         String path = commService.uploadFile(chatHead, request, "/file/chatHead/");
         if (path == null) {
             return R.error("文件上传失败");
@@ -190,10 +192,29 @@ public class SysUserController extends BaseController {
         pageData.put("fileName", chatHead.getOriginalFilename());
         try {
             sysUserService.save(pageData);
-            return R.ok("上传头像成功");
+            return R.ok("上传头像成功").put("data",pageData);
         } catch (Exception e) {
             e.printStackTrace();
             return R.error("保存头像失败");
+        }
+    }
+
+    /**
+     * 删除头像
+     *
+     * @return
+     */
+    @PostMapping("/delChatHead")
+    @ApiOperation(value = "删除头像", notes = "删除头像", httpMethod = "POST")
+    @ApiImplicitParam(paramType = "query", name = "delChatHead", value = "删除头像", required = true, dataType = "String")
+    public R delChatHead(HttpServletRequest request){
+        System.out.println("删除头像");
+        PageData pageData = this.getPageData();
+        CheckParameterUtil.checkParameterMap(pageData, new String[]{"url", "id"});
+        if (commService.deleteFile(pageData.get("url").toString()) && sysUserService.delChatHead(pageData)) {
+            return R.ok("删除成功");
+        } else {
+            return R.error("删除失败");
         }
     }
 

@@ -4,6 +4,7 @@ import io.renren.common.commBusiness.commService.CommService;
 import io.renren.common.controller.BaseController;
 import io.renren.common.entity.Page;
 import io.renren.common.entity.PageData;
+import io.renren.common.utils.CheckParameterUtil;
 import io.renren.common.utils.R;
 import io.renren.modules.images.service.ImageService;
 import io.swagger.annotations.Api;
@@ -45,6 +46,7 @@ public class ImageController extends BaseController {
     })
     public R list(Page page) {
         PageData pageData = this.getPageData();
+        CheckParameterUtil.checkParameterMap(page.getPd(),"corid");
         page.setPd(pageData);
         try {
             List<PageData> images = imageService.getList(page);
@@ -72,6 +74,7 @@ public class ImageController extends BaseController {
     })
     public R delImage(HttpServletRequest request) {
         PageData pageData = this.getPageData();
+        CheckParameterUtil.checkParameterMap(pageData, new String[]{"url", "id"});
         System.out.println(pageData.toString());
         String url = (String) pageData.get("url");
         if (commService.deleteFile(url) && imageService.del(pageData)) {
@@ -93,6 +96,7 @@ public class ImageController extends BaseController {
         System.out.println("执行了单个文件上传");
         //文件上传
         PageData pageData = this.getPageData();
+        CheckParameterUtil.checkParameterMap(pageData, "picture");
         String path = commService.uploadFile(picture, request, "/file/image/");
         if (path == null) {
             return R.error("文件上传失败");
@@ -119,10 +123,11 @@ public class ImageController extends BaseController {
         System.out.println("执行了多个文件上传");
 
         Map<String, Object> pageDataMap = new HashMap<>();
+        //文件上传
+        PageData pageData = this.getPageData();
+        CheckParameterUtil.checkParameterMap(pageData, "picture");
 
         for (int i = 0; i < picture.length; i++) {
-            //文件上传
-            PageData pageData = this.getPageData();
             String path = commService.uploadFile(picture[i], request, "/file/image/");
             if (path == null) {
                 return R.error("文件上传失败");

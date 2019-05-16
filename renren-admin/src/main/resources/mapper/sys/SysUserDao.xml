@@ -109,7 +109,7 @@
 		INSERT INTO sys_user_dept (userid,deptid)VALUES (#{userid},#{deptid})
 	</insert>
 	<!--上传头像-->
-	<insert id="save">
+	<insert id="save" useGeneratedKeys="true" keyProperty="id">
         insert into filetable(`filename`,`filepath`) values (#{fileName},#{url})
 	</insert>
 
@@ -122,4 +122,8 @@
 		LEFT JOIN filetable ON filetable.id = sys_user.fileid
 		WHERE username = #{username}
 	</select>
+
+    <delete id="delChatHead">
+        DELETE FROM filetable WHERE id = #{id}
+    </delete>
 </mapper>
