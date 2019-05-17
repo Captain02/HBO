@@ -1,5 +1,6 @@
 package io.renren.common.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,18 +11,18 @@ import java.io.File;
 @Configuration
 public class PathConfig {
 
+    @Value("${fileUploudPath}")
+    public String FILEUPLOUD;
 
 
     @Bean
     MultipartConfigElement multipartConfigElement() {
         MultipartConfigFactory factory = new MultipartConfigFactory();
-        String property = System.getProperty("user.dir")+"/file";
-        String path = "F:\\tomcat\\HBO";
-        File file = new File(path);
+        File file = new File(FILEUPLOUD);
         if (!file.exists()) {
             file.mkdirs();
         }
-        factory.setLocation(path);
+        factory.setLocation(FILEUPLOUD);
         return factory.createMultipartConfig();
     }
 
