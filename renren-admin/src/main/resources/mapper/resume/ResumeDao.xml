@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ResumeDao">
+    <select id="resumelistPage" resultType="io.renren.common.entity.PageData">
+        SELECT u.`name`,u.`gender`,u.`persionnum`,u.`mobile`,u.`status`,u.`college`,u.`collegetie`,u.`QQ`,u.`wechart`,
+        f1.`filepath`
+        FROM sys_user u
+        LEFT JOIN `filetable` f1 ON f1.`id`=u.`fileid`
+        LEFT JOIN `cor_user` cu ON u.`user_id`=cu.`userid`
+        LEFT JOIN `corporation` c ON c.`id`=cu.`corid`
+        <where>
+            c.`id`=#{pd.corId,jdbcType=INTEGER}
+            <if test="pd.name != null">
+                AND u.`name` LIKE CONCAT('%',#{pd.name,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="pd.persionNum != null">
+                AND u.`persionnum` LIKE CONCAT('%',#{pd.persionNum,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="pd.status != null and pd.status != 0">
+                AND u.`status` = #{pd.status,jdbcType=INTEGER}
+            </if>
+        </where>
+    </select>
+
+    <select id="info" resultType="io.renren.common.entity.PageData">
+        select  u.`username`,u.`email`,u.`mobile`,u.`status`,u.`create_time`,u.`persionnum`,
+                u.`wechart`,u.`QQ`,u.`college`,u.`collegetie`,u.`gender`,
+                u.`descs`,u.`name`,f1.`filepath`
+        from `sys_user` u
+        LEFT JOIN `filetable` f1 ON f1.`id`=u.`fileid`
+        where u.`user_id`=#{resumeId,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectCount" resultType="io.renren.common.entity.PageData">
+        select count(`user_id`)  from sys_user WHERE status = 1
+    </select>
+
+</mapper>
