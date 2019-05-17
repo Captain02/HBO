@@ -8,12 +8,17 @@
 
 package io.renren.common.utils;
 
+import org.springframework.beans.factory.annotation.Value;
+
 /**
  * 常量
  *
  * @author Mark sunlightcs@gmail.com
  */
 public class Constant {
+
+
+
 	/** 超级管理员ID */
 	public static final int SUPER_ADMIN = 1;
     /** 数据权限过滤 */
