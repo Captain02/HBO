@@ -46,7 +46,7 @@ public class ImageController extends BaseController {
     })
     public R list(Page page) {
         PageData pageData = this.getPageData();
-        CheckParameterUtil.checkParameterMap(page.getPd(),"corid");
+        CheckParameterUtil.checkParameterMap(pageData,"corid");
         page.setPd(pageData);
         try {
             List<PageData> images = imageService.getList(page);
