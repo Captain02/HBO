@@ -180,6 +180,13 @@ public class DateUtil {
         String dateStr = sdf.format(date);
         return dateStr;
     }
+
+	// 日期格式化
+	public static String dateToString(Date date) {
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String dateString = formatter.format(date);
+		return dateString;
+	}
     
     public static void main(String[] args) {
     	System.out.println(getDays());

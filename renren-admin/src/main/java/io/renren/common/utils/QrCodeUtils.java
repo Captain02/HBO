@@ -1,4 +1,4 @@
-package io.renren.modules.corporation.service.impl;
+package io.renren.common.utils;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
@@ -17,7 +17,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Date;
 import java.util.Hashtable;
-import java.util.Random;
 
 public class QrCodeUtils {
     private static final String CHARSET = "utf-8";

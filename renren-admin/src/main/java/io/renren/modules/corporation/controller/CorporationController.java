@@ -7,14 +7,12 @@ import io.renren.common.util.DateTool;
 import io.renren.common.utils.CheckParameterUtil;
 import io.renren.common.utils.R;
 import io.renren.modules.corporation.service.CorporationService;
-import io.renren.modules.corporation.service.impl.QrCodeUtils;
+import io.renren.common.utils.QrCodeUtils;
 import io.renren.modules.dict.service.DictService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import org.apache.http.HttpResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,8 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @RestController()
 @RequestMapping("/sys/corporation")
