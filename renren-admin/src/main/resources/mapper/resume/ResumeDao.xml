@@ -3,7 +3,8 @@
 
 <mapper namespace="ResumeDao">
     <select id="resumelistPage" resultType="io.renren.common.entity.PageData">
-        SELECT u.`name`,u.`gender`,u.`persionnum`,u.`mobile`,u.`status`,u.`college`,u.`collegetie`,u.`QQ`,u.`wechart`,
+        SELECT u.`user_id`,u.`name`,u.`email`,u.`gender`,u.`persionnum`,u.`mobile`,u.`status`,u.`college`,
+        u.`collegetie`,u.`QQ`,u.`wechart`,u.`create_time`,u.`username`,
         f1.`filepath`
         FROM sys_user u
         LEFT JOIN `filetable` f1 ON f1.`id`=u.`fileid`
@@ -33,7 +34,14 @@
     </select>
 
     <select id="selectCount" resultType="io.renren.common.entity.PageData">
-        select count(`user_id`)  from sys_user WHERE status = 1
+        select count(`user_id`) num  from sys_user
+        <if test="statu!=null">
+            where `status` = #{statu}
+        </if>
     </select>
+
+    <update id="update">
+        update `sys_user` set `status` = #{statu,jdbcType=INTEGER} where `user_id` = #{resumeId,jdbcType=INTEGER}
+    </update>
 
 </mapper>
