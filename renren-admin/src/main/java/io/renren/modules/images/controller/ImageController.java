@@ -101,8 +101,6 @@ public class ImageController extends BaseController {
         //文件上传
         PageData pageData = this.getPageData();
         CheckParameterUtil.checkParameterMap(pageData,"corid");
-//        pageData.put("picture",picture);
-//        CheckParameterUtil.checkParameterMap(pageData, "picture");
         String path = commService.uploadFile(picture, request, "/file/image/");
         if (path == null) {
             return R.error("文件上传失败");
@@ -136,7 +134,6 @@ public class ImageController extends BaseController {
         //文件上传
         PageData pageData = this.getPageData();
         CheckParameterUtil.checkParameterMap(pageData,"corid");
-//        CheckParameterUtil.checkParameterMap(pageData, "picture");
 
         for (int i = 0; i < picture.length; i++) {
             String path = commService.uploadFile(picture[i], request, "/file/image/");
