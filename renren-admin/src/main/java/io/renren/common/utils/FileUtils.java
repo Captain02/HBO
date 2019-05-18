@@ -1,4 +1,4 @@
-package io.renren.modules.corporation.service.impl;
+package io.renren.common.utils;
 
 import org.springframework.web.multipart.MultipartFile;
 
