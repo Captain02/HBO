@@ -51,7 +51,7 @@ public class Bbs_likeController  extends BaseController{
            }
        }catch (Exception e) {
            e.printStackTrace();
-           return R.error("查询userid报错");
+           return R.error("点赞功能"+e.getMessage());
        }
     }
 }
