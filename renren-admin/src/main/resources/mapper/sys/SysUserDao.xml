@@ -93,7 +93,7 @@
 	</select>
 	
 	<select id="selectRoleByUserRole" resultType="io.renren.common.entity.PageData">
-		SELECT sys_role.role_id,role_name,remark,sys_role.create_time,corid rolecorid
+		SELECT sys_role.role_id,role_name,remark,sys_role.create_time,sys_role.corid rolecorid
 		FROM sys_role
 		LEFT JOIN sys_user_role ON sys_user_role.role_id = sys_role.role_id
 		WHERE
@@ -102,7 +102,7 @@
 	</select>
 	
 	<select id="selectDeptByUserRole" resultType="io.renren.common.entity.PageData">
-		SELECT dept_id,parent_id,`name`,order_num,del_flag,corid deptcorid
+		SELECT dept_id,parent_id,`name`,order_num,del_flag,sys_dept.corid deptcorid
 		FROM sys_dept
 		LEFT JOIN sys_user_dept ON sys_user_dept.deptid = sys_dept.dept_id
 		WHERE
