@@ -76,7 +76,7 @@ public class ContentionController  extends BaseController {
             }
         }catch (Exception e) {
             e.printStackTrace();
-            return R.error("获取活动详情报错");
+            return R.error("获取活动详情"+e.getMessage());
         }
     }
 }
