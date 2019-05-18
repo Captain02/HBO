@@ -244,10 +244,16 @@ public class SysUserController extends BaseController {
         return R.ok();
     }
 
+    //修改部门
     @PostMapping("/updataUserDept")
-    public R updataUserDept() {
+    public R updataUserDept() throws Exception {
         PageData pageData = this.getPageData();
-        sysUserService.updataUserDept(pageData);
+        PageData i = sysUserService.selectUserDept(pageData);
+        if (i.getValueOfInteger("num")!=0){
+            sysUserService.updataUserDept(pageData);
+        }else {
+            sysUserService.saveUserDept(pageData);
+        }
 
         return R.ok();
     }

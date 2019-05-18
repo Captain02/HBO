@@ -60,9 +60,13 @@ public interface SysUserService extends IService<SysUserEntity> {
 
 	PageData selectUserByUsername(PageData username) throws Exception;
 
-	void updataUserDept(PageData pageData);
+	void updataUserDept(PageData pageData) throws Exception;
 
 	PageData save(PageData pageData) throws Exception;
 
     boolean delChatHead(PageData pageData);
+
+	PageData selectUserDept(PageData pageData) throws Exception;
+
+	void saveUserDept(PageData pageData) throws Exception;
 }

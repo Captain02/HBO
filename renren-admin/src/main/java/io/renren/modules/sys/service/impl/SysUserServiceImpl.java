@@ -148,8 +148,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
     }
 
     @Override
-    public void updataUserDept(PageData pageData) {
-//		daoSupport.update("io.renren.modules.sys.dao.SysUserDao.updateUserDept",pageData);
+    public void updataUserDept(PageData pageData) throws Exception {
+		daoSupport.update("io.renren.modules.sys.dao.SysUserDao.updateUserDept",pageData);
 
     }
 
@@ -169,6 +169,17 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
             e.printStackTrace();
             return false;
         }
+    }
+
+    @Override
+    public PageData selectUserDept(PageData pageData) throws Exception {
+        PageData object = (PageData) daoSupport.findForObject("io.renren.modules.sys.dao.SysUserDao.selectUserDept", pageData);
+        return object;
+    }
+
+    @Override
+    public void saveUserDept(PageData pageData) throws Exception {
+        daoSupport.save("io.renren.modules.sys.dao.SysUserDao.saveUserDept", pageData);
     }
 
 

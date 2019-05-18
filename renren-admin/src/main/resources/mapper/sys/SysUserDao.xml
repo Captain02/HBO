@@ -112,9 +112,18 @@
 	<insert id="saveUserCor">
 		INSERT INTO cor_user (userid,corid)VALUES (#{userid},#{corid})
 	</insert>
-	<!--saveUserCor-->
+	<!--查询用户是否有部门-->
+	<select id="selectUserDept" resultType="io.renren.common.entity.PageData">
+		SELECT count(*) num FROM sys_user_dept WHERE userid = #{user_id} AND corid=#{corid}
+	</select>
+
+	<!--修改用户部门-->
+	<update id="updateUserDept">
+		UPDATE sys_user_dept SET deptid = #{dept_id} WHERE userid = #{user_id} AND corid=#{corid}
+	</update>
+	<!--保存用户部门-->
 	<insert id="saveUserDept">
-		INSERT INTO sys_user_dept (userid,deptid)VALUES (#{userid},#{deptid})
+		insert into sys_user_dept (deptid,userid,corid) values (#{dept_id},#{user_id},#{corid});
 	</insert>
 	<!--上传头像-->
 	<insert id="save" useGeneratedKeys="true" keyProperty="id">
