@@ -92,11 +92,15 @@ public class ImageController extends BaseController {
      */
     @PostMapping("/save")
     @ApiOperation(value = "单个文件上传", notes = "单个文件上传", httpMethod = "POST")
-    @ApiImplicitParam(paramType = "form", name = "picture", value = "图片文件", required = true, dataType = "File")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "form", name = "picture", value = "图片文件", required = true, dataType = "File"),
+            @ApiImplicitParam(name = "corid", value = "社团id", required = true, dataType = "Integer")
+    })
     public R save(@RequestParam("picture") MultipartFile picture, HttpServletRequest request) {
         System.out.println("执行了单个文件上传");
         //文件上传
         PageData pageData = this.getPageData();
+        CheckParameterUtil.checkParameterMap(pageData,"corid");
 //        pageData.put("picture",picture);
 //        CheckParameterUtil.checkParameterMap(pageData, "picture");
         String path = commService.uploadFile(picture, request, "/file/image/");
@@ -120,14 +124,18 @@ public class ImageController extends BaseController {
      */
     @PostMapping("/batch")
     @ApiOperation(value = "批量文件上传", notes = "批量文件上传", httpMethod = "POST")
-    @ApiImplicitParam(paramType = "form", name = "picture", value = "多个图片文件",
-            allowMultiple=true,required = true, dataType = "File")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "form", name = "picture", value = "多个图片文件",
+                    allowMultiple=true,required = true, dataType = "File"),
+            @ApiImplicitParam(name = "corid", value = "社团id", required = true, dataType = "Integer")
+    })
     public R batch(@RequestParam("picture") MultipartFile[] picture, HttpServletRequest request) {
         System.out.println("执行了多个文件上传");
 
         Map<String, Object> pageDataMap = new HashMap<>();
         //文件上传
         PageData pageData = this.getPageData();
+        CheckParameterUtil.checkParameterMap(pageData,"corid");
 //        CheckParameterUtil.checkParameterMap(pageData, "picture");
 
         for (int i = 0; i < picture.length; i++) {
