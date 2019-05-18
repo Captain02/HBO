@@ -26,6 +26,12 @@
 		<collection property="depts" select="selectDeptByUserRole" column="{user_id=user_id,corid=corid}"></collection>
 	</resultMap>
 
+	<update id="updateUserByid">
+		  UPDATE sys_user SET email = #{email},mobile = #{mobile},wechart = #{wechart},QQ = #{qq},
+		  college = #{college},collegetie = #{collegetie},gender=#{gender},descs=#{descs},`name`=#{name}
+		  WHERE user_id = #{userId}
+	</update>
+
 	<sql id="user_sql">
 		sys_user.user_id,sys_user.username,sys_user.email,
 		sys_user.mobile,sys_user.create_time,sys_user.persionnum,sys_user.wechart,sys_user.QQ,sys_user.college,

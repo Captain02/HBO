@@ -156,15 +156,15 @@ public class SysUserController extends BaseController {
     /**
      * 修改用户
      */
-    @SysLog("修改用户")
+//    @SysLog("修改用户")
     @RequestMapping("/update")
-    @RequiresPermissions("sys:user:update")
-    public R update(SysUserEntity user, String roles) throws Exception {
+//    @RequiresPermissions("sys:user:update")
+    public R update(SysUserEntity user) throws Exception {
 
 //		ValidatorUtils.validateEntity(user, UpdateGroup.class);
-        String[] strings = Tools.str2StrArray(roles, ",");
-        List<Long> collect = Arrays.stream(strings).map(x -> Long.parseLong(x)).collect(Collectors.toList());
-        user.setRoleIdList(collect);
+//        String[] strings = Tools.str2StrArray(roles, ",");
+//        List<Long> collect = Arrays.stream(strings).map(x -> Long.parseLong(x)).collect(Collectors.toList());
+//        user.setRoleIdList(collect);
         sysUserService.update(user);
 
         return R.ok();

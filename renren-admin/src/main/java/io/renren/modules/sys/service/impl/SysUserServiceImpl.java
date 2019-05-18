@@ -105,20 +105,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void update(SysUserEntity user) throws Exception {
-        if (StringUtils.isBlank(user.getPassword())) {
-            user.setPassword(null);
-        } else {
-            SysUserEntity userEntity = this.getById(user.getUserId());
-            user.setPassword(ShiroUtils.sha256(user.getPassword(), userEntity.getSalt()));
-        }
-        this.updateById(user);
-        PageData pageData = new PageData();
-//		pageData.put("deptid",user.getDeptId());
-        pageData.put("userid", user.getUserId());
-//		daoSupport.update("io.renren.modules.sys.dao.SysUserDao.updateUserDept",pageData);
-
-        //保存用户与角色关系
-        sysUserRoleService.saveOrUpdate(user.getUserId(), user.getRoleIdList());
+        daoSupport.update("io.renren.modules.sys.dao.SysUserDao.updateUserByid",user);
     }
 
 

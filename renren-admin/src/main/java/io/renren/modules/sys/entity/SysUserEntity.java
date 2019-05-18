@@ -120,5 +120,7 @@ public class SysUserEntity implements Serializable {
 
 	private String descs;
 
+	private String name;
+
 
 }
