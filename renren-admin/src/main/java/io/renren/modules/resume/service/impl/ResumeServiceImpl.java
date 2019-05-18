@@ -29,4 +29,14 @@ public class ResumeServiceImpl implements ResumeService {
     public PageData selectCount(PageData pageData) throws Exception {
         return (PageData)daoSupport.findForObject("ResumeDao.selectCount", pageData);
     }
+
+    @Override
+    public void update(PageData pageData) throws Exception {
+        daoSupport.findForList("ResumeDao.update", pageData);
+    }
+
+    @Override
+    public void delete(PageData pageData) throws Exception {
+        daoSupport.findForList("ResumeDao.update", pageData);
+    }
 }

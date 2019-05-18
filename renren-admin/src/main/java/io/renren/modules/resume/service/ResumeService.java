@@ -11,4 +11,8 @@ public interface ResumeService {
     List<PageData> info(PageData pageData) throws Exception;
 
     PageData selectCount(PageData pageData) throws Exception;
+
+    void update(PageData pageData) throws Exception;
+
+    void delete(PageData pageData) throws Exception;
 }
