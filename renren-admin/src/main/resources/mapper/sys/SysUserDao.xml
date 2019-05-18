@@ -86,7 +86,7 @@
 	<select id="getinfoByid" resultMap="userAll">
 		SELECT
 		<include refid="user_sql"></include>,
-		filetable.`filepath` headpath,#{corid} usercorid
+		filetable.`filepath` headpath,#{corid} corid
 		FROM sys_user
 		LEFT JOIN filetable ON filetable.id = sys_user.fileid
 		WHERE user_id = #{id}
