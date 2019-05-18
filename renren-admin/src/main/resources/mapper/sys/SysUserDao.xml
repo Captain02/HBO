@@ -62,6 +62,7 @@
 				findForList("io.renren.modules.sys.dao.SysUserDao.userlistPage",page);-->
 	<select resultType="io.renren.common.entity.PageData" id="userlistPage">
 		SELECT
+		DISTINCT
 		<include refid="user_sql"></include>
 		FROM sys_user
 		LEFT JOIN filetable ON filetable.id = sys_user.fileid
