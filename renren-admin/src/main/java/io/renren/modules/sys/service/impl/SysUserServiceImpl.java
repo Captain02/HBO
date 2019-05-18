@@ -182,5 +182,15 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
         daoSupport.save("io.renren.modules.sys.dao.SysUserDao.saveUserDept", pageData);
     }
 
+    @Override
+    public void insertUserRole(PageData pageData) throws Exception {
+        daoSupport.save("io.renren.modules.sys.dao.SysUserDao.insertUserRole",pageData);
+    }
+
+    @Override
+    public void deleUserRole(PageData pageData) throws Exception {
+        daoSupport.delete("io.renren.modules.sys.dao.SysUserDao.deleUserRole",pageData);
+    }
+
 
 }

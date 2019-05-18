@@ -257,4 +257,17 @@ public class SysUserController extends BaseController {
 
         return R.ok();
     }
+
+    //修改角色
+    @PostMapping("updateUserRole")
+    public R updataUserRole() throws Exception {
+        PageData pageData = this.getPageData();
+        if (pageData.getValueOfInteger("isRole") == 1){
+            sysUserService.insertUserRole(pageData);
+        }else {
+            sysUserService.deleUserRole(pageData);
+        }
+
+        return R.ok();
+    }
 }

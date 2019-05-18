@@ -20,7 +20,7 @@
 		<result column="filename" property="filename" />
 		<result column="filetable" property="filetable" />
 		<result column="filepath" property="filepath" />
-		<result column="corid" property="corid" />
+		<result column="usercorid" property="corid" />
 		<result column="fileid" property="fileid" />
 		<collection property="roles" select="selectRoleByUserRole" column="{user_id=user_id,corid=corid}"></collection>
 		<collection property="depts" select="selectDeptByUserRole" column="{user_id=user_id,corid=corid}"></collection>
@@ -86,11 +86,12 @@
 	<select id="getinfoByid" resultMap="userAll">
 		SELECT
 		<include refid="user_sql"></include>,
-		filetable.`filepath` headpath,#{corid} corid
+		filetable.`filepath` headpath,#{corid} usercorid
 		FROM sys_user
 		LEFT JOIN filetable ON filetable.id = sys_user.fileid
 		WHERE user_id = #{id}
 	</select>
+	
 	<select id="selectRoleByUserRole" resultType="io.renren.common.entity.PageData">
 		SELECT sys_role.role_id,role_name,remark,sys_role.create_time,corid
 		FROM sys_role
@@ -99,6 +100,7 @@
 		sys_user_role.user_id = #{user_id}
 		AND sys_role.corid = #{corid}
 	</select>
+	
 	<select id="selectDeptByUserRole" resultType="io.renren.common.entity.PageData">
 		SELECT dept_id,parent_id,`name`,order_num,del_flag,corid
 		FROM sys_dept
@@ -112,19 +114,22 @@
 	<insert id="saveUserCor">
 		INSERT INTO cor_user (userid,corid)VALUES (#{userid},#{corid})
 	</insert>
-	<!--查询用户是否有部门-->
+	<!--查询用户是
+	否有部门-->
 	<select id="selectUserDept" resultType="io.renren.common.entity.PageData">
 		SELECT count(*) num FROM sys_user_dept WHERE userid = #{user_id} AND corid=#{corid}
 	</select>
-
+	
 	<!--修改用户部门-->
 	<update id="updateUserDept">
 		UPDATE sys_user_dept SET deptid = #{dept_id} WHERE userid = #{user_id} AND corid=#{corid}
 	</update>
+	
 	<!--保存用户部门-->
 	<insert id="saveUserDept">
 		insert into sys_user_dept (deptid,userid,corid) values (#{dept_id},#{user_id},#{corid});
 	</insert>
+	
 	<!--上传头像-->
 	<insert id="save" useGeneratedKeys="true" keyProperty="id">
         insert into filetable(`filename`,`filepath`) values (#{fileName},#{url})
@@ -143,4 +148,12 @@
     <delete id="delChatHead">
         DELETE FROM filetable WHERE id = #{id,jdbcType=INTEGER}
     </delete>
+	
+	<!--添加用户角色-->
+	<insert id="insertUserRole">
+		insert into sys_user_role (user_id,role_id,corid) values (#{user_id},#{role_id},#{corid});
+	</insert>
+	<delete id="deleUserRole">
+		DELETE FROM sys_user_role WHERE user_id = #{user_id} AND role_id = #{role_id} AND corid = #{corid}
+	</delete>
 </mapper>
