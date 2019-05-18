@@ -157,7 +157,7 @@ public class SysUserController extends BaseController {
      * 修改用户
      */
 //    @SysLog("修改用户")
-    @RequestMapping("/update")
+    @PostMapping("/update")
 //    @RequiresPermissions("sys:user:update")
     public R update(SysUserEntity user) throws Exception {
 
