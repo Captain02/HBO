@@ -148,6 +148,7 @@ public class SysUserController extends BaseController {
         System.out.println("---------------" + corid);
 //		ValidatorUtils.validateEntity(user, AddGroup.class);
 //		user.setRoleIdList(collect);
+        user.setPersionnum(user.getUsername());
         sysUserService.saveUser(user, corid);
 
         return R.ok();
