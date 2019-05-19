@@ -122,5 +122,7 @@ public class SysUserEntity implements Serializable {
 
 	private String name;
 
+	@TableField(exist=false)
+	private Long corid;
 
 }

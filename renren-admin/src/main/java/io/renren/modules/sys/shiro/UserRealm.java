@@ -71,7 +71,7 @@ public class UserRealm extends AuthorizingRealm {
                 permsList.add(menu.getPerms());
             }
         } else {
-            permsList = sysUserDao.queryAllPerms(userId);
+            permsList = sysUserDao.queryAllPerms(userId,user.getCorid());
         }
 
         //用户权限列表
@@ -133,6 +133,7 @@ public class UserRealm extends AuthorizingRealm {
 //            throw new AuthenticationException("token invalid");
 //        }
         //重复登录验证
+        user.setCorid(jwtToken.getCorid());
         return new SimpleAuthenticationInfo(user, token, getName());
 
 //		UsernamePasswordToken token = (UsernamePasswordToken)authcToken;
@@ -159,7 +160,6 @@ public class UserRealm extends AuthorizingRealm {
         if (user.getStatus() == 0) {
             throw new LockedAccountException("账号已被锁定,请联系管理员");
         }
-
     }
 
 

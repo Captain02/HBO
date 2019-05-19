@@ -3,38 +3,38 @@
 
 <mapper namespace="io.renren.modules.sys.dao.SysUserDao">
 
-	<resultMap id="userAll" type="io.renren.common.entity.PageData">
-		<id column="user_id" property="user_id" />
-		<result column="username" property="username" />
-		<result column="email" property="email" />
-		<result column="mobile" property="mobile" />
-		<result column="create_time" property="create_time" />
-		<result column="persionnum" property="persionnum" />
-		<result column="wechart" property="wechart" />
-		<result column="QQ" property="QQ" />
-		<result column="college" property="college" />
-		<result column="collegetie" property="collegetie" />
-		<result column="gender" property="gender" />
-		<result column="descs" property="descs" />
-		<result column="filetable" property="filetable" />
-		<result column="filename" property="filename" />
-		<result column="filetable" property="filetable" />
-		<result column="filepath" property="filepath" />
-		<result column="usercorid" property="corid" />
-		<result column="fileid" property="fileid" />
-		<collection property="roles" select="selectRoleByUserRole" column="{user_id=user_id,corid=corid}"></collection>
-		<collection property="depts" select="selectDeptByUserRole" column="{user_id=user_id,corid=corid}"></collection>
-	</resultMap>
+    <resultMap id="userAll" type="io.renren.common.entity.PageData">
+        <id column="user_id" property="user_id"/>
+        <result column="username" property="username"/>
+        <result column="email" property="email"/>
+        <result column="mobile" property="mobile"/>
+        <result column="create_time" property="create_time"/>
+        <result column="persionnum" property="persionnum"/>
+        <result column="wechart" property="wechart"/>
+        <result column="QQ" property="QQ"/>
+        <result column="college" property="college"/>
+        <result column="collegetie" property="collegetie"/>
+        <result column="gender" property="gender"/>
+        <result column="descs" property="descs"/>
+        <result column="filetable" property="filetable"/>
+        <result column="filename" property="filename"/>
+        <result column="filetable" property="filetable"/>
+        <result column="filepath" property="filepath"/>
+        <result column="usercorid" property="corid"/>
+        <result column="fileid" property="fileid"/>
+        <collection property="roles" select="selectRoleByUserRole" column="{user_id=user_id,corid=corid}"></collection>
+        <collection property="depts" select="selectDeptByUserRole" column="{user_id=user_id,corid=corid}"></collection>
+    </resultMap>
 
-	<sql id="user_sql">
+    <sql id="user_sql">
 		sys_user.user_id,sys_user.username,sys_user.email,
 		sys_user.mobile,sys_user.create_time,sys_user.persionnum,sys_user.wechart,sys_user.QQ,sys_user.college,
 		sys_user.collegetie,sys_user.gender,sys_user.descs,filetable.filename,filetable.filepath,sys_user.salt,sys_user.`name`,
 		sys_user.fileid
 	</sql>
 
-	<!--根据社团ID和用户名查询用户信息基本-->
-	<select id="selectUserByUsernameCorporaition" resultType="io.renren.modules.sys.entity.SysUserEntity">
+    <!--根据社团ID和用户名查询用户信息基本-->
+    <select id="selectUserByUsernameCorporaition" resultType="io.renren.modules.sys.entity.SysUserEntity">
 		SELECT
 		`user_id`,`username`,`password`,`salt`,`status`,`openid`
 		FROM
@@ -44,23 +44,24 @@
 		AND cor_user.corid = #{corid}
 	</select>
 
-	<!--修改用户-->
-	<update id="updateUserByid">
+    <!--修改用户-->
+    <update id="updateUserByid">
 		  UPDATE sys_user SET email = #{email},mobile = #{mobile},wechart = #{wechart},QQ = #{qq},
 		  college = #{college},collegetie = #{collegetie},gender=#{gender},descs=#{descs},`name`=#{name}
 		  WHERE user_id = #{userId}
 	</update>
 
-	<!-- 查询用户的所有权限 -->
-	<select id="queryAllPerms" resultType="string">
-		select m.perms from sys_user_role ur 
-			LEFT JOIN sys_role_menu rm on ur.role_id = rm.role_id 
-			LEFT JOIN sys_menu m on rm.menu_id = m.menu_id 
-		where ur.user_id = #{userId}
+    <!-- 查询用户的所有权限 -->
+    <select id="queryAllPerms" resultType="string">
+		SELECT IFNULL(m.perms,'') FROM sys_menu m
+        LEFT JOIN sys_role_menu rm ON rm.`menu_id` = m.`menu_id`
+        LEFT JOIN sys_user_role ur ON ur.`role_id` = rm.`role_id`
+		WHERE ur.user_id = #{userId}
+		AND ur.`corid`= #{corid}
 	</select>
-	
-	<!-- 查询用户的所有菜单ID --> 
-	<select id="queryAllMenuId" resultType="long">
+
+    <!-- 查询用户的所有菜单ID -->
+    <select id="queryAllMenuId" resultType="long">
 		SELECT DISTINCT rm.menu_id FROM sys_user_role ur
 			LEFT JOIN sys_role_menu rm ON ur.role_id = rm.role_id
 			LEFT JOIN sys_role ON sys_role.`role_id` = rm.`role_id`
@@ -68,46 +69,46 @@
 
 	</select>
 
-	<select id="geUserPassword" resultType="String">
+    <select id="geUserPassword" resultType="String">
 		SELECT `password` FROM sys_user WHERE `username` = #{pagedate.username}
 	</select>
 
-	<!--List<PageData> list = (List<PageData>) daoSupport.
-				findForList("io.renren.modules.sys.dao.SysUserDao.userlistPage",page);-->
-	<select resultType="io.renren.common.entity.PageData" id="userlistPage">
-		SELECT
-		DISTINCT
-		<include refid="user_sql"></include>
-		FROM sys_user
-		LEFT JOIN filetable ON filetable.id = sys_user.fileid
-		LEFT JOIN cor_user ON cor_user.userid = sys_user.user_id
-		LEFT JOIN sys_user_dept ON sys_user_dept.deptid = sys_user.user_id
-		LEFT JOIN sys_dept ON sys_dept.dept_id = sys_user_dept.deptid
-		WHERE status = 1
-		AND cor_user.corid = #{pd.corid}
-	</select>
+    <!--List<PageData> list = (List<PageData>) daoSupport.
+                findForList("io.renren.modules.sys.dao.SysUserDao.userlistPage",page);-->
+    <select resultType="io.renren.common.entity.PageData" id="userlistPage">
+        SELECT
+        DISTINCT
+        <include refid="user_sql"></include>
+        FROM sys_user
+        LEFT JOIN filetable ON filetable.id = sys_user.fileid
+        LEFT JOIN cor_user ON cor_user.userid = sys_user.user_id
+        LEFT JOIN sys_user_dept ON sys_user_dept.deptid = sys_user.user_id
+        LEFT JOIN sys_dept ON sys_dept.dept_id = sys_user_dept.deptid
+        WHERE status = 1
+        AND cor_user.corid = #{pd.corid}
+    </select>
 
-	<update id="removeUserByIds" parameterType="java.util.List">
-		UPDATE sys_user SET  status = 0
-		WHERE user_id IN
-		<foreach collection="list" index="index" item="ids" open="(" separator="," close=")">
-			#{ids}
-		</foreach>
-	</update>
+    <update id="removeUserByIds" parameterType="java.util.List">
+        UPDATE sys_user SET status = 0
+        WHERE user_id IN
+        <foreach collection="list" index="index" item="ids" open="(" separator="," close=")">
+            #{ids}
+        </foreach>
+    </update>
 
-	<!--
-	PageData forObject = (PageData) daoSupport.findForObject("io.renren.modules.sys.dao.SysUserDao.getinfoByid", pageData);
-	-->
-	<select id="getinfoByid" resultMap="userAll">
-		SELECT
-		<include refid="user_sql"></include>,
-		filetable.`filepath` headpath,#{corid} corid
-		FROM sys_user
-		LEFT JOIN filetable ON filetable.id = sys_user.fileid
-		WHERE user_id = #{id}
-	</select>
-	
-	<select id="selectRoleByUserRole" resultType="io.renren.common.entity.PageData">
+    <!--
+    PageData forObject = (PageData) daoSupport.findForObject("io.renren.modules.sys.dao.SysUserDao.getinfoByid", pageData);
+    -->
+    <select id="getinfoByid" resultMap="userAll">
+        SELECT
+        <include refid="user_sql"></include>,
+        filetable.`filepath` headpath,#{corid} corid
+        FROM sys_user
+        LEFT JOIN filetable ON filetable.id = sys_user.fileid
+        WHERE user_id = #{id}
+    </select>
+
+    <select id="selectRoleByUserRole" resultType="io.renren.common.entity.PageData">
 		SELECT sys_role.role_id,role_name,remark,sys_role.create_time,sys_role.corid rolecorid
 		FROM sys_role
 		LEFT JOIN sys_user_role ON sys_user_role.role_id = sys_role.role_id
@@ -115,8 +116,8 @@
 		sys_user_role.user_id = #{user_id}
 		AND sys_role.corid = #{corid}
 	</select>
-	
-	<select id="selectDeptByUserRole" resultType="io.renren.common.entity.PageData">
+
+    <select id="selectDeptByUserRole" resultType="io.renren.common.entity.PageData">
 		SELECT dept_id,parent_id,`name`,order_num,del_flag,sys_dept.corid deptcorid
 		FROM sys_dept
 		LEFT JOIN sys_user_dept ON sys_user_dept.deptid = sys_dept.dept_id
@@ -125,50 +126,50 @@
 		AND sys_dept.corid = #{corid}
 	</select>
 
-	<!--saveUserCor-->
-	<insert id="saveUserCor">
+    <!--saveUserCor-->
+    <insert id="saveUserCor">
 		INSERT INTO cor_user (userid,corid)VALUES (#{userid},#{corid})
 	</insert>
-	<!--查询用户是
-	否有部门-->
-	<select id="selectUserDept" resultType="io.renren.common.entity.PageData">
+    <!--查询用户是
+    否有部门-->
+    <select id="selectUserDept" resultType="io.renren.common.entity.PageData">
 		SELECT count(*) num FROM sys_user_dept WHERE userid = #{user_id} AND corid=#{corid}
 	</select>
-	
-	<!--修改用户部门-->
-	<update id="updateUserDept">
+
+    <!--修改用户部门-->
+    <update id="updateUserDept">
 		UPDATE sys_user_dept SET deptid = #{dept_id} WHERE userid = #{user_id} AND corid=#{corid}
 	</update>
-	
-	<!--保存用户部门-->
-	<insert id="saveUserDept">
+
+    <!--保存用户部门-->
+    <insert id="saveUserDept">
 		insert into sys_user_dept (deptid,userid,corid) values (#{dept_id},#{user_id},#{corid});
 	</insert>
-	
-	<!--上传头像-->
-	<insert id="save" useGeneratedKeys="true" keyProperty="id">
+
+    <!--上传头像-->
+    <insert id="save" useGeneratedKeys="true" keyProperty="id">
         insert into filetable(`filename`,`filepath`) values (#{fileName},#{url})
 	</insert>
 
-	<!--selectUserByUsername-->
-	<select id="selectUserByUsername" resultMap="userAll">
-		SELECT
-		<include refid="user_sql"></include>,
-		filetable.`filepath` headpath,#{corid} corid
-		FROM sys_user
-		LEFT JOIN filetable ON filetable.id = sys_user.fileid
-		WHERE username = #{username}
-	</select>
+    <!--selectUserByUsername-->
+    <select id="selectUserByUsername" resultMap="userAll">
+        SELECT
+        <include refid="user_sql"></include>,
+        filetable.`filepath` headpath,#{corid} corid
+        FROM sys_user
+        LEFT JOIN filetable ON filetable.id = sys_user.fileid
+        WHERE username = #{username}
+    </select>
 
     <delete id="delChatHead">
         DELETE FROM filetable WHERE id = #{id,jdbcType=INTEGER}
     </delete>
-	
-	<!--添加用户角色-->
-	<insert id="insertUserRole">
+
+    <!--添加用户角色-->
+    <insert id="insertUserRole">
 		insert into sys_user_role (user_id,role_id,corid) values (#{user_id},#{role_id},#{corid});
 	</insert>
-	<delete id="deleUserRole">
+    <delete id="deleUserRole">
 		DELETE FROM sys_user_role WHERE user_id = #{user_id} AND role_id = #{role_id} AND corid = #{corid}
 	</delete>
 </mapper>
