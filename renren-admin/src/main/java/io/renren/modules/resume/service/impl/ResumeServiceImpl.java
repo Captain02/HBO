@@ -7,6 +7,8 @@ import io.renren.modules.resume.service.ResumeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @Service
@@ -39,4 +41,10 @@ public class ResumeServiceImpl implements ResumeService {
     public void delete(PageData pageData) throws Exception {
         daoSupport.findForList("ResumeDao.update", pageData);
     }
+
+    @Override
+    public List<PageData> selectAll(PageData pageData) throws Exception {
+        return (List<PageData>) daoSupport.findForList("ResumeDao.selectAll", pageData);
+    }
+
 }

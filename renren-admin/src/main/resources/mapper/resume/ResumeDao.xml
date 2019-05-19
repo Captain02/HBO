@@ -18,6 +18,9 @@
             <if test="pd.persionNum != null">
                 AND u.`persionnum` LIKE CONCAT('%',#{pd.persionNum,jdbcType=VARCHAR},'%')
             </if>
+            <if test="pd.status == 0">
+                AND u.`status` != 0
+            </if>
             <if test="pd.status != null and pd.status != 0">
                 AND u.`status` = #{pd.status,jdbcType=INTEGER}
             </if>
@@ -25,7 +28,7 @@
     </select>
 
     <select id="info" resultType="io.renren.common.entity.PageData">
-        select  u.`username`,u.`email`,u.`mobile`,u.`status`,u.`create_time`,u.`persionnum`,
+        select  u.`user_id`,u.`username`,u.`email`,u.`mobile`,u.`status`,u.`create_time`,u.`persionnum`,
                 u.`wechart`,u.`QQ`,u.`college`,u.`collegetie`,u.`gender`,
                 u.`descs`,u.`name`,f1.`filepath`
         from `sys_user` u
@@ -34,14 +37,30 @@
     </select>
 
     <select id="selectCount" resultType="io.renren.common.entity.PageData">
-        select count(`user_id`) num  from sys_user
-        <if test="statu!=null">
-            where `status` = #{statu}
+        select count(u.`user_id`) num,c.`id` corId
+        from sys_user u,`cor_user` cu, `corporation` c
+        where u.`user_id`=cu.`userid`
+        AND c.`id`=cu.`corid`
+        AND c.`id`=#{corId,jdbcType=INTEGER}
+        <if test="statu == null">
+            AND u.`status` != 0
+        </if>
+        <if test="statu != null">
+            AND u.`status` = #{statu,jdbcType=INTEGER}
         </if>
     </select>
 
+    <select id="selectAll" resultType="io.renren.common.entity.PageData">
+        SELECT u.`name` ,u.`collegetie`,u.`gender`,u.`persionnum`,u.`mobile`, u.`college`,u.`wechart`,u.`QQ`,u.`status`
+        FROM sys_user u,`cor_user` cu, `corporation` c
+        WHERE u.`user_id`=cu.`userid`
+        AND c.`id`=cu.`corid`
+        AND u.`status`!=0
+        AND c.`id`=#{corId,jdbcType=INTEGER}
+    </select>
+
     <update id="update">
-        update `sys_user` set `status` = #{statu,jdbcType=INTEGER} where `user_id` = #{resumeId,jdbcType=INTEGER}
+        update `sys_user` set `status` = #{status,jdbcType=INTEGER} where `user_id` = #{resumeId,jdbcType=INTEGER}
     </update>
 
 </mapper>

@@ -3,6 +3,8 @@ package io.renren.modules.resume.service;
 import io.renren.common.entity.Page;
 import io.renren.common.entity.PageData;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 public interface ResumeService {
@@ -15,4 +17,6 @@ public interface ResumeService {
     void update(PageData pageData) throws Exception;
 
     void delete(PageData pageData) throws Exception;
+
+    List<PageData> selectAll(PageData pageData) throws Exception;
 }
