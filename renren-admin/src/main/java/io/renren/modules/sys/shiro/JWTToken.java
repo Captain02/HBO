@@ -9,9 +9,20 @@ public class JWTToken implements AuthenticationToken {
     // 密钥
     private String token;
 
-    public JWTToken(String password, String username) {
+    private Integer corid;
+
+    public Integer getCorid() {
+        return corid;
+    }
+
+    public void setCorid(Integer corid) {
+        this.corid = corid;
+    }
+
+    public JWTToken(String password, String username,Integer corid) {
         this.password = password;
         this.username = username;
+        this.corid = corid;
     }
 
     public JWTToken(String token) {

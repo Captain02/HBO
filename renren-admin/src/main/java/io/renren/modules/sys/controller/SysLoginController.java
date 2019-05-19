@@ -100,7 +100,7 @@ public class SysLoginController extends BaseController {
 
         try {
             Subject subject = ShiroUtils.getSubject();
-            JWTToken token = new JWTToken(username, password);
+            JWTToken token = new JWTToken(username, password,corid);
             subject.login(token);
         } catch (UnknownAccountException e) {
             return R.error(e.getMessage());

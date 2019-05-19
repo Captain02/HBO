@@ -102,7 +102,7 @@ public class UserRealm extends AuthorizingRealm {
             username = JWTUtil.getUsername(token);
         }
         if (!StringUtils.isEmpty(jwtToken.getUsername())) {
-            SysUserEntity user = sysUserDao.selectOne(new QueryWrapper<SysUserEntity>().eq("username", jwtToken.getUsername()));
+            SysUserEntity user = sysUserDao.selectUserByUsernameCorporaition(jwtToken.getUsername(),jwtToken.getCorid());
             //账号锁定
             verifyUser(user);
             if (user.getPassword().equals(ShiroUtils.sha256(jwtToken.getPassword(),user.getSalt()))) {
