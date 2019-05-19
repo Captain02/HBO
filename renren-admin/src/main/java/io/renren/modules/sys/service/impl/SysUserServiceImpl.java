@@ -54,12 +54,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
     SysUserDao sysUserDao;
     @Autowired
     private DaoSupport daoSupport;
-//	@Autowired
-//	SqlSessionTemplate sqlSessionTemplate;
 
     @Override
-    public List<Long> queryAllMenuId(Long userId) {
-        return baseMapper.queryAllMenuId(userId);
+    public List<Long> queryAllMenuId(Long userId,Long corid) {
+        return baseMapper.queryAllMenuId(userId,corid);
     }
 
     @Override

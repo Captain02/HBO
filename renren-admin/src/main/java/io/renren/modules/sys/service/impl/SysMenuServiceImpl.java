@@ -58,14 +58,14 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenuEntity> i
 	}
 
 	@Override
-	public List<SysMenuEntity> getUserMenuList(Long userId) {
+	public List<SysMenuEntity> getUserMenuList(Long userId,Long corid) {
 		//系统管理员，拥有最高权限
 		if(userId == Constant.SUPER_ADMIN){
 			return getAllMenuList(null);
 		}
 		
 		//用户菜单列表
-		List<Long> menuIdList = sysUserService.queryAllMenuId(userId);
+		List<Long> menuIdList = sysUserService.queryAllMenuId(userId,corid);
 		return getAllMenuList(menuIdList);
 	}
 

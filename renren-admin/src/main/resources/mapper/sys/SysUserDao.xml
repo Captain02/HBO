@@ -42,7 +42,6 @@
 		LEFT JOIN cor_user ON cor_user.userid = sys_user.user_id
 		WHERE sys_user.username=#{username}
 		AND cor_user.corid = #{corid}
-
 	</select>
 
 	<!--修改用户-->
@@ -62,9 +61,11 @@
 	
 	<!-- 查询用户的所有菜单ID --> 
 	<select id="queryAllMenuId" resultType="long">
-		select distinct rm.menu_id from sys_user_role ur 
-			LEFT JOIN sys_role_menu rm on ur.role_id = rm.role_id 
-		where ur.user_id = #{userId}
+		SELECT DISTINCT rm.menu_id FROM sys_user_role ur
+			LEFT JOIN sys_role_menu rm ON ur.role_id = rm.role_id
+			LEFT JOIN sys_role ON sys_role.`role_id` = rm.`role_id`
+		WHERE ur.user_id = #{userid} AND sys_role.corid =#{corid}
+
 	</select>
 
 	<select id="geUserPassword" resultType="String">

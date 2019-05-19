@@ -30,7 +30,7 @@ public interface SysUserService extends IService<SysUserEntity> {
 	/**
 	 * 查询用户的所有菜单ID
 	 */
-	List<Long> queryAllMenuId(Long userId);
+	List<Long> queryAllMenuId(Long userId,Long corid);
 	
 	/**
 	 * 保存用户

@@ -89,7 +89,7 @@ public class SysLoginController extends BaseController {
      */
     @ResponseBody
     @RequestMapping(value = "/sys/login", method = RequestMethod.POST)
-    public R login(String username, String password, String captcha, Integer corid) {
+    public R login(String username, String password, String captcha, Long corid) {
         String titleName = isVerificationService.getIsVerification();
         if (titleName.equals("是")) {
             //String kaptcha = ShiroUtils.getKaptcha(Constants.KAPTCHA_SESSION_KEY);
