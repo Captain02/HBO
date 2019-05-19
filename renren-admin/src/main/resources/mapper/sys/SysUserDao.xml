@@ -53,7 +53,7 @@
 
     <!-- 查询用户的所有权限 -->
     <select id="queryAllPerms" resultType="string">
-		SELECT IFNULL(m.perms,'') FROM sys_menu m
+		SELECT DISTINCT IFNULL(m.perms,'') FROM sys_menu m
         LEFT JOIN sys_role_menu rm ON rm.`menu_id` = m.`menu_id`
         LEFT JOIN sys_user_role ur ON ur.`role_id` = rm.`role_id`
 		WHERE ur.user_id = #{userId}
@@ -66,7 +66,6 @@
 			LEFT JOIN sys_role_menu rm ON ur.role_id = rm.role_id
 			LEFT JOIN sys_role ON sys_role.`role_id` = rm.`role_id`
 		WHERE ur.user_id = #{userid} AND sys_role.corid =#{corid}
-
 	</select>
 
     <select id="geUserPassword" resultType="String">
@@ -175,4 +174,12 @@
 		DELETE FROM sys_user_role WHERE user_id = #{user_id} AND role_id = #{role_id} AND corid = #{corid}
 	</delete>
 
+    <!--获取用户所有权限-->
+    <select id="getUserPermission" resultType="io.renren.common.entity.PageData">
+        SELECT DISTINCT IFNULL(m.perms,''),m.`name`,m.`url`,m.`perms`,
+        m.`type`,m.`icon`,m.`order_num`,m.`hidden`,m.`title`,m.`redirect`,
+        m.`always_show`,m.`use_cache`,m.`query` FROM sys_menu m
+        LEFT JOIN sys_role_menu rm ON rm.`menu_id` = m.`menu_id`
+		WHERE rm.role_id = #{roleid}
+    </select>
 </mapper>

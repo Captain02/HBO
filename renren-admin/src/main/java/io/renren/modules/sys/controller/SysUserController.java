@@ -273,9 +273,10 @@ public class SysUserController extends BaseController {
 
     //获得用户所有权限
     @GetMapping("/getUserPermission")
-    public R getUserPermission(){
-//        sysUserService.getUserPermission();
-        return R.ok();
+    public R getUserPermission() throws Exception {
+        PageData pageData = this.getPageData();
+        List<PageData> pageDataList = sysUserService.getUserPermission(pageData);
+        return R.ok().put("data",pageDataList);
     }
 
 

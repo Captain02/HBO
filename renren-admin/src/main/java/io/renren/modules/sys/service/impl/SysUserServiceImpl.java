@@ -190,5 +190,12 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
         daoSupport.delete("io.renren.modules.sys.dao.SysUserDao.deleUserRole",pageData);
     }
 
+    @Override
+    public List<PageData> getUserPermission(PageData pageData) throws Exception {
+        List<PageData> list = (List<PageData>) daoSupport
+                .findForList("io.renren.modules.sys.dao.SysUserDao.getUserPermission",pageData);
+        return list;
+    }
+
 
 }

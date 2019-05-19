@@ -73,4 +73,6 @@ public interface SysUserService extends IService<SysUserEntity> {
 	void insertUserRole(PageData pageData) throws Exception;
 
 	void deleUserRole(PageData pageData) throws Exception;
+
+	List<PageData> getUserPermission(PageData pageData) throws Exception;
 }
