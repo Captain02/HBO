@@ -134,5 +134,15 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleDao, SysRoleEntity> i
         return (List<PageData>) daoSupport.findForList("io.renren.modules.sys.dao.SysRoleDao.selectRoleById", pageData);
     }
 
+    @Override
+    public void deleteRolePermission(PageData pageData) throws Exception {
+        daoSupport.delete("io.renren.modules.sys.dao.SysRoleDao.deleteRolePermission",pageData);
+    }
+
+    @Override
+    public void saveRolePermission(PageData pageData) throws Exception {
+        daoSupport.save("io.renren.modules.sys.dao.SysRoleDao.saveRolePermission",pageData);
+    }
+
 
 }

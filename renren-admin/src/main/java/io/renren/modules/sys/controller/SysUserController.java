@@ -259,7 +259,7 @@ public class SysUserController extends BaseController {
     }
 
     //修改角色
-    @PostMapping("updateUserRole")
+    @PostMapping("/updateUserRole")
     public R updataUserRole() throws Exception {
         PageData pageData = this.getPageData();
         if (pageData.getValueOfInteger("isRole") == 1){
@@ -270,4 +270,12 @@ public class SysUserController extends BaseController {
 
         return R.ok();
     }
+
+    //获得用户所有权限
+    @GetMapping("/getUserPermission")
+    public R getUserPermission(){
+//        sysUserService.getUserPermission();
+    }
+
+
 }

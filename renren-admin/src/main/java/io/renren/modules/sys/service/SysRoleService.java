@@ -41,4 +41,8 @@ public interface SysRoleService extends IService<SysRoleEntity> {
     void save(PageData pageData) throws Exception;
 
     List<PageData> selectRoleById(PageData pageData) throws Exception;
+
+    void deleteRolePermission(PageData pageData) throws Exception;
+
+	void saveRolePermission(PageData pageData) throws Exception;
 }

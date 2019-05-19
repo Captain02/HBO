@@ -43,4 +43,15 @@
         INSERT INTO sys_role(`role_name`,`corid`,`dept_id`)
         VALUES (#{roleName,jdbcType=VARCHAR},#{corId,jdbcType=INTEGER},#{deptId,jdbcType=INTEGER})
     </insert>
+
+    <!--删除角色权限-->
+    <delete id="deleteRolePermission">
+        DELETE FROM `sys_role_menu`
+        WHERE role_id = #{role_id}
+        AND menu_id = #{menu_id}
+    </delete>
+    <!--添加角色权限-->
+    <insert id="saveRolePermission">
+        insert into sys_role_menu (role_id,menu_id) values (#{role_id},#{menu_id});
+    </insert>
 </mapper>

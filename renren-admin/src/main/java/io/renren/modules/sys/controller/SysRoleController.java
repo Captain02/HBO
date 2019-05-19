@@ -166,4 +166,16 @@ public class SysRoleController extends AbstractController {
 
         return R.ok();
 	}
+
+	//修改角色权限
+	@PostMapping("/updateRolePermission")
+	public R updateRolePermission(HttpServletRequest request) throws Exception {
+		PageData pageData = new PageData(request);
+		if (pageData.getValueOfInteger("isRolePermission")==0){
+			sysRoleService.deleteRolePermission(pageData);
+		}else {
+			sysRoleService.saveRolePermission(pageData);
+		}
+		return R.ok();
+	}
 }

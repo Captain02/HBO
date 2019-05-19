@@ -169,7 +169,10 @@
     <insert id="insertUserRole">
 		insert into sys_user_role (user_id,role_id,corid) values (#{user_id},#{role_id},#{corid});
 	</insert>
+
+    <!--删除用户角色-->
     <delete id="deleUserRole">
 		DELETE FROM sys_user_role WHERE user_id = #{user_id} AND role_id = #{role_id} AND corid = #{corid}
 	</delete>
+
 </mapper>
