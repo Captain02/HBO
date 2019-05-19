@@ -275,6 +275,7 @@ public class SysUserController extends BaseController {
     @GetMapping("/getUserPermission")
     public R getUserPermission(){
 //        sysUserService.getUserPermission();
+        return R.ok();
     }
 
 
