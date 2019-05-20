@@ -73,6 +73,9 @@ public class PageData extends HashMap implements Map{
 	public Integer getValueOfInteger(Object key) {
 		return Integer.parseInt(String.valueOf(get(key)));
 	}
+	public Long getValueOfLong(Object key) {
+		return Long.valueOf(String.valueOf(get(key)));
+	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
