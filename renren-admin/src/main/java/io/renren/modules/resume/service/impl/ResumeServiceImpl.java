@@ -47,4 +47,9 @@ public class ResumeServiceImpl implements ResumeService {
         return (List<PageData>) daoSupport.findForList("ResumeDao.selectAll", pageData);
     }
 
+    @Override
+    public List<PageData> chart(PageData pageData) throws Exception {
+        return (List<PageData>) daoSupport.findForList("ResumeDao.chart", pageData);
+    }
+
 }

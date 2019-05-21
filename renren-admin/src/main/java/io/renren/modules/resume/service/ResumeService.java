@@ -19,4 +19,6 @@ public interface ResumeService {
     void delete(PageData pageData) throws Exception;
 
     List<PageData> selectAll(PageData pageData) throws Exception;
+
+    List<PageData> chart(PageData pageData) throws Exception;
 }

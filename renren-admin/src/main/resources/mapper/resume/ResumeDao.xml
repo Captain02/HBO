@@ -59,6 +59,10 @@
         AND c.`id`=#{corId,jdbcType=INTEGER}
     </select>
 
+    <select id="chart" resultType="io.renren.common.entity.PageData">
+        CALL `chart_count`(#{corId,jdbcType=INTEGER},#{statu,jdbcType=INTEGER},#{column,jdbcType=INTEGER});
+    </select>
+
     <update id="update">
         update `sys_user` set `status` = #{status,jdbcType=INTEGER} where `user_id` = #{resumeId,jdbcType=INTEGER}
     </update>
