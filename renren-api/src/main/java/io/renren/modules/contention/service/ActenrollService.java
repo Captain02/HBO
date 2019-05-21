@@ -1,4 +1,4 @@
-package io.renren.modules.actenroll.service;
+package io.renren.modules.contention.service;
 
 import io.renren.common.entity.PageData;
 import org.springframework.stereotype.Service;

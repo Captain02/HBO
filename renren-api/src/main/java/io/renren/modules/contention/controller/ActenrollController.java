@@ -1,13 +1,12 @@
-package io.renren.modules.actenroll.controller;
+package io.renren.modules.contention.controller;
 
 import io.renren.annotation.Login;
 import io.renren.common.controller.BaseController;
 import io.renren.common.entity.PageData;
-import io.renren.common.util.DateUtil;
 import io.renren.common.utils.JWTUtil;
 import io.renren.common.utils.R;
-import io.renren.modules.actenroll.service.ActenrollService;
-import io.renren.modules.bbs_like.service.Bbs_likeService;
+import io.renren.modules.contention.service.ActenrollService;
+import io.renren.modules.contention.service.Bbs_likeService;
 import io.renren.modules.contention.service.ContentionService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -22,8 +21,8 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/actenroll")
-@Api("点赞")
-public class ActenrollController  extends BaseController {
+@Api("活动报名")
+public class ActenrollController extends BaseController {
 
     @Autowired
     ActenrollService actenrollService;
@@ -51,9 +50,8 @@ public class ActenrollController  extends BaseController {
             pageData.put("userId", Long.valueOf(String.valueOf(userId)));
             int count = actenrollService.byUserIdAndActId(pageData);
             if (count == 1) {
-                return R.ok().put("data", "您已报名成功");//您已报名成功
+                return R.ok().put("data", "您已报名成功,请勿重复操作");//您已报名成功
             } else if (count == 0) {
-                pageData.put("timestamp", DateUtil.getTime());  //报名时间
                 int actenroller = actenrollService.save(pageData); //保存到活动报名表中
                 if (actenroller == 0) {
                     return R.error("保存失败");

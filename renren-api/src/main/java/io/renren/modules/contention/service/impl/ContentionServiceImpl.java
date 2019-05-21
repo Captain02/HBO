@@ -19,15 +19,6 @@ public class ContentionServiceImpl  implements ContentionService {
     public List<PageData> getListPage(Page page) throws Exception {
         return (List<PageData>) daoSupport.findForList("CoractivityDao.coractivitylistPage", page);
     }
-    @Override
-    public Boolean del(PageData pageData) {
-        return null;
-    }
-
-    @Override
-    public PageData save(PageData pageData) {
-        return null;
-    }
 
     @Override
     public Map getCoractivity(Long actid) throws Exception {

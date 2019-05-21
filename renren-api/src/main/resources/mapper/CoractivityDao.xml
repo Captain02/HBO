@@ -40,7 +40,9 @@ FROM
     </select>
 
 	<select id="byPrimaryId" resultType="map" parameterType="java.lang.Long">
-	SELECT  *,
+	SELECT  actid,actname,actstarttame,actendtime,createtime,actdetails,
+	(SELECT value FROM sys_dict WHERE id=crowdpeople)forpeople,
+	fileid,videoid,images,
 (
 		SELECT
 			corname

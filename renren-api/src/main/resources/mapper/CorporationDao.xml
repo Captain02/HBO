@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="CorporationDao">
+    <!-- 可根据自己的需求，是否要使用 -->
+
+    <select id="getlistPage" resultType="io.renren.common.entity.PageData">
+	select id,corname,corleading,corscale,createtime,fileid,videofile
+	FROM corporation
+    </select>
+
+	<select id="byPrimaryId" resultType="map" parameterType="java.lang.Long">
+		select id,corname,corforcollege,corleading,
+		(SELECT value FROM sys_dict WHERE id = C.corcollege)corcollegeName,
+		(SELECT value FROM sys_dict WHERE id = C.corfaculty)corfacultyName,
+		corscale,fileid,descs,cortercher,videofile,createtime,bannerid
+		FROM corporation C
+		WHERE id =#{id}
+	</select>
+	<select id="byIdImages" resultType="io.renren.common.entity.PageData"  parameterType="java.lang.Long">
+		SELECT * FROM images WHERE corid=#{id}
+	</select>
+</mapper>

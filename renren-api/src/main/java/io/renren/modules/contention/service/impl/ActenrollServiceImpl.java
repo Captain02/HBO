@@ -1,8 +1,8 @@
-package io.renren.modules.actenroll.service.impl;
+package io.renren.modules.contention.service.impl;
 
 import io.renren.commBusiness.dao.DaoSupport;
 import io.renren.common.entity.PageData;
-import io.renren.modules.actenroll.service.ActenrollService;
+import io.renren.modules.contention.service.ActenrollService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

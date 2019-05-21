@@ -10,7 +10,5 @@ import java.util.Map;
 @Service
 public interface ContentionService {
     List<PageData> getListPage(Page page)throws Exception;
-    Boolean del(PageData pageData);
-    PageData save(PageData pageData);
     Map getCoractivity(Long actid) throws Exception ;
 }

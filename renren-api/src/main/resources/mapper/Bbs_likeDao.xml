@@ -3,7 +3,7 @@
 
 <mapper namespace="Bbs_likeDao">
     <insert id="save" useGeneratedKeys="true" keyProperty="id">
-          INSERT INTO bbs_like(userid,topicid,createtime) VALUES (#{userId},#{topicid},#{timestamp})
+          INSERT INTO bbs_like(userid,topicid) VALUES (#{userId},#{topicid})
     </insert>
     <select id="selectId" resultType="java.lang.Long">
         SELECT user_id FROM sys_user WHERE username=#{username}

@@ -1,8 +1,8 @@
-package io.renren.modules.bbs_like.service.impl;
+package io.renren.modules.contention.service.impl;
 
 import io.renren.commBusiness.dao.DaoSupport;
 import io.renren.common.entity.PageData;
-import io.renren.modules.bbs_like.service.Bbs_likeService;
+import io.renren.modules.contention.service.Bbs_likeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

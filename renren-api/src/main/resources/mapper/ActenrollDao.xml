@@ -3,7 +3,7 @@
 
 <mapper namespace="ActenrollDao">
     <insert id="save" useGeneratedKeys="true" keyProperty="id">
-          INSERT INTO actenroll(userid,actid,createtime,actstatusid) VALUES (#{userId},#{actId},#{timestamp},#{actprogressId})
+          INSERT INTO actenroll(userid,actid,actstatusid) VALUES (#{userId},#{actId},#{actprogressId})
     </insert>
     <select id="selectIdAndactId" resultType="int">
         SELECT
