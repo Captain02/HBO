@@ -231,7 +231,7 @@ public class ResumeController extends BaseController {
      */
     private String isNull(String value) {
         if (value.equals("null") || value == null) {
-            return "";
+            return "无";
         }
         return value;
     }
