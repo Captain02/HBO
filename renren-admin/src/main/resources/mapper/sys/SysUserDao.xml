@@ -36,7 +36,7 @@
     <!--根据社团ID和用户名查询用户信息基本-->
     <select id="selectUserByUsernameCorporaition" resultType="io.renren.modules.sys.entity.SysUserEntity">
 		SELECT
-		`user_id`,`username`,`password`,`salt`,`status`,`openid`
+		`user_id`,`username`,`password`,`salt`,cor_user.`status`,`openid`
 		FROM
 		sys_user
 		LEFT JOIN cor_user ON cor_user.userid = sys_user.user_id
