@@ -12,6 +12,7 @@ import io.renren.modules.resume.service.ResumeService;
 import io.renren.modules.sys.entity.User;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -134,7 +135,7 @@ public class ResumeController extends BaseController {
     public R exportExcel(HttpServletRequest request, HttpServletResponse response) {
         //接收参数
         PageData pageData = this.getPageData();
-        CheckParameterUtil.checkParameterMap(pageData,"corId");
+        CheckParameterUtil.checkParameterMap(pageData, "corId");
         //清除buffer缓存
         response.reset();
         // 指定下载的文件名
@@ -177,7 +178,7 @@ public class ResumeController extends BaseController {
                         this.isNull(pageDataList.get(i).getValueOfString("college")),
                         this.isNull(pageDataList.get(i).getValueOfString("collegetie")),
                         this.isNull(pageDataList.get(i).getValueOfString("gender"))
-                        );
+                );
                 list.add(user);
             }
             //生成excel
@@ -229,9 +230,51 @@ public class ResumeController extends BaseController {
      * @return
      */
     private String isNull(String value) {
-        if (value.equals("null") || value==null) {
+        if (value.equals("null") || value == null) {
             return "";
         }
         return value;
+    }
+
+    /**
+     * 生成报表
+     *
+     * @return
+     */
+    @PostMapping("/chart")
+    public R chart() {
+        PageData pageData = this.getPageData();
+        CheckParameterUtil.checkParameterMap(pageData, "corId");
+        try {
+            if (!pageData.containsKey("statu")) {
+                pageData.put("statu", 0);
+            }
+            //性别
+            pageData.put("column", "gender");
+            List<PageData> genderList = resumeService.chart(pageData);
+            //学院
+            pageData.put("column", "college");
+            List<PageData> collegeList = resumeService.chart(pageData);
+            //年级
+            pageData.put("column", "persionnum");
+            List<PageData> persionnumList = resumeService.chart(pageData);
+            for (int i = 0; i <persionnumList.size() ; i++) {
+                if(persionnumList.get(i).getValueOfString("persionnum").length()<4){
+                    throw new Exception("学号长度不能小于四位");
+                }
+                persionnumList.get(i).put("persionnum",persionnumList.get(i).getValueOfString("persionnum").substring(0,4));
+            }
+            //专业
+            pageData.put("column", "collegetie");
+            List<PageData> collegetieList = resumeService.chart(pageData);
+
+            return R.ok().put("genderData", genderList)
+                    .put("collegeData", collegeList)
+                    .put("persionnumData", persionnumList)
+                    .put("collegetieData", collegetieList);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return R.error(e.getMessage());
+        }
     }
 }

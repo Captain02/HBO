@@ -56,7 +56,6 @@ public class SysDeptController extends AbstractController {
 //		System.out.println("进入list。。");
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         PageData pageData = new PageData(request);
-        page.setPageSize(Integer.MAX_VALUE);
         //校验参数
         CheckParameterUtil.checkParameterMap(pageData,"corId");
         //查询
