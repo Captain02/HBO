@@ -38,4 +38,6 @@ public interface SysUserDao extends BaseMapper<SysUserEntity> {
     String geUserPassword(@Param("pagedate") PageData pagedate);
 
 	SysUserEntity selectUserByUsernameCorporaition(@Param("username") String username, @Param("corid") Long corid);
+
+    void removeUserByIds(@Param("list") List<Long> list, @Param("corid") Long corid);
 }

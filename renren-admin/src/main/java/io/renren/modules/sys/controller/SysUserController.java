@@ -233,10 +233,10 @@ public class SysUserController extends BaseController {
     /**
      * 删除用户
      */
-    @SysLog("删除用户")
+//    @SysLog("删除用户")
     @RequestMapping("/delete")
-    @RequiresPermissions("sys:user:delete")
-    public R delete(String userIds) throws Exception {
+//    @RequiresPermissions("sys:user:delete")
+    public R delete(@RequestParam("userIds") String userIds,@RequestParam("corid")Long corid) throws Exception {
         String[] strings = Tools.str2StrArray(userIds, ",");
         List<Long> collect = Arrays.stream(strings).map(x -> Long.parseLong(x)).collect(Collectors.toList());
 //        Long[] array = collect.stream().toArray(Long[]::new);
@@ -248,8 +248,7 @@ public class SysUserController extends BaseController {
 //		if(ArrayUtils.contains(array, getUserId())){
 //			return R.error("当前用户不能删除");
 //		}
-
-        sysUserService.removeUserByIds(collect);
+        sysUserService.removeUserByIds(collect,corid);
 
         return R.ok();
     }

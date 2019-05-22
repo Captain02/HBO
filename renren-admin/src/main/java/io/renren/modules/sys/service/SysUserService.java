@@ -54,7 +54,7 @@ public interface SysUserService extends IService<SysUserEntity> {
 
     List<PageData> userlistPage(Page page) throws Exception;
 
-    void removeUserByIds(List<Long> collect) throws Exception;
+    //void removeUserByIds(List<Long> collect) throws Exception;
 
 	PageData getinfoByid(PageData pageData) throws Exception;
 
@@ -77,4 +77,6 @@ public interface SysUserService extends IService<SysUserEntity> {
 	List<PageData> getUserPermission(PageData pageData) throws Exception;
 
 	void updateUserInfo(PageData pageData) throws Exception;
+
+    void removeUserByIds(List<Long> collect, Long corid);
 }

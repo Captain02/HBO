@@ -128,8 +128,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
     }
 
     @Override
-    public void removeUserByIds(List<Long> list) throws Exception {
-        daoSupport.batchUpdateBylist("io.renren.modules.sys.dao.SysUserDao.removeUserByIds", list);
+    public void removeUserByIds(List<Long> list,Long corid) {
+        //daoSupport.batchUpdateBylist("io.renren.modules.sys.dao.SysUserDao.removeUserByIds", list);
+        sysUserDao.removeUserByIds(list,corid);
     }
 
     @Override

@@ -83,13 +83,15 @@
         LEFT JOIN cor_user ON cor_user.userid = sys_user.user_id
         LEFT JOIN sys_user_dept ON sys_user_dept.deptid = sys_user.user_id
         LEFT JOIN sys_dept ON sys_dept.dept_id = sys_user_dept.deptid
-        WHERE status = 1
+        WHERE cor_user.status = 1
         AND cor_user.corid = #{pd.corid}
     </select>
 
+    <!--void removeUserByIds(List<Long> collect, Long corid);-->
+    <!--删除社团成员-->
     <update id="removeUserByIds" parameterType="java.util.List">
-        UPDATE sys_user SET status = 0
-        WHERE user_id IN
+        UPDATE cor_user SET status = 0
+        WHERE corid = #{corid} AND userid IN
         <foreach collection="list" index="index" item="ids" open="(" separator="," close=")">
             #{ids}
         </foreach>
