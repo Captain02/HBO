@@ -171,6 +171,15 @@ public class SysUserController extends BaseController {
         return R.ok();
     }
 
+    //修改用户基本信息
+    @PostMapping("/updateUserInfo")
+    public R updateUserInfo() throws Exception {
+        PageData pageData = this.getPageData();
+        CheckParameterUtil.checkParameterMap(pageData,"userId");
+        sysUserService.updateUserInfo(pageData);
+        return R.ok();
+    }
+
     /**
      * 上传头像
      *

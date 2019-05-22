@@ -150,6 +150,47 @@
         insert into filetable(`filename`,`filepath`) values (#{fileName},#{url})
 	</insert>
 
+    <!--修改用户基本信息-->
+    <update id="updateUserInfo">
+          UPDATE sys_user
+          <set>
+              <if test="userName!=null and userName!=''">
+                  `username`=#{userName,jdbcType=VARCHAR},
+              </if>
+              <if test="email!=null and email!=''">
+                  `email`=#{email,jdbcType=VARCHAR},
+              </if>
+              <if test="mobile!=null and mobile!=''">
+                  `mobile`=#{mobile,jdbcType=VARCHAR},
+              </if>
+              <if test="persionNum!=null and persionNum!=''">
+                  `persionnum`=#{persionNum,jdbcType=VARCHAR},
+              </if>
+              <if test="wechart!=null and wechart!=''">
+                  `wechart`=#{wechart,jdbcType=VARCHAR},
+              </if>
+              <if test="QQ!=null and QQ!=''">
+                  `QQ`=#{QQ,jdbcType=VARCHAR},
+              </if>
+              <if test="fileId!=null">
+                  `fileid`=#{fileId,jdbcType=INTEGER},
+              </if>
+              <if test="college!=null and college!=''">
+                  `college`=#{college,jdbcType=VARCHAR},
+              </if>
+              <if test="collegetie!=null and collegetie!=''">
+                  `collegetie`=#{collegetie,jdbcType=VARCHAR},
+              </if>
+              <if test="descs!=null and descs!=''">
+                  `descs`=#{descs,jdbcType=VARCHAR},
+              </if>
+              <if test="name!=null and name!=''">
+                  `name`=#{name,jdbcType=VARCHAR},
+              </if>
+          </set>
+		  WHERE user_id = #{userId,jdbcType=INTEGER}
+    </update>
+
     <!--selectUserByUsername-->
     <select id="selectUserByUsername" resultMap="userAll">
         SELECT

@@ -197,5 +197,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
         return list;
     }
 
+    @Override
+    public void updateUserInfo(PageData pageData) throws Exception {
+        daoSupport.update("io.renren.modules.sys.dao.SysUserDao.updateUserInfo",pageData);
+    }
+
 
 }
