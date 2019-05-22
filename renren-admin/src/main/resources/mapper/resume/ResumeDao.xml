@@ -12,10 +12,10 @@
         LEFT JOIN `corporation` c ON c.`id`=cu.`corid`
         <where>
             c.`id`=#{pd.corId,jdbcType=INTEGER}
-            <if test="pd.name != null">
+            <if test="pd.name != null and pd.name != ''">
                 AND u.`name` LIKE CONCAT('%',#{pd.name,jdbcType=VARCHAR},'%')
             </if>
-            <if test="pd.persionNum != null">
+            <if test="pd.persionNum != null and pd.persionNum != ''">
                 AND u.`persionnum` LIKE CONCAT('%',#{pd.persionNum,jdbcType=VARCHAR},'%')
             </if>
             <if test="pd.status == 0">
