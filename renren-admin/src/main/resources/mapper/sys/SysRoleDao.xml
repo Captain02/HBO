@@ -41,7 +41,7 @@
 
     <insert id="save">
         INSERT INTO sys_role(`role_name`,`corid`,`dept_id`)
-        VALUES (#{roleName,jdbcType=VARCHAR},#{corId,jdbcType=INTEGER},#{deptId,jdbcType=INTEGER})
+        VALUES (#{roleName,jdbcType=VARCHAR},#{corId,jdbcType=INTEGER},#{remark,jdbcType=VARCHAR})
     </insert>
 
     <!--删除角色权限-->
