@@ -39,6 +39,13 @@ public class WechartController {
             String log = "name =" + name + "     value =" + value;
             System.out.println(log);
         }
+        PrintWriter out = response.getWriter();
+
+        String echostr = request.getParameter("echostr");
+        out.print(echostr);
+        out.close();
+        out = null;
+
 
 
         return R.ok();
