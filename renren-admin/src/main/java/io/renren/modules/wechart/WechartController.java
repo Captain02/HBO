@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
+import java.util.Enumeration;
 
 @RestController
 @RequestMapping("/wechart")
@@ -18,19 +19,29 @@ public class WechartController {
 
     @GetMapping("/wechart")
     public R getOpenid(HttpServletRequest request,HttpServletResponse response) throws IOException {
-        System.out.println("CallBackAction begin at {}"+new Date().getTime());
-        String openid = request.getParameter("openid");
-        System.out.println("openid"+openid);
-        String code = request.getParameter("code");
-        System.out.println("获到的 code is : {} "+ code);
-        String redirectUrl = acquireOpenIDUrlWithCode(code);
-        System.out.println("redirectUrl is : {}"+redirectUrl);
-        String responseText = HttpClientUtil.doGet(redirectUrl);
-        System.out.println("responseText is : {}"+ redirectUrl+ responseText);
+//        System.out.println("CallBackAction begin at {}"+new Date().getTime());
+//        String openid = request.getParameter("openid");
+//        System.out.println("openid"+openid);
+//        String code = request.getParameter("code");
+//        System.out.println("获到的 code is : {} "+ code);
+//        String redirectUrl = acquireOpenIDUrlWithCode(code);
+//        System.out.println("redirectUrl is : {}"+redirectUrl);
+//        String responseText = HttpClientUtil.doGet(redirectUrl);
+//        System.out.println("responseText is : {}"+ redirectUrl+ responseText);
+//
+//        System.out.println("=======================================");
+        Enumeration pNames = request.getParameterNames();
+        while (pNames.hasMoreElements()) {
+            String name = (String) pNames.nextElement();
+            String value = request.getParameter(name);
+            // out.print(name + "=" + value);
 
-        System.out.println("=======================================");
+            String log = "name =" + name + "     value =" + value;
+            System.out.println(log);
+        }
 
-        return R.ok().put("responseText",responseText);
+
+        return R.ok();
     }
 
     private String acquireOpenIDUrlWithCode(String code) {
