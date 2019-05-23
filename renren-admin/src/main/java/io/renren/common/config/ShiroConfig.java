@@ -109,7 +109,6 @@ public class ShiroConfig {
         filterRuleMap.put("/favicon.ico", "anon");
         filterRuleMap.put("/captcha.jpg", "anon");
         filterRuleMap.put("/wechart/wechart", "anon");
-        filterRuleMap.put("/", "anon");
         //filterMap.put("/**", "authc");
         filterRuleMap.put("/**", "jwt");
 
