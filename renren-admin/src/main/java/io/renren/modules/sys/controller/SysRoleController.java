@@ -9,6 +9,7 @@
 package io.renren.modules.sys.controller;
 
 import io.renren.common.annotation.SysLog;
+import io.renren.common.controller.BaseController;
 import io.renren.common.entity.Page;
 import io.renren.common.entity.PageData;
 import io.renren.common.util.Tools;
@@ -37,7 +38,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/sys/role")
-public class SysRoleController extends AbstractController {
+public class SysRoleController extends BaseController {
 	@Autowired
 	private SysRoleService sysRoleService;
 	@Autowired
@@ -48,12 +49,16 @@ public class SysRoleController extends AbstractController {
 	/**
 	 * 角色列表
 	 */
-	@GetMapping("/list")
+	@PostMapping("/list")
 //	@RequiresPermissions("sys:role:list")
 	public R list(Page page) throws Exception {
         //接收并校验参数
-        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-        PageData pageData = new PageData(request);
+//        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+//        PageData pageData = new PageData(request);
+        PageData pageData = this.getPageData();
+        if(!page.getPd().containsKey("currPage")){
+            page.setPageSize(Integer.MAX_VALUE);
+        }
         CheckParameterUtil.checkParameterMap(pageData,"corId");
         //查询
         page.setPd(pageData);
