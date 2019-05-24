@@ -49,7 +49,7 @@ public class SysRoleController extends AbstractController {
 	 * 角色列表
 	 */
 	@GetMapping("/list")
-	@RequiresPermissions("sys:role:list")
+//	@RequiresPermissions("sys:role:list")
 	public R list(Page page) throws Exception {
         //接收并校验参数
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
@@ -66,7 +66,7 @@ public class SysRoleController extends AbstractController {
 	 * 角色列表
 	 */
 	@RequestMapping("/select")
-	@RequiresPermissions("sys:role:select")
+//	@RequiresPermissions("sys:role:select")
 	public R select(){
 		List<SysRoleEntity> list = sysRoleService.list();
 		
@@ -78,7 +78,7 @@ public class SysRoleController extends AbstractController {
 	 * @return
 	 */
 	@GetMapping("/selectRoleById")
-	@RequiresPermissions("sys:dept:select")
+//	@RequiresPermissions("sys:role:select")
 	public R selectRoleById() throws Exception {
 		//接收并校验参数
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
@@ -95,7 +95,7 @@ public class SysRoleController extends AbstractController {
 	 * 角色信息
 	 */
 	@RequestMapping("/info/{roleId}")
-	@RequiresPermissions("sys:role:info")
+//	@RequiresPermissions("sys:role:info")
 	public R info(@PathVariable("roleId") Long roleId){
 		SysRoleEntity role = sysRoleService.getById(roleId);
 		
@@ -115,7 +115,7 @@ public class SysRoleController extends AbstractController {
 	 */
 	@SysLog("保存角色")
 	@PostMapping("/save")
-	@RequiresPermissions("sys:role:save")
+//	@RequiresPermissions("sys:role:add")
 	public R save() throws Exception {
         //接收并校验参数
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
@@ -133,7 +133,7 @@ public class SysRoleController extends AbstractController {
 	 */
 	@SysLog("修改角色")
 	@PostMapping("/update")
-	@RequiresPermissions("sys:role:update")
+//	@RequiresPermissions("sys:role:update")
 	public R update() throws Exception {
         //接收并校验参数
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
@@ -149,7 +149,7 @@ public class SysRoleController extends AbstractController {
 	 */
 	@SysLog("删除角色")
 	@GetMapping("/delete")
-	@RequiresPermissions("sys:role:delete")
+//	@RequiresPermissions("sys:role:delete")
 	public R delete() throws Exception {
         //接收并校验参数
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
