@@ -221,7 +221,7 @@
     <select id="getUserPermission" resultType="io.renren.common.entity.PageData">
         SELECT DISTINCT IFNULL(m.perms,''),m.`name`,m.`url`,m.`perms`,
         m.`type`,m.`icon`,m.`order_num`,m.`hidden`,m.`title`,m.`redirect`,
-        m.`always_show`,m.`use_cache`,m.`query` FROM sys_menu m
+        m.`always_show`,m.`use_cache`,m.`query`,m.`menu_id` FROM sys_menu m
         LEFT JOIN sys_role_menu rm ON rm.`menu_id` = m.`menu_id`
 		WHERE rm.role_id = #{roleid}
     </select>
