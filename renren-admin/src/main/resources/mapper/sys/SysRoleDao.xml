@@ -8,7 +8,7 @@
         LEFT JOIN  `sys_dept` d1 ON d1.`dept_id`=r.`dept_id`
         WHERE r.`del_flag` = 0
         AND r.`corid`= #{pd.corId,jdbcType=INTEGER}
-        <if test="pd.roleName != null">
+        <if test="pd.roleName != null and pd.roleName !=''">
             AND r.`role_name` LIKE CONCAT('%',#{pd.roleName,jdbcType=VARCHAR},'%')
         </if>
     </select>
