@@ -27,7 +27,7 @@
                 `role_name`=#{roleName,jdbcType=VARCHAR},
             </if>
             <if test="remark!=null">
-                `remark`=#{orderNum,jdbcType=VARCHAR},
+                `remark`=#{remark,jdbcType=VARCHAR},
             </if>
             <if test="delFlag!=null">
                 `del_flag`=#{delFlag,jdbcType=INTEGER},
@@ -40,7 +40,7 @@
     </update>
 
     <insert id="save">
-        INSERT INTO sys_role(`role_name`,`corid`,`dept_id`)
+        INSERT INTO sys_role(`role_name`,`corid`,`remark`)
         VALUES (#{roleName,jdbcType=VARCHAR},#{corId,jdbcType=INTEGER},#{remark,jdbcType=VARCHAR})
     </insert>
 
