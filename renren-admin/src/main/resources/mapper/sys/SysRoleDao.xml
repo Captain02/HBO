@@ -14,7 +14,7 @@
     </select>
 
     <select id="selectRoleById" resultType="io.renren.common.entity.PageData">
-        SELECT r.`role_name`,r.`corid`,r.`remark`,r.`role_id`
+        SELECT r.`role_name`,r.`corid`,r.`remark`,r.`role_id`,r.`create_time`
         FROM sys_role r
         WHERE r.`del_flag` = 0
         AND r.`role_id`= #{roleId,jdbcType=INTEGER}
