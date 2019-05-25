@@ -262,7 +262,15 @@ public class ResumeController extends BaseController {
                 if(persionnumList.get(i).getValueOfString("persionnum").length()<4){
                     throw new Exception("学号长度不能小于四位");
                 }
+                //截取学号前四位
                 persionnumList.get(i).put("persionnum",persionnumList.get(i).getValueOfString("persionnum").substring(0,4));
+                //相同学号数量合并
+                if(i>0){
+                    if(persionnumList.get(i).getValueOfString("persionnum").equals(persionnumList.get(i-1).getValueOfString("persionnum"))){
+                        persionnumList.get(i).put("num",persionnumList.get(i).getValueOfInteger("num")+persionnumList.get(i-1).getValueOfInteger("num"));
+                        persionnumList.remove(i-1);
+                    }
+                }
             }
             //专业
             pageData.put("column", "collegetie");
