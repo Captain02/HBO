@@ -61,7 +61,7 @@
     </select>
 
     <select id="chart" resultType="io.renren.common.entity.PageData">
-        CALL `chart_count`(#{corId,jdbcType=INTEGER},#{statu,jdbcType=INTEGER},#{column,jdbcType=INTEGER});
+        CALL `chart_count`(#{corId,jdbcType=INTEGER},#{status,jdbcType=INTEGER},#{column,jdbcType=INTEGER});
     </select>
 
     <update id="update">
