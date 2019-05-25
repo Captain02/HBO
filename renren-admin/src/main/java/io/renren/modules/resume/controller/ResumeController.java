@@ -268,7 +268,7 @@ public class ResumeController extends BaseController {
                 if(i>0){
                     if(persionnumList.get(i).getValueOfString("persionnum").equals(persionnumList.get(i-1).getValueOfString("persionnum"))){
                         persionnumList.get(i).put("num",persionnumList.get(i).getValueOfInteger("num")+persionnumList.get(i-1).getValueOfInteger("num"));
-                        persionnumList.remove(i-1);
+                        persionnumList.remove(--i);
                     }
                 }
             }
