@@ -17,35 +17,29 @@ import java.util.Enumeration;
 public class WechartController {
 
     @GetMapping("/wechart/OAuth")
-    public String WeChatOAuth(HttpServletResponse response,HttpServletRequest request) throws IOException {
+    public String WeChatOAuth(HttpServletResponse response, HttpServletRequest request) throws IOException {
+        StringBuffer code = new StringBuffer();
+        StringBuffer state = new StringBuffer();
         Enumeration pNames = request.getParameterNames();
         while (pNames.hasMoreElements()) {
-            String name = (String) pNames.nextElement();
-            String value = request.getParameter(name);
-            // out.print(name + "=" + value);
-
-            String log = "name =" + name + "     value =" + value;
-            System.out.println(log);
+//            String name = (String) pNames.nextElement();
+            code.append(request.getParameter("code"));
+            state.append(request.getParameter("state"));
         }
+        String redirectUrl = acquireOpenIDUrlWithCode(code.toString());
+        String responseText = HttpClientUtil.doGet(redirectUrl);
+        System.out.println("responseText:" + responseText);
         return "BFl3ph7g1kvJ0PUb";
     }
 
     @GetMapping("/wechart/OAuth/MP_verify_BFl3ph7g1kvJ0PUb.txt")
-    public String config(HttpServletResponse response,HttpServletRequest request) throws IOException {
-        Enumeration pNames = request.getParameterNames();
-        while (pNames.hasMoreElements()) {
-            String name = (String) pNames.nextElement();
-            String value = request.getParameter(name);
-            // out.print(name + "=" + value);
+    public String config(HttpServletResponse response, HttpServletRequest request) throws IOException {
 
-            String log = "name =" + name + "     value =" + value;
-            System.out.println(log);
-        }
         return "BFl3ph7g1kvJ0PUb";
     }
 
     @GetMapping("/wechart")
-    public String getOpenid(HttpServletRequest request,HttpServletResponse response) throws IOException {
+    public String getOpenid(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         Enumeration pNames = request.getParameterNames();
         while (pNames.hasMoreElements()) {
@@ -65,8 +59,8 @@ public class WechartController {
 
     private String acquireOpenIDUrlWithCode(String code) {
         StringBuilder sb = new StringBuilder();
-        sb.append("https://api.weixin.qq.com/sns/oauth2/access_token?appid=wxba18404f8cfe70cd&"
-                + "secret=028fc71aeb278ca18a9993aec7a9aa69&code="
+        sb.append("https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx2a89e726a1bf0142&"
+                + "secret=1a6c6a1e57898f0976cc247a13aae7c7&code="
                 + code
                 + "&grant_type=authorization_code");
         return sb.toString();
