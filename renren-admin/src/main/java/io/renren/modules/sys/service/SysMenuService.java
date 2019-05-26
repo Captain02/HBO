@@ -10,6 +10,8 @@ package io.renren.modules.sys.service;
 
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import io.renren.common.entity.Page;
+import io.renren.common.entity.PageData;
 import io.renren.modules.sys.entity.SysMenuEntity;
 
 import java.util.List;
@@ -49,4 +51,8 @@ public interface SysMenuService extends IService<SysMenuEntity> {
 	 * 删除
 	 */
 	void delete(Long menuId);
+
+    PageData getModelCount(PageData pageData) throws Exception;
+
+    List<PageData> menuListPage(Page page) throws Exception;
 }

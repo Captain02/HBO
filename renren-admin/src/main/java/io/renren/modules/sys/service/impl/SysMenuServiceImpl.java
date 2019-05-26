@@ -10,6 +10,9 @@ package io.renren.modules.sys.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import io.renren.common.dao.DaoSupport;
+import io.renren.common.entity.Page;
+import io.renren.common.entity.PageData;
 import io.renren.common.utils.Constant;
 import io.renren.modules.sys.dao.SysMenuDao;
 import io.renren.modules.sys.entity.SysMenuEntity;
@@ -30,6 +33,8 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenuEntity> i
 	private SysUserService sysUserService;
 	@Autowired
 	private SysRoleMenuService sysRoleMenuService;
+	@Autowired
+	private DaoSupport daoSupport;
 	
 	@Override
 	public List<SysMenuEntity> queryListParentId(Long parentId, List<Long> menuIdList) {
@@ -77,7 +82,17 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenuEntity> i
 		sysRoleMenuService.remove(new QueryWrapper<SysRoleMenuEntity>().eq("menu_id", menuId));
 	}
 
-	/**
+	@Override
+	public PageData getModelCount(PageData pageData) throws Exception {
+		return (PageData) daoSupport.findForObject("io.renren.modules.sys.dao.SysMenuDao.getModelCount",pageData);
+	}
+
+    @Override
+    public List<PageData> menuListPage(Page page) throws Exception {
+        return (List<PageData>) daoSupport.findForList("io.renren.modules.sys.dao.SysMenuDao.menuListPage",page);
+    }
+
+    /**
 	 * 获取所有菜单列表
 	 */
 	private List<SysMenuEntity> getAllMenuList(List<Long> menuIdList){
