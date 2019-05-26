@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Cor_userDao">
+    <insert id="save" useGeneratedKeys="true" keyProperty="id">
+          INSERT INTO cor_user(userid,corid) VALUES (#{userId},#{id})
+    </insert>
+    <select id="byUserIdAndCorId" resultType="int">
+        SELECT
+        COUNT(id)
+        FROM
+        cor_user
+        WHERE
+        userid=#{userId}
+        AND corid =#{id}
+    </select>
+</mapper>

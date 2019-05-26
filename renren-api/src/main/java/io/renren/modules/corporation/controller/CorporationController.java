@@ -1,9 +1,13 @@
 package io.renren.modules.corporation.controller;
 
+import io.renren.annotation.Login;
 import io.renren.common.controller.BaseController;
 import io.renren.common.entity.Page;
 import io.renren.common.entity.PageData;
+import io.renren.common.utils.JWTUtil;
 import io.renren.common.utils.R;
+import io.renren.modules.contention.service.Bbs_likeService;
+import io.renren.modules.corporation.service.Cor_userService;
 import io.renren.modules.corporation.service.CorporationService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -14,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -21,8 +26,15 @@ import java.util.Map;
 @RequestMapping("/corporation")
 @Api("社团")
 public class CorporationController extends BaseController{
+
     @Autowired
     CorporationService corporationService;
+
+    @Autowired
+    Bbs_likeService bbs_likeService;
+
+    @Autowired
+    Cor_userService cor_userService;
     /**
      * 获取社团的分页信息
      * @return
@@ -96,6 +108,36 @@ public class CorporationController extends BaseController{
                 return R.ok().put("date",images);
             }
         }catch (Exception e) {
+            e.printStackTrace();
+            return R.error(e.getMessage());
+        }
+    }
+    /**
+     *社团报名
+     * @return
+     */
+    @Login
+    @GetMapping("addCor")
+    @ApiOperation(value ="社团报名", httpMethod = "GET")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "活动id", required = true, dataType = "Integer"),
+    })
+    public R addAct(HttpServletRequest req) {
+        PageData pageData = this.getPageData();
+        String tokenReq = req.getHeader("Authorization"); //从header中获取token
+        String username = JWTUtil.getUsername(tokenReq); //根据token获取username
+        try {
+            Object userId = bbs_likeService.selectId(username);//根据username获取userid
+            pageData.put("userId", Long.valueOf(String.valueOf(userId)));
+            int count = cor_userService.byUserIdAndCorId(pageData);
+            if (count == 1) {
+                return R.ok().put("data", "您已报名该社团,请勿重复操作");//您已报名成功
+            } else if (count == 0) {
+                int cor_user = cor_userService.save(pageData); //保存到社团报名表
+                return R.ok().put("data", "报名成功"); //报名成功
+            } else
+                return R.ok().put("data","");
+        } catch (Exception e) {
             e.printStackTrace();
             return R.error(e.getMessage());
         }
