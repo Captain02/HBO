@@ -17,17 +17,17 @@ import java.util.Enumeration;
 public class WechartController {
 
     @GetMapping("/wechart/OAuth")
-    public String WeChatOAuth(HttpServletResponse response, HttpServletRequest request) throws IOException {
+    public String WeChatOAuth( HttpServletRequest request) throws IOException {
         System.out.println("WeChatOAuth............");
-        StringBuffer code = new StringBuffer();
-        StringBuffer state = new StringBuffer();
-        Enumeration pNames = request.getParameterNames();
-        while (pNames.hasMoreElements()) {
-//            String name = (String) pNames.nextElement();
-            code.append(request.getParameter("code"));
-            state.append(request.getParameter("state"));
-        }
-        System.out.println("code"+code.toString()+"state"+state.toString());
+        String code = request.getParameter("code");
+        String state = request.getParameter("code");
+//        Enumeration pNames = request.getParameterNames();
+//        while (pNames.hasMoreElements()) {
+////            String name = (String) pNames.nextElement();
+//            code.append(request.getParameter("code"));
+//            state.append(request.getParameter("state"));
+//        }
+        System.out.println("code"+code+"state"+state);
 //        String redirectUrl = acquireOpenIDUrlWithCode(code.toString());
 //        String responseText = HttpClientUtil.doGet(redirectUrl);
 //        System.out.println("responseText:" + responseText);
