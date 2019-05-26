@@ -225,4 +225,6 @@
         LEFT JOIN sys_role_menu rm ON rm.`menu_id` = m.`menu_id`
 		WHERE rm.role_id = #{roleid}
     </select>
+
+
 </mapper>

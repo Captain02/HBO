@@ -93,11 +93,11 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
         PageData pageData = new PageData();
         pageData.put("userid", user.getUserId());
         pageData.put("corid", corid);
+        daoSupport.save("io.renren.modules.sys.dao.SysUserDao.saveUserCor",pageData);
 //		pageData.put("deptid", user.getDeptId());
-//		daoSupport.save("io.renren.modules.sys.dao.SysUserDao.saveUserCor",pageData);
 //		daoSupport.save("io.renren.modules.sys.dao.SysUserDao.saveUserDept",pageData);
         //保存用户与角色关系
-        sysUserRoleService.saveOrUpdate(user.getUserId(), user.getRoleIdList());
+//        sysUserRoleService.saveOrUpdate(user.getUserId(), user.getRoleIdList());
     }
 
     @Override
@@ -132,6 +132,15 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
         //daoSupport.batchUpdateBylist("io.renren.modules.sys.dao.SysUserDao.removeUserByIds", list);
         sysUserDao.removeUserByIds(list,corid);
     }
+
+    @Override
+    public void saveUserCor(SysUserEntity user, Long corid) throws Exception {
+        PageData pageData = new PageData();
+        pageData.put("userid", user.getUserId());
+        pageData.put("corid", corid);
+        daoSupport.save("io.renren.modules.sys.dao.SysUserDao.saveUserCor",pageData);
+    }
+
 
     @Override
     public PageData getinfoByid(PageData pageData) throws Exception {
