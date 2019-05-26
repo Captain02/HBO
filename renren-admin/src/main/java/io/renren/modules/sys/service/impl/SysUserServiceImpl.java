@@ -141,6 +141,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
         daoSupport.save("io.renren.modules.sys.dao.SysUserDao.saveUserCor",pageData);
     }
 
+    @Override
+    public SysUserEntity selectUserByUsernameCorporaition(PageData pageData) throws Exception {
+        return (SysUserEntity) daoSupport.findForObject("io.renren.modules.sys.dao.SysUserDao.selectUserByUsernameCorporaition", pageData);
+    }
 
     @Override
     public PageData getinfoByid(PageData pageData) throws Exception {

@@ -144,6 +144,10 @@ public class SysUserController extends BaseController {
 //    @RequiresPermissions("sys:user:save")
     public R save(SysUserEntity user, Long corid) throws Exception {
         PageData pageData = this.getPageData();
+        SysUserEntity isSave = sysUserService.selectUserByUsernameCorporaition(pageData);
+        if (isSave!=null){
+            return R.error("用户已存在");
+        }
         PageData userinfo = sysUserService.selectUserByUsername(pageData);
         if (userinfo!=null){
             sysUserService.saveUserCor(user, corid);

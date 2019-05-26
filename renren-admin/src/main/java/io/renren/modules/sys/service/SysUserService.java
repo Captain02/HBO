@@ -81,4 +81,6 @@ public interface SysUserService extends IService<SysUserEntity> {
     void removeUserByIds(List<Long> collect, Long corid);
 
     void saveUserCor(SysUserEntity user, Long corid) throws Exception;
+
+	SysUserEntity selectUserByUsernameCorporaition(PageData pageData) throws Exception;
 }
