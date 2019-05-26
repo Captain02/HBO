@@ -18,6 +18,7 @@ public class WechartController {
 
     @GetMapping("/wechart/OAuth")
     public String WeChatOAuth(HttpServletResponse response, HttpServletRequest request) throws IOException {
+        System.out.println("WeChatOAuth............");
         StringBuffer code = new StringBuffer();
         StringBuffer state = new StringBuffer();
         Enumeration pNames = request.getParameterNames();
@@ -35,7 +36,16 @@ public class WechartController {
 
     @GetMapping("/wechart/OAuth/MP_verify_BFl3ph7g1kvJ0PUb.txt")
     public String config(HttpServletResponse response, HttpServletRequest request) throws IOException {
-
+        System.out.println("config............");
+        StringBuffer code = new StringBuffer();
+        StringBuffer state = new StringBuffer();
+        Enumeration pNames = request.getParameterNames();
+        while (pNames.hasMoreElements()) {
+//            String name = (String) pNames.nextElement();
+            code.append(request.getParameter("code"));
+            state.append(request.getParameter("state"));
+        }
+        System.out.println("code"+code.toString()+"state"+state.toString());
         return "BFl3ph7g1kvJ0PUb";
     }
 
