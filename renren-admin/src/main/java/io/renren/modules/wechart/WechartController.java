@@ -19,7 +19,7 @@ public class WechartController {
 
     @GetMapping("/MP_verify_BFl3ph7g1kvJ0PUb.txt")
     public String WeChatOAuth(HttpServletResponse response) throws IOException {
-        PrintWriter out = response.getWriter();
+//        PrintWriter out = response.getWriter();
 
 //        String echostr = request.getParameter("echostr");
 //        out.print("BFl3ph7g1kvJ0PUb");
