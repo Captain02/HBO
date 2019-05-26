@@ -16,7 +16,7 @@ import java.util.Enumeration;
 @RestController
 public class WechartController {
 
-    @GetMapping("/wechart/MP_verify_BFl3ph7g1kvJ0PUb.txt")
+    @GetMapping("/wechart/OAuth/MP_verify_BFl3ph7g1kvJ0PUb.txt")
     public String WeChatOAuth(HttpServletResponse response,HttpServletRequest request) throws IOException {
         Enumeration pNames = request.getParameterNames();
         while (pNames.hasMoreElements()) {
