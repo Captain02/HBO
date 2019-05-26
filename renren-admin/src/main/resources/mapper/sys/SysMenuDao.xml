@@ -10,5 +10,15 @@
 	<select id="queryNotButtonList" resultType="io.renren.modules.sys.entity.SysMenuEntity">
 		select * from sys_menu where type != 2 order by order_num asc 
 	</select>
+
+    <select id="getModelCount" resultType="io.renren.common.entity.PageData">
+        SELECT COUNT(DISTINCT  `model`) modelCount FROM `sys_menu`
+    </select>
+
+    <select id="menuListPage" resultType="io.renren.common.entity.PageData">
+        SELECT `menu_id`,`parent_id`,`name`,`url`,`perms`,`type`,`order_num`,`hidden`,`title`,`redirect`,`always_show`,`query`,`use_cache`
+        FROM `sys_menu`
+        WHERE `model`=#{pd.model,jdbcType=INTEGER}
+    </select>
 	
 </mapper>

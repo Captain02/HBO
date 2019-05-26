@@ -9,6 +9,8 @@
 package io.renren.modules.sys.controller;
 
 import io.renren.common.annotation.SysLog;
+import io.renren.common.entity.Page;
+import io.renren.common.entity.PageData;
 import io.renren.common.exception.RRException;
 import io.renren.common.utils.Constant;
 import io.renren.common.utils.R;
@@ -17,12 +19,13 @@ import io.renren.modules.sys.service.SysMenuService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 系统菜单
@@ -59,6 +62,27 @@ public class SysMenuController extends AbstractController {
 		}
 
 		return menuList;
+	}
+
+	/**
+	 * 查询所有权限
+	 */
+	@PostMapping("/menuList")
+//	@RequiresPermissions("sys:menu:list")
+	public R menuList(Page page,HttpServletRequest request) throws Exception {
+        PageData pageData = new PageData(request);
+        page.setPd(pageData);
+        //获取模块数
+        PageData modelCount = sysMenuService.getModelCount(pageData);
+        //封装
+        Map<Integer,Object> map = new HashMap<>();
+        for (int i = 0; i < modelCount.getValueOfInteger("modelCount"); i++) {
+            page.getPd().put("model",i+1);
+            List<PageData> list = sysMenuService.menuListPage(page);
+            map.put(i+1,list);
+        }
+        //返回
+        return R.ok().put("page", page).put("data", map);
 	}
 	
 	/**
