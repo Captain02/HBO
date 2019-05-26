@@ -19,7 +19,7 @@ public class JWTToken implements AuthenticationToken {
         this.corid = corid;
     }
 
-    public JWTToken(String password, String username,Long corid) {
+    public JWTToken(String username,String password, Long corid) {
         this.password = password;
         this.username = username;
         this.corid = corid;
