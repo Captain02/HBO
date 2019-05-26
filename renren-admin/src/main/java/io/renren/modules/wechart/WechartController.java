@@ -17,6 +17,17 @@ import java.util.Enumeration;
 @RequestMapping("/wechart")
 public class WechartController {
 
+    @GetMapping("/MP_verify_BFl3ph7g1kvJ0PUb.txt")
+    public String WeChatOAuth(HttpServletResponse response) throws IOException {
+        PrintWriter out = response.getWriter();
+
+//        String echostr = request.getParameter("echostr");
+//        out.print("BFl3ph7g1kvJ0PUb");
+//        out.close();
+//        out = null;
+        return "BFl3ph7g1kvJ0PUb";
+    }
+
     @GetMapping("/wechart")
     public R getOpenid(HttpServletRequest request,HttpServletResponse response) throws IOException {
 //        System.out.println("CallBackAction begin at {}"+new Date().getTime());
