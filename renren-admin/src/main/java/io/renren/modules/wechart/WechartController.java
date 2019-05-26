@@ -16,8 +16,22 @@ import java.util.Enumeration;
 @RestController
 public class WechartController {
 
-    @GetMapping("/wechart/OAuth/MP_verify_BFl3ph7g1kvJ0PUb.txt")
+    @GetMapping("/wechart/OAuth")
     public String WeChatOAuth(HttpServletResponse response,HttpServletRequest request) throws IOException {
+        Enumeration pNames = request.getParameterNames();
+        while (pNames.hasMoreElements()) {
+            String name = (String) pNames.nextElement();
+            String value = request.getParameter(name);
+            // out.print(name + "=" + value);
+
+            String log = "name =" + name + "     value =" + value;
+            System.out.println(log);
+        }
+        return "BFl3ph7g1kvJ0PUb";
+    }
+
+    @GetMapping("/wechart/OAuth/MP_verify_BFl3ph7g1kvJ0PUb.txt")
+    public String config(HttpServletResponse response,HttpServletRequest request) throws IOException {
         Enumeration pNames = request.getParameterNames();
         while (pNames.hasMoreElements()) {
             String name = (String) pNames.nextElement();
