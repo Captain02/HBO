@@ -19,28 +19,6 @@ public class WechartController {
 
     @GetMapping("/wechart/MP_verify_BFl3ph7g1kvJ0PUb.txt")
     public String WeChatOAuth(HttpServletResponse response,HttpServletRequest request) throws IOException {
-//        PrintWriter out = response.getWriter();
-//
-//        String echostr = request.getParameter("echostr");
-//        out.print("BFl3ph7g1kvJ0PUb");
-//        out.close();
-//        out = null;
-        return "BFl3ph7g1kvJ0PUb";
-    }
-
-    @GetMapping("/wechart")
-    public R getOpenid(HttpServletRequest request,HttpServletResponse response) throws IOException {
-//        System.out.println("CallBackAction begin at {}"+new Date().getTime());
-//        String openid = request.getParameter("openid");
-//        System.out.println("openid"+openid);
-//        String code = request.getParameter("code");
-//        System.out.println("获到的 code is : {} "+ code);
-//        String redirectUrl = acquireOpenIDUrlWithCode(code);
-//        System.out.println("redirectUrl is : {}"+redirectUrl);
-//        String responseText = HttpClientUtil.doGet(redirectUrl);
-//        System.out.println("responseText is : {}"+ redirectUrl+ responseText);
-//
-//        System.out.println("=======================================");
         Enumeration pNames = request.getParameterNames();
         while (pNames.hasMoreElements()) {
             String name = (String) pNames.nextElement();
@@ -50,16 +28,26 @@ public class WechartController {
             String log = "name =" + name + "     value =" + value;
             System.out.println(log);
         }
-        PrintWriter out = response.getWriter();
+        return "BFl3ph7g1kvJ0PUb";
+    }
+
+    @GetMapping("/wechart")
+    public String getOpenid(HttpServletRequest request,HttpServletResponse response) throws IOException {
+
+        Enumeration pNames = request.getParameterNames();
+        while (pNames.hasMoreElements()) {
+            String name = (String) pNames.nextElement();
+            String value = request.getParameter(name);
+            // out.print(name + "=" + value);
+
+            String log = "name =" + name + "     value =" + value;
+            System.out.println(log);
+        }
 
         String echostr = request.getParameter("echostr");
-        out.print(echostr);
-        out.close();
-        out = null;
 
 
-
-        return R.ok();
+        return echostr;
     }
 
     private String acquireOpenIDUrlWithCode(String code) {
