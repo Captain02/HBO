@@ -97,8 +97,8 @@ public class SysUserController extends BaseController {
     /**
      * 修改登录用户密码
      */
-    @SysLog("修改密码")
-    @RequestMapping("/password")
+//    @SysLog("修改密码")
+    @PostMapping("/password")
     public R password() throws Exception {
         PageData pageData = this.getPageData();
         String newPassword = pageData.getValueOfString("newPassword");
@@ -139,19 +139,20 @@ public class SysUserController extends BaseController {
      * 保存用户
      * , String roles
      */
-    @SysLog("保存用户")
+//    @SysLog("保存用户")
     @RequestMapping("/save")
-    @RequiresPermissions("sys:user:save")
+//    @RequiresPermissions("sys:user:save")
     public R save(SysUserEntity user, Long corid) throws Exception {
-//		String[] strings = Tools.str2StrArray(roles, ",");
-//		List<Long> collect = Arrays.stream(strings).map(x -> Long.parseLong(x)).collect(Collectors.toList());
-        System.out.println("---------------" + corid);
-//		ValidatorUtils.validateEntity(user, AddGroup.class);
-//		user.setRoleIdList(collect);
-        user.setPersionnum(user.getUsername());
-        sysUserService.saveUser(user, corid);
-
-        return R.ok();
+        PageData pageData = this.getPageData();
+        PageData userinfo = sysUserService.selectUserByUsername(pageData);
+        if (userinfo!=null){
+            sysUserService.saveUserCor(user, corid);
+            return R.ok();
+        }else {
+            user.setPersionnum(user.getUsername());
+            sysUserService.saveUser(user, corid);
+            return R.ok();
+        }
     }
 
     /**
