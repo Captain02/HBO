@@ -27,10 +27,10 @@ public class WechartController {
 //            code.append(request.getParameter("code"));
 //            state.append(request.getParameter("state"));
 //        }
-        System.out.println("code"+code+"state"+state);
-//        String redirectUrl = acquireOpenIDUrlWithCode(code.toString());
-//        String responseText = HttpClientUtil.doGet(redirectUrl);
-//        System.out.println("responseText:" + responseText);
+        System.out.println("code"+code+"--------------state"+state);
+        String redirectUrl = acquireOpenIDUrlWithCode(code);
+        String responseText = HttpClientUtil.doGet(redirectUrl);
+        System.out.println("responseText:" + responseText);
         return "BFl3ph7g1kvJ0PUb";
     }
 
