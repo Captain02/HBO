@@ -21,12 +21,6 @@ public class WechartController {
         System.out.println("WeChatOAuth............");
         String code = request.getParameter("code");
         String state = request.getParameter("code");
-//        Enumeration pNames = request.getParameterNames();
-//        while (pNames.hasMoreElements()) {
-////            String name = (String) pNames.nextElement();
-//            code.append(request.getParameter("code"));
-//            state.append(request.getParameter("state"));
-//        }
         System.out.println("code"+code+"--------------state"+state);
         String redirectUrl = acquireOpenIDUrlWithCode(code);
         String responseText = HttpClientUtil.doGet(redirectUrl);
