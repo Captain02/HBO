@@ -1,5 +1,7 @@
 package io.renren.modules.wechart;
 
+import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.renren.common.utils.R;
 import org.springframework.http.HttpRequest;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,15 +19,19 @@ import java.util.Enumeration;
 public class WechartController {
 
     @GetMapping("/wechart/OAuth")
-    public String WeChatOAuth( HttpServletRequest request) throws IOException {
+    public R WeChatOAuth( HttpServletRequest request) throws IOException {
         System.out.println("WeChatOAuth............");
         String code = request.getParameter("code");
         String state = request.getParameter("code");
         System.out.println("code"+code+"--------------state"+state);
         String redirectUrl = acquireOpenIDUrlWithCode(code);
         String responseText = HttpClientUtil.doGet(redirectUrl);
+
+        JSONObject wechatEntity = JSONObject.parseObject(responseText);
+        String openid = wechatEntity.getString("openid");
+        System.out.println("openid:"+openid);
         System.out.println("responseText:" + responseText);
-        return "BFl3ph7g1kvJ0PUb";
+        return R.ok();
     }
 
     @GetMapping("/wechart/OAuth/MP_verify_BFl3ph7g1kvJ0PUb.txt")
