@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ActivityDao">
+    <select id="activitylistPage" resultType="io.renren.common.entity.PageData">
+        SELECT c.`actname`,c.`actstarttame`,c.`actendtime`,c.`createtime`,c.`crowdpeople`,
+            c1.`corname`,f.`filepath`,COUNT(DISTINCT l.`userid`) likeCount,COUNT(DISTINCT c2.`userid`) collectionCount
+        FROM `coractivity` c
+        LEFT JOIN `corporation` c1 ON c1.`id` = c.`actcorid`
+        LEFT JOIN `sys_user` u ON u.`user_id` = c.`actleading`
+        LEFT JOIN `filetable` f ON f.`id` = u.`fileid`
+        LEFT JOIN `bbs_like` l ON l.`topicid` = c.`actid`
+        LEFT JOIN `bbs_collection` c2 ON c2.`topicid` = c.`actcorid`
+        WHERE c1.`id`=#{pd.corId}
+        GROUP BY c.`actid`
+
+    </select>
+</mapper>

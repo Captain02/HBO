@@ -10,7 +10,7 @@
     </resultMap>
 
     <select id="imagelistPage" resultType="io.renren.common.entity.PageData">
-        SELECT * FROM images where corid = #{pd.corid}
+        SELECT * FROM images where corid = #{pd.corId}
     </select>
 
     <insert id="save" useGeneratedKeys="true" keyProperty="id">
@@ -23,7 +23,7 @@
                     <select Last_insert_id() as id
                 </selectKey>
         -->
-        INSERT INTO images(imagename,url,corid) VALUES (#{imagename},#{url},#{corid})
+        INSERT INTO images(imagename,url,corid) VALUES (#{imagename},#{url},#{corId})
     </insert>
 
     <delete id="delete">
