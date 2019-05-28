@@ -159,6 +159,10 @@ public class QrCodeUtils {
      */
     public static void mkdirs(File file) {
         //File file = new File(destPath,filename);
+//        File parentFile = file.getParentFile();
+        System.out.println("parentFileexists:"+file.getParentFile().exists());
+        System.out.println("parentFile:"+file.getParentFile());
+//        boolean exists = file.getParentFile().exists();
         if (!file.getParentFile().exists()) {
             file.getParentFile().mkdirs();
         }

@@ -1,6 +1,7 @@
 package io.renren.modules.corporation.controller;
 
 import io.renren.common.controller.BaseController;
+import io.renren.common.dao.DaoSupport;
 import io.renren.common.entity.Page;
 import io.renren.common.entity.PageData;
 import io.renren.common.util.DateTool;
@@ -13,6 +14,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,6 +33,13 @@ public class CorporationController extends BaseController {
     private CorporationService corporationService;
     @Autowired
     private DictService dictService;
+
+    @Autowired
+    DaoSupport daoSupport;
+
+    //文件上传路径
+    @Value("${fileUploudPath}")
+    public String FILEUPLOUD;
 
     /**
      * 获取社团详情
@@ -104,13 +113,9 @@ public class CorporationController extends BaseController {
         CheckParameterUtil.checkParameterMap(pageData,parameters);
         //添加社团
         try {
-            //创建二维码
-            String url = "https://www.baidu.com";
-            String path = QrCodeUtils.encodeByqrCodeName(url,request.getSession().getServletContext().getRealPath("/HBO/upload/QrCode/"),pageData.get("corname").toString());
 //            System.out.println("request.getContextPath(): "+request.getContextPath()+"/upload/QrCode/");
-            System.out.println("文件存放位置："+request.getSession().getServletContext().getRealPath("/HBO/upload/QrCode/"));
-            pageData.put("filePath", path);
             pageData.put("fileName", DateTool.dateToStringYYHHDD(new Date())+pageData.get("corname").toString()+".jpg");
+            pageData.put("filePath", FILEUPLOUD+"/file/QrCode/"+pageData.getValueOfString("fileName"));
             //获取所属学院id
             pageData.put("value", pageData.get("corcollege").toString());
             List<PageData> pageDataList = dictService.selectByValue(pageData);
@@ -121,6 +126,9 @@ public class CorporationController extends BaseController {
             pageData.put("corfaculty", pageDataList.get(0).get("id"));
             //添加社团
             corporationService.add(pageData);
+            //创建二维码
+            String url = "http://140.143.201.244:82/#/code-map?Id=";
+            QrCodeUtils.encodeByqrCodeName(url+pageData.getValueOfInteger("id"),FILEUPLOUD+"/file/QrCode/",pageData.get("corname").toString());
             return R.ok().put("data", pageData);
         } catch (Exception e) {
             e.printStackTrace();
