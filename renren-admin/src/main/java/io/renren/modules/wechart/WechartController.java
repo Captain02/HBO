@@ -22,7 +22,7 @@ public class WechartController {
     public R WeChatOAuth( HttpServletRequest request) throws IOException {
         System.out.println("WeChatOAuth............");
         String code = request.getParameter("code");
-        String state = request.getParameter("code");
+        String state = request.getParameter("state");
         System.out.println("code"+code+"--------------state"+state);
         String redirectUrl = acquireOpenIDUrlWithCode(code);
         String responseText = HttpClientUtil.doGet(redirectUrl);
