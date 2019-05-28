@@ -115,7 +115,7 @@ public class CorporationController extends BaseController {
         try {
 //            System.out.println("request.getContextPath(): "+request.getContextPath()+"/upload/QrCode/");
             pageData.put("fileName", DateTool.dateToStringYYHHDD(new Date())+pageData.get("corname").toString()+".jpg");
-            pageData.put("filePath", FILEUPLOUD+"/file/QrCode/"+pageData.getValueOfString("fileName"));
+            pageData.put("filePath", "/file/QrCode/"+pageData.getValueOfString("fileName"));
             //获取所属学院id
             pageData.put("value", pageData.get("corcollege").toString());
             List<PageData> pageDataList = dictService.selectByValue(pageData);
