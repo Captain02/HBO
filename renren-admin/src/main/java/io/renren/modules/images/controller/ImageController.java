@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/img")
+@RequestMapping("/sys/img")
 @Api(value = "/sys/img", tags = "社团相册模块")
 public class ImageController extends BaseController {
 
