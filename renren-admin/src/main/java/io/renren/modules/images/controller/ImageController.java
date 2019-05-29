@@ -94,7 +94,7 @@ public class ImageController extends BaseController {
     @ApiOperation(value = "单个文件上传", notes = "单个文件上传", httpMethod = "POST")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "form", name = "picture", value = "图片文件", required = true, dataType = "File"),
-            @ApiImplicitParam(name = "corid", value = "社团id", required = true, dataType = "Integer")
+            @ApiImplicitParam(name = "corId", value = "社团id", required = true, dataType = "Integer")
     })
     public R save(@RequestParam("picture") MultipartFile picture, HttpServletRequest request) {
         System.out.println("执行了单个文件上传");
@@ -125,7 +125,7 @@ public class ImageController extends BaseController {
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "form", name = "picture", value = "多个图片文件",
                     allowMultiple=true,required = true, dataType = "File"),
-            @ApiImplicitParam(name = "corid", value = "社团id", required = true, dataType = "Integer")
+            @ApiImplicitParam(name = "corId", value = "社团id", required = true, dataType = "Integer")
     })
     public R batch(@RequestParam("picture") MultipartFile[] picture, HttpServletRequest request) {
         System.out.println("执行了多个文件上传");
