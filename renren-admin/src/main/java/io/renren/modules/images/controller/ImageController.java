@@ -25,7 +25,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/img")
-@Api(value = "/img", tags = "社团相册模块")
+@Api(value = "/sys/img", tags = "社团相册模块")
 public class ImageController extends BaseController {
 
     @Autowired
@@ -38,7 +38,7 @@ public class ImageController extends BaseController {
      *
      * @return
      */
-    @PostMapping("/list")
+    @GetMapping("/list")
     @ApiOperation(value = "根据社团id获取社团相册", notes = "根据社团id获取社团相册", httpMethod = "GET")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "corId", value = "社团id", required = true, dataType = "Integer"),
