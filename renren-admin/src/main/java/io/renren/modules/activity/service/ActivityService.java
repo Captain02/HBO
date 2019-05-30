@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface ActivityService {
     List<PageData> activityListPage(Page page) throws Exception;
+
+    void add(PageData pageData) throws Exception;
 }

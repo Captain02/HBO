@@ -4,28 +4,66 @@
 <mapper namespace="ActivityDao">
 
     <resultMap id="activityPageData" type="io.renren.common.entity.PageData">
-        <collection property="pd.states" javaType="ArrayList" ofType="pd.states" column="states" select="selectActprocessForActivity">
+        <id column="actid" property="actId"></id>
+        <collection property="processnodes"
+                    column="{pd.actId=actId}" select="ActprocessDao.selectActprocessForActivity">
         </collection>
     </resultMap>
 
     <select id="activitylistPage" resultMap="activityPageData">
-        select c.`actname`,c.`actstarttame`,c.`actendtime`,c.`createtime`,c.`crowdpeople`,
-            c1.`corname`,f.`filepath`,a.`states`,a.`processnode`,a.`proid`,
-            count(distinct l.`userid`) likeCount,
-            count(DISTINCT c2.`userid`) collectionCount
-        from `coractivity` c
-        left join `corporation` c1 on c1.`id` = c.`actcorid`
-        left join `sys_user` u on u.`user_id` = c.`actleading`
-        left join `filetable` f on f.`id` = u.`fileid`
-        left join `bbs_like` l on l.`topicid` = c.`actid`
-        left join `bbs_collection` c2 on c2.`topicid` = c.`actcorid`
-        LEFT JOIN `actprocess` a ON c.`actid` = a.`actid`
-        WHERE c1.`id`=#{pd.corId,jdbcType=INTEGER}
-        group by c.`actid`,a.`states`,a.`processnode`,a.`proid`
-        order by a.`proid`
+        SELECT c.`actname`,c.`actstarttame`,c.`actendtime`,c.`createtime`,c.`crowdpeople`,c.`actid`,
+        c1.`corname`,f.`filepath`,
+        COUNT(DISTINCT l.`userid`) likeCount,
+        COUNT(DISTINCT c2.`userid`) collectionCount
+        FROM `coractivity` c
+        LEFT JOIN `corporation` c1 ON c1.`id` = c.`actcorid`
+        LEFT JOIN `sys_user` u ON u.`user_id` = c.`actleading`
+        LEFT JOIN `filetable` f ON f.`id` = u.`fileid`
+        LEFT JOIN `bbs_like` l ON l.`topicid` = c.`actid`
+        LEFT JOIN `bbs_collection` c2 ON c2.`topicid` = c.`actcorid`
+        <if test="pd.corId!=null">
+            WHERE c1.`id`=#{pd.corId,jdbcType=INTEGER}
+        </if>
+        GROUP BY c.`actid`
     </select>
 
-    <select id="selectActprocessForActivity" resultType="io.renren.common.entity.PageData">
-        SELECT * FROM `actprocess` WHERE actid = #{pd.actId,jdbcType=INTEGER} ORDER BY `proid`
-    </select>
+    <!--<select id="selectActprocessForActivity" resultType="io.renren.common.entity.PageData">
+        SELECT `actid`,`proid`,`processnode`,`states` FROM `actprocess` WHERE actid = #{pd.actId,jdbcType=INTEGER} ORDER BY `proid`
+    </select>-->
+
+    <insert id="add" useGeneratedKeys="true" keyProperty="actId">
+        insert into `coractivity` (`actname`,`actstarttame`,`actendtime`,`actleading`,`crowdpeople`,`profile`
+        <trim prefix="," suffixOverrides=",">
+            <if test="actDetails!=null">
+                `actdetails`,
+            </if>
+            <if test="videoId!=null">
+                `videoid`,
+            </if>
+            <if test="imageId!=null">
+                `images`,
+            </if>
+            <if test="fileId!=null">
+                `fileid`,
+            </if>
+        </trim>
+        )
+        values(#{actName,jdbcType=VARCHAR},#{actStartTime,jdbcType=VARCHAR},#{actEndTime,jdbcType=VARCHAR},#{actLeader,jdbcType=INTEGER},
+        #{croWdPeople,jdbcType=INTEGER},#{profile,jdbcType=VARCHAR}
+        <trim prefix="," suffixOverrides=",">
+            <if test="actDetails!=null">
+                #{actDetails,jdbcType=VARCHAR},
+            </if>
+            <if test="videoId!=null">
+                #{videoId,jdbcType=INTEGER},
+            </if>
+            <if test="imageId!=null">
+                #{imageId,jdbcType=INTEGER},
+            </if>
+            <if test="fileId!=null">
+                #{fileId,jdbcType=INTEGER},
+            </if>
+        </trim>
+        )
+    </insert>
 </mapper>

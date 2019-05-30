@@ -109,13 +109,13 @@ public class CorporationController extends BaseController {
     public R add(HttpServletRequest request) {
         PageData pageData = this.getPageData();
         //校验参数
-        String[] parameters = {"url","corname","corleading","cortercher","corworkspace","corcollege","corfaculty","corscale"};
+        String[] parameters = {"corname","corleading","cortercher","corworkspace","corcollege","corfaculty","corscale"};
         CheckParameterUtil.checkParameterMap(pageData,parameters);
         //添加社团
         try {
 //            System.out.println("request.getContextPath(): "+request.getContextPath()+"/upload/QrCode/");
             pageData.put("fileName", DateTool.dateToStringYYHHDD(new Date())+pageData.get("corname").toString()+".jpg");
-            pageData.put("filePath", "/file/QrCode/"+pageData.getValueOfString("fileName"));
+            pageData.put("filePath", "/file/QrCode/Corporation/"+pageData.getValueOfString("fileName"));
             //获取所属学院id
             pageData.put("value", pageData.get("corcollege").toString());
             List<PageData> pageDataList = dictService.selectByValue(pageData);
@@ -128,7 +128,7 @@ public class CorporationController extends BaseController {
             corporationService.add(pageData);
             //创建二维码
             String url = "http://140.143.201.244:82/#/code-map?Id=";
-            QrCodeUtils.encodeByqrCodeName(url+pageData.getValueOfInteger("id"),FILEUPLOUD+"/file/QrCode/",pageData.get("corname").toString());
+            QrCodeUtils.encodeByqrCodeName(url+pageData.getValueOfInteger("id"),FILEUPLOUD+"/file/QrCode/Corporation/",pageData.get("corname").toString());
             return R.ok().put("data", pageData);
         } catch (Exception e) {
             e.printStackTrace();
