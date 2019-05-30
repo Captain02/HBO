@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ActprocessDao">
+
+
+   <select id="selectActprocessForActivity" resultType="io.renren.common.entity.PageData">
+        SELECT `actid`,`proid`,`processnode`,`states` FROM `actprocess` WHERE actid = #{pd.actId,jdbcType=INTEGER} ORDER BY `proid`
+    </select>
+
+    <insert id="add">
+      insert into `actprocess`(`actid`,`processnode`,`states`)
+      values( #{actId,jdbcType=INTEGER}, #{processNode,jdbcType=VARCHAR}, #{states,jdbcType=INTEGER})
+    </insert>
+
+</mapper>
