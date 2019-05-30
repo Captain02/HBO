@@ -129,7 +129,7 @@
 
     <!--saveUserCor-->
     <insert id="saveUserCor">
-		INSERT INTO cor_user (userid,corid)VALUES (#{userid},#{corid})
+		INSERT INTO cor_user (userid,corid,status)VALUES (#{userid},#{corid},1)
 	</insert>
     <!--查询用户是
     否有部门-->
