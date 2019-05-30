@@ -77,8 +77,10 @@ public class ImageController extends BaseController {
         PageData pageData = this.getPageData();
         CheckParameterUtil.checkParameterMap(pageData, new String[]{"url", "id"});
         System.out.println(pageData.toString());
-        String url = (String) pageData.get("url");
-        if (commService.deleteFile(url) && imageService.del(pageData)) {
+        //(String) pageData.get("url")
+        StringBuffer url = new StringBuffer();
+        url.append("/home/docker/nginx").append((String) pageData.get("url"));
+        if (commService.deleteFile(url.toString()) && imageService.del(pageData)) {
             return R.ok("删除成功");
         } else {
             return R.error("删除失败");
