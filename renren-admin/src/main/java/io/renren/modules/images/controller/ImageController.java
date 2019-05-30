@@ -80,6 +80,7 @@ public class ImageController extends BaseController {
         //(String) pageData.get("url")
         StringBuffer url = new StringBuffer();
         url.append("/home/docker/nginx").append((String) pageData.get("url"));
+        System.out.println("delurl"+url);
         if (commService.deleteFile(url.toString()) && imageService.del(pageData)) {
             return R.ok("删除成功");
         } else {
