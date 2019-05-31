@@ -8,6 +8,10 @@ import org.springframework.context.ApplicationContext;
  * 修改日期：2015/11/2
 */
 public class Const {
+	public static final Integer CORPORATION_TYPE = 1;	//社团类型
+	public static final Integer DEPT_TYPE = 2;	//部门类型
+	public static final Integer ACTIVITY_TYPE = 3;	//活动类型
+
 	public static final String SESSION_SECURITY_CODE = "sessionSecCode";	//验证码
 	public static final String SESSION_USER = "sessionUser";				//session用的用户
 	public static final String SESSION_ROLE_RIGHTS = "sessionRoleRights";

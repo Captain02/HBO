@@ -4,6 +4,7 @@ import io.renren.common.commBusiness.commService.CommService;
 import io.renren.common.controller.BaseController;
 import io.renren.common.entity.Page;
 import io.renren.common.entity.PageData;
+import io.renren.common.util.Const;
 import io.renren.common.util.DateTool;
 import io.renren.common.utils.CheckParameterUtil;
 import io.renren.common.utils.QrCodeUtils;
@@ -60,7 +61,7 @@ public class ActivityController extends BaseController {
     @PostMapping("/add")
     public R add(@RequestParam(value = "video", required = false) MultipartFile video, @RequestParam(value = "image", required = false) MultipartFile image, HttpServletRequest request) throws Exception {
         PageData pageData = this.getPageData();
-        CheckParameterUtil.checkParameterMap(pageData, "actName", "actLeader", "actStartTime", "actEndTime", "croWdPeople", "profile", "processNodes");
+        CheckParameterUtil.checkParameterMap(pageData, "actCorId","actName", "actLeader", "actStartTime", "actEndTime", "croWdPeople", "profile", "processNodes");
         pageData.put("fileName", DateTool.dateToStringYYHHDD(new Date()) + pageData.get("actName").toString() + ".jpg");
         pageData.put("filePath", "/file/QrCode/Activity/" + pageData.getValueOfString("fileName"));
         //上传宣传图
@@ -79,8 +80,8 @@ public class ActivityController extends BaseController {
         pageData.put("states", 0);
         activityService.add(pageData);
         //创建二维码
-        String url = "http://140.143.201.244:82/#/code-map?Id=";
-        QrCodeUtils.encodeByqrCodeName(url + pageData.getValueOfInteger("id"), FILEUPLOUD + "/file/QrCode/Activity/", pageData.get("actName").toString());
+        String url = "http://140.143.201.244:82/#/code-map?Id="+pageData.getValueOfInteger("id")+"&type="+ Const.ACTIVITY_TYPE;
+        QrCodeUtils.encodeByqrCodeName(url, FILEUPLOUD + "/file/QrCode/Activity/", pageData.get("actName").toString());
         return R.ok().put("data", pageData);
     }
 
