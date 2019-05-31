@@ -81,7 +81,7 @@ public class ActivityController extends BaseController {
         //创建二维码
         String url = "http://140.143.201.244:82/#/code-map?Id=";
         QrCodeUtils.encodeByqrCodeName(url + pageData.getValueOfInteger("id"), FILEUPLOUD + "/file/QrCode/Activity/", pageData.get("actName").toString());
-        return R.ok().put("data", "添加成功");
+        return R.ok().put("data", pageData);
     }
 
     /**
