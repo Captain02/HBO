@@ -99,7 +99,7 @@ public class ActivityController extends BaseController {
             return false;
         }
         pageData.put(key + "Path", filePath);
-        pageData.put(key + "Name", ((MultipartFile) pageData.get(key)).getOriginalFilename());
+        pageData.put(key + "Name", file.getOriginalFilename());
         return true;
     }
 }
