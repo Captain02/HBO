@@ -2,7 +2,6 @@ package io.renren.modules.wechart;
 
 import com.alibaba.fastjson.JSONObject;
 import io.renren.common.entity.PageData;
-import io.renren.common.utils.R;
 import io.renren.modules.sys.service.SysUserService;
 import io.renren.modules.sys.shiro.JWTFilter;
 import org.slf4j.Logger;
@@ -12,7 +11,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
