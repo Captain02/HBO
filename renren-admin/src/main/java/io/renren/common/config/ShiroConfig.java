@@ -8,6 +8,7 @@
 
 package io.renren.common.config;
 
+import io.renren.common.permission.UrlPermissionResolver;
 import io.renren.modules.sys.shiro.JWTFilter;
 import io.renren.modules.sys.shiro.UserRealm;
 import org.apache.shiro.mgt.DefaultSessionStorageEvaluator;
@@ -60,10 +61,25 @@ public class ShiroConfig {
 //    }
 
 //, SessionManager sessionManager
+
+    @Bean
+    public UrlPermissionResolver getUrlPermissionResolver(){
+        return new UrlPermissionResolver();
+    }
+
+    @Bean
+    public UserRealm getUserRealm(){
+        UserRealm userRealm = new UserRealm();
+        userRealm.setPermissionResolver(getUrlPermissionResolver());
+        return  userRealm;
+    }
+
+
+
     @Bean("securityManager")
-    public DefaultWebSecurityManager getManager(UserRealm userRealm) {
+    public DefaultWebSecurityManager getManager() {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
-        securityManager.setRealm(userRealm);
+        securityManager.setRealm(getUserRealm());
 //        securityManager.setSessionManager(sessionManager);
 //        securityManager.setRememberMeManager(null);
         /*
@@ -78,6 +94,7 @@ public class ShiroConfig {
 
         return securityManager;
     }
+
 
 
     @Bean("shiroFilter")
@@ -99,18 +116,23 @@ public class ShiroConfig {
         filterRuleMap.put("/swagger-ui.html", "anon");
         filterRuleMap.put("/webjars/**", "anon");
         filterRuleMap.put("/swagger-resources/**", "anon");
-
         filterRuleMap.put("/statics/**", "anon");
         filterRuleMap.put("/renren-admin/statics/**", "anon");
-        //filterRuleMap.put("/login.html", "anon");
         filterRuleMap.put("/401", "anon");
         filterRuleMap.put("/sys/login", "anon");
         filterRuleMap.put("/sys/getTitleName", "anon");
         filterRuleMap.put("/favicon.ico", "anon");
         filterRuleMap.put("/captcha.jpg", "anon");
         filterRuleMap.put("/wechart/**", "anon");
-        //filterMap.put("/**", "authc");
-        filterRuleMap.put("/**", "jwt");
+        filterRuleMap.put("/sys/comm/getselectes/**", "anon");
+        filterRuleMap.put("/sys/user/password/**", "anon");
+        filterRuleMap.put("/sys/menu/menuList", "anon");
+        filterRuleMap.put("/corporation/selectByCorId/**", "anon");
+        filterRuleMap.put("/sys/corporation/selectByCorId/**", "anon");
+        filterRuleMap.put("/sys/refreshToken", "anon");
+        filterRuleMap.put("/sys/menu/nav", "anon");
+        filterRuleMap.put("/**", "anon");
+//        filterRuleMap.put("/**", "jwt");
 
         shiroFilter.setFilterChainDefinitionMap(filterRuleMap);
 

@@ -1,18 +1,11 @@
 package io.renren.modules.sys.shiro;
 
-import io.renren.modules.sys.controller.ExceptionController;
-import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.authc.BasicHttpAuthenticationFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.ServletRequest;
@@ -24,18 +17,17 @@ import java.io.IOException;
 @Component
 public class JWTFilter extends BasicHttpAuthenticationFilter {
 
-    private Logger LOGGER = LoggerFactory.getLogger(this.getClass());
+    private static final Logger logger = LoggerFactory.getLogger(JWTFilter.class);
 
-    //@Value("${errorPath}")
-//    private String errorPath;
-//
-//    public String getErrorPath() {
-//        return errorPath;
-//    }
-//
-//    public void setErrorPath(String errorPath) {
-//        this.errorPath = errorPath;
-//    }
+
+    @Override
+    protected boolean onAccessDenied(ServletRequest servletRequest, ServletResponse servletResponse) throws Exception {
+        HttpServletRequest request = (HttpServletRequest) servletRequest;
+        HttpServletResponse response = (HttpServletResponse) servletResponse;
+        response.sendRedirect("/HBO/401");
+
+        return false;
+    }
 
     /**
      * 判断用户是否想要登入。
@@ -82,9 +74,16 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
             } catch (Exception e) {
 //                throw new AuthenticationException("Username or password error");
 //                exceptionController.handler401();
-                response401(request, response);
-              //  return false;
+//                response401(request, response);
+                return false;
+                //  return false;
             }
+
+            Subject subject = getSubject(request, response);
+            String url = getPathWithinApplication(request);
+            logger.info("正在访问的Url" + url);
+            System.out.println("=================================" + url);
+            return subject.isPermitted(url);
         }
         return true;
     }
@@ -116,7 +115,6 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
             httpServletResponse.sendRedirect("/HBO/401");
         } catch (IOException e) {
             System.out.println(e.toString());
-            //LOGGER.error(e.getMessage());
         }
     }
 }

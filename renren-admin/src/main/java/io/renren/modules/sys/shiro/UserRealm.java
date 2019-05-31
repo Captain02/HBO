@@ -60,31 +60,42 @@ public class UserRealm extends AuthorizingRealm {
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         SysUserEntity user = (SysUserEntity) principals.getPrimaryPrincipal();
         Long userId = user.getUserId();
+        Long corid = user.getCorid();
 
-        List<String> permsList;
+        List<String> permsList = sysUserDao.queryAllPerms(userId,corid);
 
-        //系统管理员，拥有最高权限
-        if (userId == Constant.SUPER_ADMIN) {
-            List<SysMenuEntity> menuList = sysMenuDao.selectList(null);
-            permsList = new ArrayList<>(menuList.size());
-            for (SysMenuEntity menu : menuList) {
-                permsList.add(menu.getPerms());
-            }
-        } else {
-            permsList = sysUserDao.queryAllPerms(userId,user.getCorid());
-        }
-
-        //用户权限列表
+        SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         Set<String> permsSet = new HashSet<>();
         for (String perms : permsList) {
             if (StringUtils.isBlank(perms)) {
                 continue;
             }
-            permsSet.addAll(Arrays.asList(perms.trim().split(",")));
+            permsSet.addAll(Arrays.asList(perms.trim()));
         }
-
-        SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         info.setStringPermissions(permsSet);
+
+        //系统管理员，拥有最高权限
+//        if (user == Constant.SUPER_ADMIN) {
+////            List<SysMenuEntity> menuList = sysMenuDao.selectList(null);
+////            permsList = new ArrayList<>(menuList.size());
+////            for (SysMenuEntity menu : menuList) {
+////                permsList.add(menu.getPerms());
+////            }
+////        } else {
+////            permsList = sysUserDao.queryAllPerms(userId,user.getCorid());
+////        }
+
+        //用户权限列表
+//        Set<String> permsSet = new HashSet<>();
+//        for (String perms : permsList) {
+//            if (StringUtils.isBlank(perms)) {
+//                continue;
+//            }
+//            permsSet.addAll(Arrays.asList(perms.trim().split(",")));
+//        }
+
+//        SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
+//        info.setStringPermissions(permsSet);
         return info;
     }
 
@@ -102,11 +113,11 @@ public class UserRealm extends AuthorizingRealm {
             username = JWTUtil.getUsername(token);
         }
         if (!StringUtils.isEmpty(jwtToken.getUsername())) {
-            SysUserEntity user = sysUserDao.selectUserByUsernameCorporaition(jwtToken.getUsername(),jwtToken.getCorid());
+            SysUserEntity user = sysUserDao.selectUserByUsernameCorporaition(jwtToken.getUsername(), jwtToken.getCorid());
             //账号锁定
             verifyUser(user);
-            if (user.getPassword().equals(ShiroUtils.sha256(jwtToken.getPassword(),user.getSalt()))) {
-                String signToken = JWTUtil.sign(jwtToken.getUsername(), ShiroUtils.sha256(jwtToken.getPassword(),user.getSalt()));
+            if (user.getPassword().equals(ShiroUtils.sha256(jwtToken.getPassword(), user.getSalt()))) {
+                String signToken = JWTUtil.sign(jwtToken.getUsername(), ShiroUtils.sha256(jwtToken.getPassword(), user.getSalt()));
                 user.setToken(signToken);
                 return new SimpleAuthenticationInfo(user, jwtToken.getPassword(), getName());
             }
@@ -152,7 +163,7 @@ public class UserRealm extends AuthorizingRealm {
     }
 
 
-    private void verifyUser(SysUserEntity user){
+    private void verifyUser(SysUserEntity user) {
         if (user == null) {
             throw new AuthenticationException("User didn't existed!");
         }
