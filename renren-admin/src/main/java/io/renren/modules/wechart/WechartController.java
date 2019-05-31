@@ -58,13 +58,13 @@ public class WechartController {
             }
 
         } else {
-            pcRedirectUrl.append("http://").append(pcConfig).append("/#/result?")
+            pcRedirectUrl.append("redirect:").append("http://").append(pcConfig).append("/#/result?")
                     .append("code=").append(0).append("&openid=").append(openid)
                     .append("&corid=").append(corid).append("&type=").append(type);
             logger.info(pcRedirectUrl.toString());
             return pcRedirectUrl.toString();
         }
-        pcRedirectUrl.append("http://").append(pcConfig).append("/#/result?")
+        pcRedirectUrl.append("redirect:").append("http://").append(pcConfig).append("/#/result?")
                 .append("code=").append(503).append("&openid=").append(openid)
                 .append("&corid=").append(corid).append("&type=").append(type);
         logger.info(pcRedirectUrl.toString());
