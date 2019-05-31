@@ -147,6 +147,17 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
     }
 
     @Override
+    public PageData selectByOpenid(PageData data) throws Exception {
+        return (PageData) daoSupport.
+                findForObject("io.renren.modules.sys.dao.SysUserDao.selectByOpenid", data);
+    }
+
+    @Override
+    public void insertUserCor(PageData usercor) throws Exception {
+        daoSupport.save("io.renren.modules.sys.dao.SysUserDao.insertUserCor",usercor);
+    }
+
+    @Override
     public PageData getinfoByid(PageData pageData) throws Exception {
         PageData forObject = (PageData) daoSupport.findForObject("io.renren.modules.sys.dao.SysUserDao.getinfoByid", pageData);
         return forObject;

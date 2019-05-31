@@ -40,4 +40,6 @@ public interface SysUserDao extends BaseMapper<SysUserEntity> {
 	SysUserEntity selectUserByUsernameCorporaition(@Param("username") String username, @Param("corid") Long corid);
 
     void removeUserByIds(@Param("list") List<Long> list, @Param("corid") Long corid);
+
+
 }

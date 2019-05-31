@@ -83,4 +83,8 @@ public interface SysUserService extends IService<SysUserEntity> {
     void saveUserCor(SysUserEntity user, Long corid) throws Exception;
 
 	SysUserEntity selectUserByUsernameCorporaition(PageData pageData) throws Exception;
+
+    PageData selectByOpenid(PageData data) throws Exception;
+
+	void insertUserCor(PageData usercor) throws Exception;
 }

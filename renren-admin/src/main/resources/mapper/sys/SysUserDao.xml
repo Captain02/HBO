@@ -226,5 +226,15 @@
 		WHERE rm.role_id = #{roleid}
     </select>
 
+    <!--根据openid获得用户信息-->
+    <select id="selectByOpenid" resultType="io.renren.common.entity.PageData">
+        SELECT user_id , username FROM sys_user WHERE openid = #{openid}
+    </select>
+
+    <!--扫码添加社团成员-->
+    <insert id="insertUserCor">
+        INSERT INTO sys_user (userid,corid) VALUES (#{userid},#{corid})
+    </insert>
+
 
 </mapper>

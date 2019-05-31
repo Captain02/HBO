@@ -71,7 +71,9 @@ mybatis-plus:
 #分页信息
 dialect: 'mysql'
 pageSqlId: '.*listPage.*'
+#文件路径
 fileUploudPath: '/home/docker/nginx'
+#地址
 pcConfig: '140.143.201.244:82'
 HBOConfig: '140.143.201.244:8081'
 ##异常路径
