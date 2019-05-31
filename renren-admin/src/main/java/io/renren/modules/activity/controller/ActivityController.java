@@ -58,19 +58,19 @@ public class ActivityController extends BaseController {
      * @return
      */
     @PostMapping("/add")
-    public R add(@RequestParam(value = "image", required = false) MultipartFile image, @RequestParam(value = "video", required = false) MultipartFile video, HttpServletRequest request) throws Exception {
+    public R add(@RequestParam(value = "video", required = false) MultipartFile video, @RequestParam(value = "image", required = false) MultipartFile image, HttpServletRequest request) throws Exception {
         PageData pageData = this.getPageData();
         CheckParameterUtil.checkParameterMap(pageData, "actName", "actLeader", "actStartTime", "actEndTime", "croWdPeople", "profile", "processNodes");
         pageData.put("fileName", DateTool.dateToStringYYHHDD(new Date()) + pageData.get("actName").toString() + ".jpg");
         pageData.put("filePath", "/file/QrCode/Activity/" + pageData.getValueOfString("fileName"));
         //上传宣传图
-        if (image != null) {
+        if (!image.isEmpty()) {
             if (!this.upload(pageData, "image", image, "/file/Activity/images", request)) {
                 return R.error("宣传图上传失败");
             }
         }
         //上传视频
-        if (video != null) {
+        if (!video.isEmpty()) {
             if (!this.upload(pageData, "video", video, "/file/Activity/video", request)) {
                 return R.error("视频上传失败");
             }
