@@ -4,7 +4,7 @@
 <mapper namespace="ResumeDao">
     <select id="resumelistPage" resultType="io.renren.common.entity.PageData">
         SELECT u.`user_id`,u.`name`,u.`email`,u.`gender`,u.`persionnum`,u.`mobile`,cu.`status`,u.`college`,
-        u.`collegetie`,u.`QQ`,u.`wechart`,u.`create_time`,u.`username`,
+        u.`collegetie`,u.`QQ`,u.`wechart`,u.`create_time`,u.`username`,u.`descs`,
         f1.`filepath`
         FROM sys_user u
         LEFT JOIN `filetable` f1 ON f1.`id`=u.`fileid`

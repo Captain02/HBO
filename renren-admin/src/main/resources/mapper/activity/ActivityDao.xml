@@ -21,9 +21,17 @@
         LEFT JOIN `filetable` f ON f.`id` = u.`fileid`
         LEFT JOIN `bbs_like` l ON l.`topicid` = c.`actid`
         LEFT JOIN `bbs_collection` c2 ON c2.`topicid` = c.`actcorid`
-        <if test="pd.corId!=null">
-            WHERE c1.`id`=#{pd.corId,jdbcType=INTEGER}
-        </if>
+        <where>
+            <if test="pd.corId!=null">
+                c1.`id`=#{pd.corId,jdbcType=INTEGER}
+            </if>
+            <if test="pd.actName!=null and pd.actName!=''">
+                AND c.`actname` LIKE CONCAT('%',#{pd.actName,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="pd.isAct!=null">
+                and c.`isact`=#{pd.isAct,jdbcType=INTEGER}
+            </if>
+        </where>
         GROUP BY c.`actid`
     </select>
 
@@ -32,7 +40,7 @@
     </select>-->
 
     <insert id="add" useGeneratedKeys="true" keyProperty="actId">
-        insert into `coractivity` (`actname`,`actstarttame`,`actendtime`,`actleading`,`crowdpeople`,`profile`
+        insert into `coractivity` (`actname`,`actstarttame`,`actendtime`,`actleading`,`crowdpeople`,`profile`,`actcorid`
         <trim prefix="," suffixOverrides=",">
             <if test="actDetails!=null">
                 `actdetails`,
@@ -49,7 +57,7 @@
         </trim>
         )
         values(#{actName,jdbcType=VARCHAR},#{actStartTime,jdbcType=VARCHAR},#{actEndTime,jdbcType=VARCHAR},#{actLeader,jdbcType=INTEGER},
-        #{croWdPeople,jdbcType=INTEGER},#{profile,jdbcType=VARCHAR}
+        #{croWdPeople,jdbcType=INTEGER},#{profile,jdbcType=VARCHAR},#{actCorId,jdbcType=INTEGER}
         <trim prefix="," suffixOverrides=",">
             <if test="actDetails!=null">
                 #{actDetails,jdbcType=VARCHAR},

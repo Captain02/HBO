@@ -4,6 +4,7 @@ import io.renren.common.controller.BaseController;
 import io.renren.common.dao.DaoSupport;
 import io.renren.common.entity.Page;
 import io.renren.common.entity.PageData;
+import io.renren.common.util.Const;
 import io.renren.common.util.DateTool;
 import io.renren.common.utils.CheckParameterUtil;
 import io.renren.common.utils.R;
@@ -127,8 +128,8 @@ public class CorporationController extends BaseController {
             //添加社团
             corporationService.add(pageData);
             //创建二维码
-            String url = "http://140.143.201.244:82/#/code-map?Id=";
-            QrCodeUtils.encodeByqrCodeName(url+pageData.getValueOfInteger("id"),FILEUPLOUD+"/file/QrCode/Corporation/",pageData.get("corname").toString());
+            String url = "http://140.143.201.244:82/#/code-map?Id="+pageData.getValueOfInteger("id")+"&type="+ Const.CORPORATION_TYPE;
+            QrCodeUtils.encodeByqrCodeName(url,FILEUPLOUD+"/file/QrCode/Corporation/",pageData.get("corname").toString());
             return R.ok().put("data", pageData);
         } catch (Exception e) {
             e.printStackTrace();

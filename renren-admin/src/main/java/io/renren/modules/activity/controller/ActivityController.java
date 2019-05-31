@@ -4,6 +4,7 @@ import io.renren.common.commBusiness.commService.CommService;
 import io.renren.common.controller.BaseController;
 import io.renren.common.entity.Page;
 import io.renren.common.entity.PageData;
+import io.renren.common.util.Const;
 import io.renren.common.util.DateTool;
 import io.renren.common.utils.CheckParameterUtil;
 import io.renren.common.utils.QrCodeUtils;
@@ -58,20 +59,20 @@ public class ActivityController extends BaseController {
      * @return
      */
     @PostMapping("/add")
-    public R add(@RequestParam(value = "image", required = false) MultipartFile image, @RequestParam(value = "video", required = false) MultipartFile video, HttpServletRequest request) throws Exception {
+    public R add(@RequestParam(value = "video", required = false) MultipartFile video, @RequestParam(value = "image", required = false) MultipartFile image, HttpServletRequest request) throws Exception {
         PageData pageData = this.getPageData();
-        CheckParameterUtil.checkParameterMap(pageData, "actName", "actLeader", "actStartTime", "actEndTime", "croWdPeople", "profile", "processNodes");
+        CheckParameterUtil.checkParameterMap(pageData, "actCorId","actName", "actLeader", "actStartTime", "actEndTime", "croWdPeople", "profile", "processNodes");
         pageData.put("fileName", DateTool.dateToStringYYHHDD(new Date()) + pageData.get("actName").toString() + ".jpg");
         pageData.put("filePath", "/file/QrCode/Activity/" + pageData.getValueOfString("fileName"));
         //上传宣传图
-        if (image != null) {
-            if (!this.upload(pageData, "image", image, "/file/Activity/images", request)) {
+        if (image != null && !image.isEmpty()) {
+            if (!this.upload(pageData, "image", image, "/file/Activity/images/", request)) {
                 return R.error("宣传图上传失败");
             }
         }
         //上传视频
-        if (video != null) {
-            if (!this.upload(pageData, "video", video, "/file/Activity/video", request)) {
+        if (video != null && !video.isEmpty()) {
+            if (!this.upload(pageData, "video", video, "/file/Activity/video/", request)) {
                 return R.error("视频上传失败");
             }
         }
@@ -79,9 +80,9 @@ public class ActivityController extends BaseController {
         pageData.put("states", 0);
         activityService.add(pageData);
         //创建二维码
-        String url = "http://140.143.201.244:82/#/code-map?Id=";
-        QrCodeUtils.encodeByqrCodeName(url + pageData.getValueOfInteger("id"), FILEUPLOUD + "/file/QrCode/Activity/", pageData.get("actName").toString());
-        return R.ok().put("data", "添加成功");
+        String url = "http://140.143.201.244:82/#/code-map?Id="+pageData.getValueOfInteger("id")+"&type="+ Const.ACTIVITY_TYPE;
+        QrCodeUtils.encodeByqrCodeName(url, FILEUPLOUD + "/file/QrCode/Activity/", pageData.get("actName").toString());
+        return R.ok().put("data", pageData);
     }
 
     /**
@@ -99,7 +100,7 @@ public class ActivityController extends BaseController {
             return false;
         }
         pageData.put(key + "Path", filePath);
-        pageData.put(key + "Name", ((MultipartFile) pageData.get(key)).getOriginalFilename());
+        pageData.put(key + "Name", file.getOriginalFilename());
         return true;
     }
 }
