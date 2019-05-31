@@ -64,13 +64,13 @@ public class ActivityController extends BaseController {
         pageData.put("fileName", DateTool.dateToStringYYHHDD(new Date()) + pageData.get("actName").toString() + ".jpg");
         pageData.put("filePath", "/file/QrCode/Activity/" + pageData.getValueOfString("fileName"));
         //上传宣传图
-        if (!image.isEmpty()) {
+        if (image != null && !image.isEmpty()) {
             if (!this.upload(pageData, "image", image, "/file/Activity/images", request)) {
                 return R.error("宣传图上传失败");
             }
         }
         //上传视频
-        if (!video.isEmpty()) {
+        if (video != null && !video.isEmpty()) {
             if (!this.upload(pageData, "video", video, "/file/Activity/video", request)) {
                 return R.error("视频上传失败");
             }
