@@ -44,16 +44,18 @@ public class WechartController {
         String[] split = state.split(",");
         String type = split[0];
         String corid = split[1];
-        logger.info("type:"+type+",openid:"+openid+",corid:"+corid+",state:"+state);
+        logger.info("type:" + type + ",openid:" + openid + ",corid:" + corid + ",state:" + state);
 
         StringBuffer pcRedirectUrl = new StringBuffer();
         if (username != null) {
             PageData usercor = new PageData();
             usercor.put("userid", usernamePD.getValueOfInteger("user_id"));
             usercor.put("corid", corid);
-            sysUserService.insertUserCor(usercor);
-            pcRedirectUrl.append("http://").append(pcConfig).append("/#/result?")
-                    .append("code=").append("0");
+            if (type.equals("1")) {
+                sysUserService.insertUserCor(usercor);
+                pcRedirectUrl.append("http://").append(pcConfig).append("/#/result?")
+                        .append("code=").append("0");
+            }
 
         } else {
             pcRedirectUrl.append("http://").append(pcConfig).append("/#/result?")
