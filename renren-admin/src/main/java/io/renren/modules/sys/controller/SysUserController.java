@@ -70,7 +70,7 @@ public class SysUserController extends BaseController {
 //            @ApiImplicitParam( dataType = "Integer",paramType = "query",name = "size",value = "当前页大小",required = true)
 //    })
     @GetMapping("/list")
-    @RequiresPermissions("sys:user:list")
+//    @RequiresPermissions("sys:user:list")
     public R list() throws Exception {
         Page page = new Page();
         PageData pageData = this.getPageData();

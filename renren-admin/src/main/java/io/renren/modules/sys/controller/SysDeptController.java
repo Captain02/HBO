@@ -51,7 +51,7 @@ public class SysDeptController extends AbstractController {
             @ApiImplicitParam(dataType = "Integer", paramType = "query", name = "pageSize", value = "每页显示记录数", required = true)
     })
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    @RequiresPermissions("sys:dept:list")
+//    @RequiresPermissions("sys:dept:list")
     public R list(Page page) throws Exception {
 //		System.out.println("进入list。。");
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
@@ -69,7 +69,7 @@ public class SysDeptController extends AbstractController {
      * 选择部门(添加、修改菜单)
      */
     @RequestMapping("/select")
-    @RequiresPermissions("sys:dept:select")
+//    @RequiresPermissions("sys:dept:select")
     public R select() {
         List<SysDeptEntity> deptList = sysDeptService.queryList(new HashMap<String, Object>());
 
@@ -91,7 +91,7 @@ public class SysDeptController extends AbstractController {
      * @return
      */
     @GetMapping("/selectDeptById")
-    @RequiresPermissions("sys:dept:select")
+//    @RequiresPermissions("sys:dept:select")
     public R selectDeptById() throws Exception {
         //接收并校验参数
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
@@ -108,7 +108,7 @@ public class SysDeptController extends AbstractController {
      * 上级部门Id(管理员则为0)
      */
     @RequestMapping("/info")
-    @RequiresPermissions("sys:dept:list")
+//    @RequiresPermissions("sys:dept:list")
     public R info() {
         long deptId = 0;
         if (getUserId() != Constant.SUPER_ADMIN) {
@@ -134,7 +134,7 @@ public class SysDeptController extends AbstractController {
      * 信息
      */
     @RequestMapping("/info/{deptId}")
-    @RequiresPermissions("sys:dept:info")
+//    @RequiresPermissions("sys:dept:info")
     public R info(@PathVariable("deptId") Long deptId) {
         SysDeptEntity dept = sysDeptService.getById(deptId);
 
@@ -145,7 +145,7 @@ public class SysDeptController extends AbstractController {
      * 保存
      */
     @PostMapping("/save")
-    @RequiresPermissions("sys:dept:save")
+//    @RequiresPermissions("sys:dept:save")
     public R save() throws Exception {
         //接收并校验参数
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
@@ -162,7 +162,7 @@ public class SysDeptController extends AbstractController {
      * 修改
      */
     @PostMapping("/update")
-    @RequiresPermissions("sys:dept:update")
+//    @RequiresPermissions("sys:dept:update")
     public R update() throws Exception {
 //        sysDeptService.updateById(dept);
         //接收并校验参数
@@ -178,7 +178,7 @@ public class SysDeptController extends AbstractController {
      * 删除
      */
     @GetMapping("/delete")
-    @RequiresPermissions("sys:dept:delete")
+//    @RequiresPermissions("sys:dept:delete")
     public R delete() throws Exception {
         //接收并校验参数
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
