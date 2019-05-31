@@ -14,14 +14,11 @@ import io.renren.common.entity.Page;
 import io.renren.common.entity.PageData;
 import io.renren.common.util.Tools;
 import io.renren.common.utils.CheckParameterUtil;
-import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.R;
-import io.renren.common.validator.ValidatorUtils;
 import io.renren.modules.sys.entity.SysRoleEntity;
 import io.renren.modules.sys.service.SysRoleDeptService;
 import io.renren.modules.sys.service.SysRoleMenuService;
 import io.renren.modules.sys.service.SysRoleService;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -29,7 +26,6 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 角色管理
