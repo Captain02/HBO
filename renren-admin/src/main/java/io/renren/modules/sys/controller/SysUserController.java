@@ -9,8 +9,6 @@
 package io.renren.modules.sys.controller;
 
 
-import com.sun.org.apache.bcel.internal.generic.RETURN;
-import io.renren.common.annotation.SysLog;
 import io.renren.common.commBusiness.commService.CommService;
 import io.renren.common.controller.BaseController;
 import io.renren.common.entity.Page;
@@ -18,22 +16,15 @@ import io.renren.common.entity.PageData;
 import io.renren.common.util.Tools;
 import io.renren.common.utils.CheckParameterUtil;
 import io.renren.common.utils.JWTUtil;
-import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.R;
 import io.renren.common.validator.Assert;
-import io.renren.common.validator.ValidatorUtils;
-import io.renren.common.validator.group.AddGroup;
-import io.renren.common.validator.group.UpdateGroup;
 import io.renren.modules.sys.entity.SysUserEntity;
 import io.renren.modules.sys.service.SysUserRoleService;
 import io.renren.modules.sys.service.SysUserService;
 import io.renren.modules.sys.shiro.ShiroUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import org.apache.commons.lang.ArrayUtils;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -41,7 +32,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
