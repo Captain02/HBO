@@ -40,14 +40,14 @@ public class WechartController {
         PageData data = new PageData();
         data.put("openid", openid);
         PageData usernamePD = sysUserService.selectByOpenid(data);
-        Object username = usernamePD.get("username");
+
         String[] split = state.split(",");
         String type = split[0];
         String corid = split[1];
         logger.info("type:" + type + ",openid:" + openid + ",corid:" + corid + ",state:" + state);
 
         StringBuffer pcRedirectUrl = new StringBuffer();
-        if (username != null) {
+        if (usernamePD != null) {
             PageData usercor = new PageData();
             usercor.put("userid", usernamePD.getValueOfInteger("user_id"));
             usercor.put("corid", corid);
