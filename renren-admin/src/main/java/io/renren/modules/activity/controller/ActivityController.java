@@ -138,7 +138,7 @@ public class ActivityController extends BaseController {
         pageData.put("states", 0);
         activityService.add(pageData);
         //创建二维码
-        String url = "http://"+DOMAIN_NAME+":82/#/code-map?Id="+pageData.getValueOfInteger("id")+"&type="+ Const.ACTIVITY_TYPE;
+        String url = "http://"+DOMAIN_NAME+"/#/code-map?Id="+pageData.getValueOfInteger("id")+"&type="+ Const.ACTIVITY_TYPE;
         QrCodeUtils.encodeByqrCodeName(url, FILEUPLOUD + "/file/QrCode/Activity/", pageData.get("actName").toString());
         return R.ok().put("data", pageData);
     }

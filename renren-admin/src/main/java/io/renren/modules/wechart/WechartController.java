@@ -23,7 +23,7 @@ public class WechartController {
     @Autowired
     SysUserService sysUserService;
 
-    @Value("${pcConfig}")
+    @Value("${DNSConfig}")
     String pcConfig;
 
     @GetMapping("/wechart/OAuth")
