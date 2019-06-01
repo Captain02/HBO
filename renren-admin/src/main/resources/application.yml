@@ -77,6 +77,6 @@ fileUploudPath: '/home/docker/nginx'
 pcConfig: '140.143.201.244:82'
 HBOConfig: '140.143.201.244:8081'
 #域名信息
-DNSConfig: 'www.yuezhonghao.cn'
+DNSConfig: 'www.yuezhonghao.cn:82'
 ##异常路径
 #errorPath: '/HBO/401'
