@@ -41,6 +41,9 @@ public class CorporationController extends BaseController {
     //文件上传路径
     @Value("${fileUploudPath}")
     public String FILEUPLOUD;
+    //域名信息
+    @Value("${DNSConfig}")
+    public String DOMAIN_NAME;
 
     /**
      * 获取社团详情
@@ -78,7 +81,7 @@ public class CorporationController extends BaseController {
     public R selectByCorId() {
         PageData pageData = this.getPageData();
         //校验参数
-        CheckParameterUtil.checkParameterMap(pageData,"corid");
+        CheckParameterUtil.checkParameterMap(pageData, "corid");
         try {
             //获取社团详情
             List<PageData> corporation = corporationService.selectByCorId(pageData);
@@ -90,7 +93,7 @@ public class CorporationController extends BaseController {
     }
 
     /**
->>>>>>> parent of 832552a... 修改bug
+     * >>>>>>> parent of 832552a... 修改bug
      * 添加社团
      *
      * @return
@@ -110,13 +113,13 @@ public class CorporationController extends BaseController {
     public R add(HttpServletRequest request) {
         PageData pageData = this.getPageData();
         //校验参数
-        String[] parameters = {"corname","corleading","cortercher","corworkspace","corcollege","corfaculty","corscale"};
-        CheckParameterUtil.checkParameterMap(pageData,parameters);
+        String[] parameters = {"corname", "corleading", "cortercher", "corworkspace", "corcollege", "corfaculty", "corscale"};
+        CheckParameterUtil.checkParameterMap(pageData, parameters);
         //添加社团
         try {
 //            System.out.println("request.getContextPath(): "+request.getContextPath()+"/upload/QrCode/");
-            pageData.put("fileName", DateTool.dateToStringYYHHDD(new Date())+pageData.get("corname").toString()+".jpg");
-            pageData.put("filePath", "/file/QrCode/Corporation/"+pageData.getValueOfString("fileName"));
+            pageData.put("fileName", DateTool.dateToStringYYHHDD(new Date()) + pageData.get("corname").toString() + ".jpg");
+            pageData.put("filePath", "/file/QrCode/Corporation/" + pageData.getValueOfString("fileName"));
             //获取所属学院id
             pageData.put("value", pageData.get("corcollege").toString());
             List<PageData> pageDataList = dictService.selectByValue(pageData);
@@ -128,8 +131,8 @@ public class CorporationController extends BaseController {
             //添加社团
             corporationService.add(pageData);
             //创建二维码
-            String url = "http://140.143.201.244:82/#/code-map?Id="+pageData.getValueOfInteger("id")+"&type="+ Const.CORPORATION_TYPE;
-            QrCodeUtils.encodeByqrCodeName(url,FILEUPLOUD+"/file/QrCode/Corporation/",pageData.get("corname").toString());
+            String url = "http://" + DOMAIN_NAME + ":82/#/code-map?Id=" + pageData.getValueOfInteger("id") + "&type=" + Const.CORPORATION_TYPE;
+            QrCodeUtils.encodeByqrCodeName(url, FILEUPLOUD + "/file/QrCode/Corporation/", pageData.get("corname").toString());
             return R.ok().put("data", pageData);
         } catch (Exception e) {
             e.printStackTrace();
@@ -148,7 +151,7 @@ public class CorporationController extends BaseController {
     public R del() {
         PageData pageData = this.getPageData();
         //校验参数
-        CheckParameterUtil.checkParameterMap(pageData,"corid");
+        CheckParameterUtil.checkParameterMap(pageData, "corid");
         try {
             corporationService.delCor(pageData);
             return R.ok();
@@ -168,7 +171,7 @@ public class CorporationController extends BaseController {
     public R update() {
         PageData pageData = this.getPageData();
         //校验参数
-        CheckParameterUtil.checkParameterMap(pageData,"corid");
+        CheckParameterUtil.checkParameterMap(pageData, "corid");
         try {
             //是否更新所在学院
             if (!StringUtils.isEmpty(pageData.get("corcollege"))) {

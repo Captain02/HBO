@@ -10,6 +10,10 @@ import io.renren.common.utils.CheckParameterUtil;
 import io.renren.common.utils.QrCodeUtils;
 import io.renren.common.utils.R;
 import io.renren.modules.activity.service.ActivityService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -22,6 +26,7 @@ import java.util.List;
 
 @RestController()
 @RequestMapping("/sys/activity")
+@Api("活动")
 public class ActivityController extends BaseController {
 
     @Autowired
@@ -31,6 +36,9 @@ public class ActivityController extends BaseController {
     //文件上传路径
     @Value("${fileUploudPath}")
     public String FILEUPLOUD;
+    //域名信息
+    @Value("${DNSConfig}")
+    public String DOMAIN_NAME;
 
 
     /**
@@ -40,7 +48,15 @@ public class ActivityController extends BaseController {
      * @return
      * @throws Exception
      */
-    @PostMapping("/list")
+    @ApiOperation(value = "活动分页信息", notes = "活动分页信息", httpMethod = "GET")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "pageSize", value = "每页显示记录数", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "currPage", value = "当前页", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "corId", value = "社团id", required = false, dataType = "Integer"),
+            @ApiImplicitParam(name = "actName", value = "活动名称", required = false, dataType = "String"),
+            @ApiImplicitParam(name = "isAct", value = "是否有效", required = false, dataType = "Integer")
+    })
+    @GetMapping("/list")
     public R list(Page page) throws Exception {
         PageData pageData = this.getPageData();
 //        CheckParameterUtil.checkParameterMap(pageData,"corId");
@@ -55,6 +71,10 @@ public class ActivityController extends BaseController {
      * actId: 活动id
      * @return
      */
+    @ApiOperation(value = "活动详情", notes = "活动详情", httpMethod = "GET")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "actId", value = "活动id", required = true, dataType = "Integer")
+    })
     @GetMapping("/getActivity")
     public R getActivity() throws Exception {
         PageData pageData = this.getPageData();
@@ -64,11 +84,39 @@ public class ActivityController extends BaseController {
     }
 
     /**
+     * 更新活动
+     * @return
+     * @throws Exception
+     */
+    @ApiOperation(value = "活动更新", notes = "活动更新", httpMethod = "POST")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "actId", value = "活动id", required = true, dataType = "Integer")
+    })
+    @PostMapping("/updateAct")
+    public R updateAct() throws Exception {
+        PageData pageData = this.getPageData();
+        CheckParameterUtil.checkParameterMap(pageData,"actId");
+        activityService.updateAct(pageData);
+        return R.ok();
+    }
+
+    /**
      * 添加活动
      *
      * @return
      */
     @PostMapping("/add")
+    @ApiOperation(value ="添加活动", httpMethod = "POST")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "actCorId", value = "社团id", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "actName", value = "活动名称", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "actLeader", value = "活动负责人", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "actStartTime", value = "活动开始时间", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "actEndTime", value = "活动结束时间", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "croWdPeople", value = "活动面向人群", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "profile", value = "活动简介", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "processNodes", value = "进程节点(','分割)", required = true, dataType = "String")
+    })
     public R add(@RequestParam(value = "video", required = false) MultipartFile video, @RequestParam(value = "image", required = false) MultipartFile image, HttpServletRequest request) throws Exception {
         PageData pageData = this.getPageData();
         CheckParameterUtil.checkParameterMap(pageData, "actCorId","actName", "actLeader", "actStartTime", "actEndTime", "croWdPeople", "profile", "processNodes");
@@ -90,7 +138,7 @@ public class ActivityController extends BaseController {
         pageData.put("states", 0);
         activityService.add(pageData);
         //创建二维码
-        String url = "http://140.143.201.244:82/#/code-map?Id="+pageData.getValueOfInteger("id")+"&type="+ Const.ACTIVITY_TYPE;
+        String url = "http://"+DOMAIN_NAME+":82/#/code-map?Id="+pageData.getValueOfInteger("id")+"&type="+ Const.ACTIVITY_TYPE;
         QrCodeUtils.encodeByqrCodeName(url, FILEUPLOUD + "/file/QrCode/Activity/", pageData.get("actName").toString());
         return R.ok().put("data", pageData);
     }

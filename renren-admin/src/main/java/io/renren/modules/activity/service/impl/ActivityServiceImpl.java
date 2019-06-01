@@ -53,4 +53,10 @@ public class ActivityServiceImpl implements ActivityService {
     public PageData getActivityById(PageData pageData) throws Exception {
         return (PageData) daoSupport.findForObject("ActivityDao.getActivityById",pageData);
     }
+
+    @Override
+    public void updateAct(PageData pageData) throws Exception {
+        //更新活动表
+        daoSupport.update("ActivityDao.updateAct",pageData);
+    }
 }
