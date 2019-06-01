@@ -48,4 +48,9 @@ public class ActivityServiceImpl implements ActivityService {
             daoSupport.save("ActprocessDao.add",pageData);
         }
     }
+
+    @Override
+    public PageData getActivityById(PageData pageData) throws Exception {
+        return (PageData) daoSupport.findForObject("ActivityDao.getActivityById",pageData);
+    }
 }

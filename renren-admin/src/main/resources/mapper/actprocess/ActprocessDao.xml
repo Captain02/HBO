@@ -5,7 +5,7 @@
 
 
    <select id="selectActprocessForActivity" resultType="io.renren.common.entity.PageData">
-        SELECT `actid`,`proid`,`processnode`,`states` FROM `actprocess` WHERE actid = #{pd.actId,jdbcType=INTEGER} ORDER BY `proid`
+        SELECT `actid`,`proid`,`processnode`,`states` FROM `actprocess` WHERE actid = #{actId,jdbcType=INTEGER} ORDER BY `proid`
     </select>
 
     <insert id="add">

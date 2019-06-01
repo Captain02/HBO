@@ -13,10 +13,7 @@ import io.renren.modules.activity.service.ActivityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -49,8 +46,21 @@ public class ActivityController extends BaseController {
 //        CheckParameterUtil.checkParameterMap(pageData,"corId");
         page.setPd(pageData);
         List<PageData> list = activityService.activityListPage(page);
-        System.out.println(list);
+//        System.out.println(list);
         return R.ok().put("data", list);
+    }
+
+    /**
+     * 获取单个社团活动详情
+     * actId: 活动id
+     * @return
+     */
+    @GetMapping("/getActivity")
+    public R getActivity() throws Exception {
+        PageData pageData = this.getPageData();
+        CheckParameterUtil.checkParameterMap(pageData,"actId");
+        pageData = activityService.getActivityById(pageData);
+        return R.ok().put("data",pageData);
     }
 
     /**

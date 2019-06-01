@@ -9,4 +9,6 @@ public interface ActivityService {
     List<PageData> activityListPage(Page page) throws Exception;
 
     void add(PageData pageData) throws Exception;
+
+    PageData getActivityById(PageData pageData) throws Exception;
 }
