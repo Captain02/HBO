@@ -132,14 +132,14 @@ public class SysUserController extends BaseController {
     public R save(SysUserEntity user, Long corid) throws Exception {
         PageData pageData = this.getPageData();
         SysUserEntity isSave = sysUserService.selectUserByUsernameCorporaition(pageData);
-        if (isSave!=null){
+        if (isSave != null) {
             return R.error("用户已存在");
         }
         PageData userinfo = sysUserService.selectUserByUsername(pageData);
-        if (userinfo!=null){
+        if (userinfo != null) {
             sysUserService.saveUserCor(user, corid);
             return R.ok();
-        }else {
+        } else {
             user.setPersionnum(user.getUsername());
             sysUserService.saveUser(user, corid);
             return R.ok();
@@ -147,19 +147,14 @@ public class SysUserController extends BaseController {
     }
 
     /*
-    *扫码添加用户
-    * */
+     *扫码添加用户
+     * */
     @PostMapping("/QRSave")
     public R QRSave() throws Exception {
         PageData pageData = this.getPageData();
-        PageData userinfo = sysUserService.selectUserByUsername(pageData);
-        if (userinfo!=null){
-            sysUserService.QRSaveCor(pageData);
-            return R.ok();
-        }else {
-            sysUserService.QRSave(pageData);
-            return R.ok();
-        }
+        CheckParameterUtil.checkParameterMap(pageData,"username","password");
+        sysUserService.QRSave(pageData);
+        return R.ok();
     }
 
     /**
@@ -178,7 +173,7 @@ public class SysUserController extends BaseController {
     @PostMapping("/updateUserInfo")
     public R updateUserInfo() throws Exception {
         PageData pageData = this.getPageData();
-        CheckParameterUtil.checkParameterMap(pageData,"userId");
+        CheckParameterUtil.checkParameterMap(pageData, "userId");
         sysUserService.updateUserInfo(pageData);
         return R.ok();
     }
@@ -239,7 +234,7 @@ public class SysUserController extends BaseController {
 //    @SysLog("删除用户")
     @RequestMapping("/delete")
 //    @RequiresPermissions("sys:user:delete")
-    public R delete(@RequestParam("userIds") String userIds,@RequestParam("corid")Long corid) throws Exception {
+    public R delete(@RequestParam("userIds") String userIds, @RequestParam("corid") Long corid) throws Exception {
         String[] strings = Tools.str2StrArray(userIds, ",");
         List<Long> collect = Arrays.stream(strings).map(x -> Long.parseLong(x)).collect(Collectors.toList());
 //        Long[] array = collect.stream().toArray(Long[]::new);
@@ -251,7 +246,7 @@ public class SysUserController extends BaseController {
 //		if(ArrayUtils.contains(array, getUserId())){
 //			return R.error("当前用户不能删除");
 //		}
-        sysUserService.removeUserByIds(collect,corid);
+        sysUserService.removeUserByIds(collect, corid);
 
         return R.ok();
     }
@@ -261,9 +256,9 @@ public class SysUserController extends BaseController {
     public R updataUserDept() throws Exception {
         PageData pageData = this.getPageData();
         PageData i = sysUserService.selectUserDept(pageData);
-        if (i.getValueOfInteger("num")!=0){
+        if (i.getValueOfInteger("num") != 0) {
             sysUserService.updataUserDept(pageData);
-        }else {
+        } else {
             sysUserService.saveUserDept(pageData);
         }
 
@@ -274,9 +269,9 @@ public class SysUserController extends BaseController {
     @PostMapping("/updateUserRole")
     public R updataUserRole() throws Exception {
         PageData pageData = this.getPageData();
-        if (pageData.getValueOfInteger("isRole") == 1){
+        if (pageData.getValueOfInteger("isRole") == 1) {
             sysUserService.insertUserRole(pageData);
-        }else {
+        } else {
             sysUserService.deleUserRole(pageData);
         }
 
@@ -288,7 +283,7 @@ public class SysUserController extends BaseController {
     public R getUserPermission() throws Exception {
         PageData pageData = this.getPageData();
         List<PageData> pageDataList = sysUserService.getUserPermission(pageData);
-        return R.ok().put("data",pageDataList);
+        return R.ok().put("data", pageDataList);
     }
 
 

@@ -90,5 +90,4 @@ public interface SysUserService extends IService<SysUserEntity> {
 
     void QRSave(PageData pageData) throws Exception;
 
-	void QRSaveCor(PageData pageData);
 }

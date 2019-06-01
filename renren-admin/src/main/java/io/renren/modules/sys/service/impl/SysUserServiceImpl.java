@@ -176,10 +176,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
         daoSupport.save("io.renren.modules.sys.dao.SysUserDao.QRsaveUserCor",pageData);
     }
 
-    @Override
-    public void QRSaveCor(PageData pageData) {
-
-    }
 
     @Override
     public PageData getinfoByid(PageData pageData) throws Exception {
