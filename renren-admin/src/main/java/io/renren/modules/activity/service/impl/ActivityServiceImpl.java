@@ -56,6 +56,19 @@ public class ActivityServiceImpl implements ActivityService {
 
     @Override
     public void updateAct(PageData pageData) throws Exception {
+        //更新活动进程表
+        if(pageData.containsKey("processNodes") && pageData.containsKey("status")){
+            String[] processNodes = pageData.getValueOfString("processNodes").split(",");
+            String[] status = pageData.getValueOfString("status").split(",");
+            if(status.length != processNodes.length){
+                throw new Exception("进程节点和状态不一致");
+            }
+            for (int i = 0; i < processNodes.length; i++) {
+                pageData.put("processNode",processNodes[i]);
+                pageData.put("status",Integer.parseInt(status[i]));
+                daoSupport.update("ActprocessDao.update",pageData);
+            }
+        }
         //更新活动表
         daoSupport.update("ActivityDao.updateAct",pageData);
     }

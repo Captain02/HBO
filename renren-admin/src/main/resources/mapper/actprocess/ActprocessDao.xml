@@ -13,4 +13,10 @@
       values( #{actId,jdbcType=INTEGER}, #{processNode,jdbcType=VARCHAR}, #{states,jdbcType=INTEGER})
     </insert>
 
+    <update id="update">
+        UPDATE `actprocess`
+        set `processnode` = #{processNode,jdbcType=VARCHAR},`states`=#{states,jdbcType=INTEGER}
+        where `actid` = #{actId,jdbcType=INTEGER}
+    </update>
+
 </mapper>
