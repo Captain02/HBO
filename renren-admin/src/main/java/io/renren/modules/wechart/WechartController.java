@@ -45,6 +45,7 @@ public class WechartController {
         String type = split[0];
         String corid = split[1];
         logger.info("type:" + type + ",openid:" + openid + ",corid:" + corid + ",state:" + state);
+        logger.info("usernamePD:" + usernamePD);
 
         StringBuffer pcRedirectUrl = new StringBuffer();
         if (usernamePD != null) {
