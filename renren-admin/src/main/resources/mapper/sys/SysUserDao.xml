@@ -131,6 +131,11 @@
     <insert id="saveUserCor">
 		INSERT INTO cor_user (userid,corid,status)VALUES (#{userid},#{corid},1)
 	</insert>
+
+    <!--扫码添加-->
+    <insert id="QRsaveUserCor">
+        INSERT INTO cor_user (userid,corid)VALUES (#{userid},#{corid})
+    </insert>
     <!--查询用户是
     否有部门-->
     <select id="selectUserDept" resultType="io.renren.common.entity.PageData">
@@ -151,6 +156,111 @@
     <insert id="save" useGeneratedKeys="true" keyProperty="id">
         insert into filetable(`filename`,`filepath`) values (#{fileName},#{url})
 	</insert>
+
+    <!--扫码注册-->
+    <insert id="QRSave" useGeneratedKeys="true" keyProperty="user_id">
+        INSERT INTO sys_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="username !=null">
+                `username`,
+            </if>
+            <if test="password !=null">
+                `password`,
+            </if>
+            <if test="salt !=null">
+                `salt`,
+            </if>
+            <if test="email !=null">
+                `email`,
+            </if>
+            <if test="mobile !=null">
+                `mobile`,
+            </if>
+            <if test="status !=null">
+                `status`,
+            </if>
+            <if test="wechart !=null">
+                `wechart`,
+            </if>
+            <if test="QQ !=null">
+                `QQ`,
+            </if>
+            <if test="college !=null">
+                `college`,
+            </if>
+            <if test="collegetie !=null">
+                `collegetie`,
+            </if>
+            <if test="gender !=null">
+                `gender`,
+            </if>
+            <if test="openid !=null">
+                `openid`,
+            </if>
+            <if test="descs !=null">
+                `descs`,
+            </if>
+            <if test="name !=null">
+                `name`,
+            </if>
+            <if test="fileid !=null">
+                `fileid`,
+            </if>
+            <if test="persionnum !=null">
+                `persionnum`,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="username !=null">
+                #{username},
+            </if>
+            <if test="password !=null">
+                #{password},
+            </if>
+            <if test="salt !=null">
+                #{salt},
+            </if>
+            <if test="email !=null">
+                #{email},
+            </if>
+            <if test="mobile !=null">
+                #{mobile},
+            </if>
+            <if test="status !=null">
+                #{status},
+            </if>
+            <if test="wechart !=null">
+                #{wechart},
+            </if>
+            <if test="QQ !=null">
+                #{QQ},
+            </if>
+            <if test="college !=null">
+                #{college},
+            </if>
+            <if test="collegetie !=null">
+                #{collegetie},
+            </if>
+            <if test="gender !=null">
+                #{gender},
+            </if>
+            <if test="openid !=null">
+                #{openid},
+            </if>
+            <if test="descs !=null">
+                #{descs},
+            </if>
+            <if test="name !=null">
+                #{name},
+            </if>
+            <if test="fileid !=null">
+                #{fileid},
+            </if>
+            <if test="persionnum !=null">
+                #{persionnum},
+            </if>
+        </trim>
+    </insert>
 
     <!--修改用户基本信息-->
     <update id="updateUserInfo">

@@ -112,7 +112,6 @@ public class SysUserController extends BaseController {
      * 用户信息
      */
     @RequestMapping("/info")
-//	@RequiresPermissions("sys:user:info")
     public R info(HttpServletRequest req) throws Exception {
         String tokenreq = req.getHeader("Authorization");
         String username = JWTUtil.getUsername(tokenreq);
@@ -129,9 +128,7 @@ public class SysUserController extends BaseController {
      * 保存用户
      * , String roles
      */
-//    @SysLog("保存用户")
     @RequestMapping("/save")
-//    @RequiresPermissions("sys:user:save")
     public R save(SysUserEntity user, Long corid) throws Exception {
         PageData pageData = this.getPageData();
         SysUserEntity isSave = sysUserService.selectUserByUsernameCorporaition(pageData);
@@ -149,18 +146,29 @@ public class SysUserController extends BaseController {
         }
     }
 
+    /*
+    *扫码添加用户
+    * */
+    @PostMapping("/QRSave")
+    public R QRSave() throws Exception {
+        PageData pageData = this.getPageData();
+        PageData userinfo = sysUserService.selectUserByUsername(pageData);
+        if (userinfo!=null){
+            sysUserService.QRSaveCor(pageData);
+            return R.ok();
+        }else {
+            sysUserService.QRSave(pageData);
+            return R.ok();
+        }
+    }
+
     /**
      * 修改用户
      */
 //    @SysLog("修改用户")
     @PostMapping("/update")
-//    @RequiresPermissions("sys:user:update")
     public R update(SysUserEntity user) throws Exception {
 
-//		ValidatorUtils.validateEntity(user, UpdateGroup.class);
-//        String[] strings = Tools.str2StrArray(roles, ",");
-//        List<Long> collect = Arrays.stream(strings).map(x -> Long.parseLong(x)).collect(Collectors.toList());
-//        user.setRoleIdList(collect);
         sysUserService.update(user);
 
         return R.ok();

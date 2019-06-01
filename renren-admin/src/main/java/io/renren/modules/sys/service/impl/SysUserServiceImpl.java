@@ -28,8 +28,6 @@ import io.renren.modules.sys.service.SysUserService;
 import io.renren.modules.sys.shiro.ShiroUtils;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.ibatis.annotations.Param;
-import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -155,6 +153,32 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
     @Override
     public void insertUserCor(PageData usercor) throws Exception {
         daoSupport.save("io.renren.modules.sys.dao.SysUserDao.insertUserCor",usercor);
+    }
+
+    @Override
+    public void QRSave(PageData pageData) throws Exception {
+        //sha256加密
+        String salt = RandomStringUtils.randomAlphanumeric(20);
+        pageData.put("salt",salt);
+        pageData.put("persionnum",pageData.getValueOfString("username"));
+        String password = pageData.getValueOfString("password");
+        pageData.put("password",ShiroUtils.sha256(password, salt));
+
+        if (pageData.getValueOfString("gender").equals("男")){
+            pageData.put("fileid",7);
+        }else {
+            pageData.put("fileid",8);
+        }
+        daoSupport.save("io.renren.modules.sys.dao.SysUserDao.QRSave",pageData);
+
+        pageData.put("userid", pageData.getValueOfInteger("user_id"));
+        pageData.put("corid", pageData.getValueOfInteger("corid"));
+        daoSupport.save("io.renren.modules.sys.dao.SysUserDao.QRsaveUserCor",pageData);
+    }
+
+    @Override
+    public void QRSaveCor(PageData pageData) {
+
     }
 
     @Override
