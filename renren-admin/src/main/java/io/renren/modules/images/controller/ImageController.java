@@ -49,8 +49,12 @@ public class ImageController extends BaseController {
         PageData pageData = this.getPageData();
         CheckParameterUtil.checkParameterMap(pageData,"corId");
         page.setPd(pageData);
-        List<PageData> images = imageService.getList(page);
-        return R.ok().put("page", page).put("date", images);
+        try {
+            List<PageData> images = imageService.getList(page);
+            return R.ok().put("page", page).put("date", images);
+        }catch (Exception e){
+            return R.error();
+        }
 
     }
 
