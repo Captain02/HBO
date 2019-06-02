@@ -126,11 +126,12 @@ public class ShiroConfig {
         filterRuleMap.put("/wechart/**", "anon");
         filterRuleMap.put("/sys/comm/getselectes/**", "anon");
         filterRuleMap.put("/sys/user/password/**", "anon");
-        filterRuleMap.put("/sys/menu/menuList", "anon");
+        filterRuleMap.put("/sys/menu/menuList/**", "anon");
         filterRuleMap.put("/corporation/selectByCorId/**", "anon");
         filterRuleMap.put("/sys/corporation/selectByCorId/**", "anon");
-        filterRuleMap.put("/sys/refreshToken", "anon");
-        filterRuleMap.put("/sys/menu/nav", "anon");
+        filterRuleMap.put("/sys/refreshToken/**", "anon");
+        filterRuleMap.put("/sys/menu/nav/**", "anon");
+        filterRuleMap.put("/sys/user/QRSave/**", "anon");
         filterRuleMap.put("/**", "anon");
 //        filterRuleMap.put("/**", "jwt");
 

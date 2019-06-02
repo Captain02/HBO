@@ -54,8 +54,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
     private DaoSupport daoSupport;
 
     @Override
-    public List<Long> queryAllMenuId(Long userId,Long corid) {
-        return baseMapper.queryAllMenuId(userId,corid);
+    public List<Long> queryAllMenuId(Long userId, Long corid) {
+        return baseMapper.queryAllMenuId(userId, corid);
     }
 
     @Override
@@ -91,7 +91,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
         PageData pageData = new PageData();
         pageData.put("userid", user.getUserId());
         pageData.put("corid", corid);
-        daoSupport.save("io.renren.modules.sys.dao.SysUserDao.saveUserCor",pageData);
+        daoSupport.save("io.renren.modules.sys.dao.SysUserDao.saveUserCor", pageData);
 //		pageData.put("deptid", user.getDeptId());
 //		daoSupport.save("io.renren.modules.sys.dao.SysUserDao.saveUserDept",pageData);
         //保存用户与角色关系
@@ -101,7 +101,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void update(SysUserEntity user) throws Exception {
-        daoSupport.update("io.renren.modules.sys.dao.SysUserDao.updateUserByid",user);
+        daoSupport.update("io.renren.modules.sys.dao.SysUserDao.updateUserByid", user);
     }
 
 
@@ -126,9 +126,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
     }
 
     @Override
-    public void removeUserByIds(List<Long> list,Long corid) {
+    public void removeUserByIds(List<Long> list, Long corid) {
         //daoSupport.batchUpdateBylist("io.renren.modules.sys.dao.SysUserDao.removeUserByIds", list);
-        sysUserDao.removeUserByIds(list,corid);
+        sysUserDao.removeUserByIds(list, corid);
     }
 
     @Override
@@ -136,7 +136,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
         PageData pageData = new PageData();
         pageData.put("userid", user.getUserId());
         pageData.put("corid", corid);
-        daoSupport.save("io.renren.modules.sys.dao.SysUserDao.saveUserCor",pageData);
+        daoSupport.save("io.renren.modules.sys.dao.SysUserDao.saveUserCor", pageData);
     }
 
     @Override
@@ -152,28 +152,33 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 
     @Override
     public void insertUserCor(PageData usercor) throws Exception {
-        daoSupport.save("io.renren.modules.sys.dao.SysUserDao.insertUserCor",usercor);
+        daoSupport.save("io.renren.modules.sys.dao.SysUserDao.insertUserCor", usercor);
     }
 
     @Override
     public void QRSave(PageData pageData) throws Exception {
         //sha256加密
         String salt = RandomStringUtils.randomAlphanumeric(20);
-        pageData.put("salt",salt);
-        pageData.put("persionnum",pageData.getValueOfString("username"));
+        pageData.put("salt", salt);
+        pageData.put("persionnum", pageData.getValueOfString("username"));
         String password = pageData.getValueOfString("password");
-        pageData.put("password",ShiroUtils.sha256(password, salt));
+        pageData.put("password", ShiroUtils.sha256(password, salt));
 
-        if (pageData.getValueOfString("gender").equals("男")){
-            pageData.put("fileid",7);
-        }else {
-            pageData.put("fileid",8);
+        if (pageData.getValueOfString("gender").equals("男")) {
+            pageData.put("fileid", 7);
+        } else {
+            pageData.put("fileid", 8);
         }
-        daoSupport.save("io.renren.modules.sys.dao.SysUserDao.QRSave",pageData);
+        daoSupport.save("io.renren.modules.sys.dao.SysUserDao.QRSave", pageData);
 
         pageData.put("userid", pageData.getValueOfInteger("user_id"));
         pageData.put("corid", pageData.getValueOfInteger("corid"));
-        daoSupport.save("io.renren.modules.sys.dao.SysUserDao.QRsaveUserCor",pageData);
+        daoSupport.save("io.renren.modules.sys.dao.SysUserDao.QRsaveUserCor", pageData);
+    }
+
+    @Override
+    public List<String> queryAllPerms(PageData pageData) throws Exception {
+        return (List<String>) daoSupport.findForList("io.renren.modules.sys.dao.SysUserDao.queryAllPerms", pageData);
     }
 
 
@@ -192,7 +197,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 
     @Override
     public void updataUserDept(PageData pageData) throws Exception {
-		daoSupport.update("io.renren.modules.sys.dao.SysUserDao.updateUserDept",pageData);
+        daoSupport.update("io.renren.modules.sys.dao.SysUserDao.updateUserDept", pageData);
 
     }
 
@@ -227,24 +232,24 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 
     @Override
     public void insertUserRole(PageData pageData) throws Exception {
-        daoSupport.save("io.renren.modules.sys.dao.SysUserDao.insertUserRole",pageData);
+        daoSupport.save("io.renren.modules.sys.dao.SysUserDao.insertUserRole", pageData);
     }
 
     @Override
     public void deleUserRole(PageData pageData) throws Exception {
-        daoSupport.delete("io.renren.modules.sys.dao.SysUserDao.deleUserRole",pageData);
+        daoSupport.delete("io.renren.modules.sys.dao.SysUserDao.deleUserRole", pageData);
     }
 
     @Override
     public List<PageData> getUserPermission(PageData pageData) throws Exception {
         List<PageData> list = (List<PageData>) daoSupport
-                .findForList("io.renren.modules.sys.dao.SysUserDao.getUserPermission",pageData);
+                .findForList("io.renren.modules.sys.dao.SysUserDao.getUserPermission", pageData);
         return list;
     }
 
     @Override
     public void updateUserInfo(PageData pageData) throws Exception {
-        daoSupport.update("io.renren.modules.sys.dao.SysUserDao.updateUserInfo",pageData);
+        daoSupport.update("io.renren.modules.sys.dao.SysUserDao.updateUserInfo", pageData);
     }
 
 

@@ -327,7 +327,7 @@
 		DELETE FROM sys_user_role WHERE user_id = #{user_id} AND role_id = #{role_id} AND corid = #{corid}
 	</delete>
 
-    <!--获取用户所有权限-->
+    <!--获取角色所有权限-->
     <select id="getUserPermission" resultType="io.renren.common.entity.PageData">
         SELECT DISTINCT IFNULL(m.perms,''),m.`name`,m.`url`,m.`perms`,
         m.`type`,m.`icon`,m.`order_num`,m.`hidden`,m.`title`,m.`redirect`,

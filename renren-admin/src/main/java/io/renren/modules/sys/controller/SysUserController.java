@@ -25,13 +25,16 @@ import io.renren.modules.sys.shiro.ShiroUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -233,7 +236,6 @@ public class SysUserController extends BaseController {
      */
 //    @SysLog("删除用户")
     @RequestMapping("/delete")
-//    @RequiresPermissions("sys:user:delete")
     public R delete(@RequestParam("userIds") String userIds, @RequestParam("corid") Long corid) throws Exception {
         String[] strings = Tools.str2StrArray(userIds, ",");
         List<Long> collect = Arrays.stream(strings).map(x -> Long.parseLong(x)).collect(Collectors.toList());
@@ -278,13 +280,27 @@ public class SysUserController extends BaseController {
         return R.ok();
     }
 
-    //获得用户所有权限
+    //获得角色所有权限
     @GetMapping("/getUserPermission")
-    public R getUserPermission() throws Exception {
+    public R getRolePermission() throws Exception {
         PageData pageData = this.getPageData();
         List<PageData> pageDataList = sysUserService.getUserPermission(pageData);
         return R.ok().put("data", pageDataList);
     }
 
+    //获得与用户的角色Stirng列表
+    @GetMapping("/getLoginUserPermission")
+    public R getLoginUserPermission() throws Exception {
+        PageData pageData = this.getPageData();
+        List<String> pageDataList = sysUserService.queryAllPerms(pageData);
+        Set<String> permsSet = new HashSet<>();
+        for (String perms : pageDataList) {
+            if (StringUtils.isBlank(perms)) {
+                continue;
+            }
+            permsSet.addAll(Arrays.asList(perms.trim()));
+        }
+        return R.ok().put("data", permsSet);
+    }
 
 }

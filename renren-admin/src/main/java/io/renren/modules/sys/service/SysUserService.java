@@ -90,4 +90,5 @@ public interface SysUserService extends IService<SysUserEntity> {
 
     void QRSave(PageData pageData) throws Exception;
 
+	List<String> queryAllPerms(PageData pageData) throws Exception;
 }
