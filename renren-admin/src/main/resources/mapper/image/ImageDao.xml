@@ -10,7 +10,7 @@
     </resultMap>
 
     <select id="imagelistPage" resultType="io.renren.common.entity.PageData">
-        SELECT * FROM images where corid = #{pd.corId}
+        SELECT id,corid,imagename,createtime,url FROM images where corid = #{pd.corId}
     </select>
 
     <insert id="save" useGeneratedKeys="true" keyProperty="id">

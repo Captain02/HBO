@@ -41,21 +41,17 @@ public class ImageController extends BaseController {
     @GetMapping("/list")
     @ApiOperation(value = "根据社团id获取社团相册", notes = "根据社团id获取社团相册", httpMethod = "GET")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "corId", value = "社团id", required = true, dataType = "Integer"),
-            @ApiImplicitParam(name = "pageSize", value = "每页显示记录数", required = true, dataType = "Integer"),
-            @ApiImplicitParam(name = "currPage", value = "当前页", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "corId", value = "社团id",paramType = "query",required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "pageSize", value = "每页显示记录数", paramType = "query",required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "currPage", value = "当前页",paramType = "query", required = true, dataType = "Integer"),
     })
-    public R list(@ApiIgnore Page page) {
+    public R list(@ApiIgnore Page page) throws Exception {
         PageData pageData = this.getPageData();
         CheckParameterUtil.checkParameterMap(pageData,"corId");
         page.setPd(pageData);
-        try {
-            List<PageData> images = imageService.getList(page);
-            return R.ok().put("page", page).put("date", images);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return R.error(e.getMessage());
-        }
+        List<PageData> images = imageService.getList(page);
+        return R.ok().put("page", page).put("date", images);
+
     }
 
     /**
