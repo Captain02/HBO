@@ -95,4 +95,6 @@ public interface SysUserService extends IService<SysUserEntity> {
 	List<PageData> selectCorByUserCorid(PageData usercor) throws Exception;
 
 	List<PageData> getUserCorsByUserName(PageData pageData) throws Exception;
+
+	Long selectCountByUserName(PageData pageData) throws Exception;
 }

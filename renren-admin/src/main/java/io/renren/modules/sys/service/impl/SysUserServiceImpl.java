@@ -191,6 +191,11 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
         return (List<PageData>) daoSupport.findForList("io.renren.modules.sys.dao.SysUserDao.getUserCorsByUserName",pageData);
     }
 
+    @Override
+    public Long selectCountByUserName(PageData pageData) throws Exception {
+        return (Long) daoSupport.findForObject("io.renren.modules.sys.dao.SysUserDao.selectCountByUserName",pageData);
+    }
+
 
     @Override
     public PageData getinfoByid(PageData pageData) throws Exception {

@@ -360,4 +360,10 @@
       LEFT JOIN sys_user ON sys_user.user_id = cor_user.userid
       WHERE sys_user.`username`=#{username}
     </select>
+
+    <!--查询学号是否存在-->
+    <select id="selectCountByUserName" resultType="Long">
+        SELECT COUNT(*) FROM sys_user
+        WHERE sys_user.`username` = #{username}
+    </select>
 </mapper>

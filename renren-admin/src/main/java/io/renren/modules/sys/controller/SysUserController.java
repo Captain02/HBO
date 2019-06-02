@@ -303,11 +303,23 @@ public class SysUserController extends BaseController {
         return R.ok().put("data", permsSet);
     }
 
+    //按照用户名查询用户所有的社团
     @GetMapping("/getUserCors")
     public R getUserCors() throws Exception {
         PageData pageData = this.getPageData();
         List<PageData> data = sysUserService.getUserCorsByUserName(pageData);
         return R.ok().put("data",data);
+    }
+
+    //用户名是否重复
+    @GetMapping("/selectCountByUserName")
+    public R selectCountByUserName() throws Exception {
+        PageData pageData = this.getPageData();
+        Long count = sysUserService.selectCountByUserName(pageData);
+        if (count!=0){
+            return R.error(504,"用户名存在");
+        }
+        return R.ok();
     }
 
 }
