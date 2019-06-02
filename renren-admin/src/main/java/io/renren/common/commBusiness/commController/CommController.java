@@ -64,7 +64,7 @@ public class CommController extends BaseController {
      *
      * @throws Exception
      */
-    @PostMapping("/upload")
+    @PostMapping("/addFile2DB")
     public R addFile2DB() throws Exception {
         PageData pageData = this.getPageData();
         Integer fileId = commService.addFile2DB(pageData);
