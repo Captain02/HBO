@@ -348,9 +348,18 @@
 
     <!--查询属于的社团-->
     <select id="selectCorByUserCorid" resultType="io.renren.common.entity.PageData">
-      select id from corporation
+      select corporation.id from corporation
       LEFT JOIN cor_user ON cor_user.corid = corporation.id
-      WHERE cor_user.corid = #{corid} AND cor_user.userid=#{userid}
+      LEFT JOIN sys_user ON sys_user.user_id = cor_user.userid
+      WHERE cor_user.corid = #{corid}
+        <choose>
+            <when test="userid != null ">
+                AND cor_user.userid=#{userid}
+            </when >
+            <when test="username != null ">
+                AND sys_user.username=#{username}
+            </when >
+        </choose>
     </select>
 
     <!--查询用户拥有的社团-->

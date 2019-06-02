@@ -25,6 +25,7 @@ import io.renren.modules.sys.shiro.ShiroUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import oracle.jdbc.proxy.annotation.Post;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -312,12 +313,23 @@ public class SysUserController extends BaseController {
     }
 
     //用户名是否重复
-    @GetMapping("/selectCountByUserName")
+    @PostMapping("/selectCountByUserName")
     public R selectCountByUserName() throws Exception {
         PageData pageData = this.getPageData();
         Long count = sysUserService.selectCountByUserName(pageData);
         if (count!=0){
             return R.error(504,"用户名存在");
+        }
+        return R.ok();
+    }
+
+    //查询用户是否加入社团或者或者用户是否存在
+    @PostMapping("/getCheckUserCor")
+    public R getCheckUserCor() throws Exception {
+        PageData pageData = this.getPageData();
+        List<PageData> list = sysUserService.selectCorByUserCorid(pageData);
+        if (list.size() != 0){
+            return R.error(505,"该账户重复注册社团");
         }
         return R.ok();
     }
