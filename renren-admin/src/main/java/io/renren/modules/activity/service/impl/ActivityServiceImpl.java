@@ -24,21 +24,6 @@ public class ActivityServiceImpl implements ActivityService {
     @Override
     @Transactional
     public void add(PageData pageData) throws Exception {
-        //插入文件表
-        daoSupport.save("FileDao.add",pageData);
-        pageData.put("fileId",pageData.getValueOfInteger("id"));
-        if(pageData.containsKey("imagePath") && pageData.containsKey("imageName")){
-            pageData.put("fileName",pageData.getValueOfString("imageName"));
-            pageData.put("filePath",pageData.getValueOfString("imagePath"));
-            daoSupport.save("FileDao.add",pageData);
-            pageData.put("imageId",pageData.getValueOfInteger("id"));
-        }
-        if(pageData.containsKey("videoPath") && pageData.containsKey("videoName")){
-            pageData.put("fileName",pageData.getValueOfString("videoName"));
-            pageData.put("filePath",pageData.getValueOfString("videoPath"));
-            daoSupport.save("FileDao.add",pageData);
-            pageData.put("videoId",pageData.getValueOfInteger("id"));
-        }
         //插入活动
         daoSupport.save("ActivityDao.add",pageData);
         //插入活动的进程

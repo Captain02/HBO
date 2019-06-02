@@ -59,5 +59,20 @@ public class CommController extends BaseController {
         }
     }
 
+    /**
+     * 文件名称保存到数据库
+     *
+     * @throws Exception
+     */
+    @PostMapping("/upload")
+    public R addFile2DB() throws Exception {
+        PageData pageData = this.getPageData();
+        Integer fileId = commService.addFile2DB(pageData);
+        if (fileId != null) {
+            return R.ok().put("data", fileId);
+        } else {
+            return R.error("文件上传失败");
+        }
+    }
 
 }

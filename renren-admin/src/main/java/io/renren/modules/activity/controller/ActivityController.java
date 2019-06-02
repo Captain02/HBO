@@ -59,10 +59,8 @@ public class ActivityController extends BaseController {
     @GetMapping("/list")
     public R list(Page page) throws Exception {
         PageData pageData = this.getPageData();
-//        CheckParameterUtil.checkParameterMap(pageData,"corId");
         page.setPd(pageData);
         List<PageData> list = activityService.activityListPage(page);
-//        System.out.println(list);
         return R.ok().put("data", list);
     }
 
@@ -120,18 +118,31 @@ public class ActivityController extends BaseController {
     public R add(@RequestParam(value = "video", required = false) MultipartFile video, @RequestParam(value = "image", required = false) MultipartFile image, HttpServletRequest request) throws Exception {
         PageData pageData = this.getPageData();
         CheckParameterUtil.checkParameterMap(pageData, "actCorId","actName", "actLeader", "actStartTime", "actEndTime", "croWdPeople", "profile", "processNodes");
+        //保存二维码路径
         pageData.put("fileName", DateTool.dateToStringYYHHDD(new Date()) + pageData.get("actName").toString() + ".jpg");
         pageData.put("filePath", "/file/QrCode/Activity/" + pageData.getValueOfString("fileName"));
+        Integer fileId = commService.addFile2DB(pageData);
+        if (fileId!=null){
+            pageData.put("fileId",fileId);
+        }
         //上传宣传图
         if (image != null && !image.isEmpty()) {
-            if (!this.upload(pageData, "image", image, "/file/Activity/images/", request)) {
-                return R.error("宣传图上传失败");
+            if(!this.upload(pageData,image,"/file/Activity/images/",request)){
+                return R.error("图片上传失败");
+            }
+            Integer imageId = commService.addFile2DB(pageData);
+            if(imageId != null){
+                pageData.put("imageId",imageId);
             }
         }
         //上传视频
         if (video != null && !video.isEmpty()) {
-            if (!this.upload(pageData, "video", video, "/file/Activity/video/", request)) {
+            if(!this.upload(pageData,video,"/file/Activity/video/",request)){
                 return R.error("视频上传失败");
+            }
+            Integer videoId = commService.addFile2DB(pageData);
+            if(videoId != null){
+                pageData.put("videoId",videoId);
             }
         }
         //插入激活状态
@@ -147,18 +158,17 @@ public class ActivityController extends BaseController {
      * 公共方法
      *
      * @param pageData
-     * @param key
      * @param path
      * @param request
      * @return
      */
-    private Boolean upload(PageData pageData, String key, MultipartFile file, String path, HttpServletRequest request) {
+    private Boolean upload(PageData pageData, MultipartFile file, String path, HttpServletRequest request) {
         String filePath = commService.uploadFile(file, request, path);
         if (filePath == null) {
             return false;
         }
-        pageData.put(key + "Path", filePath);
-        pageData.put(key + "Name", file.getOriginalFilename());
+        pageData.put("filePath", filePath);
+        pageData.put("fileName", file.getOriginalFilename());
         return true;
     }
 }

@@ -14,4 +14,6 @@ public interface CommService {
     public String uploadFile(MultipartFile picture, HttpServletRequest request,String path);
 
     public boolean deleteFile(String filenameAndPath);
+
+    Integer addFile2DB(PageData pageData) throws Exception;
 }
