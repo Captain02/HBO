@@ -49,23 +49,28 @@ public class WechartController {
         logger.info("usernamePD:" + usernamePD);
 
         StringBuffer pcRedirectUrl = new StringBuffer();
+
+        //判断用户是否存在，若用户存在继续分情况
         if (usernamePD != null) {
             PageData usercor = new PageData();
             usercor.put("userid", usernamePD.getValueOfInteger("user_id"));
             usercor.put("corid", corid);
+            //添加社团
             if (type.equals("1")) {
                 List<PageData> corsByUserName = sysUserService.selectCorByUserCorid(usercor);
+                //判断社团是否存在该用户，若存在转到重复社团重复注册
                 if (corsByUserName!=null){
                     pcRedirectUrl.append("redirect:").append("http://").append(pcConfig).append("/#/result?")
-                            .append("code=").append(504);
+                            .append("code=").append(505);
                     logger.info(pcRedirectUrl.toString());
                     return pcRedirectUrl.toString();
                 }
+                //若不存在直接加入社团
                 sysUserService.insertUserCor(usercor);
                 pcRedirectUrl.append("http://").append(pcConfig).append("/#/result?")
                         .append("code=").append("0");
             }
-
+        //用户没有注册过，就直接转到注册
         } else {
             pcRedirectUrl.append("redirect:").append("http://").append(pcConfig).append("/#/result?")
                     .append("code=").append(503).append("&openid=").append(openid)
@@ -74,7 +79,7 @@ public class WechartController {
             return pcRedirectUrl.toString();
         }
         pcRedirectUrl.append("redirect:").append("http://").append(pcConfig).append("/#/result?")
-                .append("code=").append(504).append("&openid=").append(openid)
+                .append("code=").append(500).append("&openid=").append(openid)
                 .append("&corid=").append(corid).append("&type=").append(type);
         logger.info(pcRedirectUrl.toString());
         return pcRedirectUrl.toString();
