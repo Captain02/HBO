@@ -181,6 +181,16 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
         return (List<String>) daoSupport.findForList("io.renren.modules.sys.dao.SysUserDao.queryAllPerms", pageData);
     }
 
+    @Override
+    public List<PageData> selectCorByUserCorid(PageData usercor) throws Exception {
+        return (List<PageData>) daoSupport.findForList("io.renren.modules.sys.dao.SysUserDao.selectCorByUserCorid",usercor);
+    }
+
+    @Override
+    public List<PageData> getUserCorsByUserName(PageData pageData) throws Exception {
+        return (List<PageData>) daoSupport.findForList("io.renren.modules.sys.dao.SysUserDao.getUserCorsByUserName",pageData);
+    }
+
 
     @Override
     public PageData getinfoByid(PageData pageData) throws Exception {

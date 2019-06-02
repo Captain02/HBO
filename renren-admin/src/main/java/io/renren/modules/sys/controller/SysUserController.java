@@ -155,7 +155,7 @@ public class SysUserController extends BaseController {
     @PostMapping("/QRSave")
     public R QRSave() throws Exception {
         PageData pageData = this.getPageData();
-        CheckParameterUtil.checkParameterMap(pageData,"username","password");
+        CheckParameterUtil.checkParameterMap(pageData, "username", "password");
         sysUserService.QRSave(pageData);
         return R.ok();
     }
@@ -288,7 +288,7 @@ public class SysUserController extends BaseController {
         return R.ok().put("data", pageDataList);
     }
 
-    //获得与用户的角色Stirng列表
+    //获得与用户权限的Stirng列表
     @GetMapping("/getLoginUserPermission")
     public R getLoginUserPermission() throws Exception {
         PageData pageData = this.getPageData();
@@ -301,6 +301,13 @@ public class SysUserController extends BaseController {
             permsSet.addAll(Arrays.asList(perms.trim()));
         }
         return R.ok().put("data", permsSet);
+    }
+
+    @GetMapping("/getUserCors")
+    public R getUserCors() throws Exception {
+        PageData pageData = this.getPageData();
+        List<PageData> data = sysUserService.getUserCorsByUserName(pageData);
+        return R.ok().put("data",data);
     }
 
 }

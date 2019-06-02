@@ -91,4 +91,8 @@ public interface SysUserService extends IService<SysUserEntity> {
     void QRSave(PageData pageData) throws Exception;
 
 	List<String> queryAllPerms(PageData pageData) throws Exception;
+
+	List<PageData> selectCorByUserCorid(PageData usercor) throws Exception;
+
+	List<PageData> getUserCorsByUserName(PageData pageData) throws Exception;
 }

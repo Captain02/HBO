@@ -346,5 +346,18 @@
         INSERT INTO sys_user (userid,corid) VALUES (#{userid},#{corid})
     </insert>
 
+    <!--查询属于的社团-->
+    <select id="selectCorByUserCorid" resultType="io.renren.common.entity.PageData">
+      select id from corporation
+      LEFT JOIN cor_user ON cor_user.corid = corporation.id
+      WHERE cor_user.corid = #{corid} AND cor_user.userid=#{userid}
+    </select>
 
+    <!--查询用户拥有的社团-->
+    <select id="getUserCorsByUserName" resultType="io.renren.common.entity.PageData">
+        select corporation.id,corporation.corname from corporation
+      LEFT JOIN cor_user ON cor_user.corid = corporation.id
+      LEFT JOIN sys_user ON sys_user.user_id = cor_user.userid
+      WHERE sys_user.`username`=#{username}
+    </select>
 </mapper>

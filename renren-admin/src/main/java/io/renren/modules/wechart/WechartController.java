@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Enumeration;
+import java.util.List;
 
 @Controller
 public class WechartController {
@@ -53,6 +54,13 @@ public class WechartController {
             usercor.put("userid", usernamePD.getValueOfInteger("user_id"));
             usercor.put("corid", corid);
             if (type.equals("1")) {
+                List<PageData> corsByUserName = sysUserService.selectCorByUserCorid(usercor);
+                if (corsByUserName!=null){
+                    pcRedirectUrl.append("redirect:").append("http://").append(pcConfig).append("/#/result?")
+                            .append("code=").append(504);
+                    logger.info(pcRedirectUrl.toString());
+                    return pcRedirectUrl.toString();
+                }
                 sysUserService.insertUserCor(usercor);
                 pcRedirectUrl.append("http://").append(pcConfig).append("/#/result?")
                         .append("code=").append("0");
@@ -66,7 +74,7 @@ public class WechartController {
             return pcRedirectUrl.toString();
         }
         pcRedirectUrl.append("redirect:").append("http://").append(pcConfig).append("/#/result?")
-                .append("code=").append(503).append("&openid=").append(openid)
+                .append("code=").append(504).append("&openid=").append(openid)
                 .append("&corid=").append(corid).append("&type=").append(type);
         logger.info(pcRedirectUrl.toString());
         return pcRedirectUrl.toString();
