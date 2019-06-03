@@ -26,7 +26,7 @@ import java.util.List;
 
 @RestController()
 @RequestMapping("/sys/activity")
-@Api("活动")
+@Api(value = "/sys/activity", tags = "活动模块")
 public class ActivityController extends BaseController {
 
     @Autowired

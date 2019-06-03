@@ -93,9 +93,7 @@ public class CorporationController extends BaseController {
     }
 
     /**
-     * >>>>>>> parent of 832552a... 修改bug
      * 添加社团
-     *
      * @return
      */
     @PostMapping("/add")
