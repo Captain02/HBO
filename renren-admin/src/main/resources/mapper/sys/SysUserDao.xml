@@ -85,6 +85,12 @@
         LEFT JOIN sys_dept ON sys_dept.dept_id = sys_user_dept.deptid
         WHERE cor_user.status = 1
         AND cor_user.corid = #{pd.corid}
+        <if test="name != null">
+            AND sys_user.`name` = #{pd.name}
+        </if>
+        <if test="persionnum != null">
+            AND sys_user.`username` = #{pd.username}
+        </if>
     </select>
 
     <!--void removeUserByIds(List<Long> collect, Long corid);-->
