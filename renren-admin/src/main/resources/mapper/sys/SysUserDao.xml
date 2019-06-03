@@ -85,10 +85,10 @@
         LEFT JOIN sys_dept ON sys_dept.dept_id = sys_user_dept.deptid
         WHERE cor_user.status = 1
         AND cor_user.corid = #{pd.corid}
-        <if test="pd.name != null">
+        <if test="pd.name != ''">
             AND sys_user.`name` = #{pd.name}
         </if>
-        <if test="pd.username != null">
+        <if test="pd.username != ''">
             AND sys_user.`username` = #{pd.username}
         </if>
     </select>
