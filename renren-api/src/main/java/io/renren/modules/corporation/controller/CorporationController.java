@@ -24,7 +24,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/corporation")
-@Api("社团")
+@Api(tags = {"社团"})
 public class CorporationController extends BaseController{
 
     @Autowired
@@ -40,7 +40,7 @@ public class CorporationController extends BaseController{
      * @return
      */
     @GetMapping("/getListPage")
-    @ApiOperation(value = "社团分页信息", notes = "社团分页信息", httpMethod = "GET")
+    @ApiOperation(value = "社团分页信息", notes = "社团分页信息", httpMethod = "GET",tags = {"社团"})
     @ApiImplicitParams({
             @ApiImplicitParam(name = "pageSize", value = "每页显示记录数", required = true, dataType = "Integer"),
             @ApiImplicitParam(name = "currPage", value = "当前页", required = true, dataType = "Integer"),
@@ -68,7 +68,7 @@ public class CorporationController extends BaseController{
      * @return
      */
     @GetMapping("/getCorporation")
-    @ApiOperation(value = "社团详情", notes = "社团详情", httpMethod = "GET")
+    @ApiOperation(value = "社团详情", notes = "社团详情", httpMethod = "GET",tags = {"社团"})
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "社团id", required = true, dataType = "Integer")
     })
@@ -93,7 +93,7 @@ public class CorporationController extends BaseController{
      * @return
      */
     @GetMapping("/getImages")
-    @ApiOperation(value = "社团相册", notes = "社团相册", httpMethod = "GET")
+    @ApiOperation(value = "社团相册", notes = "社团相册", httpMethod = "GET",tags = {"社团"})
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "社团id", required = true, dataType = "Integer")
     })
@@ -118,15 +118,20 @@ public class CorporationController extends BaseController{
      */
     @Login
     @GetMapping("addCor")
-    @ApiOperation(value ="社团报名", httpMethod = "GET")
+    @ApiOperation(value ="社团报名", httpMethod = "GET",tags = {"社团"})
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", value = "活动id", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "id", value = "社团id", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "deptid", value = "部门id", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "corid", value = "/社团id", required = true, dataType = "Integer"),
     })
     public R addAct(HttpServletRequest req) {
         PageData pageData = this.getPageData();
         String tokenReq = req.getHeader("Authorization"); //从header中获取token
         String username = JWTUtil.getUsername(tokenReq); //根据token获取username
         try {
+            if((pageData.getValueOfInteger("deptid")!=0)){//如deptid不是0时，社团id取corid
+                pageData.put("id",pageData.getValueOfInteger("corid"));
+            }
             Object userId = bbs_likeService.selectId(username);//根据username获取userid
             pageData.put("userId", Long.valueOf(String.valueOf(userId)));
             int count = cor_userService.byUserIdAndCorId(pageData);

@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/bbs_like")
-@Api("点赞")
+@Api(tags = {"点赞"})
 public class Bbs_likeController extends BaseController{
     @Autowired
     Bbs_likeService bbs_likeService;
@@ -30,7 +30,7 @@ public class Bbs_likeController extends BaseController{
      */
     @Login
     @GetMapping("addTopic")
-    @ApiOperation(value ="点赞功能", httpMethod = "GET")
+    @ApiOperation(value ="点赞功能", httpMethod = "GET",tags = {"点赞"})
     @ApiImplicitParams({
             @ApiImplicitParam(name = "topicid", value = "主题id", required = true, dataType = "Integer"),
     })

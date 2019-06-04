@@ -3,8 +3,10 @@ package io.renren.modules.contention.controller;
 import io.renren.common.controller.BaseController;
 import io.renren.common.entity.Page;
 import io.renren.common.entity.PageData;
+import io.renren.common.utils.CheckParameterUtil;
 import io.renren.common.utils.R;
 import io.renren.modules.contention.service.ContentionService;
+import io.renren.modules.contention.service.RepliesService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -13,17 +15,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.List;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/contention")
-@Api("争鸣板块")
+@Api(tags = {"活动评论"})
 public class ContentionController  extends BaseController {
 
     @Autowired
     ContentionService contentionService;
+    @Autowired
+    RepliesService repliesService;
 
     /**
      * 根据分页信息对活动信息进行分页
@@ -32,7 +37,7 @@ public class ContentionController  extends BaseController {
      *
      */
     @GetMapping("/getListPage")
-    @ApiOperation(value = "活动分页信息", notes = "活动分页信息", httpMethod = "GET")
+    @ApiOperation(value = "活动分页信息", notes = "活动分页信息", httpMethod = "GET",tags = {"活动评论"})
     @ApiImplicitParams({
             @ApiImplicitParam(name = "pageSize", value = "每页显示记录数", required = true, dataType = "Integer"),
             @ApiImplicitParam(name = "currPage", value = "当前页", required = true, dataType = "Integer"),
@@ -60,7 +65,7 @@ public class ContentionController  extends BaseController {
      * @return
      */
     @GetMapping("/getCoractivity")
-    @ApiOperation(value = "活动详情", notes = "活动详情", httpMethod = "GET")
+    @ApiOperation(value = "活动详情", notes = "活动详情", httpMethod = "GET",tags = {"活动评论"})
     @ApiImplicitParams({
             @ApiImplicitParam(name = "actid", value = "活动id", required = true, dataType = "Integer")
     })
@@ -77,6 +82,33 @@ public class ContentionController  extends BaseController {
         }catch (Exception e) {
             e.printStackTrace();
             return R.error("获取活动详情"+e.getMessage());
+        }
+    }
+    /**
+     * 获取评论列表
+     * @return
+     */
+    @GetMapping("/repliesList")
+    @ApiOperation(value = "评论分页", notes = "评论分页", httpMethod = "GET",tags = {"活动评论"})
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "pageSize", value = "每页显示记录数", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "currPage", value = "当前页", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "topicid", value = "主题id", required = true, dataType = "Integer"),
+    })
+    public  R repliesList(@ApiIgnore Page page){
+        PageData pageData = this.getPageData();
+        CheckParameterUtil.checkParameterMap(pageData,"topicid");
+        int currPage = Integer.parseInt(pageData.getValueOfString("currPage"));
+        page.setPd(pageData);
+        try {
+            List<PageData> repliesList = repliesService.getListPage(page);
+            if (currPage != page.getCurrPage()) {
+                return R.ok();
+            }
+            return R.ok().put("page", page).put("date", repliesList);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return R.error(e.getMessage());
         }
     }
 }

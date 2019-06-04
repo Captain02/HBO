@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/actenroll")
-@Api("活动报名")
+@Api(tags = {"活动报名"})
 public class ActenrollController extends BaseController {
 
     @Autowired
@@ -36,7 +36,7 @@ public class ActenrollController extends BaseController {
      */
     @Login
     @GetMapping("addAct")
-    @ApiOperation(value ="参加活动功能", httpMethod = "GET")
+    @ApiOperation(value ="参加活动功能", httpMethod = "GET",tags = {"活动报名"})
     @ApiImplicitParams({
             @ApiImplicitParam(name = "actId", value = "活动id", required = true, dataType = "Integer"),
             @ApiImplicitParam(name = "actprogressId", value = "活动进度Id", required = true, dataType = "Integer"),
