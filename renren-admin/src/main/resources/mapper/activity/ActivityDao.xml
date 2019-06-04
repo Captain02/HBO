@@ -132,4 +132,12 @@
         </set>
         WHERE `actid` = #{actId,jdbcType=INTEGER}
     </update>
+
+    <insert id="addActCroWdPeople">
+        INSERT INTO actcrowd (`actid`,`crowdpeople`)
+        VALUES
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            #{actId},#{item}
+        </foreach>
+    </insert>
 </mapper>

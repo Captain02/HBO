@@ -111,7 +111,7 @@ public class ActivityController extends BaseController {
             @ApiImplicitParam(name = "actLeader", value = "活动负责人", required = true, dataType = "Integer"),
             @ApiImplicitParam(name = "actStartTime", value = "活动开始时间", required = true, dataType = "String"),
             @ApiImplicitParam(name = "actEndTime", value = "活动结束时间", required = true, dataType = "String"),
-            @ApiImplicitParam(name = "croWdPeople", value = "活动面向人群", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "croWdPeople", value = "活动面向人群", required = true, dataType = "String"),
             @ApiImplicitParam(name = "profile", value = "活动简介", required = true, dataType = "String"),
             @ApiImplicitParam(name = "processNodes", value = "进程节点(','分割)", required = true, dataType = "String")
     })

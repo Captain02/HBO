@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -32,6 +33,10 @@ public class ActivityServiceImpl implements ActivityService {
             pageData.put("processNode",processNodes[i]);
             daoSupport.save("ActprocessDao.add",pageData);
         }
+        String croWdPeopleStr = pageData.getValueOfString("croWdPeople");
+        String[] split = croWdPeopleStr.split(",");
+        List<String> list = Arrays.asList(split);
+        daoSupport.save("ActivityDao.addActCroWdPeople", list);
     }
 
     @Override
