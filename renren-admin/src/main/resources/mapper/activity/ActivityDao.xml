@@ -11,7 +11,7 @@
     </resultMap>
 
     <select id="activitylistPage" resultMap="activityPageData">
-        SELECT c.`actname`,c.`actstarttame`,c.`actendtime`,c.`createtime`,c.`crowdpeople`,c.`actid`,
+        SELECT c.`actname`,c.`actstarttame`,c.`actendtime`,c.`createtime`,c.`actid`,
         c1.`corname`,f.`filepath`,
         COUNT(DISTINCT l.`userid`) likeCount,
         COUNT(DISTINCT c2.`userid`) collectionCount
@@ -36,7 +36,7 @@
     </select>
 
     <select id="getActivityById" resultMap="activityPageData">
-        SELECT c.`actname`,c.`actstarttame`,c.`actendtime`,c.`createtime`,c.`crowdpeople`,c.`actid`,c.`actdetails`,c.`isact`,
+        SELECT c.`actname`,c.`actstarttame`,c.`actendtime`,c.`createtime`,c.`actid`,c.`actdetails`,c.`isact`,
             c1.`corname`,u.`name`,
             f.`filepath` headPath,f.`filename` headName,
             f1.`filepath` codePath,f1.`filename` codeName,
@@ -61,7 +61,7 @@
     </select>-->
 
     <insert id="add" useGeneratedKeys="true" keyProperty="actId">
-        insert into `coractivity` (`actname`,`actstarttame`,`actendtime`,`actleading`,`crowdpeople`,`profile`,`actcorid`
+        insert into `coractivity` (`actname`,`actstarttame`,`actendtime`,`actleading`,`profile`,`actcorid`
         <trim prefix="," suffixOverrides=",">
             <if test="actDetails!=null">
                 `actdetails`,
@@ -78,7 +78,7 @@
         </trim>
         )
         values(#{actName,jdbcType=VARCHAR},#{actStartTime,jdbcType=VARCHAR},#{actEndTime,jdbcType=VARCHAR},#{actLeader,jdbcType=INTEGER},
-        #{croWdPeople,jdbcType=INTEGER},#{profile,jdbcType=VARCHAR},#{actCorId,jdbcType=INTEGER}
+        #{profile,jdbcType=VARCHAR},#{actCorId,jdbcType=INTEGER}
         <trim prefix="," suffixOverrides=",">
             <if test="actDetails!=null">
                 #{actDetails,jdbcType=VARCHAR},
@@ -117,9 +117,7 @@
             <if test="videoId!=null">
                 `videoid` = #{videoId,jdbcType=INTEGER},
             </if>
-            <if test="croWdpeople!=null">
-                `crowdpeople` = #{croWdpeople,jdbcType=INTEGER},
-            </if>
+
             <if test="images!=null">
                 `images` = #{images,jdbcType=INTEGER},
             </if>
