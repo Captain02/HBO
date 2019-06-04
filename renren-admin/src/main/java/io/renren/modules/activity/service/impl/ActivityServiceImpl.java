@@ -36,7 +36,8 @@ public class ActivityServiceImpl implements ActivityService {
         String croWdPeopleStr = pageData.getValueOfString("croWdPeople");
         String[] split = croWdPeopleStr.split(",");
         List<String> list = Arrays.asList(split);
-        daoSupport.save("ActivityDao.addActCroWdPeople", list);
+        pageData.put("list",list);
+        daoSupport.save("ActivityDao.addActCroWdPeople", pageData);
     }
 
     @Override
