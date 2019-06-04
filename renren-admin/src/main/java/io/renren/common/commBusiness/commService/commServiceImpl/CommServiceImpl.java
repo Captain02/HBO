@@ -90,7 +90,7 @@ public class CommServiceImpl implements CommService {
 
     //保存文件到数据库
     public Integer addFile2DB(PageData pageData) throws Exception {
-        pageData = (PageData) daoSupport.save("FileDao.add",pageData);
+        daoSupport.save("FileDao.add",pageData);
         return pageData.getValueOfInteger("id");
     }
 
