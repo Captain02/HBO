@@ -42,8 +42,8 @@ public class CorporationController extends BaseController{
     @GetMapping("/getListPage")
     @ApiOperation(value = "社团分页信息", notes = "社团分页信息", httpMethod = "GET",tags = {"社团"})
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "pageSize", value = "每页显示记录数", required = true, dataType = "Integer"),
-            @ApiImplicitParam(name = "currPage", value = "当前页", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "pageSize",paramType = "query",value = "每页显示记录数", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "currPage",paramType = "query", value = "当前页", required = true, dataType = "Integer"),
     })
     public R getListPage() {
         PageData pageData = this.getPageData();
