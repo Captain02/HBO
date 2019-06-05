@@ -12,6 +12,9 @@
         <association property="corporation" column="actcorid" select="selectCorByCorid"/>
         <association property="actleading" column="{id=actleading}"
                      select="io.renren.modules.sys.dao.SysUserDao.getinfoByid"/>
+        <association property="bbs_like" column="actid" select="bbslikeDao.selectLikeByActid"/>
+        <!--<association property="bbs_replies" column="actid" select="likeDao.selectRepliesByActid"/>-->
+        <!--<association property="bbs_collection" column="actid" select="likeDao.selectCollectionByActid"/>-->
         <collection property="processnodes" column="actid" select="ActprocessDao.selectActprocessForActivity"/>
         <collection property="crowdpeople" column="actid" select="selectCrowdPeopleByactId"/>
     </resultMap>
