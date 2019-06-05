@@ -22,8 +22,8 @@
         INSERT INTO filetable(filename,filepath) VALUES (#{fileName},#{filePath})
     </insert>
 
-    <delete id="delete">
---         DELETE FROM images WHERE id = #{id}
+    <delete id="deleteById">
+        DELETE FROM filetable WHERE id = #{id}
     </delete>
 
 </mapper>

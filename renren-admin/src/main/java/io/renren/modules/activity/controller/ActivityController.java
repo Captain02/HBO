@@ -10,6 +10,7 @@ import io.renren.common.utils.CheckParameterUtil;
 import io.renren.common.utils.QrCodeUtils;
 import io.renren.common.utils.R;
 import io.renren.modules.activity.service.ActivityService;
+import io.renren.modules.file.service.FileService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -40,6 +41,9 @@ public class ActivityController extends BaseController {
     //域名信息
     @Value("${DNSConfig}")
     public String DOMAIN_NAME;
+    @Autowired
+    FileService fileService;
+
 
 
     /**
@@ -68,6 +72,7 @@ public class ActivityController extends BaseController {
     /**
      * 获取单个社团活动详情
      * actId: 活动id
+     *
      * @return
      */
     @ApiOperation(value = "活动详情", notes = "活动详情", httpMethod = "GET")
@@ -77,13 +82,14 @@ public class ActivityController extends BaseController {
     @GetMapping("/getActivity")
     public R getActivity() throws Exception {
         PageData pageData = this.getPageData();
-        CheckParameterUtil.checkParameterMap(pageData,"actId");
+        CheckParameterUtil.checkParameterMap(pageData, "actId");
         pageData = activityService.getActivityById(pageData);
-        return R.ok().put("data",pageData);
+        return R.ok().put("data", pageData);
     }
 
     /**
      * 更新活动
+     *
      * @return
      * @throws Exception
      */
@@ -94,7 +100,7 @@ public class ActivityController extends BaseController {
     @PostMapping("/updateAct")
     public R updateAct() throws Exception {
         PageData pageData = this.getPageData();
-        CheckParameterUtil.checkParameterMap(pageData,"actId");
+        CheckParameterUtil.checkParameterMap(pageData, "actId");
         activityService.updateAct(pageData);
         return R.ok();
     }
@@ -105,7 +111,7 @@ public class ActivityController extends BaseController {
      * @return
      */
     @PostMapping("/add")
-    @ApiOperation(value ="添加活动", httpMethod = "POST")
+    @ApiOperation(value = "添加活动", httpMethod = "POST")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "actCorId", value = "社团id", required = true, dataType = "Integer"),
             @ApiImplicitParam(name = "actName", value = "活动名称", required = true, dataType = "String"),
@@ -118,29 +124,29 @@ public class ActivityController extends BaseController {
     })
     public R add(@RequestParam(value = "enclosure", required = false) MultipartFile enclosure, HttpServletRequest request) throws Exception {
         PageData pageData = this.getPageData();
-        CheckParameterUtil.checkParameterMap(pageData, "actCorId","actName", "actLeader", "actStartTime", "actEndTime", "croWdPeople", "profile", "processNodes");
+        CheckParameterUtil.checkParameterMap(pageData, "actCorId", "actName", "actLeader", "actStartTime", "actEndTime", "croWdPeople", "profile", "processNodes");
         //保存二维码路径
         pageData.put("fileName", DateTool.dateToStringYYHHDD(new Date()) + pageData.get("actName").toString() + ".jpg");
         pageData.put("filePath", "/file/QrCode/Activity/" + pageData.getValueOfString("fileName"));
         Integer fileId = commService.addFile2DB(pageData);
-        if (fileId!=null){
-            pageData.put("fileId",fileId);
+        if (fileId != null) {
+            pageData.put("fileId", fileId);
         }
         //上传附件
         if (enclosure != null && !enclosure.isEmpty()) {
-            if(!this.upload(pageData,enclosure,"/file/Activity/enclosure/",request)){
+            if (!this.upload(pageData, enclosure, "/file/Activity/enclosure/", request)) {
                 return R.error("附件上传失败");
             }
             Integer enclosureid = commService.addFile2DB(pageData);
-            if(enclosureid != null){
-                pageData.put("enclosureid",enclosureid);
+            if (enclosureid != null) {
+                pageData.put("enclosureid", enclosureid);
             }
         }
         //插入激活状态
         pageData.put("states", 0);
         activityService.add(pageData);
         //创建二维码
-        String url = "http://"+DOMAIN_NAME+"/#/code-map?Id="+pageData.getValueOfInteger("id")+"&type="+ Const.ACTIVITY_TYPE;
+        String url = "http://" + DOMAIN_NAME + "/#/code-map?Id=" + pageData.getValueOfInteger("id") + "&type=" + Const.ACTIVITY_TYPE;
         QrCodeUtils.encodeByqrCodeName(url, FILEUPLOUD + "/file/QrCode/Activity/", pageData.get("actName").toString());
         return R.ok();
     }
@@ -164,23 +170,33 @@ public class ActivityController extends BaseController {
     }
 
     @PostMapping("/uploudActivitiBananer")
-    public R upActBananer(@RequestParam("file") MultipartFile file,  HttpServletRequest request) throws Exception {
+    public R upActBananer(@RequestParam("file") MultipartFile file, HttpServletRequest request) throws Exception {
         PageData pageData = this.getPageData();
         //0社团活动图片
-        if (pageData.getValueOfInteger("type") == 0){
-            upload(pageData,file,"/file/Activity/images/",request);
+        if (pageData.getValueOfInteger("type") == 0) {
+            upload(pageData, file, "/file/Activity/images/", request);
         }
         //1社团活动视频
-        if (pageData.getValueOfInteger("type") == 1){
-            upload(pageData,file,"/file/Activity/video/",request);
+        if (pageData.getValueOfInteger("type") == 1) {
+            upload(pageData, file, "/file/Activity/video/", request);
         }
         //1社团活动附件
-        if (pageData.getValueOfInteger("type") == 2){
-            upload(pageData,file,"/file/Activity/enclosure/",request);
+        if (pageData.getValueOfInteger("type") == 2) {
+            upload(pageData, file, "/file/Activity/enclosure/", request);
         }
         Integer fileId = commService.addFile2DB(pageData);
-        pageData.put("id",fileId);
-        return R.ok().put("data",pageData);
+        pageData.put("id", fileId);
+        return R.ok().put("data", pageData);
+    }
+
+
+    @PostMapping("/deleteActImage")
+    public R deleteImage() throws Exception {
+        PageData pageData = this.getPageData();
+        CheckParameterUtil.checkParameterMap(pageData,"filePath","id");
+        commService.deleteFile(pageData.getValueOfString("filePath"));
+        fileService.deleteFile(pageData);
+        return R.ok();
     }
 
 
