@@ -8,6 +8,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -33,7 +34,7 @@ public class CorporationEntity implements Serializable {
 	 * 创建时间
 	 */
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-	private Date createTime;
+	private Date createtime;
 	private Long corcollege;
 	private Long corfaculty;
 	private Long corforcollege;
@@ -43,4 +44,7 @@ public class CorporationEntity implements Serializable {
 	private Long videofile;
 	private Long bannerid;
 	private Long iscor;
+	private String corcollegeName;
+	private String corfacultyName;
+	private List<CorcrowdEntity> corcrowdList; //面向人群list
 }

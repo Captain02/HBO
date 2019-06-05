@@ -25,5 +25,5 @@ public interface CorporationService {
      */
     Map getCorporation(Long id) throws Exception ;
 
-    PageData byIdImages(long id) throws  Exception;
+    List<PageData> byIdImages(long id) throws  Exception;
 }

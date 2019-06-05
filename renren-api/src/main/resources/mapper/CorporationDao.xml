@@ -3,8 +3,22 @@
 
 <mapper namespace="CorporationDao">
     <!-- 可根据自己的需求，是否要使用 -->
+	<resultMap type="io.renren.modules.corporation.entity.CorporationEntity" id="CorporationMap">
+		<id property="id" column="id"/>
+		<result property="corname" column="corname"/>
+		<result property="corleading" column="corleading"/>
+		<result property="cortercher" column="cortercher"/>
+		<result property="corworkspace" column="corworkspace"/>
+		<result property="createtime" column="createtime"/>
+		<result property="corcollege" column="corcollege"/>
+		<result property="corfaculty" column="corfaculty"/>
+		<result property="corscale" column="corscale"/>
+		<result property="fileid" column="fileid"/>
+		<result property="videofile" column="videofile"/>
+		<collection property="corcrowdList" column="id" select="io.renren.modules.corporation.dao.CorcrowdDao.findcorcrowdById" />
+	</resultMap>
 
-    <select id="getlistPage" resultType="io.renren.common.entity.PageData">
+    <select id="getlistPage" resultMap="CorporationMap">
 	select id,corname,corleading,corscale,createtime,fileid,videofile
 	FROM corporation
     </select>
