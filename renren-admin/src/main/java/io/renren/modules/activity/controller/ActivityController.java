@@ -184,6 +184,10 @@ public class ActivityController extends BaseController {
         if (pageData.getValueOfInteger("type") == 1){
             upload(pageData,file,"/file/Activity/video/",request);
         }
+        //1社团活动附件
+        if (pageData.getValueOfInteger("type") == 2){
+            upload(pageData,file,"/file/Activity/enclosure/",request);
+        }
         Integer fileId = commService.addFile2DB(pageData);
         pageData.put("id",fileId);
         return R.ok().put("data",pageData);

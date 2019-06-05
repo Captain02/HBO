@@ -66,14 +66,17 @@
             <if test="actDetails!=null">
                 `actdetails`,
             </if>
-            <if test="videoId!=null">
+            <if test="videoid!=null">
                 `videoid`,
             </if>
-            <if test="imageId!=null">
+            <if test="images!=null">
                 `images`,
             </if>
             <if test="fileId!=null">
                 `fileid`,
+            </if>
+            <if test="enclosure != null">
+                #{enclosure,jdbcType=INTEGER},
             </if>
         </trim>
         )
@@ -83,14 +86,17 @@
             <if test="actDetails!=null">
                 #{actDetails,jdbcType=VARCHAR},
             </if>
-            <if test="videoId!=null">
-                #{videoId,jdbcType=INTEGER},
+            <if test="videoid != null">
+                #{videoid,jdbcType=INTEGER},
             </if>
-            <if test="imageId!=null">
-                #{imageId,jdbcType=INTEGER},
+            <if test="imagers != null">
+                #{imagers,jdbcType=INTEGER},
             </if>
-            <if test="fileId!=null">
+            <if test="fileId != null">
                 #{fileId,jdbcType=INTEGER},
+            </if>
+            <if test="enclosure != null">
+                #{enclosure,jdbcType=INTEGER},
             </if>
         </trim>
         )
