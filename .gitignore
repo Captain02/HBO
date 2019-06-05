@@ -85,3 +85,8 @@ dependency-reduced-pom.xml
 *.ipr 
 *.iws 
 *.idea 
+renren-admin/renren-admin.iml
+renren-api/renren-api.iml
+renren-common/renren-common.iml
+renren-dynamic-datasource/renren-dynamic-datasource.iml
+renren-security.iml
