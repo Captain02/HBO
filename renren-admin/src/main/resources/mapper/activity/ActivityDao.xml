@@ -75,7 +75,7 @@
             <if test="fileId!=null">
                 `fileid`,
             </if>
-            <if test="enclosure != null">
+            <if test="enclosureid != null">
                 #{enclosure,jdbcType=INTEGER},
             </if>
         </trim>
@@ -95,8 +95,8 @@
             <if test="fileId != null">
                 #{fileId,jdbcType=INTEGER},
             </if>
-            <if test="enclosure != null">
-                #{enclosure,jdbcType=INTEGER},
+            <if test="enclosureid != null">
+                #{enclosureid,jdbcType=INTEGER},
             </if>
         </trim>
         )

@@ -116,7 +116,7 @@ public class ActivityController extends BaseController {
             @ApiImplicitParam(name = "profile", value = "活动简介", required = true, dataType = "String"),
             @ApiImplicitParam(name = "processNodes", value = "进程节点(','分割)", required = true, dataType = "String")
     })
-    public R add(@RequestParam(value = "video", required = false) MultipartFile video, @RequestParam(value = "image", required = false) MultipartFile image, HttpServletRequest request) throws Exception {
+    public R add(@RequestParam(value = "enclosure", required = false) MultipartFile enclosure, HttpServletRequest request) throws Exception {
         PageData pageData = this.getPageData();
         CheckParameterUtil.checkParameterMap(pageData, "actCorId","actName", "actLeader", "actStartTime", "actEndTime", "croWdPeople", "profile", "processNodes");
         //保存二维码路径
@@ -126,33 +126,23 @@ public class ActivityController extends BaseController {
         if (fileId!=null){
             pageData.put("fileId",fileId);
         }
-//        //上传宣传图
-//        if (image != null && !image.isEmpty()) {
-//            if(!this.upload(pageData,image,"/file/Activity/images/",request)){
-//                return R.error("图片上传失败");
-//            }
-//            Integer imageId = commService.addFile2DB(pageData);
-//            if(imageId != null){
-//                pageData.put("imageId",imageId);
-//            }
-//        }
-//        //上传视频
-//        if (video != null && !video.isEmpty()) {
-//            if(!this.upload(pageData,video,"/file/Activity/video/",request)){
-//                return R.error("视频上传失败");
-//            }
-//            Integer videoId = commService.addFile2DB(pageData);
-//            if(videoId != null){
-//                pageData.put("videoId",videoId);
-//            }
-//        }
+        //上传附件
+        if (enclosure != null && !enclosure.isEmpty()) {
+            if(!this.upload(pageData,enclosure,"/file/Activity/enclosure/",request)){
+                return R.error("附件上传失败");
+            }
+            Integer enclosureid = commService.addFile2DB(pageData);
+            if(enclosureid != null){
+                pageData.put("enclosureid",enclosureid);
+            }
+        }
         //插入激活状态
         pageData.put("states", 0);
         activityService.add(pageData);
         //创建二维码
         String url = "http://"+DOMAIN_NAME+"/#/code-map?Id="+pageData.getValueOfInteger("id")+"&type="+ Const.ACTIVITY_TYPE;
         QrCodeUtils.encodeByqrCodeName(url, FILEUPLOUD + "/file/QrCode/Activity/", pageData.get("actName").toString());
-        return R.ok().put("data", pageData);
+        return R.ok();
     }
 
     /**
