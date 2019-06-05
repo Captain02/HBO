@@ -49,7 +49,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
     @Autowired
     private SysDeptService sysDeptService;
     @Autowired
-    SysUserDao sysUserDao;
+    private SysUserDao sysUserDao;
     @Autowired
     private DaoSupport daoSupport;
 
@@ -265,6 +265,13 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
     @Override
     public void updateUserInfo(PageData pageData) throws Exception {
         daoSupport.update("io.renren.modules.sys.dao.SysUserDao.updateUserInfo", pageData);
+    }
+
+    @Override
+    public Integer queryByUserName(PageData pageData) throws Exception {
+//        PageData forObject = (PageData) daoSupport.findForObject("io.renren.modules.sys.dao.SysUserDao.selectIdByUserName", pageData);
+//        return forObject.getValueOfInteger("userId");
+        return (Integer) daoSupport.findForObject("io.renren.modules.sys.dao.SysUserDao.selectIdByUserName", pageData);
     }
 
 

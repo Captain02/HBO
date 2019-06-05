@@ -6,7 +6,6 @@
     <select id="userLogin" resultType="io.renren.common.entity.PageData">
         SELECT user_id,`username`,`password`,salt
         FROM sys_user
-        WHERE status = 1
         AND `username` = #{username}
     </select>
 
