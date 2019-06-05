@@ -5,10 +5,13 @@ import io.renren.common.dao.DaoSupport;
 import io.renren.common.entity.Page;
 import io.renren.common.entity.PageData;
 import io.renren.common.utils.Query;
+import io.renren.common.utils.R;
 import io.renren.modules.sys.entity.SysDictEntity;
+import io.renren.modules.test.AsynService;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -18,14 +21,16 @@ import java.util.List;
 
 
 @Controller
-@RequestMapping("test")
+@RequestMapping("/test")
 public class TestController extends BaseController{
     @Resource(name = "daoSupport")
     private DaoSupport dao;
     @Autowired
     SqlSessionTemplate sqlSessionTemplate;
+    @Autowired
+    AsynService asynService;
 
-    @RequestMapping(value = "test", method = RequestMethod.GET)
+    @RequestMapping(value = "/test", method = RequestMethod.GET)
     public void test() throws Exception {
         //new Query<SysDictEntity>().getPage(null);
         Page page = new Page();
@@ -37,14 +42,18 @@ public class TestController extends BaseController{
         page.setEntityOrField(false);
 //        page.setPageStr(null);
         page.setPd(new PageData());
-//        PageData pageData = new PageData();
-//        pageData.put("page",page);
         System.out.println("+69++++++++++++" + sqlSessionTemplate);
 
 
         List<PageData> object = (List<PageData>) dao.findForList("Demo01Dao.selectlistPage", page);
         System.out.println("----------------------------------" + object);
 
+    }
+
+    @PostMapping("/hello")
+    public R hello(){
+        asynService.hello();
+        return R.ok();
     }
 
 
