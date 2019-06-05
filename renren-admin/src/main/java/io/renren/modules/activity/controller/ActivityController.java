@@ -176,9 +176,18 @@ public class ActivityController extends BaseController {
     @PostMapping("/uploudActivitiBananer")
     public R upActBananer(@RequestParam("file") MultipartFile file,  HttpServletRequest request) throws Exception {
         PageData pageData = this.getPageData();
-        upload(pageData,file,"/file/Activity/images/",request);
+        //0社团活动图片
+        if (pageData.getValueOfInteger("type") == 0){
+            upload(pageData,file,"/file/Activity/images/",request);
+        }
+        //1社团活动视频
+        if (pageData.getValueOfInteger("type") == 0){
+            upload(pageData,file,"/file/Activity/video/",request);
+        }
         Integer fileId = commService.addFile2DB(pageData);
         pageData.put("id",fileId);
         return R.ok().put("data",pageData);
     }
+
+
 }
