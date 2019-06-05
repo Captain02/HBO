@@ -75,7 +75,7 @@ public class ApiLoginController extends BaseController {
         String username = JWTUtil.getUsername(tokenReq);
         String uuidPassword = UUID.randomUUID().toString().replace("-", "");
         String newToken = JWTUtil.sign(username, uuidPassword);
-        redisUtils.set(username, newToken, 60 * 60 * 1);
+        redisUtils.set(username, newToken, 60 * 60 * 24);
         return R.ok().put("token", newToken);
     }
 
