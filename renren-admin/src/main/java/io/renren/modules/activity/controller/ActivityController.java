@@ -14,6 +14,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import oracle.jdbc.proxy.annotation.Post;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -125,26 +126,26 @@ public class ActivityController extends BaseController {
         if (fileId!=null){
             pageData.put("fileId",fileId);
         }
-        //上传宣传图
-        if (image != null && !image.isEmpty()) {
-            if(!this.upload(pageData,image,"/file/Activity/images/",request)){
-                return R.error("图片上传失败");
-            }
-            Integer imageId = commService.addFile2DB(pageData);
-            if(imageId != null){
-                pageData.put("imageId",imageId);
-            }
-        }
-        //上传视频
-        if (video != null && !video.isEmpty()) {
-            if(!this.upload(pageData,video,"/file/Activity/video/",request)){
-                return R.error("视频上传失败");
-            }
-            Integer videoId = commService.addFile2DB(pageData);
-            if(videoId != null){
-                pageData.put("videoId",videoId);
-            }
-        }
+//        //上传宣传图
+//        if (image != null && !image.isEmpty()) {
+//            if(!this.upload(pageData,image,"/file/Activity/images/",request)){
+//                return R.error("图片上传失败");
+//            }
+//            Integer imageId = commService.addFile2DB(pageData);
+//            if(imageId != null){
+//                pageData.put("imageId",imageId);
+//            }
+//        }
+//        //上传视频
+//        if (video != null && !video.isEmpty()) {
+//            if(!this.upload(pageData,video,"/file/Activity/video/",request)){
+//                return R.error("视频上传失败");
+//            }
+//            Integer videoId = commService.addFile2DB(pageData);
+//            if(videoId != null){
+//                pageData.put("videoId",videoId);
+//            }
+//        }
         //插入激活状态
         pageData.put("states", 0);
         activityService.add(pageData);
@@ -170,5 +171,14 @@ public class ActivityController extends BaseController {
         pageData.put("filePath", filePath);
         pageData.put("fileName", file.getOriginalFilename());
         return true;
+    }
+
+    @PostMapping("/uploudActivitiBananer")
+    public R upActBananer(@RequestParam("file") MultipartFile file,  HttpServletRequest request) throws Exception {
+        PageData pageData = this.getPageData();
+        upload(pageData,file,"/file/Activity/images/",request);
+        Integer fileId = commService.addFile2DB(pageData);
+        pageData.put("id",fileId);
+        return R.ok().put("data",pageData);
     }
 }
