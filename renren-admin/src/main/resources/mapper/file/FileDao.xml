@@ -25,5 +25,10 @@
     <delete id="deleteById">
         DELETE FROM filetable WHERE id = #{id}
     </delete>
+    <select id="selectById" resultType="io.renren.common.entity.PageData">
+        SELECT `id`,`filename`,`filepath`
+        FROM filetable
+        WHERE `id` = #{id}
+    </select>
 
 </mapper>

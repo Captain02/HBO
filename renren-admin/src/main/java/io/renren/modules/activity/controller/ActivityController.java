@@ -77,12 +77,12 @@ public class ActivityController extends BaseController {
      */
     @ApiOperation(value = "活动详情", notes = "活动详情", httpMethod = "GET")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "actId", value = "活动id", required = true, dataType = "Integer")
+            @ApiImplicitParam(name = "actid", value = "活动id", required = true, dataType = "Integer")
     })
     @GetMapping("/getActivity")
     public R getActivity() throws Exception {
         PageData pageData = this.getPageData();
-        CheckParameterUtil.checkParameterMap(pageData, "actId");
+        CheckParameterUtil.checkParameterMap(pageData, "actid");
         pageData = activityService.getActivityById(pageData);
         return R.ok().put("data", pageData);
     }
@@ -198,6 +198,4 @@ public class ActivityController extends BaseController {
         fileService.deleteFile(pageData);
         return R.ok();
     }
-
-
 }

@@ -4,10 +4,16 @@
 <mapper namespace="ActivityDao">
 
     <resultMap id="activityPageData" type="io.renren.common.entity.PageData">
-        <id column="actid" property="actId"></id>
-        <collection property="processnodes"
-                    column="{actId=actid}" select="ActprocessDao.selectActprocessForActivity">
-        </collection>
+        <id column="actid" property="actid"></id>
+        <association property="video" column="{id=videoid}" select="FileDao.selectById"/>
+        <association property="QRCode" column="{id=fileid}" select="FileDao.selectById"/>
+        <association property="enclosureFile" column="{id=enclosure}" select="FileDao.selectById"/>
+        <association property="image" column="{id=images}" select="FileDao.selectById"/>
+        <association property="corporation" column="actcorid" select="selectCorByCorid"/>
+        <association property="actleading" column="{id=actleading}"
+                     select="io.renren.modules.sys.dao.SysUserDao.getinfoByid"/>
+        <collection property="processnodes" column="actid" select="ActprocessDao.selectActprocessForActivity"/>
+        <collection property="crowdpeople" column="actid" select="selectCrowdPeopleByactId"/>
     </resultMap>
 
     <select id="activitylistPage" resultMap="activityPageData">
@@ -36,25 +42,12 @@
     </select>
 
     <select id="getActivityById" resultMap="activityPageData">
-        SELECT c.`actname`,c.`actstarttame`,c.`actendtime`,c.`createtime`,c.`actid`,c.`actdetails`,c.`isact`,
-            c1.`corname`,u.`name`,
-            f.`filepath` headPath,f.`filename` headName,
-            f1.`filepath` codePath,f1.`filename` codeName,
-            f2.`filepath` videoPath,f2.`filename` videoName,
-            f3.`filepath` imagePath, f3.`filename` imageName,
-            COUNT(DISTINCT l.`userid`) likeCount,
-            COUNT(DISTINCT c2.`userid`) collectionCount
-        FROM `coractivity` c
-        LEFT JOIN `corporation` c1 ON c1.`id` = c.`actcorid`
-        LEFT JOIN `sys_user` u ON u.`user_id` = c.`actleading`
-        LEFT JOIN `filetable` f ON f.`id` = u.`fileid`
-        LEFT JOIN `filetable` f1 ON f1.`id` = c.`fileid`
-        LEFT JOIN `filetable` f2 ON f2.`id` = c.`videoid`
-        LEFT JOIN `filetable` f3 ON f3.`id` = c.`images`
-        LEFT JOIN `bbs_like` l ON l.`topicid` = c.`actid`
-        LEFT JOIN `bbs_collection` c2 ON c2.`topicid` = c.`actcorid`
-        WHERE c.`actid` = #{actId,jdbcType=INTEGER}
-        GROUP BY c.`actid`
+        SELECT
+`actid`,`actname`,`actstarttame`,`actendtime`,`createtime`,`actdetails`,`actcorid`,`actleading`,
+`fileid`,`videoid`,`images`,`actprocessid`,`profile`,`isact`,`enclosure`
+FROM
+coractivity
+WHERE `actid` = #{actid}
     </select>
     <!--<select id="selectActprocessForActivity" resultType="io.renren.common.entity.PageData">
         SELECT `actid`,`proid`,`processnode`,`states` FROM `actprocess` WHERE actid = #{pd.actId,jdbcType=INTEGER} ORDER BY `proid`
@@ -144,4 +137,17 @@
             ( #{actId},#{item})
         </foreach>
     </insert>
+
+    <select id="selectCrowdPeopleByactId" resultType="io.renren.common.entity.PageData">
+      SELECT sys_dict.`id`,sys_dict.`name`
+      FROM sys_dict
+      LEFT JOIN actcrowd ON sys_dict.`id` = actcrowd.`crowdpeople`
+      WHERE actcrowd.`actid` = #{actid}
+    </select>
+
+    <select id="selectCorByCorid" resultType="io.renren.common.entity.PageData">
+      SELECT `corname`,`id`
+      FROM corporation
+      WHERE corporation.`id` = #{actcorid}
+    </select>
 </mapper>
