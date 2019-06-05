@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="bbslikeDao">
+    <select id="selectLikeByActid" resultType="io.renren.common.entity.PageData">
+        SELECT count(*) AS num
+        FROM bbs_like
+        WHERE topicid = #{actid}
+    </select>
+
+    <select id="selectRepliesByActid" resultType="io.renren.common.entity.PageData">
+        SELECT count(*) AS num
+        FROM replies
+        WHERE topicid = #{actid}
+    </select>
+
+    <select id="selectCollectionByActid" resultType="io.renren.common.entity.PageData">
+        SELECT count(*) AS num
+        FROM bbs_collection
+        WHERE topicid = #{actid}
+    </select>
+</mapper>
