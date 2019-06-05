@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.renren.modules.corporation.dao.CorcrowdDao">
+    <resultMap type="io.renren.modules.corporation.entity.CorcrowdEntity" id="CorcrowdMap">
+        <id property="id" column="id"/>
+        <result property="corid" column="corid"/>
+        <result property="crowdid" column="crowdid"/>
+    </resultMap>
+    <select id="findcorcrowdById" resultType="String" parameterType="long">
+        SELECT
+         (SELECT value FROM sys_dict WHERE id = C.crowdid)crowdidName
+        FROM
+        corcrowd C
+        WHERE
+       corid =#{id}
+    </select>
+</mapper>

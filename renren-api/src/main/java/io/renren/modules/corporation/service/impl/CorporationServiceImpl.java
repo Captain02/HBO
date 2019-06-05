@@ -24,7 +24,7 @@ public class CorporationServiceImpl implements CorporationService {
     }
 
     @Override
-    public PageData byIdImages(long id) throws Exception {
-        return  (PageData)daoSupport.findForObject("CorporationDao.byIdImages",id);
+    public List<PageData> byIdImages(long id) throws Exception {
+        return  (List<PageData>)daoSupport.findForList("CorporationDao.byIdImages",id);
     }
 }

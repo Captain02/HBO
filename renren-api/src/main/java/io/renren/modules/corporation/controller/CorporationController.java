@@ -15,8 +15,10 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -45,10 +47,9 @@ public class CorporationController extends BaseController{
             @ApiImplicitParam(name = "pageSize",paramType = "query",value = "每页显示记录数", required = true, dataType = "Integer"),
             @ApiImplicitParam(name = "currPage",paramType = "query", value = "当前页", required = true, dataType = "Integer"),
     })
-    public R getListPage() {
+    public R getListPage(@ApiIgnore Page page) {
         PageData pageData = this.getPageData();
         int currPage = Integer.parseInt(pageData.getValueOfString("currPage"));
-        Page page = new Page();
         page.setPageSize(pageData.getValueOfInteger("pageSize"));
         page.setCurrPage(pageData.getValueOfInteger("currPage"));
         try {
@@ -70,7 +71,7 @@ public class CorporationController extends BaseController{
     @GetMapping("/getCorporation")
     @ApiOperation(value = "社团详情", notes = "社团详情", httpMethod = "GET",tags = {"社团"})
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", value = "社团id", required = true, dataType = "Integer")
+            @ApiImplicitParam(name = "id", value = "社团id",paramType = "query", required = true, dataType = "Integer")
     })
     public  R getCorporation(){
         PageData pageData =this.getPageData();
@@ -95,13 +96,13 @@ public class CorporationController extends BaseController{
     @GetMapping("/getImages")
     @ApiOperation(value = "社团相册", notes = "社团相册", httpMethod = "GET",tags = {"社团"})
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", value = "社团id", required = true, dataType = "Integer")
+            @ApiImplicitParam(name = "id", value = "社团id", paramType = "query",required = true, dataType = "Integer")
     })
     public  R getImages(){
         PageData pageData =this.getPageData();
         try{
             long id=pageData.getValueOfInteger("id");
-            PageData images= corporationService.byIdImages(id);
+            List<PageData> images= corporationService.byIdImages(id);
             if (images == null){
                 return R.ok().put("date","");
             }else{
@@ -117,12 +118,12 @@ public class CorporationController extends BaseController{
      * @return
      */
     @Login
-    @GetMapping("addCor")
-    @ApiOperation(value ="社团报名", httpMethod = "GET",tags = {"社团"})
+    @PostMapping("addCor")
+    @ApiOperation(value ="社团报名", httpMethod = "POST",tags = {"社团"})
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", value = "社团id", required = true, dataType = "Integer"),
-            @ApiImplicitParam(name = "deptid", value = "部门id", required = true, dataType = "Integer"),
-            @ApiImplicitParam(name = "corid", value = "/社团id", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "id", value = "社团id",paramType = "query", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "deptid", value = "部门id", paramType = "query",required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "corid", value = "/社团id",paramType = "query", required = true, dataType = "Integer"),
     })
     public R addAct(HttpServletRequest req) {
         PageData pageData = this.getPageData();
