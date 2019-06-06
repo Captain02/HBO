@@ -24,7 +24,8 @@
     </select>
 
 	<select id="byPrimaryId" resultType="map" parameterType="java.lang.Long">
-		select id,corname,corforcollege,corleading,
+		select id,corname,
+		(SELECT name FROM sys_user WHERE user_id=C.corleading)corleading,
 		(SELECT value FROM sys_dict WHERE id = C.corcollege)corcollegeName,
 		(SELECT value FROM sys_dict WHERE id = C.corfaculty)corfacultyName,
 		corscale,fileid,descs,cortercher,videofile,createtime,bannerid
