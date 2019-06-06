@@ -67,6 +67,8 @@ mybatis-plus:
     cache-enabled: false
     call-setters-on-nulls: true
     jdbc-type-for-null: 'null'
+    #打印sql语句的配置，生产环境关闭
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 #分页信息
 dialect: 'mysql'
@@ -80,3 +82,6 @@ HBOConfig: '140.143.201.244:8081'
 DNSConfig: 'www.yuezhonghao.cn:82'
 ##异常路径
 #errorPath: '/HBO/401'
+
+
+
