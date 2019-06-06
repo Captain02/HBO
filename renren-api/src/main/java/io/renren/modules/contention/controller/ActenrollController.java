@@ -13,7 +13,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,11 +35,11 @@ public class ActenrollController extends BaseController {
      * @return
      */
     @Login
-    @GetMapping("addAct")
-    @ApiOperation(value ="参加活动功能", httpMethod = "GET",tags = {"活动报名"})
+    @PostMapping ("addAct")
+    @ApiOperation(value ="参加活动功能", httpMethod = "POST",tags = {"活动报名"})
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "actId", value = "活动id", required = true, dataType = "Integer"),
-            @ApiImplicitParam(name = "actprogressId", value = "活动进度Id", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "actId", value = "活动id",paramType = "query", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "actprogressId", value = "活动进度Id",paramType = "query", required = true, dataType = "Integer"),
     })
     public R addAct(HttpServletRequest req) {
         PageData pageData = this.getPageData();

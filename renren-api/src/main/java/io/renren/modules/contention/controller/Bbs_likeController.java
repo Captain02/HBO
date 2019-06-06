@@ -11,7 +11,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,10 +29,10 @@ public class Bbs_likeController extends BaseController{
      * @return
      */
     @Login
-    @GetMapping("addTopic")
-    @ApiOperation(value ="点赞功能", httpMethod = "GET",tags = {"点赞"})
+    @PostMapping("addTopic")
+    @ApiOperation(value ="点赞功能", httpMethod = "POST",tags = {"点赞"})
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "topicid", value = "主题id", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "topicid", value = "主题id", paramType = "query",required = true, dataType = "Integer"),
     })
     public R userInfo(HttpServletRequest req){
         PageData pageData = this.getPageData();

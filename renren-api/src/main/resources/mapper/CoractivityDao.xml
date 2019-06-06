@@ -7,7 +7,8 @@
     <select id="coractivitylistPage" resultType="io.renren.common.entity.PageData">
        SELECT
        actid,
-       images,
+      (SELECT filepath FROM filetable WHERE id = videoid)videoid,
+      (SELECT filepath FROM filetable WHERE id = images)images,
 	(
 		SELECT
 			fileid
@@ -41,8 +42,9 @@ FROM
 
 	<select id="byPrimaryId" resultType="map" parameterType="java.lang.Long">
 	SELECT  actid,actname,actstarttame,actendtime,createtime,actdetails,
-	(SELECT value FROM sys_dict WHERE id=crowdpeople)forpeople,
-	fileid,videoid,images,
+	 (SELECT filepath FROM filetable WHERE id = fileid)fileid,
+	 (SELECT filepath FROM filetable WHERE id = videoid)videoid,
+	 (SELECT filepath FROM filetable WHERE id = images)images,
 (
 		SELECT
 			corname
@@ -58,7 +60,8 @@ FROM
 			sys_user
 		WHERE
 			user_id = C.actcorid
-	) username
+	) username,
+	(SELECT filepath FROM sys_user U LEFT JOIN filetable F ON F.id=U.fileid WHERE user_id = C.actcorid)userfilepath
 	FROM
 			coractivity C
 		WHERE

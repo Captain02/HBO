@@ -39,8 +39,8 @@ public class ContentionController  extends BaseController {
     @GetMapping("/getListPage")
     @ApiOperation(value = "活动分页信息", notes = "活动分页信息", httpMethod = "GET",tags = {"活动评论"})
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "pageSize", value = "每页显示记录数", required = true, dataType = "Integer"),
-            @ApiImplicitParam(name = "currPage", value = "当前页", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "pageSize", value = "每页显示记录数",paramType = "query", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "currPage", value = "当前页",paramType = "query", required = true, dataType = "Integer"),
     })
     public R getListPage() {
         PageData pageData = this.getPageData();
@@ -67,7 +67,7 @@ public class ContentionController  extends BaseController {
     @GetMapping("/getCoractivity")
     @ApiOperation(value = "活动详情", notes = "活动详情", httpMethod = "GET",tags = {"活动评论"})
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "actid", value = "活动id", required = true, dataType = "Integer")
+            @ApiImplicitParam(name = "actid", value = "活动id",paramType = "query", required = true, dataType = "Integer")
     })
     public  R getCoractivity(){
         PageData pageData =this.getPageData();
@@ -91,9 +91,9 @@ public class ContentionController  extends BaseController {
     @GetMapping("/repliesList")
     @ApiOperation(value = "评论分页", notes = "评论分页", httpMethod = "GET",tags = {"活动评论"})
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "pageSize", value = "每页显示记录数", required = true, dataType = "Integer"),
-            @ApiImplicitParam(name = "currPage", value = "当前页", required = true, dataType = "Integer"),
-            @ApiImplicitParam(name = "topicid", value = "主题id", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "pageSize", value = "每页显示记录数", paramType = "query",required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "currPage", value = "当前页",paramType = "query", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "topicid", value = "主题id",paramType = "query", required = true, dataType = "Integer"),
     })
     public  R repliesList(@ApiIgnore Page page){
         PageData pageData = this.getPageData();
