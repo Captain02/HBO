@@ -75,7 +75,7 @@
         LEFT JOIN `filetable` f1 ON f1.`id` = cor.`fileid`
         LEFT JOIN  filetable f2 ON f2.`id` = cor.`bannerid`
         LEFT JOIN filetable f3 ON f3.`id` = cor.`videofile`
-        WHERE cor.`id`=#{corid} AND cor.`iscor` = 1
+        WHERE cor.`id`=#{id} AND cor.`iscor` = 1
     </select>
 
     <insert id="add" useGeneratedKeys="true" keyProperty="id">
@@ -129,41 +129,56 @@
     </insert>
 
     <update id="update">
-        UPDATE corporation set iscor = 0 WHERE id = #{corid}
+        UPDATE corporation set iscor = 0 WHERE id = #{id}
     </update>
 
     <update id="updateCor">
         UPDATE corporation
         <set>
-            <if test="corname!=null">
-                corname = #{corname,jdbcType=VARCHAR},
+            <if test="corName!=null and corName!=''">
+                `corname`=#{corName,jdbcType=VARCHAR},
             </if>
             <if test="corleading!=null">
-                corleading = #{corleading,jdbcType=VARCHAR},
+                `corleading`=#{corleading,jdbcType=INTEGER},
             </if>
-            <if test="cortercher!=null">
-                cortercher = #{cortercher,jdbcType=VARCHAR},
+            <if test="corTercher!=null and corTercher!=''">
+                `cortercher`=#{corTercher,jdbcType=VARCHAR},
             </if>
-            <if test="corworkspace!=null">
-                corworkspace = #{corworkspace,jdbcType=VARCHAR},
+            <if test="corWorkspace!=null and corWorkspace!=''">
+                `corworkspace`=#{corWorkspace,jdbcType=VARCHAR},
             </if>
-            <if test="corcollege!=null">
-                corcollege = #{corcollege,jdbcType=INTEGER},
+            <if test="corCollege!=null">
+                `corcollege`=#{corCollege,jdbcType=INTEGER},
             </if>
-            <if test="corfaculty!=null">
-                corfaculty = #{corfaculty,jdbcType=INTEGER},
+            <if test="corFaculty!=null">
+                `corfaculty`=#{corFaculty,jdbcType=INTEGER},
             </if>
-            <if test="corcollege!=null">
-                corcollege = #{corcollege,jdbcType=INTEGER},
+            <if test="corScale!=null">
+                `corscale`=#{corScale,jdbcType=INTEGER},
             </if>
-            <if test="corscale!=null">
-                corscale = #{corscale,jdbcType=INTEGER},
+            <if test="fileId!=null">
+                `fileid`=#{fileId,jdbcType=INTEGER},
             </if>
-            <if test="descs!=null">
-                descs = #{descs,jdbcType=VARCHAR}
+            <if test="descs!=null and descs!=''">
+                `descs`=#{descs,jdbcType=VARCHAR},
+            </if>
+            <if test="videoId!=null">
+                `videofile`=#{videoId,jdbcType=INTEGER},
+            </if>
+            <if test="bannerId!=null">
+                `bannerid`=#{bannerId,jdbcType=INTEGER},
+            </if>
+            <if test="isCor!=null">
+                `iscor`=#{isCor,jdbcType=INTEGER},
+            </if>
+            <if test="deptId!=null">
+                `deptid`=#{deptId,jdbcType=INTEGER},
+            </if>
+            <if test="corId!=null">
+                `corid`=#{corId,jdbcType=INTEGER},
             </if>
         </set>
-        WHERE id = #{corid}
+        WHERE id = #{id}
     </update>
 
 </mapper>

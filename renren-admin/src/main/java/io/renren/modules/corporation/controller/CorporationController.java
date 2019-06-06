@@ -79,11 +79,11 @@ public class CorporationController extends BaseController {
      */
     @GetMapping("/selectByCorId")
     @ApiOperation(value = "根据社团id获取社团详情", notes = "根据社团id获取社团详情", httpMethod = "GET")
-    @ApiImplicitParam(paramType = "query", name = "corid", value = "社团id", required = true, dataType = "Integer")
+    @ApiImplicitParam(paramType = "query", name = "id", value = "社团id", required = true, dataType = "Integer")
     public R selectByCorId() {
         PageData pageData = this.getPageData();
         //校验参数
-        CheckParameterUtil.checkParameterMap(pageData, "corid");
+        CheckParameterUtil.checkParameterMap(pageData, "id");
         try {
             //获取社团详情
             List<PageData> corporation = corporationService.selectByCorId(pageData);
@@ -140,11 +140,11 @@ public class CorporationController extends BaseController {
      */
     @GetMapping("/del")
     @ApiOperation(value = "根据社团id删除社团", notes = "根据社团id删除社团", httpMethod = "GET")
-    @ApiImplicitParam(paramType = "query", name = "corid", value = "社团id", required = true, dataType = "Integer")
+    @ApiImplicitParam(paramType = "query", name = "id", value = "社团id", required = true, dataType = "Integer")
     public R del() {
         PageData pageData = this.getPageData();
         //校验参数
-        CheckParameterUtil.checkParameterMap(pageData, "corid");
+        CheckParameterUtil.checkParameterMap(pageData, "id");
         try {
             corporationService.delCor(pageData);
             return R.ok();
@@ -161,23 +161,12 @@ public class CorporationController extends BaseController {
      */
     @PostMapping("/update")
     @ApiOperation(value = "根据社团id更新社团", notes = "根据社团id更新社团", httpMethod = "POST")
+    @ApiImplicitParam(paramType = "query", name = "id", value = "社团id", required = true, dataType = "Integer")
     public R update() {
         PageData pageData = this.getPageData();
         //校验参数
-        CheckParameterUtil.checkParameterMap(pageData, "corid");
+        CheckParameterUtil.checkParameterMap(pageData, "id");
         try {
-            //是否更新所在学院
-            if (!StringUtils.isEmpty(pageData.get("corcollege"))) {
-                pageData.put("value", pageData.get("corcollege").toString());
-                List<PageData> pageDataList = dictService.selectByValue(pageData);
-                pageData.put("corcollege", pageDataList.get(0).get("id"));
-            }
-            //是否更新所在系
-            if (!StringUtils.isEmpty(pageData.get("corfaculty"))) {
-                pageData.put("value", pageData.get("corfaculty").toString());
-                List<PageData> pageDataList = dictService.selectByValue(pageData);
-                pageData.put("corfaculty", pageDataList.get(0).get("id"));
-            }
             //更新
             corporationService.updateCor(pageData);
             return R.ok("更新成功");
