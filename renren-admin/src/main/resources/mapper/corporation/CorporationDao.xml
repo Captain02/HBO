@@ -6,46 +6,46 @@
     <sql id="corSql">
         <trim prefix="(" suffixOverrides="," suffix=")">
             <if test="corName!=null and corName!=''">
-                `corname`=#{corName,jdbcType=VARCHAR},
+                #{corName,jdbcType=VARCHAR},
             </if>
             <if test="corleading!=null">
-                `corleading`=#{corleading,jdbcType=INTEGER},
+                #{corleading,jdbcType=INTEGER},
             </if>
             <if test="corTercher!=null and corTercher!=''">
-                `cortercher`=#{corTercher,jdbcType=VARCHAR},
+                #{corTercher,jdbcType=VARCHAR},
             </if>
             <if test="corWorkspace!=null and corWorkspace!=''">
-                `corworkspace`=#{corWorkspace,jdbcType=VARCHAR},
+                #{corWorkspace,jdbcType=VARCHAR},
             </if>
             <if test="corCollege!=null">
-                `corcollege`=#{corCollege,jdbcType=INTEGER},
+                #{corCollege,jdbcType=INTEGER},
             </if>
             <if test="corFaculty!=null">
-                `corfaculty`=#{corFaculty,jdbcType=INTEGER},
+                #{corFaculty,jdbcType=INTEGER},
             </if>
             <if test="corScale!=null">
-                `corscale`=#{corScale,jdbcType=INTEGER},
+                #{corScale,jdbcType=INTEGER},
             </if>
             <if test="fileId!=null">
-                `fileid`=#{fileId,jdbcType=INTEGER},
+                #{fileId,jdbcType=INTEGER},
             </if>
             <if test="descs!=null and descs!=''">
-                `descs`=#{descs,jdbcType=VARCHAR},
+                #{descs,jdbcType=VARCHAR},
             </if>
             <if test="videoId!=null">
-                `videofile`=#{videoId,jdbcType=INTEGER},
+                #{videoId,jdbcType=INTEGER},
             </if>
             <if test="bannerId!=null">
-                `bannerid`=#{bannerId,jdbcType=INTEGER},
+                #{bannerId,jdbcType=INTEGER},
             </if>
             <if test="isCor!=null">
-                `iscor`=#{isCor,jdbcType=INTEGER},
+                #{isCor,jdbcType=INTEGER},
             </if>
             <if test="deptId!=null">
-                `deptid`=#{deptId,jdbcType=INTEGER},
+                #{deptId,jdbcType=INTEGER},
             </if>
             <if test="corId!=null">
-                `corid`=#{corId,jdbcType=INTEGER},
+                #{corId,jdbcType=INTEGER},
             </if>
         </trim>
     </sql>
@@ -125,51 +125,7 @@
             </if>
         </trim>
         VALUES
-        <!--<include refid="corSql"/>-->
-        <trim prefix="(" suffixOverrides="," suffix=")">
-            <if test="corName!=null and corName!=''">
-                `corname`=#{corName,jdbcType=VARCHAR},
-            </if>
-            <if test="corleading!=null">
-                `corleading`=#{corleading,jdbcType=INTEGER},
-            </if>
-            <if test="corTercher!=null and corTercher!=''">
-                `cortercher`=#{corTercher,jdbcType=VARCHAR},
-            </if>
-            <if test="corWorkspace!=null and corWorkspace!=''">
-                `corworkspace`=#{corWorkspace,jdbcType=VARCHAR},
-            </if>
-            <if test="corCollege!=null">
-                `corcollege`=#{corCollege,jdbcType=INTEGER},
-            </if>
-            <if test="corFaculty!=null">
-                `corfaculty`=#{corFaculty,jdbcType=INTEGER},
-            </if>
-            <if test="corScale!=null">
-                `corscale`=#{corScale,jdbcType=INTEGER},
-            </if>
-            <if test="fileId!=null">
-                `fileid`=#{fileId,jdbcType=INTEGER},
-            </if>
-            <if test="descs!=null and descs!=''">
-                `descs`=#{descs,jdbcType=VARCHAR},
-            </if>
-            <if test="videoId!=null">
-                `videofile`=#{videoId,jdbcType=INTEGER},
-            </if>
-            <if test="bannerId!=null">
-                `bannerid`=#{bannerId,jdbcType=INTEGER},
-            </if>
-            <if test="isCor!=null">
-                `iscor`=#{isCor,jdbcType=INTEGER},
-            </if>
-            <if test="deptId!=null">
-                `deptid`=#{deptId,jdbcType=INTEGER},
-            </if>
-            <if test="corId!=null">
-                `corid`=#{corId,jdbcType=INTEGER},
-            </if>
-        </trim>
+        <include refid="corSql"/>
     </insert>
 
     <update id="update">
