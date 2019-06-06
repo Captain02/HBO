@@ -90,3 +90,4 @@ renren-api/renren-api.iml
 renren-common/renren-common.iml
 renren-dynamic-datasource/renren-dynamic-datasource.iml
 renren-security.iml
+*.iml
