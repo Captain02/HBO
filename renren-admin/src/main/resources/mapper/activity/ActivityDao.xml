@@ -13,10 +13,11 @@
         <association property="actleading" column="{id=actleading}"
                      select="io.renren.modules.sys.dao.SysUserDao.getinfoByid"/>
         <association property="bbs_like" column="actid" select="bbslikeDao.selectLikeByActid"/>
-        <!--<association property="bbs_replies" column="actid" select="likeDao.selectRepliesByActid"/>-->
-        <!--<association property="bbs_collection" column="actid" select="likeDao.selectCollectionByActid"/>-->
+        <association property="bbs_replies" column="actid" select="bbslikeDao.selectRepliesByActid"/>
+        <association property="bbs_collection" column="actid" select="bbslikeDao.selectCollectionByActid"/>
         <collection property="processnodes" column="actid" select="ActprocessDao.selectActprocessForActivity"/>
         <collection property="crowdpeople" column="actid" select="selectCrowdPeopleByactId"/>
+        <collection property="likePeople" column="actid" select="selectLikePeopleByActId"></collection>
     </resultMap>
 
     <select id="activitylistPage" resultMap="activityPageData">
@@ -152,5 +153,10 @@ WHERE `actid` = #{actid}
       SELECT `corname`,`id`
       FROM corporation
       WHERE corporation.`id` = #{actcorid}
+    </select>
+    <select id="selectLikePeopleByActId" resultType="Long">
+        SELECT `userid`
+        FROM bbs_like
+        WHERE topicid = #{actid}
     </select>
 </mapper>
