@@ -39,12 +39,13 @@ public class CorporationEntity implements Serializable {
 	private Long corfaculty;
 	private Long corforcollege;
 	private Long corscale;
-	private Long fileid;
+	private String fileid;
 	private String descs;
-	private Long videofile;
-	private Long bannerid;
+	private String videofile;
+	private String bannerid;
 	private Long iscor;
 	private String corcollegeName;
 	private String corfacultyName;
 	private List<CorcrowdEntity> corcrowdList; //面向人群list
+	private String userfilepath;
 }

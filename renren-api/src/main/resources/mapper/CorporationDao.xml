@@ -15,11 +15,16 @@
 		<result property="corscale" column="corscale"/>
 		<result property="fileid" column="fileid"/>
 		<result property="videofile" column="videofile"/>
+		<result property="userfilepath" column="userfilepath"/>
 		<collection property="corcrowdList" column="id" select="io.renren.modules.corporation.dao.CorcrowdDao.findcorcrowdById" />
 	</resultMap>
 
     <select id="getlistPage" resultMap="CorporationMap">
-	select id,corname,corleading,corscale,createtime,fileid,videofile
+	select id,corname,corleading,corscale,createtime,
+	(SELECT filepath FROM filetable WHERE id = fileid)fileid,
+	(SELECT filepath FROM filetable WHERE id = bannerid)bannerid,
+	(SELECT filepath FROM filetable WHERE id = videofile)videofile,
+	(SELECT filepath FROM sys_user U LEFT JOIN filetable F ON F.id=U.fileid WHERE user_id = corleading)userfilepath
 	FROM corporation
     </select>
 
@@ -28,7 +33,13 @@
 		(SELECT name FROM sys_user WHERE user_id=C.corleading)corleading,
 		(SELECT value FROM sys_dict WHERE id = C.corcollege)corcollegeName,
 		(SELECT value FROM sys_dict WHERE id = C.corfaculty)corfacultyName,
-		corscale,fileid,descs,cortercher,videofile,createtime,bannerid
+		corscale,
+		(SELECT filepath FROM filetable WHERE id = fileid)fileid,
+		descs,cortercher,
+		(SELECT filepath FROM filetable WHERE id = videofile)videofile,
+		createtime,
+		(SELECT filepath FROM filetable WHERE id = bannerid)bannerid,
+		(SELECT filepath FROM sys_user U LEFT JOIN filetable F ON F.id=U.fileid WHERE user_id = C.corleading)userfilepath
 		FROM corporation C
 		WHERE id =#{id}
 	</select>
