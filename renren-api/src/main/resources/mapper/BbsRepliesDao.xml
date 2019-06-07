@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="BbsRepliesDao">
+    <resultMap id="bbsReplies" type="io.renren.common.entity.PageData">
+        <id column="repliesid" property="repliesid"></id>
+        <result column="topicid" property="topicid"></result>
+        <association property="likeNumber" column="repliesid" select="getLikeNumber"></association>
+        <association property="likePeopleDetail" column="{id=userid}" select="getinfoByIdNotContentRoleDept"></association>
+        <collection property="likePeople" column="repliesid" select="getlikePeople"></collection>
+        <collection property="child" column="{topicid=topicid,repliesid=repliesid}" 	select="getReplies"></collection>
+    </resultMap>
+    <select id="getReplieslistPage" resultMap="bbsReplies">
+        SELECT `repliesid`,`userid`,`parentid`,`topicid`,`createtime`,`repliescontent`,`states`
+        FROM replies
+        WHERE `topicid` = #{pd.topicid} AND `parentid` = #{pd.repliesid}
+    </select>
+
+    <select id="getReplies" resultMap="bbsReplies">
+        SELECT `repliesid`,`userid`,`parentid`,`topicid`,`createtime`,`repliescontent`,`states`
+        FROM replies
+        WHERE `topicid` = #{topicid} AND `parentid` = #{repliesid}
+    </select>
+
+    <select id="getLikeNumber" resultType="Long">
+        SELECT count(*) AS num
+        FROM bbs_replies_like
+        WHERE repliesid = #{repliesid}
+    </select>
+
+    <select id="getlikePeople" resultType="Long">
+        SELECT `userid`
+        FROM bbs_replies_like
+        WHERE repliesid = #{repliesid}
+    </select>
+    <select id="getinfoByIdNotContentRoleDept" resultType="io.renren.common.entity.PageData">
+        SELECT
+        sys_user.user_id,sys_user.username,sys_user.college,
+        sys_user.collegetie,sys_user.gender,sys_user.descs,filetable.filepath,sys_user.`name`,
+        filetable.`filepath` headpath,#{corid} corid
+        FROM sys_user
+        LEFT JOIN filetable ON filetable.id = sys_user.fileid
+        WHERE user_id = #{id}
+    </select>
+</mapper>

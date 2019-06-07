@@ -15,6 +15,6 @@ public class RepliesServiceImpl implements RepliesService {
     private DaoSupport daoSupport;
     @Override
     public List<PageData> getListPage(Page page) throws Exception {
-        return (List<PageData>) daoSupport.findForList("RepliesDao.replieslistPage", page);
+        return (List<PageData>) daoSupport.findForList("BbsRepliesDao.getReplieslistPage", page);
     }
 }

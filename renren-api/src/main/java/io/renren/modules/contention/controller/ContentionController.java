@@ -3,7 +3,6 @@ package io.renren.modules.contention.controller;
 import io.renren.common.controller.BaseController;
 import io.renren.common.entity.Page;
 import io.renren.common.entity.PageData;
-import io.renren.common.utils.CheckParameterUtil;
 import io.renren.common.utils.R;
 import io.renren.modules.contention.service.ContentionService;
 import io.renren.modules.contention.service.RepliesService;
@@ -95,16 +94,12 @@ public class ContentionController  extends BaseController {
             @ApiImplicitParam(name = "currPage", value = "当前页",paramType = "query", required = true, dataType = "Integer"),
             @ApiImplicitParam(name = "topicid", value = "主题id",paramType = "query", required = true, dataType = "Integer"),
     })
-    public  R repliesList(@ApiIgnore Page page){
+    public  R getRepliesList(@ApiIgnore Page page){
         PageData pageData = this.getPageData();
-        CheckParameterUtil.checkParameterMap(pageData,"topicid");
-        int currPage = Integer.parseInt(pageData.getValueOfString("currPage"));
-        page.setPd(pageData);
         try {
+            pageData.put("repliesid",0);
+            page.setPd(pageData);
             List<PageData> repliesList = repliesService.getListPage(page);
-            if (currPage != page.getCurrPage()) {
-                return R.ok();
-            }
             return R.ok().put("page", page).put("date", repliesList);
         } catch (Exception e) {
             e.printStackTrace();
