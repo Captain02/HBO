@@ -86,10 +86,10 @@
         WHERE cor_user.status = 1
         AND cor_user.corid = #{pd.corid}
         <if test="pd.name != ''">
-            AND sys_user.`name` = #{pd.name}
+            AND sys_user.`name` LIKE "%"#{pd.name}"%"
         </if>
         <if test="pd.username != ''">
-            AND sys_user.`username` = #{pd.username}
+            AND sys_user.`username` LIKE "%"#{pd.username}"%"
         </if>
     </select>
 

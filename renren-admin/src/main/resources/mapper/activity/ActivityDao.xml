@@ -65,7 +65,7 @@ WHERE `actid` = #{actid}
     </select>-->
 
     <insert id="add" useGeneratedKeys="true" keyProperty="actId">
-        insert into `coractivity` (`actName`,`actStartTime`,`actEndTime`,`actLeader`,`profile`,`actCorId`
+        insert into `coractivity` (`actname`,`actstarttame`,`actendtime`,`actleading`,`profile`,`actcorid`
         <trim prefix="," suffixOverrides=",">
             <if test="actdetails!=null">
                 `actdetails`,
