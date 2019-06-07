@@ -77,6 +77,20 @@ public class SysUserController extends BaseController {
         return R.ok().put("page", page).put("data", list);
     }
 
+    @GetMapping("/getUsersByName")
+    public R getUsersByName() throws Exception {
+        Page page = new Page();
+        PageData pageData = this.getPageData();
+        page.setPageSize(9999);
+        page.setCurrPage(1);
+        pageData.put("username","");
+        page.setPd(pageData);
+        //PageUtils page = sysUserService.queryPage(params);
+        List<PageData> list = sysUserService.userlistPage(page);
+
+        return R.ok().put("page", page).put("data", list);
+    }
+
     /**
      * 获取登录的用户信息
      */
