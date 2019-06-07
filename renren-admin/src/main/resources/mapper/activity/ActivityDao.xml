@@ -22,9 +22,10 @@
 
     <resultMap id="bbsReplies" type="io.renren.common.entity.PageData">
         <id column="repliesid" property="repliesid"></id>
-        <collection property="likeNumber" column="repliesid" select="getLikeNumber"></collection>
-        <!--<collection property="likePeople" column="repliesid" select="getLikeNumber"></collection>-->
-        <collection property="child" column="repliesid" select="getReplies"></collection>
+        <result column="topicid" property="topicid"></result>
+        <association property="likeNumber" column="repliesid" select="getLikeNumber"></association>
+        <collection property="likePeople" column="repliesid" select="getlikePeople"></collection>
+        <collection property="child" column="{topicid=topicid,repliesid=repliesid}" select="getReplies"></collection>
     </resultMap>
 
     <select id="activitylistPage" resultMap="activityPageData">
@@ -54,11 +55,11 @@
 
     <select id="getActivityById" resultMap="activityPageData">
         SELECT
-`actid`,`actname`,`actstarttame`,`actendtime`,`createtime`,`actdetails`,`actcorid`,`actleading`,
-`fileid`,`videoid`,`images`,`actprocessid`,`profile`,`isact`,`enclosure`
-FROM
-coractivity
-WHERE `actid` = #{actid}
+        `actid`,`actname`,`actstarttame`,`actendtime`,`createtime`,`actdetails`,`actcorid`,`actleading`,
+        `fileid`,`videoid`,`images`,`actprocessid`,`profile`,`isact`,`enclosure`
+        FROM
+        coractivity
+        WHERE `actid` = #{actid}
     </select>
     <!--<select id="selectActprocessForActivity" resultType="io.renren.common.entity.PageData">
         SELECT `actid`,`proid`,`processnode`,`states` FROM `actprocess` WHERE actid = #{pd.actId,jdbcType=INTEGER} ORDER BY `proid`
@@ -169,6 +170,11 @@ WHERE `actid` = #{actid}
         FROM bbs_like
         WHERE topicid = #{actid}
     </select>
+    <select id="getReplieslistPage" resultMap="bbsReplies">
+        SELECT `repliesid`,`userid`,`parentid`,`topicid`,`createtime`,`repliescontent`,`states`
+        FROM replies
+        WHERE `topicid` = #{pd.topicid} AND `parentid` = #{pd.repliesid}
+    </select>
 
     <select id="getReplies" resultMap="bbsReplies">
         SELECT `repliesid`,`userid`,`parentid`,`topicid`,`createtime`,`repliescontent`,`states`
@@ -182,4 +188,9 @@ WHERE `actid` = #{actid}
         WHERE repliesid = #{repliesid}
     </select>
 
+    <select id="getlikePeople" resultType="Long">
+        SELECT `userid`
+        FROM bbs_replies_like
+        WHERE repliesid = #{repliesid}
+    </select>
 </mapper>

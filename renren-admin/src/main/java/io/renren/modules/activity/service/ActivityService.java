@@ -14,5 +14,5 @@ public interface ActivityService {
 
     void updateAct(PageData pageData) throws Exception;
 
-    List<PageData> getReplies(PageData pageData) throws Exception;
+    List<PageData> getReplies(Page page) throws Exception;
 }

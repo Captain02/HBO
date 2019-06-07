@@ -201,10 +201,11 @@ public class ActivityController extends BaseController {
     }
 
     @GetMapping("/getReplies")
-    public R getReplies() throws Exception {
+    public R getReplies(Page page) throws Exception {
         PageData pageData = this.getPageData();
-        List<PageData> replies = activityService.getReplies(pageData);
+        page.setPd(pageData);
+        List<PageData> replies = activityService.getReplies(page);
 
-        return R.ok().put("data",replies);
+        return R.ok().put("data",replies).put("page",page);
     }
 }

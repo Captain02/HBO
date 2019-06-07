@@ -65,7 +65,7 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
-    public List<PageData> getReplies(PageData pageData) throws Exception {
-        return (List<PageData>) daoSupport.findForList("ActivityDao.getReplies",pageData);
+    public List<PageData> getReplies(Page page) throws Exception {
+        return (List<PageData>) daoSupport.findForList("ActivityDao.getReplieslistPage",page);
     }
 }
