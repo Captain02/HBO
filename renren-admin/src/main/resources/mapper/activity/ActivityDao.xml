@@ -24,7 +24,8 @@
         <id column="repliesid" property="repliesid"></id>
         <result column="topicid" property="topicid"></result>
         <association property="likeNumber" column="repliesid" select="getLikeNumber"></association>
-        <collection property="likePeople" column="repliesid" select="getlikePeople"></collection>
+        <collection property="likePeopleIds" column="repliesid" select="getlikePeopleIds"></collection>
+        <collection property="likePeopleDetail" column="userid" select="io.renren.modules.sys.dao.SysUserDao.getinfoByIdNotContentRoleDept"></collection>
         <collection property="child" column="{topicid=topicid,repliesid=repliesid}" select="getReplies"></collection>
     </resultMap>
 
@@ -188,9 +189,10 @@
         WHERE repliesid = #{repliesid}
     </select>
 
-    <select id="getlikePeople" resultType="Long">
+    <select id="getlikePeopleIds" resultType="Long">
         SELECT `userid`
         FROM bbs_replies_like
         WHERE repliesid = #{repliesid}
     </select>
+
 </mapper>
