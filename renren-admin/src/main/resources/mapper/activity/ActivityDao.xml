@@ -24,8 +24,8 @@
         <id column="repliesid" property="repliesid"></id>
         <result column="topicid" property="topicid"></result>
         <association property="likeNumber" column="repliesid" select="getLikeNumber"></association>
+        <association property="likePeopleDetail" column="{id=userid}" select="io.renren.modules.sys.dao.SysUserDao.getinfoByIdNotContentRoleDept"></association>
         <collection property="likePeopleIds" column="repliesid" select="getlikePeopleIds"></collection>
-        <collection property="likePeopleDetail" column="userid" select="io.renren.modules.sys.dao.SysUserDao.getinfoByIdNotContentRoleDept"></collection>
         <collection property="child" column="{topicid=topicid,repliesid=repliesid}" select="getReplies"></collection>
     </resultMap>
 
