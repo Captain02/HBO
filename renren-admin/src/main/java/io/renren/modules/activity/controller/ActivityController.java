@@ -203,6 +203,7 @@ public class ActivityController extends BaseController {
     @GetMapping("/getReplies")
     public R getReplies(Page page) throws Exception {
         PageData pageData = this.getPageData();
+        pageData.put("repliesid", 0);
         page.setPd(pageData);
         List<PageData> replies = activityService.getReplies(page);
 
