@@ -63,4 +63,9 @@ public class ActivityServiceImpl implements ActivityService {
         //更新活动表
         daoSupport.update("ActivityDao.updateAct",pageData);
     }
+
+    @Override
+    public List<PageData> getReplies(PageData pageData) throws Exception {
+        return (List<PageData>) daoSupport.findForList("ActivityDao.getReplies",pageData);
+    }
 }

@@ -124,7 +124,8 @@ public class ActivityController extends BaseController {
     })
     public R add(@RequestParam(value = "enclosure", required = false) MultipartFile enclosure, HttpServletRequest request) throws Exception {
         PageData pageData = this.getPageData();
-        CheckParameterUtil.checkParameterMap(pageData, "actCorId", "actName", "actLeader", "actStartTime", "actEndTime", "croWdPeople", "profile", "processNodes");
+        CheckParameterUtil.checkParameterMap(pageData, "actCorId", "actName", "actLeader", "actStartTime",
+                "actEndTime", "croWdPeople", "profile", "processNodes");
         //保存二维码路径
         pageData.put("fileName", DateTool.dateToStringYYHHDD(new Date()) + pageData.get("actName").toString() + ".jpg");
         pageData.put("filePath", "/file/QrCode/Activity/" + pageData.getValueOfString("fileName"));
@@ -197,5 +198,13 @@ public class ActivityController extends BaseController {
         commService.deleteFile(pageData.getValueOfString("filePath"));
         fileService.deleteFile(pageData);
         return R.ok();
+    }
+
+    @GetMapping("/getReplies")
+    public R getReplies() throws Exception {
+        PageData pageData = this.getPageData();
+        List<PageData> replies = activityService.getReplies(pageData);
+
+        return R.ok().put("data",replies);
     }
 }

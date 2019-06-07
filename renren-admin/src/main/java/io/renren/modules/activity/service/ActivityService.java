@@ -13,4 +13,6 @@ public interface ActivityService {
     PageData getActivityById(PageData pageData) throws Exception;
 
     void updateAct(PageData pageData) throws Exception;
+
+    List<PageData> getReplies(PageData pageData) throws Exception;
 }

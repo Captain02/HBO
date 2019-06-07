@@ -20,6 +20,13 @@
         <collection property="likePeople" column="actid" select="selectLikePeopleByActId"></collection>
     </resultMap>
 
+    <resultMap id="bbsReplies" type="io.renren.common.entity.PageData">
+        <id column="repliesid" property="repliesid"></id>
+        <collection property="likeNumber" column="repliesid" select="getLikeNumber"></collection>
+        <!--<collection property="likePeople" column="repliesid" select="getLikeNumber"></collection>-->
+        <collection property="child" column="repliesid" select="getReplies"></collection>
+    </resultMap>
+
     <select id="activitylistPage" resultMap="activityPageData">
         SELECT c.`actname`,c.`actstarttame`,c.`actendtime`,c.`createtime`,c.`actid`,
         c1.`corname`,f.`filepath`,
@@ -58,9 +65,9 @@ WHERE `actid` = #{actid}
     </select>-->
 
     <insert id="add" useGeneratedKeys="true" keyProperty="actId">
-        insert into `coractivity` (`actname`,`actstarttame`,`actendtime`,`actleading`,`profile`,`actcorid`
+        insert into `coractivity` (`actName`,`actStartTime`,`actEndTime`,`actLeader`,`profile`,`actCorId`
         <trim prefix="," suffixOverrides=",">
-            <if test="actDetails!=null">
+            <if test="actdetails!=null">
                 `actdetails`,
             </if>
             <if test="videoid!=null">
@@ -77,17 +84,20 @@ WHERE `actid` = #{actid}
             </if>
         </trim>
         )
-        values(#{actName,jdbcType=VARCHAR},#{actStartTime,jdbcType=VARCHAR},#{actEndTime,jdbcType=VARCHAR},#{actLeader,jdbcType=INTEGER},
+        values(#{actName,jdbcType=VARCHAR},
+        #{actStartTime,jdbcType=VARCHAR},
+        #{actEndTime,jdbcType=VARCHAR},
+        #{actLeader,jdbcType=INTEGER},
         #{profile,jdbcType=VARCHAR},#{actCorId,jdbcType=INTEGER}
         <trim prefix="," suffixOverrides=",">
-            <if test="actDetails!=null">
-                #{actDetails,jdbcType=VARCHAR},
+            <if test="actdetails!=null">
+                #{actdetails,jdbcType=VARCHAR},
             </if>
             <if test="videoid != null">
                 #{videoid,jdbcType=INTEGER},
             </if>
-            <if test="imagers != null">
-                #{imagers,jdbcType=INTEGER},
+            <if test="images != null">
+                #{images,jdbcType=INTEGER},
             </if>
             <if test="fileId != null">
                 #{fileId,jdbcType=INTEGER},
@@ -159,4 +169,17 @@ WHERE `actid` = #{actid}
         FROM bbs_like
         WHERE topicid = #{actid}
     </select>
+
+    <select id="getReplies" resultMap="bbsReplies">
+        SELECT `repliesid`,`userid`,`parentid`,`topicid`,`createtime`,`repliescontent`,`states`
+        FROM replies
+        WHERE `topicid` = #{topicid} AND `parentid` = #{repliesid}
+    </select>
+
+    <select id="getLikeNumber" resultType="Long">
+        SELECT count(*) AS num
+        FROM bbs_replies_like
+        WHERE repliesid = #{repliesid}
+    </select>
+
 </mapper>
