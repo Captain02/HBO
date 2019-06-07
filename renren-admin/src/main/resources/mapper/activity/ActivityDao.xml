@@ -52,8 +52,8 @@
         FROM `coractivity` c
         LEFT JOIN `corporation` c1 ON c1.`id` = c.`actcorid`
         <where>
-            <if test="pd.corId!=null">
-                c1.`id`=#{pd.corId,jdbcType=INTEGER}
+            <if test="pd.corid!=null">
+                c1.`id`=#{pd.corid,jdbcType=INTEGER}
             </if>
             <if test="pd.actName!=null and pd.actName!=''">
                 AND c.`actname` LIKE CONCAT('%',#{pd.actName,jdbcType=VARCHAR},'%')

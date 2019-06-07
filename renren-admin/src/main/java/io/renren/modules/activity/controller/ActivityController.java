@@ -57,7 +57,7 @@ public class ActivityController extends BaseController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "pageSize", value = "每页显示记录数", required = true, dataType = "Integer"),
             @ApiImplicitParam(name = "currPage", value = "当前页", required = true, dataType = "Integer"),
-            @ApiImplicitParam(name = "corId", value = "社团id", required = false, dataType = "Integer"),
+            @ApiImplicitParam(name = "corid", value = "社团id", required = false, dataType = "Integer"),
             @ApiImplicitParam(name = "actName", value = "活动名称", required = false, dataType = "String"),
             @ApiImplicitParam(name = "isAct", value = "是否有效", required = false, dataType = "Integer")
     })
