@@ -65,7 +65,7 @@
         <if test="pd.isAct!=null">
             AND c.`isact`=#{pd.isAct,jdbcType=INTEGER}
         </if>
-        <if test="pd.actcrowdids!=null">
+        <if test="pd.actcrowdids != null">
             AND ac.crowdpeople IN
             <foreach collection="pd.actcrowdids" item="item" open="(" close=")" separator=",">
               ${item}

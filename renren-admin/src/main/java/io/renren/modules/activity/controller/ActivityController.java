@@ -67,11 +67,14 @@ public class ActivityController extends BaseController {
     public R list(Page page) throws Exception {
         PageData pageData = this.getPageData();
         String crowdids = pageData.getValueOfString("crowdids");
-        String[] split = crowdids.split(",");
-        List<String> strings = Arrays.asList(split);
-        //面向人群id
-        if (strings.size()>0){
-            pageData.put("actcrowdids",strings);
+        if (!"null".equals(crowdids)){
+
+            String[] split = crowdids.split(",");
+            List<String> strings = Arrays.asList(split);
+            //面向人群id
+            if (strings.size()>0){
+                pageData.put("actcrowdids",strings);
+            }
         }
         page.setPd(pageData);
         List<PageData> list = activityService.activityListPage(page);
