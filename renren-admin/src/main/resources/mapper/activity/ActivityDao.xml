@@ -24,7 +24,8 @@
         <id column="repliesid" property="repliesid"></id>
         <result column="topicid" property="topicid"></result>
         <association property="likeNumber" column="repliesid" select="getLikeNumber"></association>
-        <association property="likePeopleDetail" column="{id=userid}" select="io.renren.modules.sys.dao.SysUserDao.getinfoByIdNotContentRoleDept"></association>
+        <association property="likePeopleDetail" column="{id=userid}"
+                     select="io.renren.modules.sys.dao.SysUserDao.getinfoByIdNotContentRoleDept"></association>
         <collection property="likePeopleIds" column="repliesid" select="getlikePeopleIds"></collection>
         <collection property="child" column="{topicid=topicid,repliesid=repliesid}" select="getReplies"></collection>
     </resultMap>
@@ -51,17 +52,23 @@
         c1.`corname`,c.`actleading`,c.`fileid`,c.`videoid`,c.`images`,c.`profile`,c.`enclosure`
         FROM `coractivity` c
         LEFT JOIN `corporation` c1 ON c1.`id` = c.`actcorid`
-        <where>
-            <if test="pd.corid!=null">
-                c1.`id`=#{pd.corid,jdbcType=INTEGER}
-            </if>
-            <if test="pd.actName!=null and pd.actName!=''">
-                AND c.`actname` LIKE CONCAT('%',#{pd.actName,jdbcType=VARCHAR},'%')
-            </if>
-            <if test="pd.isAct!=null">
-                and c.`isact`=#{pd.isAct,jdbcType=INTEGER}
-            </if>
-        </where>
+        LEFT JOIN actcrowd ac ON ac.actid = c.`actid`
+        WHERE 1 = 1
+        <if test="pd.corid!=null">
+            AND c1.`id`=#{pd.corid,jdbcType=INTEGER}
+        </if>
+        <if test="pd.actName!=null and pd.actName!=''">
+            AND c.`actname` LIKE CONCAT('%',#{pd.actName,jdbcType=VARCHAR},'%')
+        </if>
+        <if test="pd.isAct!=null">
+            AND c.`isact`=#{pd.isAct,jdbcType=INTEGER}
+        </if>
+        <if test="pd.actcrowdids!=null">
+            AND ac.crowdpeople IN
+            <foreach collection="pd.actcrowdids" item="item" open="(" close=")" separator=",">
+              ${item}
+            </foreach>
+        </if>
     </select>
 
     <select id="getActivityById" resultMap="activityPageData">
@@ -204,5 +211,10 @@
         FROM bbs_replies_like
         WHERE repliesid = #{repliesid}
     </select>
+
+    <delete id="delActCroWdPeopleByActId">
+        DELETE FROM actcrowd
+        WHERE actid = #{actid}
+    </delete>
 
 </mapper>

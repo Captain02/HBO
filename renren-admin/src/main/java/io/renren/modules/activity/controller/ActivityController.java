@@ -23,8 +23,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController()
 @RequestMapping("/sys/activity")
@@ -64,6 +66,12 @@ public class ActivityController extends BaseController {
     @GetMapping("/list")
     public R list(Page page) throws Exception {
         PageData pageData = this.getPageData();
+        String crowdids = pageData.getValueOfString("crowdids");
+        String[] split = crowdids.split(",");
+        List<String> strings = Arrays.asList(split);
+        //面向人群id
+        List<Long> actcrowdids = strings.stream().map(x -> Long.valueOf(x)).collect(Collectors.toList());
+        pageData.put("actcrowdids",strings);
         page.setPd(pageData);
         List<PageData> list = activityService.activityListPage(page);
         return R.ok().put("data", list);
@@ -98,10 +106,10 @@ public class ActivityController extends BaseController {
             @ApiImplicitParam(name = "actId", value = "活动id", required = true, dataType = "Integer")
     })
     @PostMapping("/updateAct")
-    public R updateAct() throws Exception {
+    public R updateAct(@RequestParam(value = "enclosure",required = false) MultipartFile enclosure,HttpServletRequest request) throws Exception {
         PageData pageData = this.getPageData();
         CheckParameterUtil.checkParameterMap(pageData, "actId");
-        activityService.updateAct(pageData);
+        activityService.updateAct(pageData,enclosure,request);
         return R.ok();
     }
 
@@ -126,26 +134,8 @@ public class ActivityController extends BaseController {
         PageData pageData = this.getPageData();
         CheckParameterUtil.checkParameterMap(pageData, "actCorId", "actName", "actLeader", "actStartTime",
                 "actEndTime", "croWdPeople", "profile", "processNodes");
-        //保存二维码路径
-        pageData.put("fileName", DateTool.dateToStringYYHHDD(new Date()) + pageData.get("actName").toString() + ".jpg");
-        pageData.put("filePath", "/file/QrCode/Activity/" + pageData.getValueOfString("fileName"));
-        Integer fileId = commService.addFile2DB(pageData);
-        if (fileId != null) {
-            pageData.put("fileId", fileId);
-        }
-        //上传附件
-        if (enclosure != null && !enclosure.isEmpty()) {
-            if (!this.upload(pageData, enclosure, "/file/Activity/enclosure/", request)) {
-                return R.error("附件上传失败");
-            }
-            Integer enclosureid = commService.addFile2DB(pageData);
-            if (enclosureid != null) {
-                pageData.put("enclosureid", enclosureid);
-            }
-        }
-        //插入激活状态
-        pageData.put("states", 0);
-        activityService.add(pageData);
+
+        activityService.add(pageData,enclosure,request);
         //创建二维码
         String url = "http://" + DOMAIN_NAME + "/#/code-map?Id=" + pageData.getValueOfInteger("id") + "&type=" + Const.ACTIVITY_TYPE;
         QrCodeUtils.encodeByqrCodeName(url, FILEUPLOUD + "/file/QrCode/Activity/", pageData.get("actName").toString());
@@ -208,5 +198,11 @@ public class ActivityController extends BaseController {
         List<PageData> replies = activityService.getReplies(page);
 
         return R.ok().put("data",replies).put("page",page);
+    }
+
+    @PostMapping("/changeProcess")
+    public R changeProcess(){
+        PageData pageData = this.getPageData();
+        return R.ok();
     }
 }

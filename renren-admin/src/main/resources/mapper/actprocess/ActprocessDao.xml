@@ -19,4 +19,8 @@
         where `actid` = #{actId,jdbcType=INTEGER}
     </update>
 
+    <delete id="delByActId">
+        DELETE FROM actprocess
+        WHERE actid = #{actid}
+    </delete>
 </mapper>
