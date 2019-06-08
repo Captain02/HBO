@@ -18,6 +18,7 @@
         <collection property="processnodes" column="actid" select="ActprocessDao.selectActprocessForActivity"/>
         <collection property="crowdpeople" column="actid" select="selectCrowdPeopleByactId"/>
         <collection property="likePeople" column="actid" select="selectLikePeopleByActId"></collection>
+        <collection property="collectionPeople" column="actid" select="selectcollectionPeopleByActId"></collection>
     </resultMap>
 
     <resultMap id="bbsReplies" type="io.renren.common.entity.PageData">
@@ -45,6 +46,7 @@
         <collection property="processnodes" column="actid" select="ActprocessDao.selectActprocessForActivity"/>
         <collection property="crowdpeople" column="actid" select="selectCrowdPeopleByactId"/>
         <collection property="likePeople" column="actid" select="selectLikePeopleByActId"></collection>
+        <collection property="collectionPeople" column="actid" select="selectcollectionPeopleByActId"></collection>
     </resultMap>
 
     <select id="activitylistPage" resultMap="activityListPage">
@@ -155,6 +157,9 @@
             <if test="profile!=null">
                 `profile` = #{profile,jdbcType=VARCHAR},
             </if>
+            <if test="enclosureid!=null">
+                `enclosureid` = #{enclosureid,jdbcType=VARCHAR},
+            </if>
         </set>
         WHERE `actid` = #{actId,jdbcType=INTEGER}
     </update>
@@ -212,5 +217,11 @@
         DELETE FROM actcrowd
         WHERE actid = #{actid}
     </delete>
+
+    <select id="selectcollectionPeopleByActId" resultType="Long">
+        SELECT `userid`
+        FROM bbs_collection
+        WHERE topicid = #{actid}
+    </select>
 
 </mapper>
