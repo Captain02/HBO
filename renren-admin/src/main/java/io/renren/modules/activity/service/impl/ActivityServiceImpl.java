@@ -123,5 +123,10 @@ public class ActivityServiceImpl implements ActivityService {
         return (List<PageData>) daoSupport.findForList("ActivityDao.getReplieslistPage",page);
     }
 
+    @Override
+    public void changeProcess(PageData pageData) throws Exception {
+        daoSupport.update("ActprocessDao.changeProcess",pageData);
+    }
+
 
 }

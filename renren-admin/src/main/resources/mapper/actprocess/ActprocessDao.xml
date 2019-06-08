@@ -23,4 +23,8 @@
         DELETE FROM actprocess
         WHERE actid = #{actid}
     </delete>
+
+    <update id="changeProcess">
+        UPDATE actprocess SET states = #{type} WHERE proid = #{proid}
+    </update>
 </mapper>

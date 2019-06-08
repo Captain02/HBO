@@ -18,4 +18,5 @@ public interface ActivityService {
 
     List<PageData> getReplies(Page page) throws Exception;
 
+    void changeProcess(PageData pageData) throws Exception;
 }

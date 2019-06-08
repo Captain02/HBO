@@ -48,6 +48,7 @@ public class ActivityController extends BaseController {
 
 
 
+
     /**
      * 活动列表
      * corId：社团id
@@ -205,10 +206,10 @@ public class ActivityController extends BaseController {
     }
 
     @PostMapping("/changeProcess")
-    public R changeProcess(){
+    public R changeProcess() throws Exception {
         PageData pageData = this.getPageData();
+        activityService.changeProcess(pageData);
         return R.ok();
     }
 
-//    public R
 }
