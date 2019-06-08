@@ -67,7 +67,7 @@ public class ActivityController extends BaseController {
     public R list(Page page) throws Exception {
         PageData pageData = this.getPageData();
         String crowdids = pageData.getValueOfString("crowdids");
-        if (!"null".equals(crowdids)){
+        if (!"null".equals(crowdids)&&!crowdids.trim().equals("")){
 
             String[] split = crowdids.split(",");
             List<String> strings = Arrays.asList(split);
