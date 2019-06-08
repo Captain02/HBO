@@ -50,7 +50,7 @@
     </resultMap>
 
     <select id="activitylistPage" resultMap="activityListPage">
-        SELECT c.`actname`,c.`actstarttame`,c.`actendtime`,c.`createtime`,c.`actid`,c.`actcorid`,
+        SELECT DISTINCT c.`actname`,c.`actstarttame`,c.`actendtime`,c.`createtime`,c.`actid`,c.`actcorid`,
         c1.`corname`,c.`actleading`,c.`fileid`,c.`videoid`,c.`images`,c.`profile`,c.`enclosure`
         FROM `coractivity` c
         LEFT JOIN `corporation` c1 ON c1.`id` = c.`actcorid`
