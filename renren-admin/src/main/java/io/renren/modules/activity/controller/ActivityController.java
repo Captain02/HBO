@@ -212,4 +212,11 @@ public class ActivityController extends BaseController {
         return R.ok();
     }
 
+    @GetMapping("/getUserByActId")
+    public R getUserByActId(Page page) throws Exception {
+        PageData pageData = this.getPageData();
+        page.setPd(pageData);
+        List<PageData> list = activityService.getUserByActIdlistPage(page);
+        return R.ok().put("data",list);
+    }
 }

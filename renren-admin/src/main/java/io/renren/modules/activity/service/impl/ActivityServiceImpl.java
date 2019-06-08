@@ -128,5 +128,10 @@ public class ActivityServiceImpl implements ActivityService {
         daoSupport.update("ActprocessDao.changeProcess",pageData);
     }
 
+    @Override
+    public List<PageData> getUserByActIdlistPage(Page page) throws Exception {
+        return (List<PageData>) daoSupport.findForList("ActivityDao.getUserByActIdlistPage",page);
+    }
+
 
 }

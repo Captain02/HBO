@@ -216,10 +216,21 @@
         WHERE actid = #{actid}
     </delete>
 
+    <!--修改进程状态-->
     <select id="selectcollectionPeopleByActId" resultType="Long">
         SELECT `userid`
         FROM bbs_collection
         WHERE topicid = #{actid}
+    </select>
+
+    <!--获得报名活动人数-->
+    <select id="getUserByActIdlistPage" resultType="io.renren.common.entity.PageData">
+      SELECT u.`user_id`,u.`username`,u.`email`,u.`mobile`,u.`persionnum`,u.`wechart`,u.`QQ`,
+      u.`fileid`,u.`college`,u.`collegetie`,u.`gender`,u.`descs`,u.`name`,filetable.`id`,filetable.`filepath`
+      FROM sys_user u
+      LEFT JOIN filetable ON filetable.`id` = u.`fileid`
+      LEFT JOIN actenroll ON actenroll.`userid` = u.`user_id`
+      WHERE actenroll.`actid` = #{pd.actid} AND actenroll.`actstatusid` = 1
     </select>
 
 </mapper>
