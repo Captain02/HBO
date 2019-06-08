@@ -70,8 +70,9 @@ public class ActivityController extends BaseController {
         String[] split = crowdids.split(",");
         List<String> strings = Arrays.asList(split);
         //面向人群id
-        List<Long> actcrowdids = strings.stream().map(x -> Long.valueOf(x)).collect(Collectors.toList());
-        pageData.put("actcrowdids",strings);
+        if (strings.size()>0){
+            pageData.put("actcrowdids",strings);
+        }
         page.setPd(pageData);
         List<PageData> list = activityService.activityListPage(page);
         return R.ok().put("data", list);
