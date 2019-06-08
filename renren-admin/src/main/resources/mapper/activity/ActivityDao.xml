@@ -173,7 +173,7 @@
     </insert>
 
     <select id="selectCrowdPeopleByactId" resultType="io.renren.common.entity.PageData">
-      SELECT sys_dict.`id`,sys_dict.`name`
+      SELECT sys_dict.`id`,sys_dict.`value`
       FROM sys_dict
       LEFT JOIN actcrowd ON sys_dict.`id` = actcrowd.`crowdpeople`
       WHERE actcrowd.`actid` = #{actid}
