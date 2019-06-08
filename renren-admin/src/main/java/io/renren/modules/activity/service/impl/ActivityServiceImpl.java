@@ -63,6 +63,9 @@ public class ActivityServiceImpl implements ActivityService {
             daoSupport.save("ActprocessDao.add",pageData);
         }
         String croWdPeopleStr = pageData.getValueOfString("croWdPeople");
+        if (croWdPeopleStr.equals("")||croWdPeopleStr.equals("null")){
+            croWdPeopleStr = "127";
+        }
         String[] split = croWdPeopleStr.split(",");
         List<String> list = Arrays.asList(split);
         pageData.put("list",list);
