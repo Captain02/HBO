@@ -140,24 +140,20 @@
             <if test="actEndTime!=null">
                 `actendtime` = #{actEndTime,jdbcType=VARCHAR},
             </if>
-            <if test="actDetails!=null">
-                `actdetails` = #{actDetails,jdbcType=VARCHAR},
+            <if test="actdetails!=null">
+                `actdetails` = #{actdetails,jdbcType=VARCHAR},
             </if>
-            <if test="actLeading!=null">
-                `actleading` = #{actLeading,jdbcType=INTEGER},
+            <if test="videoid!=null">
+                `videoid` = #{videoid,jdbcType=INTEGER},
             </if>
-            <if test="videoId!=null">
-                `videoid` = #{videoId,jdbcType=INTEGER},
-            </if>
-
             <if test="images!=null">
                 `images` = #{images,jdbcType=INTEGER},
             </if>
+            <if test="fileId!=null">
+                `fileid` = #{fileId,jdbcType=VARCHAR},
+            </if>
             <if test="profile!=null">
                 `profile` = #{profile,jdbcType=VARCHAR},
-            </if>
-            <if test="isact!=null">
-                `isact` = #{isact,jdbcType=INTEGER}
             </if>
         </set>
         WHERE `actid` = #{actId,jdbcType=INTEGER}
