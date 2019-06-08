@@ -35,7 +35,6 @@
         <id column="actid" property="actid"></id>
         <result column="actcorid" property="actcorid"></result>
         <association property="video" column="{id=videoid}" select="FileDao.selectById"/>
-        <association property="QRCode" column="{id=fileid}" select="FileDao.selectById"/>
         <association property="image" column="{id=images}" select="FileDao.selectById"/>
         <association property="corporation" column="actcorid" select="selectCorByCorid"/>
         <association property="actlead" column="{id=actleading}"
