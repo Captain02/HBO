@@ -201,7 +201,9 @@ public class ActivityController extends BaseController {
     }
 
     @PostMapping("/changeProcess")
-    public R changeProcess(@RequestParam ActState[] actState) throws Exception {
+    public R changeProcess(@RequestParam(value = "actState[]",required = false) ActState[] actState) throws Exception {
+        PageData pageData = this.getPageData();
+        
         logger.info("========>"+actState);
 //        PageData pageData = this.getPageData();
 //        activityService.changeProcess(pageData);
