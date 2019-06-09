@@ -212,7 +212,7 @@ public class ActivityController extends BaseController {
        // List<Map> actStateList = ActivityController.parseStringToArray(actState, Map.class);
         PageData pageData = this.getPageData();
         //System.out.println(actStateList);
-      //  logger.info("========>"+actStateList);
+        logger.info("*************************"+pageData.getValueOfString("actState"));
 //        PageData pageData = this.getPageData();
 //        activityService.changeProcess(pageData);
         System.out.println("*************************"+pageData.getValueOfString("actState"));
