@@ -5,7 +5,6 @@ import io.renren.common.controller.BaseController;
 import io.renren.common.entity.Page;
 import io.renren.common.entity.PageData;
 import io.renren.common.util.Const;
-import io.renren.common.util.DateTool;
 import io.renren.common.utils.CheckParameterUtil;
 import io.renren.common.utils.QrCodeUtils;
 import io.renren.common.utils.R;
@@ -15,18 +14,14 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import oracle.jdbc.proxy.annotation.Post;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController()
 @RequestMapping("/sys/activity")
@@ -206,9 +201,10 @@ public class ActivityController extends BaseController {
     }
 
     @PostMapping("/changeProcess")
-    public R changeProcess() throws Exception {
-        PageData pageData = this.getPageData();
-        activityService.changeProcess(pageData);
+    public R changeProcess(@RequestParam(value = "actState") List<ActState> actStates) throws Exception {
+        logger.info("========>"+actStates);
+//        PageData pageData = this.getPageData();
+//        activityService.changeProcess(pageData);
         return R.ok();
     }
 
