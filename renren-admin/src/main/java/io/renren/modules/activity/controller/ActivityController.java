@@ -1,5 +1,7 @@
 package io.renren.modules.activity.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import io.renren.common.commBusiness.commService.CommService;
 import io.renren.common.controller.BaseController;
 import io.renren.common.entity.Page;
@@ -201,17 +203,25 @@ public class ActivityController extends BaseController {
     }
 
     @PostMapping("/changeProcess")
-    public R changeProcess(@RequestParam(value = "actState[]",required = false) ActState[] actState,
-                           @RequestParam(value = "actState",required = false) ActState[] actState2
-    ) throws Exception {
+//    @ResponseBody
+   // public R changeProcess(@RequestParam ActState[] actState) throws Exception {
+    public R changeProcess(JSONObject obj) throws Exception {
+      // String data=obj.toJSONString();
+      // JSONObject json = JSON.parseObject(obj.toJSONString());
+       // String actState=obj.getString("actState");
+       // List<Map> actStateList = ActivityController.parseStringToArray(actState, Map.class);
         PageData pageData = this.getPageData();
-
-        logger.info("========>"+actState);
+        logger.info("========>"+pageData.getValueOfString("actState"));
+        //System.out.println(actStateList);
+      //  logger.info("========>"+actStateList);
 //        PageData pageData = this.getPageData();
 //        activityService.changeProcess(pageData);
-        return R.ok().put("actState",actState).put("actState2",actState2).put("pageData",pageData);
+        return R.ok().put("pageData",pageData);
     }
-
+    public static <T> List<T> parseStringToArray(String json, Class<T> clazz) {
+            List<T> list = JSON.parseArray(json, clazz);
+            return list;
+    }
     @GetMapping("/getUserByActId")
     public R getUserByActId(Page page) throws Exception {
         PageData pageData = this.getPageData();
