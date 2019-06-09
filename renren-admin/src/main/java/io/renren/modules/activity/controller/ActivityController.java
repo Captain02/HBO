@@ -205,17 +205,16 @@ public class ActivityController extends BaseController {
     @PostMapping("/changeProcess")
 //    @ResponseBody
    // public R changeProcess(@RequestParam ActState[] actState) throws Exception {
-    public R changeProcess() throws Exception {
+    public R changeProcess(@RequestBody String actState) throws Exception {
       // String data=obj.toJSONString();
       // JSONObject json = JSON.parseObject(obj.toJSONString());
        // String actState=obj.getString("actState");
        // List<Map> actStateList = ActivityController.parseStringToArray(actState, Map.class);
         PageData pageData = this.getPageData();
         //System.out.println(actStateList);
-        logger.info("*************************"+pageData.getValueOfString("actState"));
 //        PageData pageData = this.getPageData();
 //        activityService.changeProcess(pageData);
-        System.out.println("*************************"+pageData.getValueOfString("actState"));
+        System.out.println("*************************"+actState);
         return R.ok().put("pageData",pageData);
     }
     public static <T> List<T> parseStringToArray(String json, Class<T> clazz) {
