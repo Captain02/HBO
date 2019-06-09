@@ -205,7 +205,7 @@ public class ActivityController extends BaseController {
     @PostMapping("/changeProcess")
 //    @ResponseBody
    // public R changeProcess(@RequestParam ActState[] actState) throws Exception {
-    public R changeProcess(JSONObject obj) throws Exception {
+    public R changeProcess() throws Exception {
       // String data=obj.toJSONString();
       // JSONObject json = JSON.parseObject(obj.toJSONString());
        // String actState=obj.getString("actState");
