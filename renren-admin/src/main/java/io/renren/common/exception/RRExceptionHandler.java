@@ -79,7 +79,7 @@ public class RRExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public R handleException(Exception e) {
-        logger.error(e.getMessage(), e);
+        logger.info(e.getMessage(), e);
         return R.error();
     }
 
