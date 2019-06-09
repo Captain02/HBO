@@ -25,6 +25,6 @@
     </delete>
 
     <update id="changeProcess">
-        UPDATE actprocess SET states = #{type} WHERE proid = #{proid}
+        UPDATE actprocess SET states = #{actState.type} WHERE proid = #{actState.proid}
     </update>
 </mapper>

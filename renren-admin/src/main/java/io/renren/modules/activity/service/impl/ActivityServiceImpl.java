@@ -6,6 +6,7 @@ import io.renren.common.entity.Page;
 import io.renren.common.entity.PageData;
 import io.renren.common.util.DateTool;
 import io.renren.common.utils.R;
+import io.renren.modules.activity.controller.ActState;
 import io.renren.modules.activity.service.ActivityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -124,8 +125,12 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
-    public void changeProcess(PageData pageData) throws Exception {
-        daoSupport.update("ActprocessDao.changeProcess",pageData);
+    public void changeProcess(List<ActState> list) throws Exception {
+        PageData pageData = new PageData();
+        for (ActState actState : list) {
+            pageData.put("actState",actState);
+            daoSupport.update("ActprocessDao.changeProcess",pageData);
+        }
     }
 
     @Override

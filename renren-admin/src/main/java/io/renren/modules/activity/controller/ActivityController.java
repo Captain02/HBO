@@ -1,6 +1,7 @@
 package io.renren.modules.activity.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import io.renren.common.commBusiness.commService.CommService;
 import io.renren.common.controller.BaseController;
@@ -8,6 +9,7 @@ import io.renren.common.entity.Page;
 import io.renren.common.entity.PageData;
 import io.renren.common.util.Const;
 import io.renren.common.utils.CheckParameterUtil;
+import io.renren.common.utils.JsonUtils;
 import io.renren.common.utils.QrCodeUtils;
 import io.renren.common.utils.R;
 import io.renren.modules.activity.service.ActivityService;
@@ -23,7 +25,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 @RestController()
 @RequestMapping("/sys/activity")
@@ -203,19 +207,13 @@ public class ActivityController extends BaseController {
     }
 
     @PostMapping("/changeProcess")
-//    @ResponseBody
-   // public R changeProcess(@RequestParam ActState[] actState) throws Exception {
-    public R changeProcess(@RequestBody String actState) throws Exception {
-      // String data=obj.toJSONString();
-      // JSONObject json = JSON.parseObject(obj.toJSONString());
-       // String actState=obj.getString("actState");
-       // List<Map> actStateList = ActivityController.parseStringToArray(actState, Map.class);
-        PageData pageData = this.getPageData();
-        //System.out.println(actStateList);
-//        PageData pageData = this.getPageData();
-//        activityService.changeProcess(pageData);
-        System.out.println("*************************"+actState);
-        return R.ok().put("pageData",pageData);
+    public R changeProcess(@RequestBody String str) throws Exception {
+//        Map<String,Map<String,ActState>> parse = (Map<String, Map<String, ActState>>) JsonUtils.parse(str);
+//        List<ActState> list = (List<ActState>) parse.get("actState");
+        JSONArray list = JsonUtils.parseStringToJSONArray(str);
+        List<ActState> actStates = list.toJavaList(ActState.class);
+        activityService.changeProcess(actStates);
+        return R.ok().put("pageData",str);
     }
     public static <T> List<T> parseStringToArray(String json, Class<T> clazz) {
             List<T> list = JSON.parseArray(json, clazz);

@@ -3,6 +3,7 @@ package io.renren.modules.activity.controller;
 import org.springframework.stereotype.Component;
 
 public class ActState {
+
     private Long proid;
 
     private Integer type;

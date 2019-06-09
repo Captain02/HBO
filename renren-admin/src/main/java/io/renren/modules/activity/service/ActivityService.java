@@ -2,6 +2,7 @@ package io.renren.modules.activity.service;
 
 import io.renren.common.entity.Page;
 import io.renren.common.entity.PageData;
+import io.renren.modules.activity.controller.ActState;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,7 +19,7 @@ public interface ActivityService {
 
     List<PageData> getReplies(Page page) throws Exception;
 
-    void changeProcess(PageData pageData) throws Exception;
+    void changeProcess(List<ActState> pageData) throws Exception;
 
     List<PageData> getUserByActIdlistPage(Page page) throws Exception;
 }
