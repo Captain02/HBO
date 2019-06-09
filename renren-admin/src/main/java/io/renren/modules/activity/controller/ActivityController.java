@@ -211,11 +211,11 @@ public class ActivityController extends BaseController {
        // String actState=obj.getString("actState");
        // List<Map> actStateList = ActivityController.parseStringToArray(actState, Map.class);
         PageData pageData = this.getPageData();
-        logger.info("========>"+pageData.getValueOfString("actState"));
         //System.out.println(actStateList);
       //  logger.info("========>"+actStateList);
 //        PageData pageData = this.getPageData();
 //        activityService.changeProcess(pageData);
+        System.out.println("*************************"+pageData.getValueOfString("actState"));
         return R.ok().put("pageData",pageData);
     }
     public static <T> List<T> parseStringToArray(String json, Class<T> clazz) {
