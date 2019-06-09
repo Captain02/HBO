@@ -201,13 +201,15 @@ public class ActivityController extends BaseController {
     }
 
     @PostMapping("/changeProcess")
-    public R changeProcess(@RequestParam(value = "actState[]",required = false) ActState[] actState) throws Exception {
+    public R changeProcess(@RequestParam(value = "actState[]",required = false) ActState[] actState,
+                           @RequestParam(value = "actState",required = false) ActState[] actState2
+    ) throws Exception {
         PageData pageData = this.getPageData();
-        
+
         logger.info("========>"+actState);
 //        PageData pageData = this.getPageData();
 //        activityService.changeProcess(pageData);
-        return R.ok();
+        return R.ok().put("actState",actState).put("actState2",actState2).put("pageData",pageData);
     }
 
     @GetMapping("/getUserByActId")
