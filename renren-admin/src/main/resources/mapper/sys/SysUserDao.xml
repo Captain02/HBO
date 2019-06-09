@@ -42,7 +42,7 @@
 		LEFT JOIN cor_user ON cor_user.userid = sys_user.user_id
 		WHERE sys_user.username=#{username}
 		AND cor_user.corid = #{corid}
-		AND cor_user."status" = 1
+		AND cor_user.`status` = 1
 	</select>
 
     <!--修改用户-->
