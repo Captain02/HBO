@@ -80,7 +80,7 @@ public class ActivityController extends BaseController {
         }
         page.setPd(pageData);
         List<PageData> list = activityService.activityListPage(page);
-        return R.ok().put("data", list);
+        return R.ok().put("page",page).put("data", list);
     }
 
     /**
@@ -225,5 +225,12 @@ public class ActivityController extends BaseController {
         page.setPd(pageData);
         List<PageData> list = activityService.getUserByActIdlistPage(page);
         return R.ok().put("data",list);
+    }
+
+    @PostMapping("/isLike")
+    public R isLike(){
+        PageData pageData = this.getPageData();
+        activityService.isLike(pageData);
+        return R.ok();
     }
 }
