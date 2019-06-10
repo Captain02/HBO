@@ -274,5 +274,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
         return (Integer) daoSupport.findForObject("io.renren.modules.sys.dao.SysUserDao.selectIdByUserName", pageData);
     }
 
+    @Override
+    public PageData selectEmailAndPhoneByUserName(PageData pageData) throws Exception {
+        return (PageData) daoSupport.findForObject("io.renren.modules.sys.dao.SysUserDao.selectEmailAndPhoneByUserName",pageData);
+    }
+
 
 }

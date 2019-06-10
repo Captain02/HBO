@@ -270,43 +270,43 @@
 
     <!--修改用户基本信息-->
     <update id="updateUserInfo">
-          UPDATE sys_user
-          <set>
-              <if test="userName!=null and userName!=''">
-                  `username`=#{userName,jdbcType=VARCHAR},
-              </if>
-              <if test="email!=null and email!=''">
-                  `email`=#{email,jdbcType=VARCHAR},
-              </if>
-              <if test="mobile!=null and mobile!=''">
-                  `mobile`=#{mobile,jdbcType=VARCHAR},
-              </if>
-              <if test="persionNum!=null and persionNum!=''">
-                  `persionnum`=#{persionNum,jdbcType=VARCHAR},
-              </if>
-              <if test="wechart!=null and wechart!=''">
-                  `wechart`=#{wechart,jdbcType=VARCHAR},
-              </if>
-              <if test="QQ!=null and QQ!=''">
-                  `QQ`=#{QQ,jdbcType=VARCHAR},
-              </if>
-              <if test="fileId!=null">
-                  `fileid`=#{fileId,jdbcType=INTEGER},
-              </if>
-              <if test="college!=null and college!=''">
-                  `college`=#{college,jdbcType=VARCHAR},
-              </if>
-              <if test="collegetie!=null and collegetie!=''">
-                  `collegetie`=#{collegetie,jdbcType=VARCHAR},
-              </if>
-              <if test="descs!=null and descs!=''">
-                  `descs`=#{descs,jdbcType=VARCHAR},
-              </if>
-              <if test="name!=null and name!=''">
-                  `name`=#{name,jdbcType=VARCHAR},
-              </if>
-          </set>
-		  WHERE user_id = #{userId,jdbcType=INTEGER}
+        UPDATE sys_user
+        <set>
+            <if test="userName!=null and userName!=''">
+                `username`=#{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="email!=null and email!=''">
+                `email`=#{email,jdbcType=VARCHAR},
+            </if>
+            <if test="mobile!=null and mobile!=''">
+                `mobile`=#{mobile,jdbcType=VARCHAR},
+            </if>
+            <if test="persionNum!=null and persionNum!=''">
+                `persionnum`=#{persionNum,jdbcType=VARCHAR},
+            </if>
+            <if test="wechart!=null and wechart!=''">
+                `wechart`=#{wechart,jdbcType=VARCHAR},
+            </if>
+            <if test="QQ!=null and QQ!=''">
+                `QQ`=#{QQ,jdbcType=VARCHAR},
+            </if>
+            <if test="fileId!=null">
+                `fileid`=#{fileId,jdbcType=INTEGER},
+            </if>
+            <if test="college!=null and college!=''">
+                `college`=#{college,jdbcType=VARCHAR},
+            </if>
+            <if test="collegetie!=null and collegetie!=''">
+                `collegetie`=#{collegetie,jdbcType=VARCHAR},
+            </if>
+            <if test="descs!=null and descs!=''">
+                `descs`=#{descs,jdbcType=VARCHAR},
+            </if>
+            <if test="name!=null and name!=''">
+                `name`=#{name,jdbcType=VARCHAR},
+            </if>
+        </set>
+        WHERE user_id = #{userId,jdbcType=INTEGER}
     </update>
 
     <!--selectUserByUsername-->
@@ -354,17 +354,17 @@
 
     <!--查询属于的社团-->
     <select id="selectCorByUserCorid" resultType="io.renren.common.entity.PageData">
-      select corporation.id from corporation
-      LEFT JOIN cor_user ON cor_user.corid = corporation.id
-      LEFT JOIN sys_user ON sys_user.user_id = cor_user.userid
-      WHERE cor_user.corid = #{corid}
+        select corporation.id from corporation
+        LEFT JOIN cor_user ON cor_user.corid = corporation.id
+        LEFT JOIN sys_user ON sys_user.user_id = cor_user.userid
+        WHERE cor_user.corid = #{corid}
         <choose>
             <when test="userid != null ">
                 AND cor_user.userid=#{userid}
-            </when >
+            </when>
             <when test="username != null ">
                 AND sys_user.username=#{username}
-            </when >
+            </when>
         </choose>
     </select>
 
@@ -380,6 +380,12 @@
     <select id="selectCountByUserName" resultType="Long">
         SELECT COUNT(*) FROM sys_user
         WHERE sys_user.`username` = #{username}
+    </select>
+
+    <!--根据学号查询手机号和邮箱-->
+    <select id="selectEmailAndPhoneByUserName" resultType="Long">
+        SELECT `email`,`mobile`,`username`
+        FROM `sys_user` WHERE `username` = #{username}
     </select>
 
     <!--查询学号查询id-->

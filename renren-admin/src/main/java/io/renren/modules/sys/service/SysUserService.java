@@ -99,4 +99,6 @@ public interface SysUserService extends IService<SysUserEntity> {
     Long selectCountByUserName(PageData pageData) throws Exception;
 
     Integer queryByUserName(PageData pageData) throws Exception;
+
+    PageData selectEmailAndPhoneByUserName(PageData pageData) throws Exception;
 }
