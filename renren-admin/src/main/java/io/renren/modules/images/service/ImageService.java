@@ -10,7 +10,7 @@ import java.util.List;
 public interface ImageService {
     List<PageData> getList(Page page) throws Exception;
 
-    Boolean del(PageData pageData);
+    Boolean del(PageData pageData) throws Exception;
 
-    PageData save(PageData pageData);
+    void save(PageData pageData) throws Exception;
 }

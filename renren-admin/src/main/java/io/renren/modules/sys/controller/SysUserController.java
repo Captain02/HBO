@@ -137,8 +137,6 @@ public class SysUserController extends BaseController {
         pageData.put("username", username);
         PageData user = sysUserService.selectUserByUsername(pageData);
         //获取用户所属的角色列表
-
-
         return R.ok().put("user", user);
     }
 
