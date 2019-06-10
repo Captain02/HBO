@@ -34,6 +34,18 @@ spring:
   freemarker:
     suffix: .html
     request-context-attribute: request
+  mail:
+    host: smtp.qq.com
+    username:
+    password:
+    default-encoding: utf-8
+    properties:
+     mail:
+      smtp:
+       socketFactory:
+        class: javax.net.ssl.SSLSocketFactory
+      debug: true
+    port: 465
 #  http:
 #    multipart:
 #      location:

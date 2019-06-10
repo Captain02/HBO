@@ -10,13 +10,16 @@ package io.renren.modules.sys.controller;
 
 
 import io.renren.common.commBusiness.commService.CommService;
+import io.renren.common.commBusiness.commService.MailService;
 import io.renren.common.controller.BaseController;
 import io.renren.common.entity.Page;
 import io.renren.common.entity.PageData;
+import io.renren.common.exception.RRException;
 import io.renren.common.util.Tools;
 import io.renren.common.utils.CheckParameterUtil;
 import io.renren.common.utils.JWTUtil;
 import io.renren.common.utils.R;
+import io.renren.common.utils.RedisUtils;
 import io.renren.common.validator.Assert;
 import io.renren.modules.sys.entity.SysUserEntity;
 import io.renren.modules.sys.service.SysUserRoleService;
@@ -32,10 +35,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -53,6 +53,10 @@ public class SysUserController extends BaseController {
     private SysUserRoleService sysUserRoleService;
     @Autowired
     private CommService commService;
+    @Autowired
+    private RedisUtils redisUtils;
+    @Autowired
+    private MailService mailService;
 
     /**
      * 所有用户列表
@@ -83,7 +87,7 @@ public class SysUserController extends BaseController {
         PageData pageData = this.getPageData();
         page.setPageSize(9999);
         page.setCurrPage(1);
-        pageData.put("username","");
+        pageData.put("username", "");
         page.setPd(pageData);
         //PageUtils page = sysUserService.queryPage(params);
         List<PageData> list = sysUserService.userlistPage(page);
@@ -321,7 +325,7 @@ public class SysUserController extends BaseController {
     public R getUserCors() throws Exception {
         PageData pageData = this.getPageData();
         List<PageData> data = sysUserService.getUserCorsByUserName(pageData);
-        return R.ok().put("data",data);
+        return R.ok().put("data", data);
     }
 
     //用户名是否重复
@@ -329,8 +333,8 @@ public class SysUserController extends BaseController {
     public R selectCountByUserName() throws Exception {
         PageData pageData = this.getPageData();
         Long count = sysUserService.selectCountByUserName(pageData);
-        if (count!=0){
-            return R.error(504,"用户名存在");
+        if (count != 0) {
+            return R.error(504, "用户名存在");
         }
         return R.ok();
     }
@@ -340,8 +344,8 @@ public class SysUserController extends BaseController {
     public R getCheckUserCor() throws Exception {
         PageData pageData = this.getPageData();
         List<PageData> list = sysUserService.selectCorByUserCorid(pageData);
-        if (list.size() != 0){
-            return R.error(505,"该账户重复注册社团");
+        if (list.size() != 0) {
+            return R.error(505, "该账户重复注册社团");
         }
         return R.ok();
     }
@@ -350,13 +354,69 @@ public class SysUserController extends BaseController {
     @PostMapping("/getUserInfo")
     public R getUserInfo() throws Exception {
         PageData pageData = this.getPageData();
-        CheckParameterUtil.checkParameterMap(pageData,"username");
+        CheckParameterUtil.checkParameterMap(pageData, "username");
         Long count = sysUserService.selectCountByUserName(pageData);
-        if(count == 0){
+        if (count == 0) {
             return R.error("用户名不存在");
         }
         PageData data = sysUserService.selectEmailAndPhoneByUserName(pageData);
-        return R.ok().put("data",data);
+        return R.ok().put("data", data);
     }
 
+    //发送验证码
+    @PostMapping("/sendVerCode")
+    public R sendVerCode() {
+        PageData pageData = this.getPageData();
+        CheckParameterUtil.checkParameterMap(pageData, "username", "type");
+        //邮箱验证：0，手机验证：1
+        if (pageData.getValueOfInteger("type") == 0) {
+            CheckParameterUtil.checkParameterMap(pageData, "email");
+            String verCode = this.generateShortUuid();
+            String token = JWTUtil.sign("changepassword" + pageData.getValueOfString("username"), verCode);
+            redisUtils.set("changepassword" + pageData.getValueOfString("username"),token,60 * 10);
+            String subject = "找回密码邮箱验证";
+            StringBuffer content = new StringBuffer();
+            content.append("");
+            mailService.sendSimpleMail(pageData.getValueOfString("email"),null,subject,content.toString());
+            pageData.put("token",token);
+            return R.ok().put("data",pageData);
+        }
+        if (pageData.getValueOfInteger("type") == 1) {
+            CheckParameterUtil.checkParameterMap(pageData, "email");
+
+        }
+        return R.ok();
+    }
+
+    //校验验证码
+    @PostMapping("/checkVerCode")
+    public R checkVerCode() {
+        PageData pageData = this.getPageData();
+        CheckParameterUtil.checkParameterMap(pageData, "username", "verCode");
+        String redisVerCode = redisUtils.get("changepassword" + pageData.getValueOfString("username"));
+        if (redisVerCode == null || "".equals(redisVerCode)) {
+            return R.error("验证码已过期");
+        }
+        if (!redisVerCode.equals(pageData.getValueOfString("verCode"))) {
+            return R.error("验证码不正确");
+        }
+        return R.ok();
+    }
+
+    //生成随机四位数字
+    private static String generateShortUuid() {
+        String[] chars = new String[]{"a", "b", "c", "d", "e", "f", "g", "h",
+                "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x",
+                "y", "z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D",
+                "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S",
+                "T", "U", "V", "W", "X", "Y", "Z"};
+        StringBuffer shortBuffer = new StringBuffer();
+        String uuid = UUID.randomUUID().toString().replace("-", "");
+        for (int i = 0; i < 4; i++) {
+            String str = uuid.substring(i * 4, i * 4 + 4);
+            int x = Integer.parseInt(str, 16);
+            shortBuffer.append(chars[x % 0x3E]);
+        }
+        return shortBuffer.toString();
+    }
 }
