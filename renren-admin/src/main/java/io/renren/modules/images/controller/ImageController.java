@@ -41,20 +41,16 @@ public class ImageController extends BaseController {
     @GetMapping("/list")
     @ApiOperation(value = "根据社团id获取社团相册", notes = "根据社团id获取社团相册", httpMethod = "GET")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "corId", value = "社团id",paramType = "query",required = true, dataType = "Integer"),
-            @ApiImplicitParam(name = "pageSize", value = "每页显示记录数", paramType = "query",required = true, dataType = "Integer"),
-            @ApiImplicitParam(name = "currPage", value = "当前页",paramType = "query", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "corId", value = "社团id", paramType = "query", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "pageSize", value = "每页显示记录数", paramType = "query", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "currPage", value = "当前页", paramType = "query", required = true, dataType = "Integer"),
     })
     public R list(@ApiIgnore Page page) throws Exception {
         PageData pageData = this.getPageData();
-        CheckParameterUtil.checkParameterMap(pageData,"corId");
+        CheckParameterUtil.checkParameterMap(pageData, "corId");
         page.setPd(pageData);
-        try {
-            List<PageData> images = imageService.getList(page);
-            return R.ok().put("page", page).put("date", images);
-        }catch (Exception e){
-            return R.error();
-        }
+        List<PageData> images = imageService.getList(page);
+        return R.ok().put("page", page).put("date", images);
 
     }
 
@@ -73,14 +69,14 @@ public class ImageController extends BaseController {
             @ApiImplicitParam(name = "url", value = "图片路径", required = true, dataType = "String"),
             @ApiImplicitParam(name = "id", value = "图片id", required = true, dataType = "Integer")
     })
-    public R delImage(HttpServletRequest request) {
+    public R delImage(HttpServletRequest request) throws Exception {
         PageData pageData = this.getPageData();
         CheckParameterUtil.checkParameterMap(pageData, new String[]{"url", "id"});
         System.out.println(pageData.toString());
         //(String) pageData.get("url")
         StringBuffer url = new StringBuffer();
         url.append("/home/docker/nginx").append((String) pageData.get("url"));
-        System.out.println("delurl"+url);
+        System.out.println("delurl" + url);
         if (commService.deleteFile(url.toString()) && imageService.del(pageData)) {
             return R.ok("删除成功");
         } else {
@@ -99,11 +95,11 @@ public class ImageController extends BaseController {
             @ApiImplicitParam(paramType = "form", name = "picture", value = "图片文件", required = true, dataType = "File"),
             @ApiImplicitParam(name = "corId", value = "社团id", required = true, dataType = "Integer")
     })
-    public R save(@RequestParam("picture") MultipartFile picture, HttpServletRequest request) {
+    public R save(@RequestParam("picture") MultipartFile picture, HttpServletRequest request) throws Exception {
         System.out.println("执行了单个文件上传");
         //文件上传
         PageData pageData = this.getPageData();
-        CheckParameterUtil.checkParameterMap(pageData,"corId");
+        CheckParameterUtil.checkParameterMap(pageData, "corId");
         String path = commService.uploadFile(picture, request, "/file/image/");
         if (path == null) {
             return R.error("文件上传失败");
@@ -111,11 +107,8 @@ public class ImageController extends BaseController {
         //保存到数据库
         pageData.put("url", path);
         pageData.put("imagename", picture.getOriginalFilename());
-        if (imageService.save(pageData) == null) {
-            return R.error("保存图片失败");
-        } else {
-            return R.ok().put("data", pageData);
-        }
+        imageService.save(pageData);
+        return R.ok().put("data", pageData);
     }
 
     /**
@@ -127,16 +120,16 @@ public class ImageController extends BaseController {
     @ApiOperation(value = "批量文件上传", notes = "批量文件上传", httpMethod = "POST")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "form", name = "picture", value = "多个图片文件",
-                    allowMultiple=true,required = true, dataType = "File"),
+                    allowMultiple = true, required = true, dataType = "File"),
             @ApiImplicitParam(name = "corId", value = "社团id", required = true, dataType = "Integer")
     })
-    public R batch(@RequestParam("picture") MultipartFile[] picture, HttpServletRequest request) {
+    public R batch(@RequestParam("picture") MultipartFile[] picture, HttpServletRequest request) throws Exception {
         System.out.println("执行了多个文件上传");
 
         Map<String, Object> pageDataMap = new HashMap<>();
         //文件上传
         PageData pageData = this.getPageData();
-        CheckParameterUtil.checkParameterMap(pageData,"corId");
+        CheckParameterUtil.checkParameterMap(pageData, "corId");
 
         for (int i = 0; i < picture.length; i++) {
             String path = commService.uploadFile(picture[i], request, "/file/image/");
@@ -146,11 +139,8 @@ public class ImageController extends BaseController {
             //保存到数据库
             pageData.put("url", path);
             pageData.put("imagename", picture[i].getOriginalFilename());
-            if (imageService.save(pageData) == null) {
-                return R.error("保存图片失败");
-            } else {
-                pageDataMap.put(Integer.toString(i), pageData);
-            }
+            imageService.save(pageData);
+            pageDataMap.put(Integer.toString(i), pageData);
         }
         System.out.println(pageDataMap);
         //将文件在服务器的存储路径返回

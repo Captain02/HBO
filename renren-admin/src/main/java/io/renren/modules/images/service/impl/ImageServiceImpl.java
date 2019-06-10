@@ -21,26 +21,15 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public Boolean del(PageData pageData) {
+    public Boolean del(PageData pageData) throws Exception {
         //删除数据库中的字段
-        try {
-            daoSupport.delete("ImageDao.delete", pageData);
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
+        daoSupport.delete("ImageDao.delete", pageData);
+        return true;
     }
 
     @Override
-    public PageData save(PageData pageData) {
-        try {
-            daoSupport.save("ImageDao.save", pageData);
-            return pageData;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+    public void save(PageData pageData) throws Exception {
+        daoSupport.save("ImageDao.save", pageData);
     }
 
 }
