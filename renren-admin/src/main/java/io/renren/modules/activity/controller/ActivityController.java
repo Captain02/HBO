@@ -225,7 +225,7 @@ public class ActivityController extends BaseController {
     }
 
     @PostMapping("/isLike")
-    public R isLike(){
+    public R isLike() throws Exception {
         PageData pageData = this.getPageData();
         activityService.isLike(pageData);
         return R.ok();
