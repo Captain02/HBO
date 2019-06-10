@@ -224,10 +224,19 @@ public class ActivityController extends BaseController {
         return R.ok().put("page",page).put("data",list);
     }
 
+    //点赞接口
     @PostMapping("/isLike")
     public R isLike() throws Exception {
         PageData pageData = this.getPageData();
         activityService.isLike(pageData);
         return R.ok();
     }
+
+    @PostMapping("/isCollection")
+    public R isCollection() throws Exception {
+        PageData pageData = this.getPageData();
+        activityService.isCollection(pageData);
+        return R.ok();
+    }
+
 }

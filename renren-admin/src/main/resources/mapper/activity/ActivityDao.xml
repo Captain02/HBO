@@ -249,6 +249,14 @@
     <insert id="saveLike">
         INSERT INTO bbs_like (userid,topicid) VALUES (#{userid},#{topicid})
     </insert>
+    
+    <!--收藏-->
+    <insert id="saveCollection">
+        insert into bbs_collection (userid,topicid) values (#{userid},#{topicid});
+    </insert>
 
-
+    <!--取消收藏-->
+    <delete id="delCollection">
+        DELETE FROM bbs_collection WHERE userid = #{userid} AND topicid = #{topicid}
+    </delete>
 </mapper>
