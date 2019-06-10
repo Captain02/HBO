@@ -394,7 +394,7 @@
     </select>
 
     <!--根据学号查询手机号和邮箱-->
-    <select id="selectEmailAndPhoneByUserName" resultType="Long">
+    <select id="selectEmailAndPhoneByUserName" resultType="io.renren.common.entity.PageData">
         SELECT `email`,`mobile`,`username`
         FROM `sys_user` WHERE `username` = #{username}
     </select>
