@@ -138,5 +138,10 @@ public class ActivityServiceImpl implements ActivityService {
         return (List<PageData>) daoSupport.findForList("ActivityDao.getUserByActIdlistPage",page);
     }
 
+    @Override
+    public void isLike(PageData pageData) {
+
+    }
+
 
 }

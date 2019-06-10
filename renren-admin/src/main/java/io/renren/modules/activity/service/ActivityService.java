@@ -22,4 +22,6 @@ public interface ActivityService {
     void changeProcess(List<ActState> pageData) throws Exception;
 
     List<PageData> getUserByActIdlistPage(Page page) throws Exception;
+
+    void isLike(PageData pageData);
 }
