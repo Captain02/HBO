@@ -233,4 +233,16 @@
       WHERE actenroll.`actid` = #{pd.actid} AND actenroll.`actstatusid` = 1
     </select>
 
+    <!--删除点赞-->
+    <delete id="delLike">
+        DELETE FROM bbs_like
+        WHERE userid = #{userid} AND topicid = #{topicid}
+    </delete>
+
+    <!--点赞-->
+    <insert id="saveLike">
+        INSERT INTO bbs_like (userid,topicid) VALUES (#{userid},#{topicid})
+    </insert>
+
+
 </mapper>

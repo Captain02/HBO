@@ -139,8 +139,12 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
-    public void isLike(PageData pageData) {
-
+    public void isLike(PageData pageData) throws Exception {
+        if (pageData.getValueOfInteger("type") == 1){
+            daoSupport.save("ActivityDao.saveLike",pageData);
+        }else {
+            daoSupport.delete("ActivityDao.delLike",pageData);
+        }
     }
 
 

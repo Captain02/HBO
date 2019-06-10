@@ -23,5 +23,5 @@ public interface ActivityService {
 
     List<PageData> getUserByActIdlistPage(Page page) throws Exception;
 
-    void isLike(PageData pageData);
+    void isLike(PageData pageData) throws Exception;
 }
