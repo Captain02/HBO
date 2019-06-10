@@ -346,4 +346,17 @@ public class SysUserController extends BaseController {
         return R.ok();
     }
 
+    //根据用户名获取手机号和邮箱
+    @PostMapping("/getUserInfo")
+    public R getUserInfo() throws Exception {
+        PageData pageData = this.getPageData();
+        CheckParameterUtil.checkParameterMap(pageData,"username");
+        Long count = sysUserService.selectCountByUserName(pageData);
+        if(count == 0){
+            return R.error("用户名不存在");
+        }
+        PageData data = sysUserService.selectEmailAndPhoneByUserName(pageData);
+        return R.ok().put("data",data);
+    }
+
 }
