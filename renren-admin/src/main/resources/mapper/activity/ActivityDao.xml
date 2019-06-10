@@ -231,6 +231,12 @@
       LEFT JOIN filetable ON filetable.`id` = u.`fileid`
       LEFT JOIN actenroll ON actenroll.`userid` = u.`user_id`
       WHERE actenroll.`actid` = #{pd.actid} AND actenroll.`actstatusid` = 1
+      <if test="pd.username != null and pd.username != ''">
+         AND u.`username` LIKE "%"#{pd.username}"%"
+      </if>
+      <if test="pd.name != null and pd.name != ''">
+         AND u.`name` LIKE "%"#{pd.name}"%"
+      </if>
     </select>
 
     <!--删除点赞-->

@@ -221,7 +221,7 @@ public class ActivityController extends BaseController {
         PageData pageData = this.getPageData();
         page.setPd(pageData);
         List<PageData> list = activityService.getUserByActIdlistPage(page);
-        return R.ok().put("data",list);
+        return R.ok().put("page",page).put("data",list);
     }
 
     @PostMapping("/isLike")
