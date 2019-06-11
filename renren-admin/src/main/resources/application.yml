@@ -36,8 +36,8 @@ spring:
     request-context-attribute: request
   mail:
     host: smtp.qq.com
-    username:
-    password:
+    username: 3601820799@qq.com
+    password: wthpfkzjhgordcab
     default-encoding: utf-8
     properties:
      mail:

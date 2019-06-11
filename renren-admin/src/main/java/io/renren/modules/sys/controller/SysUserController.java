@@ -34,6 +34,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -365,27 +366,34 @@ public class SysUserController extends BaseController {
 
     //发送验证码
     @PostMapping("/sendVerCode")
-    public R sendVerCode() {
+    public R sendVerCode() throws MessagingException {
         PageData pageData = this.getPageData();
-        CheckParameterUtil.checkParameterMap(pageData, "username", "type");
+        CheckParameterUtil.checkParameterMap(pageData, "username", "type", "checkway");
         //邮箱验证：0，手机验证：1
         if (pageData.getValueOfInteger("type") == 0) {
-            CheckParameterUtil.checkParameterMap(pageData, "email");
-            String verCode = this.generateShortUuid();
+            //验证码生成
+            String verCode = String.valueOf((Math.random() * 9 + 1) * 100000).substring(0, 5);
+            //token生成
             String token = JWTUtil.sign("changepassword" + pageData.getValueOfString("username"), verCode);
-            redisUtils.set("changepassword" + pageData.getValueOfString("username"),token,60 * 10);
+            redisUtils.set("changepassword" + pageData.getValueOfString("username"), verCode, 60 * 10);
+            //发送邮件
             String subject = "找回密码邮箱验证";
             StringBuffer content = new StringBuffer();
-            content.append("");
-            mailService.sendSimpleMail(pageData.getValueOfString("email"),null,subject,content.toString());
-            pageData.put("token",token);
-            return R.ok().put("data",pageData);
+            content.append("<html><head><title></title></head><body>");
+            content.append("您好：" + pageData.getValueOfString("checkway") + "!<br/>");
+            content.append("您的验证码是：").append(verCode).append("<br/>");
+            content.append("您可以复制此验证码并返回至百团争鸣社团管理系统，以验证您的邮箱。<br/>")
+                    .append("此验证码只能使用一次，在10分钟内有效。验证成功则自动失效。<br/>")
+                    .append("如果您没有进行上述操作，请忽略此邮件。");
+            mailService.sendHtmlMail(pageData.getValueOfString("checkway"), subject, content.toString());
+            //返回token
+            pageData.put("token", token);
+            return R.ok().put("data", pageData);
         }
         if (pageData.getValueOfInteger("type") == 1) {
-            CheckParameterUtil.checkParameterMap(pageData, "email");
-
+            return R.ok().put("data", pageData);
         }
-        return R.ok();
+        return R.error("参数type为空");
     }
 
     //校验验证码
@@ -393,6 +401,7 @@ public class SysUserController extends BaseController {
     public R checkVerCode() {
         PageData pageData = this.getPageData();
         CheckParameterUtil.checkParameterMap(pageData, "username", "verCode");
+        //获取token中的验证码
         String redisVerCode = redisUtils.get("changepassword" + pageData.getValueOfString("username"));
         if (redisVerCode == null || "".equals(redisVerCode)) {
             return R.error("验证码已过期");
@@ -400,23 +409,18 @@ public class SysUserController extends BaseController {
         if (!redisVerCode.equals(pageData.getValueOfString("verCode"))) {
             return R.error("验证码不正确");
         }
-        return R.ok();
+        return R.ok().put("data", pageData);
     }
 
-    //生成随机四位数字
-    private static String generateShortUuid() {
-        String[] chars = new String[]{"a", "b", "c", "d", "e", "f", "g", "h",
-                "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x",
-                "y", "z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D",
-                "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S",
-                "T", "U", "V", "W", "X", "Y", "Z"};
-        StringBuffer shortBuffer = new StringBuffer();
-        String uuid = UUID.randomUUID().toString().replace("-", "");
-        for (int i = 0; i < 4; i++) {
-            String str = uuid.substring(i * 4, i * 4 + 4);
-            int x = Integer.parseInt(str, 16);
-            shortBuffer.append(chars[x % 0x3E]);
-        }
-        return shortBuffer.toString();
+    //重置密码
+    @PostMapping("/resetPwd")
+    public R resetPwd() throws Exception {
+        PageData pageData = this.getPageData();
+        CheckParameterUtil.checkParameterMap(pageData,"password","username");
+        PageData user = sysUserService.selectEmailAndPhoneByUserName(pageData);
+        pageData.put("userId",user.getValueOfInteger("userId"));
+        pageData.put("password",ShiroUtils.sha256(pageData.getValueOfString("password"),user.getValueOfString("salt")));
+        sysUserService.updateUserInfo(pageData);
+        return R.ok();
     }
 }
