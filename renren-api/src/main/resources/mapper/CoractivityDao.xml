@@ -35,6 +35,14 @@
 		WHERE
 			id = C.actcorid
 	) corname,
+	(
+		SELECT
+			name
+		FROM
+			sys_dept
+		WHERE
+			dept_id = C.deptid
+	) deptname,
 	createtime
 FROM
 	coractivity C
@@ -61,6 +69,14 @@ FROM
 		WHERE
 			user_id = C.actcorid
 	) username,
+	(
+		SELECT
+			name
+		FROM
+			sys_dept
+		WHERE
+			dept_id = C.deptid
+	) deptname,
 	(SELECT filepath FROM sys_user U LEFT JOIN filetable F ON F.id=U.fileid WHERE user_id = C.actcorid)userfilepath
 	FROM
 			coractivity C
