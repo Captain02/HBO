@@ -15,6 +15,7 @@
         <association property="bbs_like" column="actid" select="bbslikeDao.selectLikeByActid"/>
         <association property="bbs_replies" column="actid" select="bbslikeDao.selectRepliesByActid"/>
         <association property="bbs_collection" column="actid" select="bbslikeDao.selectCollectionByActid"/>
+        <association property="deptInfo" column="{deptId=deptid}" select="io.renren.modules.sys.dao.SysDeptDao.selectDeptById"></association>
         <collection property="processnodes" column="actid" select="ActprocessDao.selectActprocessForActivity"/>
         <collection property="crowdpeople" column="actid" select="selectCrowdPeopleByactId"/>
         <collection property="likePeople" column="actid" select="selectLikePeopleByActId"></collection>
@@ -41,6 +42,7 @@
                      select="io.renren.modules.sys.dao.SysUserDao.getinfoByIdNotContentRoleDept"/>
         <association property="bbs_like" column="actid" select="bbslikeDao.selectLikeByActid"/>
         <association property="bbs_collection" column="actid" select="bbslikeDao.selectCollectionByActid"/>
+        <association property="deptInfo" column="{deptId=deptid}" select="io.renren.modules.sys.dao.SysDeptDao.selectDeptById"></association>
         <collection property="processnodes" column="actid" select="ActprocessDao.selectActprocessForActivity"/>
         <collection property="crowdpeople" column="actid" select="selectCrowdPeopleByactId"/>
         <collection property="likePeople" column="actid" select="selectLikePeopleByActId"></collection>
@@ -49,7 +51,7 @@
 
     <select id="activitylistPage" resultMap="activityListPage">
         SELECT DISTINCT c.`actname`,c.`actstarttame`,c.`actendtime`,c.`createtime`,c.`actid`,c.`actcorid`,
-        c1.`corname`,c.`actleading`,c.`fileid`,c.`videoid`,c.`images`,c.`profile`,c.`enclosure`
+        c1.`corname`,c.`actleading`,c.`fileid`,c.`videoid`,c.`images`,c.`profile`,c.`enclosure`,c.`deptid`
         FROM `coractivity` c
         LEFT JOIN `corporation` c1 ON c1.`id` = c.`actcorid`
         LEFT JOIN actcrowd ac ON ac.actid = c.`actid`
@@ -74,7 +76,7 @@
     <select id="getActivityById" resultMap="activityPageData">
         SELECT
         `actid`,`actname`,`actstarttame`,`actendtime`,`createtime`,`actdetails`,`actcorid`,`actleading`,
-        `fileid`,`videoid`,`images`,`actprocessid`,`profile`,`isact`,`enclosure`
+        `fileid`,`videoid`,`images`,`actprocessid`,`profile`,`isact`,`enclosure`,`deptid`
         FROM
         coractivity
         WHERE `actid` = #{actid}
@@ -97,6 +99,9 @@
             </if>
             <if test="fileId!=null">
                 `fileid`,
+            </if>
+            <if test="deptid!=''">
+                `deptid`,
             </if>
             <if test="enclosureid != null">
                 #{enclosure,jdbcType=INTEGER},
@@ -123,6 +128,9 @@
             </if>
             <if test="enclosureid != null">
                 #{enclosureid,jdbcType=INTEGER},
+            </if>
+            <if test="deptid != null">
+                #{deptid,jdbcType=INTEGER},
             </if>
         </trim>
         )
