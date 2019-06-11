@@ -16,7 +16,7 @@ import java.io.File;
 @Service
 public class MailServiceImpl implements MailService {
     @Autowired
-    JavaMailSender javaMailSender;
+    private JavaMailSender javaMailSender;
 
     @Value("${spring.mail.username}")  //发送人的邮箱  比如155156641XX@163.com
     private String from;
@@ -85,5 +85,24 @@ public class MailServiceImpl implements MailService {
             FileSystemResource res = new FileSystemResource(new File(srcPath[i]));
             helper.addInline(resids[i], res);
         }
+    }
+
+    /**
+     * 发送html格式的邮件
+     *
+     * @param to 接受者
+     * @param subject 主题
+     * @param content 内容
+     */
+    @Override
+    public void sendHtmlMail(String to, String subject, String content) throws MessagingException {
+        MimeMessage message = javaMailSender.createMimeMessage();
+        //true表示需要创建一个multipart message
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+        helper.setFrom(from);
+        helper.setTo(from);
+        helper.setSubject(subject);
+        helper.setText(content, true);
+        javaMailSender.send(message);
     }
 }

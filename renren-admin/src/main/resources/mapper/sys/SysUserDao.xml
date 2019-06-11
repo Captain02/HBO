@@ -316,6 +316,9 @@
             <if test="name!=null and name!=''">
                 `name`=#{name,jdbcType=VARCHAR},
             </if>
+            <if test="password!=null and password!=''">
+                `password`=#{password,jdbcType=VARCHAR},
+            </if>
         </set>
         WHERE user_id = #{userId,jdbcType=INTEGER}
     </update>
@@ -395,7 +398,7 @@
 
     <!--根据学号查询手机号和邮箱-->
     <select id="selectEmailAndPhoneByUserName" resultType="io.renren.common.entity.PageData">
-        SELECT `email`,`mobile`,`username`
+        SELECT `email`,`mobile`,`username`,`user_id` userId,`salt`
         FROM `sys_user` WHERE `username` = #{username}
     </select>
 
