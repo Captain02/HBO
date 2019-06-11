@@ -199,4 +199,10 @@ public class SysDeptController extends AbstractController {
         return R.ok();
     }
 
+    @GetMapping("/getDepts")
+    public R getDepts() throws Exception {
+        List<PageData> list = sysDeptService.selectAllDept();
+        return R.ok().put("data",list);
+    }
+
 }

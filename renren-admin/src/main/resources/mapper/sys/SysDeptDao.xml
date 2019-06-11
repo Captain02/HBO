@@ -59,4 +59,8 @@
 		select dept_id from sys_dept where parent_id = #{value} and del_flag = 0
 	</select>
 
+    <select id="selectAllDept" resultType="io.renren.common.entity.PageData">
+        SELECT dept_id,`name` FROM sys_dept
+    </select>
+
 </mapper>
