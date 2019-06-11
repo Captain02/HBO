@@ -70,7 +70,7 @@
 	</select>
 
     <select id="geUserPassword" resultType="String">
-		SELECT `password` FROM sys_user WHERE `username` = #{username}
+		SELECT `password` FROM sys_user WHERE `username` = #{pagedate.username}
 	</select>
 
     <!--List<PageData> list = (List<PageData>) daoSupport.
