@@ -10,4 +10,6 @@ public interface MailService {
     public void sendAttachFileMail(String to, String subject, String content, File file) throws MessagingException;
 
     public void sendMailWithirng(String to , String subject , String content, String[] srcPath,String[] resids) throws MessagingException;
+
+    public void sendHtmlMail(String to, String subject, String content) throws MessagingException;
 }
