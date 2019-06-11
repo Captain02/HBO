@@ -17,4 +17,15 @@ public class RepliesServiceImpl implements RepliesService {
     public List<PageData> getListPage(Page page) throws Exception {
         return (List<PageData>) daoSupport.findForList("BbsRepliesDao.getReplieslistPage", page);
     }
+    @Override
+    public PageData save(PageData pageData) throws Exception {
+       daoSupport.save("RepliesDao.save", pageData);
+        return pageData;
+    }
+    @Override
+    public PageData save_replies_like(PageData pageData) throws Exception {
+        daoSupport.save("RepliesDao.save_replies_like", pageData);
+        return pageData;
+    }
+
 }

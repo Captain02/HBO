@@ -12,4 +12,10 @@
 	WHERE
 	 topicid = #{pd.topicid}
     </select>
+    <insert id="save" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO replies(userid,parentid,topicid,repliescontent) VALUES (#{userid},#{parentid},#{topicid},#{repliescontent})
+    </insert>
+    <insert id="save_replies_like" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO bbs_replies_like(userid,repliesid) VALUES (#{userId},#{repliesid})
+    </insert>
 </mapper>

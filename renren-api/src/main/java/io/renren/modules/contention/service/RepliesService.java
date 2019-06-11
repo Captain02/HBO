@@ -9,4 +9,6 @@ import java.util.List;
 @Service
 public interface RepliesService {
     List<PageData> getListPage(Page page)throws Exception;
+    PageData save(PageData pageData)throws Exception;
+    PageData save_replies_like(PageData pageData)throws Exception;
 }
