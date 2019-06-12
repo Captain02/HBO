@@ -132,7 +132,6 @@ public class SysRoleController extends BaseController {
 	/**
 	 * 修改角色
 	 */
-	@SysLog("修改角色")
 	@PostMapping("/update")
 //	@RequiresPermissions("sys:role:update")
 	public R update() throws Exception {
@@ -148,9 +147,7 @@ public class SysRoleController extends BaseController {
 	/**
 	 * 删除角色
 	 */
-	@SysLog("删除角色")
 	@GetMapping("/delete")
-//	@RequiresPermissions("sys:role:delete")
 	public R delete() throws Exception {
         //接收并校验参数
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();

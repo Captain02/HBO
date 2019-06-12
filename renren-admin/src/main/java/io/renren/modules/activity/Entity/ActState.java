@@ -1,4 +1,4 @@
-package io.renren.modules.activity.controller;
+package io.renren.modules.activity.Entity;
 
 import org.springframework.stereotype.Component;
 
