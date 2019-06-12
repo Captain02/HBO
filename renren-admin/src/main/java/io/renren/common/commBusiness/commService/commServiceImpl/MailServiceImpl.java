@@ -100,7 +100,7 @@ public class MailServiceImpl implements MailService {
         //true表示需要创建一个multipart message
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
         helper.setFrom(from);
-        helper.setTo(from);
+        helper.setTo(to);
         helper.setSubject(subject);
         helper.setText(content, true);
         javaMailSender.send(message);

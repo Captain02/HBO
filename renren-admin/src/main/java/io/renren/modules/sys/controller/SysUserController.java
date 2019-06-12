@@ -380,7 +380,7 @@ public class SysUserController extends BaseController {
             String subject = "找回密码邮箱验证";
             StringBuffer content = new StringBuffer();
             content.append("<html><head><title></title></head><body>");
-            content.append("您好：" + pageData.getValueOfString("checkway") + "!<br/>");
+            content.append("您好：" + pageData.getValueOfString("username") + "!<br/>");
             content.append("您的验证码是：").append(verCode).append("<br/>");
             content.append("您可以复制此验证码并返回至百团争鸣社团管理系统，以验证您的邮箱。<br/>")
                     .append("此验证码只能使用一次，在10分钟内有效。验证成功则自动失效。<br/>")
