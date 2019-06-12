@@ -200,8 +200,8 @@ public class SysDeptController extends AbstractController {
     }
 
     @GetMapping("/getDepts")
-    public R getDepts() throws Exception {
-        List<PageData> list = sysDeptService.selectAllDept();
+    public R getDepts(@RequestParam("corid")Long corid) throws Exception {
+        List<PageData> list = sysDeptService.selectAllDept(corid);
         return R.ok().put("data",list);
     }
 

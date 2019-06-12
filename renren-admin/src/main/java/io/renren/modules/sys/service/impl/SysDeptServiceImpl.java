@@ -76,7 +76,7 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptDao, SysDeptEntity> i
     }
 
     @Override
-    public List<PageData> selectAllDept() throws Exception {
+    public List<PageData> selectAllDept(Long corid) throws Exception {
         return (List<PageData>) daoSupport.
                 findForList("io.renren.modules.sys.dao.SysDeptDao.selectAllDept",null);
     }

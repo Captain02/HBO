@@ -45,5 +45,5 @@ public interface SysDeptService extends IService<SysDeptEntity> {
 
     List<PageData> selectDeptById(PageData pageData) throws Exception;
 
-    List<PageData> selectAllDept() throws Exception;
+    List<PageData> selectAllDept(Long corid) throws Exception;
 }
