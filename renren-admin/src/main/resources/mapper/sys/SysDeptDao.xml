@@ -60,7 +60,7 @@
 	</select>
 
     <select id="selectAllDept" resultType="io.renren.common.entity.PageData">
-        SELECT dept_id,`name` FROM sys_dept WHERE corid = #{corid}
+        SELECT dept_id,`name`,`parent_id` FROM sys_dept WHERE corid = #{corid}
     </select>
 
 </mapper>
