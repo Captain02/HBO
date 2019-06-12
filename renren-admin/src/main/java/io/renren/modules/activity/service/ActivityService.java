@@ -2,7 +2,7 @@ package io.renren.modules.activity.service;
 
 import io.renren.common.entity.Page;
 import io.renren.common.entity.PageData;
-import io.renren.modules.activity.controller.ActState;
+import io.renren.modules.activity.Entity.ActState;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,4 +26,6 @@ public interface ActivityService {
     void isLike(PageData pageData) throws Exception;
 
     void isCollection(PageData pageData) throws Exception;
+
+    List<PageData> getActCharts(PageData pageData) throws Exception;
 }

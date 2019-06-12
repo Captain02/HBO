@@ -5,8 +5,7 @@ import io.renren.common.dao.DaoSupport;
 import io.renren.common.entity.Page;
 import io.renren.common.entity.PageData;
 import io.renren.common.util.DateTool;
-import io.renren.common.utils.R;
-import io.renren.modules.activity.controller.ActState;
+import io.renren.modules.activity.Entity.ActState;
 import io.renren.modules.activity.service.ActivityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -141,6 +140,7 @@ public class ActivityServiceImpl implements ActivityService {
     @Override
     public void isLike(PageData pageData) throws Exception {
         if (pageData.getValueOfLong("type") == 1){
+            daoSupport.delete("ActivityDao.delLike",pageData);
             daoSupport.save("ActivityDao.saveLike",pageData);
         }else {
             daoSupport.delete("ActivityDao.delLike",pageData);
@@ -148,12 +148,19 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
+    @Transactional
     public void isCollection(PageData pageData) throws Exception {
         if (pageData.getValueOfLong("type") == 1){
+            daoSupport.delete("ActivityDao.delCollection",pageData);
             daoSupport.save("ActivityDao.saveCollection",pageData);
         }else {
             daoSupport.delete("ActivityDao.delCollection",pageData);
         }
+    }
+
+    @Override
+    public List<PageData> getActCharts(PageData pageData) throws Exception {
+        return (List<PageData>) daoSupport.findForList("ActivityDao.getActCharts",pageData);
     }
 
 

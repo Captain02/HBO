@@ -11,6 +11,7 @@ import io.renren.common.utils.CheckParameterUtil;
 import io.renren.common.utils.JsonUtils;
 import io.renren.common.utils.QrCodeUtils;
 import io.renren.common.utils.R;
+import io.renren.modules.activity.Entity.ActState;
 import io.renren.modules.activity.service.ActivityService;
 import io.renren.modules.file.service.FileService;
 import io.swagger.annotations.Api;
@@ -237,6 +238,28 @@ public class ActivityController extends BaseController {
         PageData pageData = this.getPageData();
         activityService.isCollection(pageData);
         return R.ok();
+    }
+
+    //人员统计
+    @GetMapping("/getActCharts")
+    public R getActCharts() throws Exception {
+        PageData pageData = this.getPageData();
+        pageData.put("column","sys_user.gender AS gender");
+        pageData.put("column2","sys_user.gender");
+        List<PageData> groupGender =  activityService.getActCharts(pageData);
+        pageData.put("column","sys_user.college AS college");
+        pageData.put("column2","sys_user.college");
+        List<PageData> groupCollege =  activityService.getActCharts(pageData);
+        pageData.put("column","sys_user.collegetie AS collegetie");
+        pageData.put("column2","sys_user.collegetie");
+        List<PageData> groupcollegetie =  activityService.getActCharts(pageData);
+        pageData.put("column","LEFT(sys_user.`username`,4) AS persionnum");
+        pageData.put("column2","LEFT(sys_user.`username`,4)");
+        List<PageData> groupPersonNum =  activityService.getActCharts(pageData);
+        return R.ok().put("groupGender",groupGender)
+                .put("groupCollege",groupCollege)
+                .put("groupcollegetie",groupcollegetie)
+                .put("groupPersonNum",groupPersonNum);
     }
 
 }

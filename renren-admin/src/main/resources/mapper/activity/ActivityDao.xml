@@ -267,4 +267,12 @@
     <delete id="delCollection">
         DELETE FROM bbs_collection WHERE userid = #{userid} AND topicid = #{topicid}
     </delete>
+
+    <select id="getActCharts" resultType="io.renren.common.entity.PageData">
+        SELECT ${column} ,count(*) AS num
+        FROM sys_user
+        LEFT JOIN actenroll ON actenroll.userid = sys_user.user_id
+        WHERE actenroll.actid = #{actid}
+        GROUP BY ${column2}
+    </select>
 </mapper>
