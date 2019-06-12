@@ -9,6 +9,7 @@
 package io.renren.modules.sys.controller;
 
 
+import io.renren.common.commBusiness.commService.CaptchaService;
 import io.renren.common.commBusiness.commService.CommService;
 import io.renren.common.commBusiness.commService.MailService;
 import io.renren.common.controller.BaseController;
@@ -36,6 +37,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -58,6 +61,9 @@ public class SysUserController extends BaseController {
     private RedisUtils redisUtils;
     @Autowired
     private MailService mailService;
+    @Autowired
+    private CaptchaService captchaService;
+
 
     /**
      * 所有用户列表
@@ -355,12 +361,24 @@ public class SysUserController extends BaseController {
     @PostMapping("/getUserInfo")
     public R getUserInfo() throws Exception {
         PageData pageData = this.getPageData();
-        CheckParameterUtil.checkParameterMap(pageData, "username");
+        CheckParameterUtil.checkParameterMap(pageData, "username","captcha","key");
+        //获取redis中的验证码
+        String trueCaptcha = redisUtils.get(pageData.getValueOfString("key"));
+        if (trueCaptcha == null || "".equals(trueCaptcha)) {
+            return R.error("验证码已失效");
+        }
+        if(!pageData.getValueOfString("captcha").equals(trueCaptcha)){
+            return R.error("验证码不正确");
+        }
         Long count = sysUserService.selectCountByUserName(pageData);
         if (count == 0) {
             return R.error("用户名不存在");
         }
-        PageData data = sysUserService.selectEmailAndPhoneByUserName(pageData);
+        pageData = sysUserService.selectEmailAndPhoneByUserName(pageData);
+        PageData data = new PageData();
+        data.put("email",pageData.getValueOfString("email"));
+        data.put("mobile",pageData.getValueOfString("mobile"));
+        data.put("username",pageData.getValueOfString("username"));
         return R.ok().put("data", data);
     }
 
@@ -373,8 +391,7 @@ public class SysUserController extends BaseController {
         if (pageData.getValueOfInteger("type") == 0) {
             //验证码生成
             String verCode = String.valueOf((Math.random() * 9 + 1) * 100000).substring(0, 5);
-            //token生成
-            String token = JWTUtil.sign("changepassword" + pageData.getValueOfString("username"), verCode);
+            //将生成的验证码放到redis中
             redisUtils.set("changepassword" + pageData.getValueOfString("username"), verCode, 60 * 10);
             //发送邮件
             String subject = "找回密码邮箱验证";
@@ -386,8 +403,7 @@ public class SysUserController extends BaseController {
                     .append("此验证码只能使用一次，在10分钟内有效。验证成功则自动失效。<br/>")
                     .append("如果您没有进行上述操作，请忽略此邮件。");
             mailService.sendHtmlMail(pageData.getValueOfString("checkway"), subject, content.toString());
-            //返回token
-            pageData.put("token", token);
+            //返回
             return R.ok().put("data", pageData);
         }
         if (pageData.getValueOfInteger("type") == 1) {
@@ -401,7 +417,7 @@ public class SysUserController extends BaseController {
     public R checkVerCode() {
         PageData pageData = this.getPageData();
         CheckParameterUtil.checkParameterMap(pageData, "username", "verCode");
-        //获取token中的验证码
+        //获取redis中的验证码
         String redisVerCode = redisUtils.get("changepassword" + pageData.getValueOfString("username"));
         if (redisVerCode == null || "".equals(redisVerCode)) {
             return R.error("验证码已过期");
@@ -422,5 +438,11 @@ public class SysUserController extends BaseController {
         pageData.put("password",ShiroUtils.sha256(pageData.getValueOfString("password"),user.getValueOfString("salt")));
         sysUserService.updateUserInfo(pageData);
         return R.ok();
+    }
+
+    @GetMapping("/kaptcha.jpg")
+    public R captcha(HttpServletResponse response) throws IOException {
+        PageData captcha = captchaService.captcha(response);
+        return R.ok().put("data",captcha);
     }
 }
