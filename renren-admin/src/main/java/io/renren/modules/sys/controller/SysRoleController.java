@@ -114,7 +114,6 @@ public class SysRoleController extends BaseController {
 	/**
 	 * 保存角色
 	 */
-	@SysLog("保存角色")
 	@PostMapping("/save")
 //	@RequiresPermissions("sys:role:add")
 	public R save() throws Exception {
