@@ -9,9 +9,9 @@
     </select>
 
     <select id="selectRepliesByActid" resultType="io.renren.common.entity.PageData">
-    SELECT count(*) AS num
-    FROM replies
-    WHERE topicid = #{actid}
+        SELECT count(*) AS num
+        FROM replies
+        WHERE topicid = #{actid}
     </select>
 
     <select id="selectCollectionByActid" resultType="io.renren.common.entity.PageData">

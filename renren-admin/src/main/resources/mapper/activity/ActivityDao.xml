@@ -9,13 +9,13 @@
         <association property="QRCode" column="{id=fileid}" select="FileDao.selectById"/>
         <association property="enclosureFile" column="{id=enclosure}" select="FileDao.selectById"/>
         <association property="image" column="{id=images}" select="FileDao.selectById"/>
-        <association property="corporation" column="actcorid" select="selectCorByCorid"/>
+        <!--<association property="corporation" column="actcorid" select="selectCorByCorid"/>-->
         <association property="actleading" column="{id=actleading}"
                      select="io.renren.modules.sys.dao.SysUserDao.getinfoByid"/>
         <association property="bbs_like" column="actid" select="bbslikeDao.selectLikeByActid"/>
         <association property="bbs_replies" column="actid" select="bbslikeDao.selectRepliesByActid"/>
         <association property="bbs_collection" column="actid" select="bbslikeDao.selectCollectionByActid"/>
-        <association property="deptInfo" column="{deptId=deptid}" select="io.renren.modules.sys.dao.SysDeptDao.selectDeptById"></association>
+        <!--<association property="deptInfo" column="{deptId=deptid}" select="io.renren.modules.sys.dao.SysDeptDao.selectDeptById"></association>-->
         <collection property="processnodes" column="actid" select="ActprocessDao.selectActprocessForActivity"/>
         <collection property="crowdpeople" column="actid" select="selectCrowdPeopleByactId"/>
         <collection property="likePeople" column="actid" select="selectLikePeopleByActId"></collection>
@@ -25,6 +25,8 @@
     <resultMap id="bbsReplies" type="io.renren.common.entity.PageData">
         <id column="repliesid" property="repliesid"></id>
         <result column="topicid" property="topicid"></result>
+        <association property="repliespeople" column="{id=userid}"
+                     select="io.renren.modules.sys.dao.SysUserDao.getinfoByIdNotContentRoleDept"></association>
         <association property="likeNumber" column="repliesid" select="getLikeNumber"></association>
         <association property="likePeopleDetail" column="{id=userid}"
                      select="io.renren.modules.sys.dao.SysUserDao.getinfoByIdNotContentRoleDept"></association>
@@ -75,10 +77,16 @@
 
     <select id="getActivityById" resultMap="activityPageData">
         SELECT
-        `actid`,`actname`,`actstarttame`,`actendtime`,`createtime`,`actdetails`,`actcorid`,`actleading`,
-        `fileid`,`videoid`,`images`,`actprocessid`,`profile`,`isact`,`enclosure`,`deptid`
+        coractivity.`actid`,coractivity.`actname`,coractivity.`actstarttame`,
+        coractivity.`actendtime`,coractivity.`createtime`,coractivity.`actdetails`,
+        coractivity.`actcorid`,coractivity.`actleading`,
+        coractivity.`fileid`,coractivity.`videoid`,coractivity.`images`,
+        coractivity.`actprocessid`,coractivity.`profile`,coractivity.`isact`,
+        coractivity.`enclosure`,coractivity.`deptid`,corporation.`corname`,sys_dept.`name`
         FROM
         coractivity
+        LEFT JOIN corporation ON corporation.`id` = coractivity.`actcorid`
+        LEFT JOIN sys_dept ON sys_dept.`dept_id` = coractivity.`deptid`
         WHERE `actid` = #{actid}
     </select>
     <!--<select id="selectActprocessForActivity" resultType="io.renren.common.entity.PageData">
@@ -196,13 +204,13 @@
         WHERE topicid = #{actid}
     </select>
     <select id="getReplieslistPage" resultMap="bbsReplies">
-        SELECT `repliesid`,`userid`,`parentid`,`topicid`,`createtime`,`repliescontent`,`states`
+        SELECT `repliesid`,`userid`,`parentid`,`topicid`,`createtime`,`repliescontent`,`states`,`repliesuserid`
         FROM replies
         WHERE `topicid` = #{pd.topicid} AND `parentid` = #{pd.repliesid}
     </select>
 
     <select id="getReplies" resultMap="bbsReplies">
-        SELECT `repliesid`,`userid`,`parentid`,`topicid`,`createtime`,`repliescontent`,`states`
+        SELECT `repliesid`,`userid`,`parentid`,`topicid`,`createtime`,`repliescontent`,`states`,`repliesuserid`
         FROM replies
         WHERE `topicid` = #{topicid} AND `parentid` = #{repliesid}
     </select>
@@ -275,4 +283,5 @@
         WHERE actenroll.actid = #{actid}
         GROUP BY ${column2}
     </select>
+
 </mapper>
