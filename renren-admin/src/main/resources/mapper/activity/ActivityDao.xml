@@ -25,7 +25,7 @@
     <resultMap id="bbsReplies" type="io.renren.common.entity.PageData">
         <id column="repliesid" property="repliesid"></id>
         <result column="topicid" property="topicid"></result>
-        <association property="repliedspeople" column="{id=repliesuserid}"
+        <association property="repliedpeople" column="{id=repliesuserid}"
                      select="io.renren.modules.sys.dao.SysUserDao.getinfoByIdNotContentRoleDept"></association>
         <association property="likeNumber" column="repliesid" select="getLikeNumber"></association>
         <association property="repliespeople" column="{id=userid}"
