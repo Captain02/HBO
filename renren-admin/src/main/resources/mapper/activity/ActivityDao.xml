@@ -284,4 +284,9 @@
         GROUP BY ${column2}
     </select>
 
+    <insert id="replies">
+        INSERT INTO replies (userid,parentid,topicid,repliescontent,repliesuserid)
+        VALUES (#{userid},#{parentid},#{topicid},#{repliescontent},#{repliesuserid})
+    </insert>
+
 </mapper>

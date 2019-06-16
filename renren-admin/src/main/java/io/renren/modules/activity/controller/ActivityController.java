@@ -262,4 +262,11 @@ public class ActivityController extends BaseController {
                 .put("groupPersonNum",groupPersonNum);
     }
 
+    @PostMapping("/replies")
+    public R replies() throws Exception {
+        PageData pageData = this.getPageData();
+        activityService.replies(pageData);
+        return R.ok();
+    }
+
 }

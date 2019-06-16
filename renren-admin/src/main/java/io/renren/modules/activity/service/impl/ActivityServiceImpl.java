@@ -163,5 +163,10 @@ public class ActivityServiceImpl implements ActivityService {
         return (List<PageData>) daoSupport.findForList("ActivityDao.getActCharts",pageData);
     }
 
+    @Override
+    public void replies(PageData pageData) throws Exception {
+        daoSupport.save("ActivityDao.replies",pageData);
+    }
+
 
 }

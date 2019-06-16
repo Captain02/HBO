@@ -28,4 +28,6 @@ public interface ActivityService {
     void isCollection(PageData pageData) throws Exception;
 
     List<PageData> getActCharts(PageData pageData) throws Exception;
+
+    void replies(PageData pageData) throws Exception;
 }
