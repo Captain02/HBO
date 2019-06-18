@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="NewsDao">
+
+    <resultMap id="newsListPage" type="io.renren.common.entity.PageData">
+        <id column="id" property="id"></id>
+        <association property="video" column="{id=videoid}" select="FileDao.selectById"/>
+        <association property="releaseuser" column="{id=releaseuser}"
+                     select="io.renren.modules.sys.dao.SysUserDao.getinfoByIdNotContentRoleDept"/>
+        <association property="deptInfo" column="{deptId=deptid}"
+                     select="io.renren.modules.sys.dao.SysDeptDao.selectDeptById"></association>
+        <association property="news_like" column="id" select="newslikeDao.selectLikeById"/>
+        <collection property="likePeople" column="id" select="selectLikePeopleById"></collection>
+    </resultMap>
+
+    <select id="newslistPage" resultMap="newsListPage">
+        SELECT DISTINCT n.`content`,n.`createtime`,n.`title`,n.`corid`,n.`deptid`,n.`releaseuser`,n.`videoid`,n.`id`,
+        c.`corname`
+        FROM `actnews` n
+        LEFT JOIN `corporation` c ON c.`id`=n.`corid`
+        WHERE 1 = 1
+        <if test="pd.corid != null and pd.corid!=''">
+            AND c.`id`=#{pd.corid,jdbcType=INTEGER}
+        </if>
+        <if test="pd.title!=null and pd.title!=''">
+            AND n.`title` like CONCAT('%',#{pd.title,jdbcType=VARCHAR},'%')
+        </if>
+        <if test="pd.isNews!=null">
+            AND n.`isnews`=#{pd.isNews,jdbcType=INTEGER}
+        </if>
+    </select>
+
+    <select id="selectLikePeopleById" resultType="Long">
+        SELECT `userid`
+        FROM news_like
+        WHERE topicid = #{id,jdbcType=INTEGER}
+    </select>
+</mapper>

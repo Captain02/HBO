@@ -44,7 +44,7 @@
                      select="io.renren.modules.sys.dao.SysUserDao.getinfoByIdNotContentRoleDept"/>
         <association property="bbs_like" column="actid" select="bbslikeDao.selectLikeByActid"/>
         <association property="bbs_collection" column="actid" select="bbslikeDao.selectCollectionByActid"/>
-        <association property="deptInfo" column="{deptId=deptid}" select="io.renren.modules.sys.dao.SysDeptDao.selectDeptById"></association>
+
         <collection property="processnodes" column="actid" select="ActprocessDao.selectActprocessForActivity"/>
         <collection property="crowdpeople" column="actid" select="selectCrowdPeopleByactId"/>
         <collection property="likePeople" column="actid" select="selectLikePeopleByActId"></collection>
@@ -70,7 +70,7 @@
         <if test="pd.actcrowdids != null">
             AND ac.crowdpeople IN
             <foreach collection="pd.actcrowdids" item="item" open="(" close=")" separator=",">
-              ${item}
+                ${item}
             </foreach>
         </if>
     </select>
@@ -241,18 +241,18 @@
 
     <!--获得报名活动人数-->
     <select id="getUserByActIdlistPage" resultType="io.renren.common.entity.PageData">
-      SELECT u.`user_id`,u.`username`,u.`email`,u.`mobile`,u.`persionnum`,u.`wechart`,u.`QQ`,
-      u.`fileid`,u.`college`,u.`collegetie`,u.`gender`,u.`descs`,u.`name`,filetable.`id`,filetable.`filepath`
-      FROM sys_user u
-      LEFT JOIN filetable ON filetable.`id` = u.`fileid`
-      LEFT JOIN actenroll ON actenroll.`userid` = u.`user_id`
-      WHERE actenroll.`actid` = #{pd.actid} AND actenroll.`actstatusid` = 1
-      <if test="pd.username != null and pd.username != ''">
-         AND u.`username` LIKE "%"#{pd.username}"%"
-      </if>
-      <if test="pd.name != null and pd.name != ''">
-         AND u.`name` LIKE "%"#{pd.name}"%"
-      </if>
+        SELECT u.`user_id`,u.`username`,u.`email`,u.`mobile`,u.`persionnum`,u.`wechart`,u.`QQ`,
+        u.`fileid`,u.`college`,u.`collegetie`,u.`gender`,u.`descs`,u.`name`,filetable.`id`,filetable.`filepath`
+        FROM sys_user u
+        LEFT JOIN filetable ON filetable.`id` = u.`fileid`
+        LEFT JOIN actenroll ON actenroll.`userid` = u.`user_id`
+        WHERE actenroll.`actid` = #{pd.actid} AND actenroll.`actstatusid` = 1
+        <if test="pd.username != null and pd.username != ''">
+            AND u.`username` LIKE "%"#{pd.username}"%"
+        </if>
+        <if test="pd.name != null and pd.name != ''">
+            AND u.`name` LIKE "%"#{pd.name}"%"
+        </if>
     </select>
 
     <!--删除点赞-->
@@ -265,7 +265,7 @@
     <insert id="saveLike">
         INSERT INTO bbs_like (userid,topicid) VALUES (#{userid},#{topicid})
     </insert>
-    
+
     <!--收藏-->
     <insert id="saveCollection">
         insert into bbs_collection (userid,topicid) values (#{userid},#{topicid});
