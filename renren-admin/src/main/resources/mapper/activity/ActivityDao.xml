@@ -44,7 +44,7 @@
                      select="io.renren.modules.sys.dao.SysUserDao.getinfoByIdNotContentRoleDept"/>
         <association property="bbs_like" column="actid" select="bbslikeDao.selectLikeByActid"/>
         <association property="bbs_collection" column="actid" select="bbslikeDao.selectCollectionByActid"/>
-
+        <association property="deptInfo" column="{deptId=deptid}" select="io.renren.modules.sys.dao.SysDeptDao.selectDeptById"></association>
         <collection property="processnodes" column="actid" select="ActprocessDao.selectActprocessForActivity"/>
         <collection property="crowdpeople" column="actid" select="selectCrowdPeopleByactId"/>
         <collection property="likePeople" column="actid" select="selectLikePeopleByActId"></collection>
