@@ -8,16 +8,10 @@
         WHERE topicid = #{id}
     </select>
 
-    <select id="selectRepliesByActid" resultType="io.renren.common.entity.PageData">
+    <select id="selectRepliesById" resultType="io.renren.common.entity.PageData">
         SELECT count(*) AS num
-        FROM replies
-        WHERE topicid = #{actid}
-    </select>
-
-    <select id="selectCollectionByActid" resultType="io.renren.common.entity.PageData">
-    SELECT count(*) AS num
-    FROM bbs_collection
-    WHERE topicid = #{actid}
+        FROM `news_replies`
+        WHERE topicid = #{id}
     </select>
 
 </mapper>

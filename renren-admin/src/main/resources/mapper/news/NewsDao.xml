@@ -3,6 +3,18 @@
 
 <mapper namespace="NewsDao">
 
+    <resultMap id="newsPageData" type="io.renren.common.entity.PageData">
+        <id column="id" property="id"></id>
+        <association property="video" column="{id=videoid}" select="FileDao.selectById"/>
+        <association property="releaseuser" column="{id=releaseuser}"
+                     select="io.renren.modules.sys.dao.SysUserDao.getinfoByIdNotContentRoleDept"/>
+        <association property="deptInfo" column="{deptId=deptid}"
+                     select="io.renren.modules.sys.dao.SysDeptDao.selectDeptById"></association>
+        <association property="news_like" column="id" select="newslikeDao.selectLikeById"/>
+        <association property="news_replies" column="id" select="newslikeDao.selectRepliesById"/>
+        <collection property="likePeople" column="id" select="selectLikePeopleById"></collection>
+    </resultMap>
+
     <resultMap id="newsListPage" type="io.renren.common.entity.PageData">
         <id column="id" property="id"></id>
         <association property="video" column="{id=videoid}" select="FileDao.selectById"/>
@@ -12,6 +24,18 @@
                      select="io.renren.modules.sys.dao.SysDeptDao.selectDeptById"></association>
         <association property="news_like" column="id" select="newslikeDao.selectLikeById"/>
         <collection property="likePeople" column="id" select="selectLikePeopleById"></collection>
+    </resultMap>
+
+    <resultMap id="newsReplies" type="io.renren.common.entity.PageData">
+        <id column="id" property="id"></id>
+        <result column="topicid" property="topicid"></result>
+        <association property="repliedpeople" column="{id=repliesuserid}"
+                     select="io.renren.modules.sys.dao.SysUserDao.getinfoByIdNotContentRoleDept"></association>
+        <association property="likeNumber" column="id" select="getLikeNumber"></association>
+        <association property="repliespeople" column="{id=userid}"
+                     select="io.renren.modules.sys.dao.SysUserDao.getinfoByIdNotContentRoleDept"></association>
+        <collection property="likePeopleIds" column="id" select="getlikePeopleIds"></collection>
+        <collection property="child" column="{topicid=topicid,id=id}" select="getReplies"></collection>
     </resultMap>
 
     <select id="newslistPage" resultMap="newsListPage">
@@ -31,9 +55,43 @@
         </if>
     </select>
 
+    <select id="getNewsById" resultMap="newsPageData">
+        select n.`title`,n.`createtime`,n.`releaseuser`,n.`content`,n.`corid`,n.`videoid`,n.`deptid`,n.`id`,
+            d.`name`,c.`corname`
+        from `actnews` n
+        LEFT JOIN `corporation` c ON c.`id`=n.`corid`
+        LEFT JOIN sys_dept d ON d.`dept_id` = n.`deptid`
+        WHERE n.`id` = #{id}
+    </select>
+
     <select id="selectLikePeopleById" resultType="Long">
         SELECT `userid`
         FROM news_like
         WHERE topicid = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="getReplieslistPage" resultMap="newsReplies">
+        SELECT `id`,`userid`,`parentid`,`topicid`,`createtime`,`repliescontent`,`states`,`repliesuserid`
+        FROM news_replies
+        WHERE `topicid` = #{pd.topicid}
+        AND `parentid` = #{pd.id}
+    </select>
+
+    <select id="getLikeNumber" resultType="Long">
+        SELECT count(*) AS num
+        FROM news_replies_like
+        WHERE repliesid = #{id}
+    </select>
+
+    <select id="getlikePeopleIds" resultType="Long">
+        SELECT `userid`
+        FROM news_replies_like
+        WHERE repliesid = #{id}
+    </select>
+
+    <select id="getReplies" resultMap="newsReplies">
+        SELECT `id`,`userid`,`parentid`,`topicid`,`createtime`,`repliescontent`,`states`,`repliesuserid`
+        FROM news_replies
+        WHERE `topicid` = #{topicid} AND `parentid` = #{id}
     </select>
 </mapper>

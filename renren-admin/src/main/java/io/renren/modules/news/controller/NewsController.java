@@ -3,6 +3,7 @@ package io.renren.modules.news.controller;
 import io.renren.common.controller.BaseController;
 import io.renren.common.entity.Page;
 import io.renren.common.entity.PageData;
+import io.renren.common.utils.CheckParameterUtil;
 import io.renren.common.utils.R;
 import io.renren.modules.news.service.NewsService;
 import io.swagger.annotations.Api;
@@ -25,7 +26,12 @@ public class NewsController extends BaseController {
     @Autowired
     private NewsService newsService;
 
-    //新闻列表
+    /**
+     * 新闻列表
+     * @param page
+     * @return
+     * @throws Exception
+     */
     @ApiOperation(value = "新闻分页信息", notes = "新闻分页信息", httpMethod = "GET")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "pageSize", value = "每页显示记录数", required = true, dataType = "Integer"),
@@ -40,5 +46,40 @@ public class NewsController extends BaseController {
         page.setPd(pageData);
         List<PageData> list = newsService.newsListPage(page);
         return R.ok().put("page",page).put("data", list);
+    }
+
+    /**
+     * 获取单个社团新闻详情
+     * actId: 活动id
+     *
+     * @return
+     */
+    @ApiOperation(value = "新闻详情", notes = "新闻详情", httpMethod = "GET")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "新闻id", required = true, dataType = "Integer")
+    })
+    @GetMapping("/getNews")
+    public R getNews() throws Exception {
+        PageData pageData = this.getPageData();
+        CheckParameterUtil.checkParameterMap(pageData, "id");
+        pageData = newsService.getNewsById(pageData);
+        return R.ok().put("data", pageData);
+    }
+
+    /**
+     * 获取所有留言
+     * topicid：主题id
+     * @param page
+     * @return
+     * @throws Exception
+     */
+    @GetMapping("/getReplies")
+    public R getReplies(Page page) throws Exception {
+        PageData pageData = this.getPageData();
+        pageData.put("id", 0);
+        page.setPd(pageData);
+        List<PageData> replies = newsService.getReplies(page);
+
+        return R.ok().put("data",replies).put("page",page);
     }
 }

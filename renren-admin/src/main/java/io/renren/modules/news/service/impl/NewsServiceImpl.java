@@ -22,4 +22,14 @@ public class NewsServiceImpl implements NewsService {
     public List<PageData> newsListPage(Page page) throws Exception {
         return (List<PageData>) daoSupport.findForList("NewsDao.newslistPage", page);
     }
+
+    @Override
+    public PageData getNewsById(PageData pageData) throws Exception {
+        return (PageData) daoSupport.findForObject("NewsDao.getNewsById",pageData);
+    }
+
+    @Override
+    public List<PageData> getReplies(Page page) throws Exception {
+        return (List<PageData>) daoSupport.findForList("NewsDao.getReplieslistPage",page);
+    }
 }

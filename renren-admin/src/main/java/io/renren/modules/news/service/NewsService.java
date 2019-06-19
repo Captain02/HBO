@@ -7,4 +7,8 @@ import java.util.List;
 
 public interface NewsService {
     List<PageData> newsListPage(Page page) throws Exception;
+
+    PageData getNewsById(PageData pageData) throws Exception;
+
+    List<PageData> getReplies(Page page) throws Exception;
 }
