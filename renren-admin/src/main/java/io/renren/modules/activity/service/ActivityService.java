@@ -30,4 +30,6 @@ public interface ActivityService {
     List<PageData> getActCharts(PageData pageData) throws Exception;
 
     void replies(PageData pageData) throws Exception;
+
+    void repliesLike(PageData pageData) throws Exception;
 }

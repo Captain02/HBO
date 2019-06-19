@@ -269,4 +269,11 @@ public class ActivityController extends BaseController {
         return R.ok();
     }
 
+    @PostMapping("/repliesLike")
+    public R repliesLike() throws Exception {
+        PageData pageData = this.getPageData();
+        activityService.repliesLike(pageData);
+        return R.ok();
+    }
+
 }

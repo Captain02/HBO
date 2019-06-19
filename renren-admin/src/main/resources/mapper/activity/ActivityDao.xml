@@ -289,4 +289,9 @@
         VALUES (#{userid},#{parentid},#{topicid},#{repliescontent},#{repliesuserid})
     </insert>
 
+    <insert id="repliesLike">
+        INSERT INTO bbs_replies_like (userid,repliesid)
+        VALUES (#{userid},#{repliesid})
+    </insert>
+
 </mapper>

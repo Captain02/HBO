@@ -168,5 +168,10 @@ public class ActivityServiceImpl implements ActivityService {
         daoSupport.save("ActivityDao.replies",pageData);
     }
 
+    @Override
+    public void repliesLike(PageData pageData) throws Exception {
+        daoSupport.save("ActivityDao.repliesLike",pageData);
+    }
+
 
 }
