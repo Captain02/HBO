@@ -32,4 +32,6 @@ public interface ActivityService {
     void replies(PageData pageData) throws Exception;
 
     void repliesLike(PageData pageData) throws Exception;
+
+    void delRepliesLike(PageData pageData) throws Exception;
 }

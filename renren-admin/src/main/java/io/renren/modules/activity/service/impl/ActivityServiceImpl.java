@@ -168,9 +168,15 @@ public class ActivityServiceImpl implements ActivityService {
         daoSupport.save("ActivityDao.replies",pageData);
     }
 
+    @Transactional
     @Override
     public void repliesLike(PageData pageData) throws Exception {
         daoSupport.save("ActivityDao.repliesLike",pageData);
+    }
+
+    @Override
+    public void delRepliesLike(PageData pageData) throws Exception {
+        daoSupport.delete("ActivityDao.delRepliesLike",pageData);
     }
 
 

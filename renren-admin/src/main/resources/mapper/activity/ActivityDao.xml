@@ -294,4 +294,9 @@
         VALUES (#{userid},#{repliesid})
     </insert>
 
+
+    <delete id="delRepliesLike">
+        DELETE FROM bbs_replies_like WHERE userid = #{userid} AND repliesid = #{repliesid}
+    </delete>
+
 </mapper>
