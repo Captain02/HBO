@@ -94,4 +94,31 @@
         FROM news_replies
         WHERE `topicid` = #{topicid} AND `parentid` = #{id}
     </select>
+
+    <insert id="add" useGeneratedKeys="true" keyProperty="id">
+        insert into `actnews` (`corid`,`content`,`title`,`isnews`,`releaseuser`
+        <trim prefix="," suffixOverrides=",">
+            <if test="deptid!=null">
+                `deptid`,
+            </if>
+            <if test="videoid != null and videoid!=''">
+                `videoid`,
+            </if>
+        </trim>
+        )
+        values(#{corId,jdbcType=INTEGER},
+        #{content,jdbcType=VARCHAR},
+        #{title,jdbcType=VARCHAR},
+        #{isNews,jdbcType=INTEGER},
+        #{releaseuser,jdbcType=INTEGER}
+        <trim prefix="," suffixOverrides=",">
+            <if test="videoid != null and videoid!=''">
+                #{videoId,jdbcType=INTEGER},
+            </if>
+            <if test="deptid != null">
+                #{deptId,jdbcType=INTEGER},
+            </if>
+        </trim>
+        )
+    </insert>
 </mapper>

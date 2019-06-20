@@ -7,7 +7,10 @@ import io.renren.common.entity.PageData;
 import io.renren.modules.news.service.NewsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Service
@@ -32,4 +35,11 @@ public class NewsServiceImpl implements NewsService {
     public List<PageData> getReplies(Page page) throws Exception {
         return (List<PageData>) daoSupport.findForList("NewsDao.getReplieslistPage",page);
     }
+
+    @Override
+    public void add(PageData pageData) throws Exception {
+        daoSupport.save("NewsDao.add", pageData);
+    }
+
+
 }

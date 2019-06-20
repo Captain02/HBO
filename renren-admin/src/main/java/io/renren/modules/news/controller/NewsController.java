@@ -1,9 +1,12 @@
 package io.renren.modules.news.controller;
 
+import io.renren.common.commBusiness.commService.CommService;
 import io.renren.common.controller.BaseController;
 import io.renren.common.entity.Page;
 import io.renren.common.entity.PageData;
+import io.renren.common.util.Const;
 import io.renren.common.utils.CheckParameterUtil;
+import io.renren.common.utils.QrCodeUtils;
 import io.renren.common.utils.R;
 import io.renren.modules.news.service.NewsService;
 import io.swagger.annotations.Api;
@@ -11,10 +14,10 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.List;
 
@@ -25,9 +28,12 @@ public class NewsController extends BaseController {
 
     @Autowired
     private NewsService newsService;
+    @Autowired
+    private CommService commService;
 
     /**
      * 新闻列表
+     *
      * @param page
      * @return
      * @throws Exception
@@ -45,7 +51,7 @@ public class NewsController extends BaseController {
         PageData pageData = this.getPageData();
         page.setPd(pageData);
         List<PageData> list = newsService.newsListPage(page);
-        return R.ok().put("page",page).put("data", list);
+        return R.ok().put("page", page).put("data", list);
     }
 
     /**
@@ -69,6 +75,7 @@ public class NewsController extends BaseController {
     /**
      * 获取所有留言
      * topicid：主题id
+     *
      * @param page
      * @return
      * @throws Exception
@@ -80,6 +87,63 @@ public class NewsController extends BaseController {
         page.setPd(pageData);
         List<PageData> replies = newsService.getReplies(page);
 
-        return R.ok().put("data",replies).put("page",page);
+        return R.ok().put("data", replies).put("page", page);
+    }
+
+    /**
+     * 添加新闻
+     *
+     * @return
+     */
+    @PostMapping("/add")
+    @ApiOperation(value = "添加新闻", httpMethod = "POST")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "corId", value = "社团id", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "title", value = "新闻主题", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "releaseuser", value = "发布人id", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "content", value = "新闻简介", required = true, dataType = "String")
+    })
+    public R add() throws Exception {
+        PageData pageData = this.getPageData();
+        CheckParameterUtil.checkParameterMap(pageData, "corId", "title", "releaseuser", "content");
+        pageData.put("isNews",1);
+        newsService.add(pageData);
+        return R.ok();
+    }
+
+    /**
+     * 公共方法
+     *
+     * @param pageData
+     * @param path
+     * @param request
+     * @return
+     */
+    private Boolean upload(PageData pageData, MultipartFile file, String path, HttpServletRequest request) {
+        String filePath = commService.uploadFile(file, request, path);
+        if (filePath == null) {
+            return false;
+        }
+        pageData.put("filePath", filePath);
+        pageData.put("fileName", file.getOriginalFilename());
+        return true;
+    }
+
+    /**
+     * 上传视频并保存到数据库
+     * @param file
+     * @param request
+     * @return
+     * @throws Exception
+     */
+    @PostMapping("/uploadNewsFile")
+    public R upActBananer(@RequestParam("file") MultipartFile file, HttpServletRequest request) throws Exception {
+        PageData pageData = this.getPageData();
+        //上传新闻视频
+        upload(pageData, file, "/file/Activity/video/", request);
+        //保存数据库
+        Integer fileId = commService.addFile2DB(pageData);
+        pageData.put("id", fileId);
+        return R.ok().put("data", pageData);
     }
 }

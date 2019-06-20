@@ -2,7 +2,9 @@ package io.renren.modules.news.service;
 
 import io.renren.common.entity.Page;
 import io.renren.common.entity.PageData;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 public interface NewsService {
@@ -11,4 +13,6 @@ public interface NewsService {
     PageData getNewsById(PageData pageData) throws Exception;
 
     List<PageData> getReplies(Page page) throws Exception;
+
+    void add(PageData pageData) throws Exception;
 }
