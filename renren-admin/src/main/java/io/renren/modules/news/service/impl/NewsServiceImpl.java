@@ -41,5 +41,10 @@ public class NewsServiceImpl implements NewsService {
         daoSupport.save("NewsDao.add", pageData);
     }
 
+    @Override
+    public void updateNews(PageData pageData) throws Exception {
+        daoSupport.update("NewsDao.updateNews",pageData);
+    }
+
 
 }

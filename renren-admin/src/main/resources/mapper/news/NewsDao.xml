@@ -121,4 +121,32 @@
         </trim>
         )
     </insert>
+
+    <update id="updateNews">
+        update `actnews`
+        <set>
+            <if test="corId!=null">
+                `corid` = #{corId,jdbcType=INTEGER},
+            </if>
+            <if test="content!=null">
+                `content` = #{content,jdbcType=VARCHAR},
+            </if>
+            <if test="videoid != null and videoid!=''">
+                `videoid` = #{videoId,jdbcType=INTEGER},
+            </if>
+            <if test="deptid != null">
+                `deptid` = #{deptId,jdbcType=INTEGER},
+            </if>
+            <if test="title!=null">
+                `title` = #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="isNews!=null">
+                `isnews` = #{isNews,jdbcType=INTEGER},
+            </if>
+            <if test="releaseuser!=null">
+                `releaseuser` = #{releaseuser,jdbcType=INTEGER},
+            </if>
+        </set>
+        WHERE `id` = #{newsId,jdbcType=INTEGER}
+    </update>
 </mapper>

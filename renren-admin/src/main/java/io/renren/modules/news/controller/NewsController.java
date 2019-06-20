@@ -146,4 +146,22 @@ public class NewsController extends BaseController {
         pageData.put("id", fileId);
         return R.ok().put("data", pageData);
     }
+
+    /**
+     * 更新新闻
+     *
+     * @return
+     * @throws Exception
+     */
+    @ApiOperation(value = "新闻更新", notes = "新闻更新", httpMethod = "POST")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "newsId", value = "newsId", required = true, dataType = "Integer")
+    })
+    @PostMapping("/updateNews")
+    public R updateNews() throws Exception {
+        PageData pageData = this.getPageData();
+        CheckParameterUtil.checkParameterMap(pageData, "newsId");
+        newsService.updateNews(pageData);
+        return R.ok();
+    }
 }
