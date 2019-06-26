@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="news">
+    <resultMap id="newslist" type="io.renren.common.entity.PageData">
+        <id column="id" property="id"></id>
+        <collection property="likeusers" column="id" select="selectlikeUser"></collection>
+    </resultMap>
+
+    <select id="newlistPage" resultMap="newslist">
+        SELECT
+        actnews.`id`,actnews.`corid`,actnews.`content`,actnews.`createtime`,
+        actnews.`deptid`,actnews.`title`,actnews.`releaseuser`,actnews.`videoid`,
+        corporation.`corname`,sys_dept.`name`,filetable.`filepath`,
+        sys_user.`user_id`,sys_user.`name` persionname
+        FROM actnews
+        LEFT JOIN corporation ON corporation.`id` = actnews.`corid`
+        LEFT JOIN sys_dept ON sys_dept.`dept_id` = actnews.`deptid`
+        LEFT JOIN filetable ON filetable.`id` = actnews.`videoid`
+        LEFT JOIN sys_user ON sys_user.`user_id` = actnews.`releaseuser`
+        WHERE isnews = 1
+    </select>
+    <select id="selectlikeUser" resultType="io.renren.common.entity.PageData">
+        SELECT
+        sys_user.`user_id`
+        FROM sys_user
+        LEFT JOIN news_like ON news_like.`userid` = sys_user.`user_id`
+        WHERE topicid = #{id}
+    </select>
+</mapper>
