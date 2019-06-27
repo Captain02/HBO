@@ -10,7 +10,7 @@
     <select id="newlistPage" resultMap="newslist">
         SELECT
         actnews.`id`,actnews.`corid`,actnews.`content`,actnews.`createtime`,
-        actnews.`deptid`,actnews.`title`,actnews.`releaseuser`,actnews.`videoid`,
+        actnews.`deptid`,actnews.`title`,actnews.`releaseuser`,actnews.`imageid`,
         corporation.`corname`,sys_dept.`name`,filetable.`filepath`,
         sys_user.`user_id`,sys_user.`name` persionname
         FROM actnews
