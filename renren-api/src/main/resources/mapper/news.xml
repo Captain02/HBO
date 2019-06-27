@@ -16,7 +16,7 @@
         FROM actnews
         LEFT JOIN corporation ON corporation.`id` = actnews.`corid`
         LEFT JOIN sys_dept ON sys_dept.`dept_id` = actnews.`deptid`
-        LEFT JOIN filetable ON filetable.`id` = actnews.`videoid`
+        LEFT JOIN filetable ON filetable.`id` = actnews.`imageid`
         LEFT JOIN sys_user ON sys_user.`user_id` = actnews.`releaseuser`
         WHERE isnews = 1
     </select>
