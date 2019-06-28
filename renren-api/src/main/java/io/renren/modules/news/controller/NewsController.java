@@ -38,4 +38,30 @@ public class NewsController extends BaseController {
 
         return R.ok().put("data",list);
     }
+
+    @GetMapping("/getNewsDetail")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id",paramType = "query",value = "新闻id", required = true, dataType = "Integer"),
+    })
+    public R getNewsDetail() throws Exception {
+        PageData pageData = this.getPageData();
+        List<PageData> list = newsService.getNewsDetail(pageData);
+        return R.ok().put("data",list);
+    }
+
+    @GetMapping("/getNewsReplice")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "topicid",paramType = "query",value = "新闻id", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "pageSize",paramType = "query",value = "每页显示记录数", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "currPage",paramType = "query", value = "当前页", required = true, dataType = "Integer"),
+    })
+    public R getNewsReplice(Page page) throws Exception {
+        PageData pageData = this.getPageData();
+        pageData.put("parentid","0");
+        page.setPd(pageData);
+        List<PageData> list = newsService.getNewsReplice(page);
+        return R.ok().put("data",list);
+    }
+
+
 }

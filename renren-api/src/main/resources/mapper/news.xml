@@ -7,6 +7,21 @@
         <collection property="likeusers" column="id" select="selectlikeUser"></collection>
     </resultMap>
 
+    <resultMap id="detail" type="io.renren.common.entity.PageData">
+        <id column="id" property="id"></id>
+        <association property="user" column="{id=user_id}" select="io.renren.modules.login.dao.UserDao.getinfoByIdNotContentRoleDept"></association>
+        <collection property="likeusers" column="id" select="selectlikeUser"></collection>
+    </resultMap>
+
+    <resultMap id="newsReplice" type="io.renren.common.entity.PageData">
+        <id column="id" property="id"></id>
+        <association property="RepliceUser" select="io.renren.modules.login.dao.UserDao.getinfoByIdNotContentRoleDept" column="{id=userid}"></association>
+        <association property="ReplicedUser" select="io.renren.modules.login.dao.UserDao.getinfoByIdNotContentRoleDept" column="{id=repliesuserid}"></association>
+        <association property="likenum" column="id" select="selectlikenum"></association>
+        <collection property="likeuser" column="id" select="selectlikeuser"></collection>
+        <collection property="getNewsReplice" column="{topicid=topicid,parentid=id}" select="getNewNewsReplice"></collection>
+    </resultMap>
+
     <select id="newlistPage" resultMap="newslist">
         SELECT
         actnews.`id`,actnews.`corid`,actnews.`content`,actnews.`createtime`,
@@ -26,5 +41,40 @@
         FROM sys_user
         LEFT JOIN news_like ON news_like.`userid` = sys_user.`user_id`
         WHERE topicid = #{id}
+    </select>
+
+    <select id="getNewsDetail" resultMap="detail">
+        SELECT
+        actnews.`id`,actnews.`corid`,actnews.`content`,actnews.`createtime`,
+        actnews.`deptid`,actnews.`title`,actnews.`releaseuser`,actnews.`imageid`,
+        corporation.`corname`,sys_dept.`name`,filetable.`filepath`,
+        sys_user.`user_id`,sys_user.`name` persionname
+        FROM actnews
+        LEFT JOIN corporation ON corporation.`id` = actnews.`corid`
+        LEFT JOIN sys_dept ON sys_dept.`dept_id` = actnews.`deptid`
+        LEFT JOIN filetable ON filetable.`id` = actnews.`imageid`
+        LEFT JOIN sys_user ON sys_user.`user_id` = actnews.`releaseuser`
+        WHERE actnews.`id` = #{id}
+    </select>
+
+    <select id="getNewsReplice" resultMap="newsReplice">
+        SELECT news_replies.`id`,news_replies.`userid`,news_replies.`parentid`,
+        news_replies.`topicid`,news_replies.`createtime`,
+        news_replies.`repliescontent`,news_replies.`repliesuserid`,news_replies.`states`
+        FROM news_replies
+        WHERE news_replies.`topicid` = #{pd.topicid} AND news_replies.`parentid` = #{pd.parentid}
+    </select>
+    <select id="getNewNewsReplice" resultMap="newsReplice">
+        SELECT news_replies.`id`,news_replies.`userid`,news_replies.`parentid`,
+        news_replies.`topicid`,news_replies.`createtime`,
+        news_replies.`repliescontent`,news_replies.`repliesuserid`,news_replies.`states`
+        FROM news_replies
+        WHERE news_replies.`topicid` = #{topicid} AND news_replies.`parentid` = #{parentid}
+    </select>
+    <select id="selectlikenum" resultType="io.renren.common.entity.PageData">
+        SELECT count(*) num FROM bbs_replies_like WHERE repliesid = #{id}
+    </select>
+    <select id="selectlikeuser" resultType="io.renren.common.entity.PageData">
+        SELECT userid FROM bbs_replies_like WHERE repliesid = #{id}
     </select>
 </mapper>
