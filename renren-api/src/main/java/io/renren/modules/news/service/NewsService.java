@@ -11,4 +11,14 @@ public interface NewsService {
     List<PageData> getNewsDetail(PageData pageData) throws Exception;
 
     List<PageData> getNewsReplice(Page page) throws Exception;
+
+    void replies(PageData pageData) throws Exception;
+
+    void likeTopic(PageData pageData) throws Exception;
+
+    void unlikeTopic(PageData pageData) throws Exception;
+
+    void likereplies(PageData pageData) throws Exception;
+
+    void unlikereplies(PageData pageData) throws Exception;
 }
