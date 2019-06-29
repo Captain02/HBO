@@ -57,7 +57,7 @@ public class NewsController extends BaseController {
             @ApiImplicitParam(name = "pageSize",paramType = "query",value = "每页显示记录数", required = true, dataType = "Integer"),
             @ApiImplicitParam(name = "currPage",paramType = "query", value = "当前页", required = true, dataType = "Integer"),
     })
-    public R getNewsReplice(Page page) throws Exception {
+    public R getNewsReplice(@ApiIgnore Page page) throws Exception {
         PageData pageData = this.getPageData();
         pageData.put("parentid","0");
         page.setPd(pageData);
