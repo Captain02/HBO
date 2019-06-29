@@ -39,6 +39,7 @@ public class NewsController extends BaseController {
         return R.ok().put("data",list);
     }
 
+    @ApiOperation(value = "新闻详情",tags = {"社团"})
     @GetMapping("/getNewsDetail")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id",paramType = "query",value = "新闻id", required = true, dataType = "Integer"),
@@ -49,6 +50,7 @@ public class NewsController extends BaseController {
         return R.ok().put("data",list);
     }
 
+    @ApiOperation(value = "新闻评论",tags = {"社团"})
     @GetMapping("/getNewsReplice")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "topicid",paramType = "query",value = "新闻id", required = true, dataType = "Integer"),
