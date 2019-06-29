@@ -34,6 +34,7 @@
         LEFT JOIN filetable ON filetable.`id` = actnews.`imageid`
         LEFT JOIN sys_user ON sys_user.`user_id` = actnews.`releaseuser`
         WHERE isnews = 1
+        ORDER BY actnews.`id` DESC
     </select>
     <select id="selectlikeUser" resultType="io.renren.common.entity.PageData">
         SELECT
@@ -77,4 +78,20 @@
     <select id="selectlikeuser" resultType="io.renren.common.entity.PageData">
         SELECT userid FROM bbs_replies_like WHERE repliesid = #{id}
     </select>
+    <insert id="replies">
+        insert into news_replies (userid,parentid,topicid,repliescontent,repliesuserid)
+         values (#{userid},#{parentid},#{topicid},#{repliescontent},#{repliesuserid});
+    </insert>
+    <insert id="likeTopic">
+        insert into news_like (userid,topicid) values (#{userid},#{topicid});
+    </insert>
+    <delete id="unlikeTopic">
+        DELETE FROM news_like WHERE userid = #{userid} AND topicid = #{topicid}
+    </delete>
+    <insert id="likereplies">
+        insert into news_replies_like (userid,repliesid) values (#{userid},#{repliesid});
+    </insert>
+    <delete id="unlikereplies">
+        DELETE FROM news_replies_like WHERE userid = #{userid} AND repliesid = #{repliesid}
+    </delete>
 </mapper>
