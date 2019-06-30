@@ -58,7 +58,7 @@
         WHERE actnews.`id` = #{id}
     </select>
 
-    <select id="getNewsReplice" resultMap="newsReplice">
+    <select id="getNewsReplicelistPage" resultMap="newsReplice">
         SELECT news_replies.`id`,news_replies.`userid`,news_replies.`parentid`,
         news_replies.`topicid`,news_replies.`createtime`,
         news_replies.`repliescontent`,news_replies.`repliesuserid`,news_replies.`states`

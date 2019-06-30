@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="persionTopic">
+    <resultMap id="persionTopic" type="io.renren.common.entity.PageData">
+        <id column="id" property="id"></id>
+        <association property="likes" column="id" select="selectLikeNum"></association>
+        <association property="userinfo" column="{id=userid}"
+                     select="io.renren.modules.login.dao.UserDao.getinfoByIdNotContentRoleDept"></association>
+        <association property="replesnum" column="id" select="selectreplesnum"></association>
+        <collection property="likepeople" column="id" select="selectUsersByid"></collection>
+    </resultMap>
+    <select id="persionTopicpageList" resultMap="persionTopic">
+        SELECT
+        persiontopic.`id`,persiontopic.`userid`,persiontopic.`userid`.createtime,
+        persiontopic.`content`,persiontopic.`imageid`,filetable."filepath"
+        FROM
+        persiontopic
+        LEFT JOIN filetable WHERE filetable."id" = persiontopic."imageid"
+    </select>
+    <select id="selectLikeNum" resultType="io.renren.common.entity.PageData">
+        SELECT COUNT(*) num FROM news_like WHERE topicid = #{id}
+    </select>
+    <select id="selectUsersByid">
+        SELECT userid
+        FROM
+        news_like
+        WHERE topicid = #{id}
+    </select>
+    <select id="selectreplesnum" resultType="io.renren.common.entity.PageData">
+        SELECT count(*) num FROM persiontopic_replice WHERE topicid = #{id}
+    </select>
+</mapper>

@@ -28,7 +28,7 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     public List<PageData> getNewsReplice(Page page) throws Exception {
-        return (List<PageData>) daoSupport.findForList("news.getNewsReplice",page);
+        return (List<PageData>) daoSupport.findForList("news.getNewsReplicelistPage",page);
     }
 
     @Override

@@ -32,8 +32,8 @@ public class NewsController extends BaseController {
             @ApiImplicitParam(name = "currPage",paramType = "query", value = "当前页", required = true, dataType = "Integer"),
     })
     public R getNews(@ApiIgnore Page page) throws Exception {
-        int currPage = page.getCurrPage();
         PageData pageData = this.getPageData();
+        int currPage = Integer.parseInt(pageData.getValueOfString("currPage"));
         page.setPd(pageData);
         List<PageData> list = newsService.newlistPage(page);
         int aftercurrPage = page.getCurrPage();
