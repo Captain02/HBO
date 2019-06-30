@@ -13,9 +13,6 @@ spring:
   # 环境 dev|test|prod
   profiles:
     active: dev
-  jackson:
-      date-format: yyyy-MM-dd HH:mm:ss
-      time-zone: GMT+8
   servlet:
     multipart:
       max-file-size: 100MB

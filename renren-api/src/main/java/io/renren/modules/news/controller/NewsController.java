@@ -32,10 +32,14 @@ public class NewsController extends BaseController {
             @ApiImplicitParam(name = "currPage",paramType = "query", value = "当前页", required = true, dataType = "Integer"),
     })
     public R getNews(@ApiIgnore Page page) throws Exception {
+        int currPage = page.getCurrPage();
         PageData pageData = this.getPageData();
         page.setPd(pageData);
         List<PageData> list = newsService.newlistPage(page);
-
+        int aftercurrPage = page.getCurrPage();
+        if (aftercurrPage!=currPage){
+            return R.ok();
+        }
         return R.ok().put("data",list);
     }
 
@@ -58,10 +62,15 @@ public class NewsController extends BaseController {
             @ApiImplicitParam(name = "currPage",paramType = "query", value = "当前页", required = true, dataType = "Integer"),
     })
     public R getNewsReplice(@ApiIgnore Page page) throws Exception {
+        int currPage = page.getCurrPage();
         PageData pageData = this.getPageData();
         pageData.put("parentid","0");
         page.setPd(pageData);
         List<PageData> list = newsService.getNewsReplice(page);
+        int aftercurrPage = page.getCurrPage();
+        if (aftercurrPage!=currPage){
+            return R.ok();
+        }
         return R.ok().put("data",list);
     }
 
