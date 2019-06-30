@@ -29,7 +29,8 @@ public class psersionController extends BaseController {
     })
     public R persionTopic(@ApiIgnore Page page) throws Exception {
         PageData pageData = this.getPageData();
-        int currPage = Integer.parseInt(pageData.getValueOfString("currPage"));
+        int currPage = page.getCurrPage();
+//        int currPage = Integer.parseInt(pageData.getValueOfString("currPage"));
         page.setPd(pageData);
         List<PageData> data = persionTopicService.perspersionTopic(page);
         int currPage1 = page.getCurrPage();

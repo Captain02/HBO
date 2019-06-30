@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/bbs_like")
-@Api(tags = {"点赞评论"})
+@Api(tags = {"社团活动"})
 public class Bbs_likeController extends BaseController{
     @Autowired
     Bbs_likeService bbs_likeService;
@@ -32,7 +32,7 @@ public class Bbs_likeController extends BaseController{
      */
     @Login
     @PostMapping("addTopic")
-    @ApiOperation(value ="点赞功能", httpMethod = "POST",tags = {"点赞评论"})
+    @ApiOperation(value ="点赞功能", httpMethod = "POST",tags = {"社团活动"})
     @ApiImplicitParams({
             @ApiImplicitParam(name = "topicid", value = "主题id", paramType = "query",required = true, dataType = "Integer"),
     })
@@ -60,7 +60,7 @@ public class Bbs_likeController extends BaseController{
      */
     @Login
     @PostMapping("addBBs_replies")
-    @ApiOperation(value ="评论点赞功能", httpMethod = "POST",tags = {"点赞评论"})
+    @ApiOperation(value ="评论点赞功能", httpMethod = "POST",tags = {"社团活动"})
     @ApiImplicitParams({
             @ApiImplicitParam(name = "repliesid", value = "评论id", paramType = "query",required = true, dataType = "Integer"),
     })
@@ -88,7 +88,7 @@ public class Bbs_likeController extends BaseController{
      */
     @Login
     @PostMapping("addReplies")
-    @ApiOperation(value ="评论功能", httpMethod = "POST",tags = {"点赞评论"})
+    @ApiOperation(value ="评论功能", httpMethod = "POST",tags = {"社团活动"})
     @ApiImplicitParams({
             @ApiImplicitParam(name = "parentid", value = "父id", paramType = "query",required = true, dataType = "Integer"),
             @ApiImplicitParam(name = "repliescontent", value = "内容", paramType = "query",required = true, dataType = "String"),

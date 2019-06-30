@@ -11,6 +11,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
@@ -55,7 +56,7 @@ public class NewsController extends BaseController {
     }
 
     @ApiOperation(value = "新闻评论",tags = {"社团"})
-    @GetMapping("/getNewsReplice")
+    @PostMapping("/getNewsReplice")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "topicid",paramType = "query",value = "新闻id", required = true, dataType = "Integer"),
             @ApiImplicitParam(name = "pageSize",paramType = "query",value = "每页显示记录数", required = true, dataType = "Integer"),
@@ -75,7 +76,7 @@ public class NewsController extends BaseController {
     }
 
     @ApiOperation(value = "进行评论",tags = {"社团"})
-    @GetMapping("/replies")
+    @PostMapping("/replies")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "userid",paramType = "query",value = "评论人", required = true, dataType = "Integer"),
             @ApiImplicitParam(name = "parentid",paramType = "query",value = "父评论（第一层用0）", required = true, dataType = "Integer"),
@@ -90,7 +91,7 @@ public class NewsController extends BaseController {
     }
 
     @ApiOperation(value = "新闻点赞",tags = {"社团"})
-    @GetMapping("/likeTopic")
+    @PostMapping("/likeTopic")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "type",paramType = "query",value = "状态（1：点赞，0取消点赞）", required = true, dataType = "Integer"),
             @ApiImplicitParam(name = "userid",paramType = "query",value = "用户id", required = true, dataType = "Integer"),
@@ -107,7 +108,7 @@ public class NewsController extends BaseController {
     }
 
     @ApiOperation(value = "新闻评论点赞",tags = {"社团"})
-    @GetMapping("/likereplies")
+    @PostMapping("/likereplies")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "type",paramType = "query",value = "状态（1：点赞，0取消点赞）", required = true, dataType = "Integer"),
             @ApiImplicitParam(name = "userid",paramType = "query",value = "用户id", required = true, dataType = "Integer"),

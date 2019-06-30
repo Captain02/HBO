@@ -21,7 +21,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/contention")
-@Api(tags = {"活动评论"})
+@Api(tags = {"社团活动"})
 public class ContentionController  extends BaseController {
 
     @Autowired
@@ -36,7 +36,7 @@ public class ContentionController  extends BaseController {
      *
      */
     @GetMapping("/getListPage")
-    @ApiOperation(value = "活动分页信息", notes = "活动分页信息", httpMethod = "GET",tags = {"活动评论"})
+    @ApiOperation(value = "活动列表", notes = "活动分页信息", httpMethod = "GET",tags = {"社团活动"})
     @ApiImplicitParams({
             @ApiImplicitParam(name = "pageSize", value = "每页显示记录数",paramType = "query", required = true, dataType = "Integer"),
             @ApiImplicitParam(name = "currPage", value = "当前页",paramType = "query", required = true, dataType = "Integer"),
@@ -64,7 +64,7 @@ public class ContentionController  extends BaseController {
      * @return
      */
     @GetMapping("/getCoractivity")
-    @ApiOperation(value = "活动详情", notes = "活动详情", httpMethod = "GET",tags = {"活动评论"})
+    @ApiOperation(value = "活动详情", notes = "活动详情", httpMethod = "GET",tags = {"社团活动"})
     @ApiImplicitParams({
             @ApiImplicitParam(name = "actid", value = "活动id",paramType = "query", required = true, dataType = "Integer")
     })
@@ -88,7 +88,7 @@ public class ContentionController  extends BaseController {
      * @return
      */
     @GetMapping("/repliesList")
-    @ApiOperation(value = "评论分页", notes = "评论分页", httpMethod = "GET",tags = {"活动评论"})
+    @ApiOperation(value = "评论分页", notes = "评论分页", httpMethod = "GET",tags = {"社团活动"})
     @ApiImplicitParams({
             @ApiImplicitParam(name = "pageSize", value = "每页显示记录数", paramType = "query",required = true, dataType = "Integer"),
             @ApiImplicitParam(name = "currPage", value = "当前页",paramType = "query", required = true, dataType = "Integer"),
