@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="FileDao">
+
+    <insert id="add" useGeneratedKeys="true" keyProperty="id">
+        <!--
+            新插入一条数据返回新插入的id
+                方法一：
+                    useGeneratedKeys="true" keyProperty="id" keyColumn="id"
+                方法二：
+                <selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
+                    <select Last_insert_id() as id
+                </selectKey>
+        -->
+        INSERT INTO filetable(filename,filepath) VALUES (#{fileName},#{filePath})
+    </insert>
+
+    <delete id="deleteById">
+        DELETE FROM filetable WHERE id = #{id}
+    </delete>
+    <select id="selectById" resultType="io.renren.common.entity.PageData">
+        SELECT `id`,`filename`,`filepath`
+        FROM filetable
+        WHERE `id` = #{id}
+    </select>
+
+</mapper>

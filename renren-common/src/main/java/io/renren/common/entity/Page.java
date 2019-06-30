@@ -50,10 +50,10 @@ public class Page {
 	}
 	
 	public int getCurrPage() {
-		if(currPage<=0)
-			currPage = 1;
 		if(currPage>getTotalPage())
 			currPage = getTotalPage();
+		if(currPage<=0)
+			currPage = 1;
 		return currPage;
 	}
 	

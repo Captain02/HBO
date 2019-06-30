@@ -9,9 +9,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -48,6 +46,11 @@ public class CommController extends BaseController {
      * @param request：请求  corId：社团id
      * @throws Exception
      */
+    @PostMapping("/uploadFile")
+    @ApiOperation(value = "文件上传",tags = {"通用类"})
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query",dataType = "file",name="picture",value = "文件",required = true),
+    })
     public R uploadFile(@RequestParam("picture") MultipartFile picture, HttpServletRequest request) {
         PageData pageData = this.getPageData();
         String path = (String) pageData.get("path");
@@ -58,6 +61,8 @@ public class CommController extends BaseController {
             return R.error("文件上传失败");
         }
     }
+
+
 
 
 }

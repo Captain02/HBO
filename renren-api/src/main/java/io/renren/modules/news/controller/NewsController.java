@@ -27,7 +27,7 @@ public class NewsController extends BaseController {
     NewsService newsService;
 
     @GetMapping("/list")
-    @ApiOperation(value = "新闻分页信息",tags = {"社团"})
+    @ApiOperation(value = "新闻分页信息",tags = {"新闻"})
     @ApiImplicitParams({
             @ApiImplicitParam(name = "pageSize",paramType = "query",value = "每页显示记录数", required = true, dataType = "Integer"),
             @ApiImplicitParam(name = "currPage",paramType = "query", value = "当前页", required = true, dataType = "Integer"),
@@ -44,7 +44,7 @@ public class NewsController extends BaseController {
         return R.ok().put("data",list);
     }
 
-    @ApiOperation(value = "新闻详情",tags = {"社团"})
+    @ApiOperation(value = "新闻详情",tags = {"新闻"})
     @GetMapping("/getNewsDetail")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id",paramType = "query",value = "新闻id", required = true, dataType = "Integer"),
@@ -55,7 +55,7 @@ public class NewsController extends BaseController {
         return R.ok().put("data",list);
     }
 
-    @ApiOperation(value = "新闻评论",tags = {"社团"})
+    @ApiOperation(value = "新闻评论",tags = {"新闻"})
     @PostMapping("/getNewsReplice")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "topicid",paramType = "query",value = "新闻id", required = true, dataType = "Integer"),
@@ -75,7 +75,7 @@ public class NewsController extends BaseController {
         return R.ok().put("data",list);
     }
 
-    @ApiOperation(value = "进行评论",tags = {"社团"})
+    @ApiOperation(value = "进行评论",tags = {"新闻"})
     @PostMapping("/replies")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "userid",paramType = "query",value = "评论人", required = true, dataType = "Integer"),
@@ -90,7 +90,7 @@ public class NewsController extends BaseController {
         return R.ok();
     }
 
-    @ApiOperation(value = "新闻点赞",tags = {"社团"})
+    @ApiOperation(value = "新闻点赞",tags = {"新闻"})
     @PostMapping("/likeTopic")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "type",paramType = "query",value = "状态（1：点赞，0取消点赞）", required = true, dataType = "Integer"),
@@ -107,7 +107,7 @@ public class NewsController extends BaseController {
         return R.ok();
     }
 
-    @ApiOperation(value = "新闻评论点赞",tags = {"社团"})
+    @ApiOperation(value = "新闻评论点赞",tags = {"新闻"})
     @PostMapping("/likereplies")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "type",paramType = "query",value = "状态（1：点赞，0取消点赞）", required = true, dataType = "Integer"),

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="persionTopic">
+<mapper namespace="persionTopicdao">
     <resultMap id="persionTopic" type="io.renren.common.entity.PageData">
         <id column="id" property="id"></id>
         <association property="likes" column="id" select="selectLikeNum"></association>
@@ -10,18 +10,28 @@
         <association property="replesnum" column="id" select="selectreplesnum"></association>
         <collection property="likepeople" column="id" select="selectUsersByid"></collection>
     </resultMap>
-    <select id="persionTopicpageList" resultMap="persionTopic">
+    <resultMap id="persionreplies" type="io.renren.common.entity.PageData">
+        <id column="id" property="id"></id>
+        <association property="likenum" column="id" select="selectpersionlikenum"></association>
+        <association property="repliceuser" column="{id=userid}"
+                     select="io.renren.modules.login.dao.UserDao.getinfoByIdNotContentRoleDept"></association>
+        <association property="repliceduser" column="{id=repliceid}"
+                     select="io.renren.modules.login.dao.UserDao.getinfoByIdNotContentRoleDept"></association>
+        <association property="likenum" column="id" select="selectpersionlikenum"></association>
+        <collection property="chiled" column="id" select="selectchildpersion"></collection>
+    </resultMap>
+    <select id="persionTopiclistPage" resultMap="persionTopic">
         SELECT
-        persiontopic.`id`,persiontopic.`userid`,persiontopic.`userid`.createtime,
-        persiontopic.`content`,persiontopic.`imageid`,filetable."filepath"
+        persiontopic.`id`,persiontopic.`userid`,persiontopic.createtime,
+        persiontopic.`content`,persiontopic.`imageid`,filetable.`filepath`
         FROM
         persiontopic
-        LEFT JOIN filetable WHERE filetable."id" = persiontopic."imageid"
+        LEFT JOIN filetable ON filetable.`id` = persiontopic.`imageid`
     </select>
     <select id="selectLikeNum" resultType="io.renren.common.entity.PageData">
         SELECT COUNT(*) num FROM news_like WHERE topicid = #{id}
     </select>
-    <select id="selectUsersByid">
+    <select id="selectUsersByid" resultType="io.renren.common.entity.PageData">
         SELECT userid
         FROM
         news_like
@@ -30,4 +40,69 @@
     <select id="selectreplesnum" resultType="io.renren.common.entity.PageData">
         SELECT count(*) num FROM persiontopic_replice WHERE topicid = #{id}
     </select>
+    <select id="getDetailed" resultMap="persionTopic">
+      SELECT
+        persiontopic.`id`,persiontopic.`userid`,persiontopic.createtime,
+        persiontopic.`content`,persiontopic.`imageid`,filetable.`filepath`
+        FROM
+        persiontopic
+        LEFT JOIN filetable ON filetable.`id` = persiontopic.`imageid`
+        WHERE persiontopic.`id` = #{topicid}
+    </select>
+
+    <select id="getReplieslistPage" resultMap="persionreplies">
+        SELECT
+        persiontopic_replice.`id`,persiontopic_replice.`createtime`,
+        persiontopic_replice.`repliceid`,persiontopic_replice.`reolicecontent`,
+        persiontopic_replice.`userid`
+        FROM persiontopic_replice
+        WHERE topicid = #{pd.topicid}
+    </select>
+    <select id="selectchildpersion" resultMap="persionreplies">
+        SELECT
+        persiontopic_replice.`id`,persiontopic_replice.`createtime`,
+        persiontopic_replice.`repliceid`,persiontopic_replice.`reolicecontent`,
+        persiontopic_replice.`parentid`,
+        persiontopic_replice.`userid`
+        FROM persiontopic_replice
+        WHERE persiontopic_replice.`parentid` = #{id}
+    </select>
+    <select id="selectpersionlikenum" resultType="io.renren.common.entity.PageData">
+        SELECT count(*) num
+        FROM persiontopic_replice_like
+        WHERE persiontopic_replice_like.repliceid = #{id}
+    </select>
+    <insert id="replies">
+        insert into persiontopic_replice (userid,repliceid,reolicecontent,parentid,topicid)
+        values (#{userid},#{repliceid},#{reolicecontent},#{parentid},#{topicid});
+    </insert>
+    <insert id="likepersionTopic">
+        insert into persiontopic_like (userid,topicid) values (#{userid},#{topicid});
+    </insert>
+    <delete id="unlikepersionTopic">
+        DELETE FROM persiontopic_like WHERE userid = #{userid} AND topicid = #{topicid}
+    </delete>
+    <insert id="likepersionTopicReplies">
+        insert into persiontopic_replice_like (userid,repliceid) values (#{userid},#{repliceid});
+    </insert>
+    <delete id="unlikepersionTopicReplies">
+        DELETE FROM persiontopic_replice_like WHERE userid = #{userid} AND repliceid = #{repliceid}
+    </delete>
+    <insert id="releaseTopic">
+        insert into persiontopic (
+        userid,
+        content,
+        <if test="#{imageid}!=null">
+            imageid
+        </if>
+        )
+        values
+        (
+        #{userid},
+        #{content},
+        <if test="#{imageid}!=null">
+            #{imageid}
+        </if>
+        );
+    </insert>
 </mapper>

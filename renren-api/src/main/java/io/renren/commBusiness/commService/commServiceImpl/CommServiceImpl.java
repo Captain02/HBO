@@ -67,6 +67,11 @@ public class CommServiceImpl implements CommService {
             return false;
         }
     }
+    //保存文件到数据库
+    public Integer addFile2DB(PageData pageData) throws Exception {
+        daoSupport.save("FileDao.add",pageData);
+        return pageData.getValueOfInteger("id");
+    }
 
 //    public PageData uploadFile(MultipartFile picture, HttpServletRequest request,PageData pageData) throws Exception {
 //        //根据社团id查出对应的学院、社团名称
