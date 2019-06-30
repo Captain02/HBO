@@ -28,8 +28,8 @@ public class psersionController extends BaseController {
             @ApiImplicitParam(name = "currPage",paramType = "query", value = "当前页", required = true, dataType = "Integer"),
     })
     public R persionTopic(@ApiIgnore Page page) throws Exception {
-        int currPage = page.getCurrPage();
         PageData pageData = this.getPageData();
+        int currPage = Integer.parseInt(pageData.getValueOfString("currPage"));
         page.setPd(pageData);
         List<PageData> data = persionTopicService.perspersionTopic(page);
         int currPage1 = page.getCurrPage();
