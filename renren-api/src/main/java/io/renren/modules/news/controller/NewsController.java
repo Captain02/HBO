@@ -39,7 +39,7 @@ public class NewsController extends BaseController {
         List<PageData> list = newsService.newlistPage(page);
         int aftercurrPage = page.getCurrPage();
         if (aftercurrPage!=currPage){
-            return R.ok();
+            return R.ok().put("data",null);
         }
         return R.ok().put("data",list);
     }
@@ -70,7 +70,7 @@ public class NewsController extends BaseController {
         List<PageData> list = newsService.getNewsReplice(page);
         int aftercurrPage = page.getCurrPage();
         if (aftercurrPage!=currPage){
-            return R.ok();
+            return R.ok().put("data",null);
         }
         return R.ok().put("data",list);
     }
