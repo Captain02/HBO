@@ -17,6 +17,8 @@
 
     <resultMap id="newsListPage" type="io.renren.common.entity.PageData">
         <id column="id" property="id"></id>
+        <association property="replicenum" column="id" select="replicenum"></association>
+        <association property="likenum" column="id" select="likenum"></association>
         <association property="video" column="{id=videoid}" select="FileDao.selectById"/>
         <association property="releaseuser" column="{id=releaseuser}"
                      select="io.renren.modules.sys.dao.SysUserDao.getinfoByIdNotContentRoleDept"/>
@@ -37,6 +39,18 @@
         <collection property="likePeopleIds" column="id" select="getlikePeopleIds"></collection>
         <collection property="child" column="{topicid=topicid,id=id}" select="getReplies"></collection>
     </resultMap>
+
+    <select id="replicenum" resultType="io.renren.common.entity.PageData">
+        SELECT count(*) num
+        FROM news_replies
+        WHERE news_replies.`topicid` = #{id}
+    </select>
+
+    <select id="likenum" resultType="io.renren.common.entity.PageData">
+        SELECT count(*) num
+        FROM news_like
+        WHERE news_like.`topicid` = #{id}
+    </select>
 
     <select id="newslistPage" resultMap="newsListPage">
         SELECT DISTINCT n.`content`,n.`createtime`,n.`title`,n.`corid`,n.`deptid`,n.`releaseuser`,n.`videoid`,n.`id`,

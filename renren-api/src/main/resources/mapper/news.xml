@@ -4,13 +4,15 @@
 <mapper namespace="news">
     <resultMap id="newslist" type="io.renren.common.entity.PageData">
         <id column="id" property="id"></id>
-        <collection property="likeusers" column="id" select="selectlikeUser"></collection>
+        <association property="likeusers" column="id" select="selectlikesUser"></association>
+        <association property="replicenum" column="id" select="replicenum"></association>
     </resultMap>
 
     <resultMap id="detail" type="io.renren.common.entity.PageData">
         <id column="id" property="id"></id>
         <association property="user" column="{id=user_id}" select="io.renren.modules.login.dao.UserDao.getinfoByIdNotContentRoleDept"></association>
-        <collection property="likeusers" column="id" select="selectlikeUser"></collection>
+        <association property="likeusers" column="id" select="selectlikesUser"></association>
+        <association property="replicenum" column="id" select="replicenum"></association>
     </resultMap>
 
     <resultMap id="newsReplice" type="io.renren.common.entity.PageData">
@@ -36,12 +38,23 @@
         WHERE isnews = 1
         ORDER BY actnews.`id` DESC
     </select>
+    <select id="replicenum" resultType="io.renren.common.entity.PageData">
+        SELECT count(*) num
+        FROM news_replies
+        WHERE news_replies.`topicid` = #{id}
+    </select>
     <select id="selectlikeUser" resultType="io.renren.common.entity.PageData">
         SELECT
         sys_user.`user_id`
         FROM sys_user
         LEFT JOIN news_like ON news_like.`userid` = sys_user.`user_id`
         WHERE topicid = #{id}
+    </select>
+    <select id="selectlikesUser" resultType="io.renren.common.entity.PageData">
+        SELECT count(*) num
+        FROM news_like
+        WHERE news_like.`topicid` = #{id}
+
     </select>
 
     <select id="getNewsDetail" resultMap="detail">
