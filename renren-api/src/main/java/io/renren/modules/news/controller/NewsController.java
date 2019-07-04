@@ -56,7 +56,7 @@ public class NewsController extends BaseController {
     }
 
     @ApiOperation(value = "新闻评论",tags = {"新闻"})
-    @PostMapping("/getNewsReplice")
+    @GetMapping("/getNewsReplice")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "topicid",paramType = "query",value = "新闻id", required = true, dataType = "Integer"),
             @ApiImplicitParam(name = "pageSize",paramType = "query",value = "每页显示记录数", required = true, dataType = "Integer"),
