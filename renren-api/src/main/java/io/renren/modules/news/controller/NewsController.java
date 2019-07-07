@@ -1,5 +1,7 @@
 package io.renren.modules.news.controller;
 
+import com.alibaba.druid.support.json.JSONUtils;
+import io.renren.comm.util.JsonUtils;
 import io.renren.common.controller.BaseController;
 import io.renren.common.entity.Page;
 import io.renren.common.entity.PageData;
@@ -10,13 +12,11 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/sys/news")
@@ -90,15 +90,20 @@ public class NewsController extends BaseController {
         return R.ok();
     }
 
-    @ApiOperation(value = "新闻点赞",tags = {"新闻"})
-    @PostMapping("/likeTopic")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "type",paramType = "query",value = "状态（1：点赞，0取消点赞）", required = true, dataType = "Integer"),
-            @ApiImplicitParam(name = "userid",paramType = "query",value = "用户id", required = true, dataType = "Integer"),
-            @ApiImplicitParam(name = "topicid",paramType = "query", value = "主题id", required = true, dataType = "Integer"),
-    })
-    public R likeTopic() throws Exception {
+    @ApiOperation(value = "新闻点赞",tags = {"新闻"},notes = "{'type':'状态（1：点赞，0取消点赞）','userid':'用户id','topicid':'主题id'}")
+    @PostMapping(value = "/likeTopic", produces = "application/json;charset=utf-8")
+//    @ApiImplicitParams({
+//            @ApiImplicitParam(name = "type",paramType = "query",value = "状态（1：点赞，0取消点赞）", required = true, dataType = "Integer"),
+//            @ApiImplicitParam(name = "userid",paramType = "query",value = "用户id", required = true, dataType = "Integer"),
+//            @ApiImplicitParam(name = "topicid",paramType = "query", value = "主题id", required = true, dataType = "Integer"),
+//    })
+    public R likeTopic(@RequestBody String json) throws Exception {
+        Map o = JsonUtils.parseStringToObject(json, Map.class);
+//        Stringo.get("type")
         PageData pageData = this.getPageData();
+        pageData.put("type",(String)(o.get("type")));
+        pageData.put("userid",(String)(o.get("userid")));
+        pageData.put("topicid",(String)(o.get("topicid")));
         if (pageData.getValueOfInteger("type")==1){
             newsService.likeTopic(pageData);
         }else {
