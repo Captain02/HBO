@@ -103,11 +103,11 @@ public class psersionController extends BaseController {
 
     @PostMapping(value = "/likepersionTopic", produces = "application/json;charset=utf-8")
     @ApiOperation(value = "信息点赞",tags = {"用户发布"},notes = "{'type':状态（1：点赞，0取消点赞）,'userid':用户id,'主题id':topicid}")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "type",paramType = "query",value = "状态（1点赞，0取消点赞）", required = true, dataType = "Integer"),
-            @ApiImplicitParam(name = "userid",paramType = "query",value = "用户主键", required = true, dataType = "Integer"),
-            @ApiImplicitParam(name = "topicid",paramType = "query",value = "信息主键", required = true, dataType = "Integer"),
-    })
+//    @ApiImplicitParams({
+//            @ApiImplicitParam(name = "type",paramType = "query",value = "状态（1点赞，0取消点赞）", required = true, dataType = "Integer"),
+//            @ApiImplicitParam(name = "userid",paramType = "query",value = "用户主键", required = true, dataType = "Integer"),
+//            @ApiImplicitParam(name = "topicid",paramType = "query",value = "信息主键", required = true, dataType = "Integer"),
+//    })
     public R likepersionTopic(@RequestBody String json) throws Exception {
         Map o = JsonUtils.parseStringToObject(json, Map.class);
         PageData pageData = this.getPageData();
