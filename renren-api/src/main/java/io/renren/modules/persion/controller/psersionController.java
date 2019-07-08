@@ -1,6 +1,7 @@
 package io.renren.modules.persion.controller;
 
 import io.renren.annotation.Login;
+import io.renren.comm.util.JsonUtils;
 import io.renren.commBusiness.commService.CommService;
 import io.renren.common.controller.BaseController;
 import io.renren.common.entity.Page;
@@ -18,6 +19,7 @@ import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 
 @Api(tags = {"用户发布"})
 @RestController
@@ -73,31 +75,47 @@ public class psersionController extends BaseController {
         return R.ok().put("data",data);
     }
 
-    @PostMapping("/replies")
-    @ApiOperation(value = "进行评论",tags = {"用户发布"})
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "userid",paramType = "query",value = "用户id", required = true, dataType = "Integer"),
-            @ApiImplicitParam(name = "repliceid",paramType = "query",value = "被回复id", required = true, dataType = "Integer"),
-            @ApiImplicitParam(name = "reolicecontent",paramType = "query",value = "回复内容", required = true, dataType = "String"),
-            @ApiImplicitParam(name = "parentid",paramType = "query",value = "父评论id", required = true, dataType = "Integer"),
-            @ApiImplicitParam(name = "topicid",paramType = "query",value = "信息主键", required = true, dataType = "Integer"),
-    })
-    public R replies() throws Exception {
+    @PostMapping(value = "/replies", produces = "application/json;charset=utf-8")
+    @ApiOperation(value = "进行评论",tags = {"用户发布"},notes = "{'repliceid':被回复id,'userid':用户id,'topicid':信息主键,'parentid':父评论id,'reolicecontent':'回复内容'}")
+//    @ApiImplicitParams({
+//            @ApiImplicitParam(name = "userid",paramType = "query",value = "用户id", required = true, dataType = "Integer"),
+//            @ApiImplicitParam(name = "repliceid",paramType = "query",value = "被回复id", required = true, dataType = "Integer"),
+//            @ApiImplicitParam(name = "reolicecontent",paramType = "query",value = "回复内容", required = true, dataType = "String"),
+//            @ApiImplicitParam(name = "parentid",paramType = "query",value = "父评论id", required = true, dataType = "Integer"),
+//            @ApiImplicitParam(name = "topicid",paramType = "query",value = "信息主键", required = true, dataType = "Integer"),
+//    })
+    public R replies(@RequestBody String json) throws Exception {
+        Map o = JsonUtils.parseStringToObject(json, Map.class);
+        Integer userid = (Integer) o.get("userid");
+        Integer repliceid = (Integer) o.get("repliceid");
+        Integer topicid = (Integer) o.get("topicid");
+        Integer parentid = (Integer) o.get("parentid");
+        String reolicecontent = (String) o.get("reolicecontent");
         PageData pageData = this.getPageData();
+        pageData.put("userid",userid);
+        pageData.put("repliceid",repliceid);
+        pageData.put("topicid",topicid);
+        pageData.put("parentid",parentid);
+        pageData.put("reolicecontent",reolicecontent);
         persionTopicService.replies(pageData);
         return R.ok();
     }
 
-    @PostMapping("/likepersionTopic")
-    @ApiOperation(value = "信息点赞",tags = {"用户发布"})
+    @PostMapping(value = "/likepersionTopic", produces = "application/json;charset=utf-8")
+    @ApiOperation(value = "信息点赞",tags = {"用户发布"},notes = "{'type':状态（1：点赞，0取消点赞）,'userid':用户id,'主题id':topicid}")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "type",paramType = "query",value = "状态（1点赞，0取消点赞）", required = true, dataType = "Integer"),
             @ApiImplicitParam(name = "userid",paramType = "query",value = "用户主键", required = true, dataType = "Integer"),
             @ApiImplicitParam(name = "topicid",paramType = "query",value = "信息主键", required = true, dataType = "Integer"),
     })
-    public R likepersionTopic() throws Exception {
+    public R likepersionTopic(@RequestBody String json) throws Exception {
+        Map o = JsonUtils.parseStringToObject(json, Map.class);
         PageData pageData = this.getPageData();
-        Integer type = pageData.getValueOfInteger("type");
+        Integer userid = (Integer) o.get("userid");
+        Integer type = (Integer) o.get("type");
+        Integer topicid = (Integer) o.get("topicid");
+        pageData.put("userid",userid);
+        pageData.put("topicid",topicid);
         if (type == 1){
             persionTopicService.likepersionTopic(pageData);
         }else {
@@ -106,16 +124,21 @@ public class psersionController extends BaseController {
         return R.ok();
     }
 
-    @PostMapping("/likepersionTopicReplies")
-    @ApiOperation(value = "评论点赞",tags = {"用户发布"})
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "type",paramType = "query",value = "状态（1点赞，0取消点赞）", required = true, dataType = "Integer"),
-            @ApiImplicitParam(name = "userid",paramType = "query",value = "用户主键", required = true, dataType = "Integer"),
-            @ApiImplicitParam(name = "repliceid",paramType = "query",value = "信息主键", required = true, dataType = "Integer"),
-    })
-    public R likepersionTopicReplies() throws Exception {
+    @PostMapping(value = "/likepersionTopicReplies", produces = "application/json;charset=utf-8")
+    @ApiOperation(value = "评论点赞",tags = {"用户发布"},notes = "{'type':状态（1：点赞，0取消点赞）,'userid':用户id,'repliceid':评论id}")
+//    @ApiImplicitParams({
+//            @ApiImplicitParam(name = "type",paramType = "query",value = "状态（1点赞，0取消点赞）", required = true, dataType = "Integer"),
+//            @ApiImplicitParam(name = "userid",paramType = "query",value = "用户主键", required = true, dataType = "Integer"),
+//            @ApiImplicitParam(name = "repliceid",paramType = "query",value = "信息主键", required = true, dataType = "Integer"),
+//    })
+    public R likepersionTopicReplies(@RequestBody String json) throws Exception {
+        Map o = JsonUtils.parseStringToObject(json, Map.class);
+        Integer userid = (Integer) o.get("userid");
+        Integer type = (Integer) o.get("type");
+        Integer repliceid = (Integer) o.get("repliceid");
         PageData pageData = this.getPageData();
-        Integer type = pageData.getValueOfInteger("type");
+        pageData.put("userid",userid);
+        pageData.put("repliceid",repliceid);
         if (type == 1){
             persionTopicService.likepersionTopicReplies(pageData);
         }else {
@@ -125,15 +148,22 @@ public class psersionController extends BaseController {
     }
 
     @Login
-    @PostMapping("/releaseTopic")
-    @ApiOperation(value = "发表贴(改接口必须登录加入token)",tags = {"用户发布"})
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "userid",paramType = "query",value = "用户id", required = true, dataType = "Integer"),
-            @ApiImplicitParam(name = "content",paramType = "query",value = "内容", required = true, dataType = "String"),
-            @ApiImplicitParam(name = "imageid",paramType = "query",value = "图片id", required = false, dataType = "Integer"),
-    })
-    public R releaseTopic() throws Exception {
+    @PostMapping(value = "/releaseTopic", produces = "application/json;charset=utf-8")
+    @ApiOperation(value = "发表贴(改接口必须登录加入token)",tags = {"用户发布"},notes = "{'content':'内容','userid':用户id,'imageid':照片id}")
+//    @ApiImplicitParams({
+//            @ApiImplicitParam(name = "userid",paramType = "query",value = "用户id", required = true, dataType = "Integer"),
+//            @ApiImplicitParam(name = "content",paramType = "query",value = "内容", required = true, dataType = "String"),
+//            @ApiImplicitParam(name = "imageid",paramType = "query",value = "图片id", required = false, dataType = "Integer"),
+//    })
+    public R releaseTopic(@RequestBody String json) throws Exception {
+        Map o = JsonUtils.parseStringToObject(json, Map.class);
+        Integer userid = (Integer) o.get("userid");
+        Integer imageid = (Integer) o.get("imageid");
+        String content = (String) o.get("content");
         PageData pageData = this.getPageData();
+        pageData.put("userid",userid);
+        pageData.put("imageid",imageid);
+        pageData.put("content",content);
         persionTopicService.releaseTopic(pageData);
         return R.ok();
     }
