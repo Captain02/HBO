@@ -75,17 +75,28 @@ public class NewsController extends BaseController {
         return R.ok().put("data",list);
     }
 
-    @ApiOperation(value = "进行评论",tags = {"新闻"})
-    @PostMapping("/replies")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "userid",paramType = "query",value = "评论人", required = true, dataType = "Integer"),
-            @ApiImplicitParam(name = "parentid",paramType = "query",value = "父评论（第一层用0）", required = true, dataType = "Integer"),
-            @ApiImplicitParam(name = "topicid",paramType = "query", value = "主题id", required = true, dataType = "Integer"),
-            @ApiImplicitParam(name = "repliescontent",paramType = "query", value = "回复内容", required = true, dataType = "Integer"),
-            @ApiImplicitParam(name = "repliesuserid",paramType = "query", value = "被回复人id", required = true, dataType = "Integer"),
-    })
-    public R replies() throws Exception {
+    @ApiOperation(value = "进行评论",tags = {"新闻"},notes = "{'userid':评论人id,'parentid':父id,'topicid':主题id,'repliescontent':'回复内容','repliesuserid':被回复人id}")
+    @PostMapping(value = "/replies",produces = "application/json;charset=utf-8")
+//    @ApiImplicitParams({
+//            @ApiImplicitParam(name = "userid",paramType = "query",value = "评论人", required = true, dataType = "Integer"),
+//            @ApiImplicitParam(name = "parentid",paramType = "query",value = "父评论（第一层用0）", required = true, dataType = "Integer"),
+//            @ApiImplicitParam(name = "topicid",paramType = "query", value = "主题id", required = true, dataType = "Integer"),
+//            @ApiImplicitParam(name = "repliescontent",paramType = "query", value = "回复内容", required = true, dataType = "Integer"),
+//            @ApiImplicitParam(name = "repliesuserid",paramType = "query", value = "被回复人id", required = true, dataType = "Integer"),
+//    })
+    public R replies(@RequestBody String json) throws Exception {
+        Map o = JsonUtils.parseStringToObject(json, Map.class);
+        Integer userid = (Integer) o.get("userid");
+        Integer parentid = (Integer) o.get("parentid");
+        Integer topicid = (Integer) o.get("topicid");
+        String repliescontent = (String) o.get("repliescontent");
+        Integer repliesuserid = (Integer) o.get("repliesuserid");
         PageData pageData = this.getPageData();
+        pageData.put("userid",userid);
+        pageData.put("parentid",parentid);
+        pageData.put("topicid",topicid);
+        pageData.put("repliescontent",repliescontent);
+        pageData.put("repliesuserid",repliesuserid);
         newsService.replies(pageData);
         return R.ok();
     }
@@ -104,6 +115,7 @@ public class NewsController extends BaseController {
         pageData.put("type",(Integer)(o.get("type")));
         pageData.put("userid",(Integer)(o.get("userid")));
         pageData.put("topicid",(Integer)(o.get("topicid")));
+
         if (pageData.getValueOfInteger("type")==1){
             newsService.likeTopic(pageData);
         }else {
@@ -112,16 +124,22 @@ public class NewsController extends BaseController {
         return R.ok();
     }
 
-    @ApiOperation(value = "新闻评论点赞",tags = {"新闻"})
-    @PostMapping("/likereplies")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "type",paramType = "query",value = "状态（1：点赞，0取消点赞）", required = true, dataType = "Integer"),
-            @ApiImplicitParam(name = "userid",paramType = "query",value = "用户id", required = true, dataType = "Integer"),
-            @ApiImplicitParam(name = "repliesid",paramType = "query", value = "评论id", required = true, dataType = "Integer"),
-    })
-    public R likereplies() throws Exception {
+    @ApiOperation(value = "新闻评论点赞",tags = {"新闻"},notes = "{'type':状态（1：点赞，0取消点赞）,'userid':用户id,'repliesid':回复的id}")
+    @PostMapping(value = "/likereplies", produces = "application/json;charset=utf-8")
+//    @ApiImplicitParams({
+//            @ApiImplicitParam(name = "type",paramType = "query",value = "状态（1：点赞，0取消点赞）", required = true, dataType = "Integer"),
+//            @ApiImplicitParam(name = "userid",paramType = "query",value = "用户id", required = true, dataType = "Integer"),
+//            @ApiImplicitParam(name = "repliesid",paramType = "query", value = "评论id", required = true, dataType = "Integer"),
+//    })
+    public R likereplies(@RequestBody String json) throws Exception {
+        Map o = JsonUtils.parseStringToObject(json, Map.class);
+        Integer userid = (Integer) o.get("userid");
+        Integer type = (Integer) o.get("type");
+        Integer repliesid = (Integer) o.get("repliesid");
         PageData pageData = this.getPageData();
-        if (pageData.getValueOfInteger("type")==1){
+        pageData.put("userid",userid);
+        pageData.put("repliesid",repliesid);
+        if (type==1){
             newsService.likereplies(pageData);
         }else {
             newsService.unlikereplies(pageData);
