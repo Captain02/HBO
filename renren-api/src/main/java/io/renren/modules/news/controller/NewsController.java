@@ -101,9 +101,9 @@ public class NewsController extends BaseController {
         Map o = JsonUtils.parseStringToObject(json, Map.class);
 //        Stringo.get("type")
         PageData pageData = this.getPageData();
-        pageData.put("type",(String)(o.get("type")));
-        pageData.put("userid",(String)(o.get("userid")));
-        pageData.put("topicid",(String)(o.get("topicid")));
+        pageData.put("type",(Integer)(o.get("type")));
+        pageData.put("userid",(Integer)(o.get("userid")));
+        pageData.put("topicid",(Integer)(o.get("topicid")));
         if (pageData.getValueOfInteger("type")==1){
             newsService.likeTopic(pageData);
         }else {
