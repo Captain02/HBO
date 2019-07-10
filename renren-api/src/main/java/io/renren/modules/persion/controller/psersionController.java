@@ -168,13 +168,13 @@ public class psersionController extends BaseController {
         return R.ok();
     }
 
-    @Login
+//    @Login
     @PostMapping("/uploudpersionTopic")
     @ApiOperation(value = "上传文件(改接口必须登录加入token)",tags = {"用户发布"})
     @ApiImplicitParams({
             @ApiImplicitParam(name = "file",paramType = "query",value = "文件类型", required = true, dataType = "file"),
     })
-    public R upActBananer(@RequestParam("file") MultipartFile file, HttpServletRequest request) throws Exception {
+    public R upActBananer(@RequestBody MultipartFile file, HttpServletRequest request) throws Exception {
         PageData pageData = this.getPageData();
         upload(pageData, file, "/file/persionTopic/images/", request);
         Integer fileId = commService.addFile2DB(pageData);
