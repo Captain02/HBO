@@ -4,23 +4,19 @@ import io.renren.common.commBusiness.commService.CommService;
 import io.renren.common.controller.BaseController;
 import io.renren.common.entity.Page;
 import io.renren.common.entity.PageData;
-import io.renren.common.util.Const;
 import io.renren.common.utils.CheckParameterUtil;
-import io.renren.common.utils.JsonUtils;
-import io.renren.common.utils.QrCodeUtils;
 import io.renren.common.utils.R;
 import io.renren.modules.news.service.NewsService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import net.sf.json.util.JSONUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
 import java.util.List;
 
 @RestController()
@@ -108,7 +104,7 @@ public class NewsController extends BaseController {
     public R add() throws Exception {
         PageData pageData = this.getPageData();
         CheckParameterUtil.checkParameterMap(pageData, "corId", "title", "releaseuser", "content");
-        pageData.put("isNews",1);
+        pageData.put("isNews", 1);
         newsService.add(pageData);
         return R.ok();
     }
@@ -133,6 +129,7 @@ public class NewsController extends BaseController {
 
     /**
      * 上传视频并保存到数据库
+     *
      * @param file
      * @param request
      * @return
@@ -165,5 +162,25 @@ public class NewsController extends BaseController {
         CheckParameterUtil.checkParameterMap(pageData, "newsId");
         newsService.updateNews(pageData);
         return R.ok();
+    }
+
+    @ApiOperation(value = "新闻评论", tags = {"新闻"})
+    @GetMapping("/getNewsReplice")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "topicid", paramType = "query", value = "新闻id", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "pageSize", paramType = "query", value = "每页显示记录数", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "currPage", paramType = "query", value = "当前页", required = true, dataType = "Integer"),
+    })
+    public R getNewsReplice(@ApiIgnore Page page) throws Exception {
+        PageData pageData = this.getPageData();
+        int currPage = Integer.parseInt(pageData.getValueOfString("currPage"));
+        pageData.put("parentid", "0");
+        page.setPd(pageData);
+        List<PageData> list = newsService.getNewsReplice(page);
+        int aftercurrPage = page.getCurrPage();
+        if (aftercurrPage != currPage) {
+            return R.ok().put("data", null);
+        }
+        return R.ok().put("data", list);
     }
 }

@@ -17,4 +17,6 @@ public interface NewsService {
     void add(PageData pageData) throws Exception;
 
     void updateNews(PageData pageData) throws Exception;
+
+    List<PageData> getNewsReplice(Page page) throws Exception;
 }

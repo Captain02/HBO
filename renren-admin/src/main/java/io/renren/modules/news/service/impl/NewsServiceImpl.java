@@ -46,5 +46,10 @@ public class NewsServiceImpl implements NewsService {
         daoSupport.update("NewsDao.updateNews",pageData);
     }
 
+    @Override
+    public List<PageData> getNewsReplice(Page page) throws Exception {
+        return (List<PageData>) daoSupport.findForList("NewsDao.getNewsReplicelistPage",page);
+    }
+
 
 }

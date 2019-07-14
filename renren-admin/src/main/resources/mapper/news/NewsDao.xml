@@ -2,6 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="NewsDao">
+    <resultMap id="newsReplice" type="io.renren.common.entity.PageData">
+        <id column="id" property="id"></id>
+        <association property="RepliceUser" select="io.renren.modules.sys.dao.SysUserDao.getinfoByIdNotContentRoleDept" column="{id=userid}"></association>
+        <association property="ReplicedUser" select="io.renren.modules.sys.dao.SysUserDao.getinfoByIdNotContentRoleDept" column="{id=repliesuserid}"></association>
+        <association property="likenum" column="id" select="selectlikenum"></association>
+        <collection property="likeuser" column="id" select="selectlikeuser"></collection>
+        <collection property="getNewsReplice" column="{topicid=topicid,parentid=id}" select="getNewNewsReplice"></collection>
+    </resultMap>
 
     <resultMap id="newsPageData" type="io.renren.common.entity.PageData">
         <id column="id" property="id"></id>
@@ -163,4 +171,24 @@
         </set>
         WHERE `id` = #{newsId,jdbcType=INTEGER}
     </update>
+    <select id="getNewsReplicelistPage" resultMap="newsReplice">
+        SELECT news_replies.`id`,news_replies.`userid`,news_replies.`parentid`,
+        news_replies.`topicid`,news_replies.`createtime`,
+        news_replies.`repliescontent`,news_replies.`repliesuserid`,news_replies.`states`
+        FROM news_replies
+        WHERE news_replies.`topicid` = #{pd.topicid} AND news_replies.`parentid` = #{pd.parentid}
+    </select>
+    <select id="getNewNewsReplice" resultMap="newsReplice">
+        SELECT news_replies.`id`,news_replies.`userid`,news_replies.`parentid`,
+        news_replies.`topicid`,news_replies.`createtime`,
+        news_replies.`repliescontent`,news_replies.`repliesuserid`,news_replies.`states`
+        FROM news_replies
+        WHERE news_replies.`topicid` = #{topicid} AND news_replies.`parentid` = #{parentid}
+    </select>
+    <select id="selectlikeuser" resultType="io.renren.common.entity.PageData">
+        SELECT userid FROM bbs_replies_like WHERE repliesid = #{id}
+    </select>
+    <select id="selectlikenum" resultType="io.renren.common.entity.PageData">
+        SELECT count(*) num FROM bbs_replies_like WHERE repliesid = #{id}
+    </select>
 </mapper>
