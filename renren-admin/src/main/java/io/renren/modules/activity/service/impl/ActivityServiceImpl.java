@@ -179,5 +179,10 @@ public class ActivityServiceImpl implements ActivityService {
         daoSupport.delete("ActivityDao.delRepliesLike",pageData);
     }
 
+    @Override
+    public List<PageData> getActivityUserId(PageData pageData) throws Exception {
+        return (List<PageData>) daoSupport.findForList("ActivityDao.getActivityUserId",pageData);
+    }
+
 
 }

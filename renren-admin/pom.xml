@@ -19,6 +19,7 @@
 		<swagger.version>2.7.0</swagger.version>
 		<zxing.version>3.2.1</zxing.version>
 		<poi.version>3.14-beta1</poi.version>
+		<easyexcel.version>1.1.2-beta5</easyexcel.version>
 	</properties>
 
 	<dependencies>
@@ -116,6 +117,11 @@
 			<artifactId>poi-ooxml-schemas</artifactId>
 			<version>${poi.version}</version>
 		</dependency>
+		<!--<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>easyexcel</artifactId>
+			<version>${easyexcel.version}</version>
+		</dependency>-->
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi</artifactId>

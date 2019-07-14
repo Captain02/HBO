@@ -34,4 +34,6 @@ public interface ActivityService {
     void repliesLike(PageData pageData) throws Exception;
 
     void delRepliesLike(PageData pageData) throws Exception;
+
+    List<PageData> getActivityUserId(PageData pageData) throws Exception;
 }
