@@ -26,6 +26,17 @@ public class User {
         this.gender = gender;
     }
 
+    public User(String name, String mobile, String persionnum, String wechart, String QQ, String college, String collegemajor, String gender) {
+        this.name = name;
+        this.mobile = mobile;
+        this.persionnum = persionnum;
+        this.wechart = wechart;
+        this.QQ = QQ;
+        this.college = college;
+        this.collegemajor = collegemajor;
+        this.gender = gender;
+    }
+
     public String getName() {
         return name;
     }

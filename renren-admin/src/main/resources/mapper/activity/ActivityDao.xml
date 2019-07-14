@@ -255,6 +255,10 @@
         </if>
     </select>
 
+    <select id="getActivityUserId" resultType="io.renren.common.entity.PageData">
+        SELECT userid id FROM `actenroll` WHERE `actstatusid` = 1
+    </select>
+
     <!--删除点赞-->
     <delete id="delLike">
         DELETE FROM bbs_like

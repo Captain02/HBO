@@ -4,28 +4,35 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import io.renren.common.commBusiness.commService.CommService;
 import io.renren.common.controller.BaseController;
+import io.renren.common.dao.Excel;
 import io.renren.common.entity.Page;
 import io.renren.common.entity.PageData;
 import io.renren.common.util.Const;
-import io.renren.common.utils.CheckParameterUtil;
-import io.renren.common.utils.JsonUtils;
-import io.renren.common.utils.QrCodeUtils;
-import io.renren.common.utils.R;
+import io.renren.common.util.DateUtil;
+import io.renren.common.utils.*;
 import io.renren.modules.activity.Entity.ActState;
 import io.renren.modules.activity.service.ActivityService;
 import io.renren.modules.file.service.FileService;
+import io.renren.modules.sys.entity.User;
+import io.renren.modules.sys.service.SysUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
-import java.util.List;
+import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @RestController()
 @RequestMapping("/sys/activity")
@@ -34,6 +41,8 @@ public class ActivityController extends BaseController {
 
     @Autowired
     private ActivityService activityService;
+    @Autowired
+    private SysUserService sysUserService;
     @Autowired
     private CommService commService;
     //文件上传路径
@@ -44,8 +53,6 @@ public class ActivityController extends BaseController {
     public String DOMAIN_NAME;
     @Autowired
     FileService fileService;
-
-
 
 
     /**
@@ -67,18 +74,18 @@ public class ActivityController extends BaseController {
     public R list(Page page) throws Exception {
         PageData pageData = this.getPageData();
         String crowdids = pageData.getValueOfString("crowdids");
-        if (!"null".equals(crowdids)&&!crowdids.trim().equals("")){
+        if (!"null".equals(crowdids) && !crowdids.trim().equals("")) {
 
             String[] split = crowdids.split(",");
             List<String> strings = Arrays.asList(split);
             //面向人群id
-            if (strings.size()>0){
-                pageData.put("actcrowdids",strings);
+            if (strings.size() > 0) {
+                pageData.put("actcrowdids", strings);
             }
         }
         page.setPd(pageData);
         List<PageData> list = activityService.activityListPage(page);
-        return R.ok().put("page",page).put("data", list);
+        return R.ok().put("page", page).put("data", list);
     }
 
     /**
@@ -110,10 +117,10 @@ public class ActivityController extends BaseController {
             @ApiImplicitParam(name = "actId", value = "活动id", required = true, dataType = "Integer")
     })
     @PostMapping("/updateAct")
-    public R updateAct(@RequestParam(value = "enclosure",required = false) MultipartFile enclosure,HttpServletRequest request) throws Exception {
+    public R updateAct(@RequestParam(value = "enclosure", required = false) MultipartFile enclosure, HttpServletRequest request) throws Exception {
         PageData pageData = this.getPageData();
         CheckParameterUtil.checkParameterMap(pageData, "actId");
-        activityService.updateAct(pageData,enclosure,request);
+        activityService.updateAct(pageData, enclosure, request);
         return R.ok();
     }
 
@@ -139,7 +146,7 @@ public class ActivityController extends BaseController {
         CheckParameterUtil.checkParameterMap(pageData, "actCorId", "actName", "actLeader", "actStartTime",
                 "actEndTime", "croWdPeople", "profile", "processNodes");
 
-        activityService.add(pageData,enclosure,request);
+        activityService.add(pageData, enclosure, request);
         //创建二维码
         String url = "http://" + DOMAIN_NAME + "/#/code-map?Id=" + pageData.getValueOfInteger("id") + "&type=" + Const.ACTIVITY_TYPE;
         QrCodeUtils.encodeByqrCodeName(url, FILEUPLOUD + "/file/QrCode/Activity/", pageData.get("actName").toString());
@@ -188,7 +195,7 @@ public class ActivityController extends BaseController {
     @PostMapping("/deleteActImage")
     public R deleteImage() throws Exception {
         PageData pageData = this.getPageData();
-        CheckParameterUtil.checkParameterMap(pageData,"filePath","id");
+        CheckParameterUtil.checkParameterMap(pageData, "filePath", "id");
         commService.deleteFile(pageData.getValueOfString("filePath"));
         fileService.deleteFile(pageData);
         return R.ok();
@@ -201,7 +208,7 @@ public class ActivityController extends BaseController {
         page.setPd(pageData);
         List<PageData> replies = activityService.getReplies(page);
 
-        return R.ok().put("data",replies).put("page",page);
+        return R.ok().put("data", replies).put("page", page);
     }
 
     @PostMapping("/changeProcess")
@@ -211,18 +218,20 @@ public class ActivityController extends BaseController {
         JSONArray list = JsonUtils.parseStringToJSONArray(str);
         List<ActState> actStates = list.toJavaList(ActState.class);
         activityService.changeProcess(actStates);
-        return R.ok().put("pageData",str);
+        return R.ok().put("pageData", str);
     }
+
     public static <T> List<T> parseStringToArray(String json, Class<T> clazz) {
-            List<T> list = JSON.parseArray(json, clazz);
-            return list;
+        List<T> list = JSON.parseArray(json, clazz);
+        return list;
     }
+
     @GetMapping("/getUserByActId")
     public R getUserByActId(Page page) throws Exception {
         PageData pageData = this.getPageData();
         page.setPd(pageData);
         List<PageData> list = activityService.getUserByActIdlistPage(page);
-        return R.ok().put("page",page).put("data",list);
+        return R.ok().put("page", page).put("data", list);
     }
 
     //点赞接口
@@ -244,22 +253,22 @@ public class ActivityController extends BaseController {
     @GetMapping("/getActCharts")
     public R getActCharts() throws Exception {
         PageData pageData = this.getPageData();
-        pageData.put("column","sys_user.gender AS gender");
-        pageData.put("column2","sys_user.gender");
-        List<PageData> groupGender =  activityService.getActCharts(pageData);
-        pageData.put("column","sys_user.college AS college");
-        pageData.put("column2","sys_user.college");
-        List<PageData> groupCollege =  activityService.getActCharts(pageData);
-        pageData.put("column","sys_user.collegetie AS collegetie");
-        pageData.put("column2","sys_user.collegetie");
-        List<PageData> groupcollegetie =  activityService.getActCharts(pageData);
-        pageData.put("column","LEFT(sys_user.`username`,4) AS persionnum");
-        pageData.put("column2","LEFT(sys_user.`username`,4)");
-        List<PageData> groupPersonNum =  activityService.getActCharts(pageData);
-        return R.ok().put("groupGender",groupGender)
-                .put("groupCollege",groupCollege)
-                .put("groupcollegetie",groupcollegetie)
-                .put("groupPersonNum",groupPersonNum);
+        pageData.put("column", "sys_user.gender AS gender");
+        pageData.put("column2", "sys_user.gender");
+        List<PageData> groupGender = activityService.getActCharts(pageData);
+        pageData.put("column", "sys_user.college AS college");
+        pageData.put("column2", "sys_user.college");
+        List<PageData> groupCollege = activityService.getActCharts(pageData);
+        pageData.put("column", "sys_user.collegetie AS collegetie");
+        pageData.put("column2", "sys_user.collegetie");
+        List<PageData> groupcollegetie = activityService.getActCharts(pageData);
+        pageData.put("column", "LEFT(sys_user.`username`,4) AS persionnum");
+        pageData.put("column2", "LEFT(sys_user.`username`,4)");
+        List<PageData> groupPersonNum = activityService.getActCharts(pageData);
+        return R.ok().put("groupGender", groupGender)
+                .put("groupCollege", groupCollege)
+                .put("groupcollegetie", groupcollegetie)
+                .put("groupPersonNum", groupPersonNum);
     }
 
     @PostMapping("/replies")
@@ -272,12 +281,79 @@ public class ActivityController extends BaseController {
     @PostMapping("/repliesLike")
     public R repliesLike() throws Exception {
         PageData pageData = this.getPageData();
-        if (pageData.getValueOfInteger("type") == 1){
+        if (pageData.getValueOfInteger("type") == 1) {
             activityService.repliesLike(pageData);
-        }else{
+        } else {
             activityService.delRepliesLike(pageData);
         }
         return R.ok();
     }
+
+    @GetMapping("/exportExcel")
+    public R exportExcel(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        //清除buffer缓存
+        response.reset();
+        // 指定下载的文件名
+        String fileName = DateUtil.dateToString(new Date());
+        response.setHeader("Content-Disposition", "attachment;filename=" + fileName + ".xlsx");
+        response.setContentType("application/vnd.ms-excel;charset=UTF-8");
+        response.setHeader("Pragma", "no-cache");
+        response.setHeader("Cache-Control", "no-cache");
+        response.setDateHeader("Expires", 0);
+        //封装形参
+        XSSFWorkbook xssfWorkbook = null;
+        List<Excel> excel = new ArrayList<Excel>();
+        Map<Integer, List<Excel>> mapExcel = new LinkedHashMap<Integer, List<Excel>>();
+        //设置标题列
+        excel.add(new Excel("姓名", "name", 0));
+        excel.add(new Excel("性别", "gender", 0));
+        excel.add(new Excel("学号", "persionnum", 0));
+        excel.add(new Excel("手机", "mobile", 0));
+        excel.add(new Excel("学院", "college", 0));
+        excel.add(new Excel("专业", "collegemajor", 0));
+        excel.add(new Excel("QQ", "QQ", 0));
+        excel.add(new Excel("微信", "wechart", 0));
+//        excel.add(new Excel("状态", "status", 0));
+        //标题列行数以及cell字体样式
+        mapExcel.put(0, excel);
+        //工作簿名称
+        String sheetName = "报名表";
+        //excel标题列以及对应model字段名
+        List<User> list = new ArrayList<User>();
+        PageData pageData = new PageData();
+        List<PageData> pageDataList = this.activityService.getActivityUserId(pageData);
+        for (int i = 0; i < pageDataList.size(); i++) {
+            PageData data = sysUserService.getinfoByid(pageDataList.get(i));
+            User user = new User(
+                    this.isNull(data.getValueOfString("name")),
+                    this.isNull(data.getValueOfString("mobile")),
+                    this.isNull(data.getValueOfString("persionnum")),
+                    this.isNull(data.getValueOfString("wechart")),
+                    this.isNull(data.getValueOfString("QQ")),
+                    this.isNull(data.getValueOfString("college")),
+                    this.isNull(data.getValueOfString("collegetie")),
+                    this.isNull(data.getValueOfString("gender"))
+            );
+            list.add(user);
+        }
+        //生成excel
+        xssfWorkbook = ExcelUtil.createExcelFile(User.class, list, mapExcel, sheetName);
+        //下载
+        OutputStream output;
+        output = response.getOutputStream();
+        BufferedOutputStream bufferedOutPut = new BufferedOutputStream(output);
+        bufferedOutPut.flush();
+        xssfWorkbook.write(bufferedOutPut);
+        bufferedOutPut.close();
+        return R.ok("导出成功");
+    }
+
+    private String isNull(String value) {
+        if (value.equals("null") || value == null) {
+            return "无";
+        }
+        return value;
+    }
+
 
 }
