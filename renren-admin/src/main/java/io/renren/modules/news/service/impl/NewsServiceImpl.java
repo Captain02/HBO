@@ -51,5 +51,15 @@ public class NewsServiceImpl implements NewsService {
         return (List<PageData>) daoSupport.findForList("NewsDao.getNewsReplicelistPage",page);
     }
 
+    @Override
+    public void likereplies(PageData pageData) throws Exception {
+        daoSupport.save("NewsDao.likereplies",pageData);
+    }
+
+    @Override
+    public void unlikereplies(PageData pageData) throws Exception {
+        daoSupport.delete("NewsDao.unlikereplies",pageData);
+    }
+
 
 }

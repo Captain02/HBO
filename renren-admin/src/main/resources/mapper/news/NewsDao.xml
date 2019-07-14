@@ -171,7 +171,8 @@
         </set>
         WHERE `id` = #{newsId,jdbcType=INTEGER}
     </update>
-    <select id="getNewsReplicelistPage" resultMap="newsReplice">
+    <select id="
+" resultMap="newsReplice">
         SELECT news_replies.`id`,news_replies.`userid`,news_replies.`parentid`,
         news_replies.`topicid`,news_replies.`createtime`,
         news_replies.`repliescontent`,news_replies.`repliesuserid`,news_replies.`states`
@@ -191,4 +192,10 @@
     <select id="selectlikenum" resultType="io.renren.common.entity.PageData">
         SELECT count(*) num FROM bbs_replies_like WHERE repliesid = #{id}
     </select>
+    <insert id="likereplies">
+        insert into news_replies_like (userid,repliesid) values (#{userid},#{repliesid});
+    </insert>
+    <delete id="unlikereplies">
+        DELETE FROM news_replies_like WHERE userid = #{userid} AND repliesid = #{repliesid}
+    </delete>
 </mapper>

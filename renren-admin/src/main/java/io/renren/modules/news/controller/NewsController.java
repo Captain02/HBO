@@ -18,6 +18,7 @@ import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 
 @RestController()
 @RequestMapping("/sys/news")
@@ -182,5 +183,23 @@ public class NewsController extends BaseController {
             return R.ok().put("data", null);
         }
         return R.ok().put("data", list);
+    }
+
+    @ApiOperation(value = "新闻评论点赞",tags = {"新闻"},notes = "{'type':状态（1：点赞，0取消点赞）,'userid':用户id,'repliesid':回复的id}")
+    @PostMapping(value = "/likereplies", produces = "application/json;charset=utf-8")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "type",paramType = "query",value = "状态（1：点赞，0取消点赞）", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "userid",paramType = "query",value = "用户id", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "repliesid",paramType = "query", value = "评论id", required = true, dataType = "Integer"),
+    })
+    public R likereplies() throws Exception {
+        PageData pageData = this.getPageData();
+        Integer type = pageData.getValueOfInteger("type");
+        if (type==1){
+            newsService.likereplies(pageData);
+        }else {
+            newsService.unlikereplies(pageData);
+        }
+        return R.ok();
     }
 }

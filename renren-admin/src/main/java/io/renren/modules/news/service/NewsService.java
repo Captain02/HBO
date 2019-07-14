@@ -19,4 +19,8 @@ public interface NewsService {
     void updateNews(PageData pageData) throws Exception;
 
     List<PageData> getNewsReplice(Page page) throws Exception;
+
+    void likereplies(PageData pageData) throws Exception;
+
+    void unlikereplies(PageData pageData) throws Exception;
 }
