@@ -198,4 +198,8 @@
     <delete id="unlikereplies">
         DELETE FROM news_replies_like WHERE userid = #{userid} AND repliesid = #{repliesid}
     </delete>
+    <insert id="replies">
+        insert into news_replies (userid,parentid,topicid,repliescontent,repliesuserid)
+        values (#{userid},#{parentid},#{topicid},#{repliescontent},#{repliesuserid});
+    </insert>
 </mapper>

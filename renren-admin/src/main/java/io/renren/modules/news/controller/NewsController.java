@@ -202,4 +202,19 @@ public class NewsController extends BaseController {
         }
         return R.ok();
     }
+
+    @ApiOperation(value = "进行评论",tags = {"新闻"},notes = "{'userid':评论人id,'parentid':父id,'topicid':主题id,'repliescontent':'回复内容','repliesuserid':被回复人id}")
+    @PostMapping(value = "/replies",produces = "application/json;charset=utf-8")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userid",paramType = "query",value = "评论人", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "parentid",paramType = "query",value = "父评论（第一层用0）", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "topicid",paramType = "query", value = "主题id", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "repliescontent",paramType = "query", value = "回复内容", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "repliesuserid",paramType = "query", value = "被回复人id", required = true, dataType = "Integer"),
+    })
+    public R replies() throws Exception {
+        PageData pageData = this.getPageData();
+        newsService.replies(pageData);
+        return R.ok();
+    }
 }
