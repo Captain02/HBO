@@ -202,4 +202,8 @@
         insert into news_replies (userid,parentid,topicid,repliescontent,repliesuserid)
         values (#{userid},#{parentid},#{topicid},#{repliescontent},#{repliesuserid});
     </insert>
+    <update id="delete">
+        UPDATE `actnews`
+        SET actnews`.isnews = 0
+    </update>
 </mapper>

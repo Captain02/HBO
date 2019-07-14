@@ -66,5 +66,10 @@ public class NewsServiceImpl implements NewsService {
         daoSupport.save("NewsDao.replies",pageData);
     }
 
+    @Override
+    public void delete(PageData pageData) throws Exception {
+        daoSupport.update("NewsDao.delete",pageData);
+    }
+
 
 }

@@ -217,4 +217,11 @@ public class NewsController extends BaseController {
         newsService.replies(pageData);
         return R.ok();
     }
+
+    public R delete(){
+        PageData pageData = this.getPageData();
+
+        newsService.delete(pageData);
+        return R.ok();
+    }
 }
