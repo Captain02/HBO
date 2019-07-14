@@ -36,6 +36,7 @@
         <association property="deptInfo" column="{deptId=deptid}"
                      select="io.renren.modules.sys.dao.SysDeptDao.selectDeptById"></association>
         <association property="news_like" column="id" select="newslikeDao.selectLikeById"/>
+        <association property="deptinfo" column="{deptId=deptid}" select="io.renren.modules.sys.dao.SysDeptDao.selectDeptById"></association>
         <collection property="likePeople" column="id" select="selectLikePeopleById"></collection>
     </resultMap>
 
