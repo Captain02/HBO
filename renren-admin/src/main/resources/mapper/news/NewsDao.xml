@@ -122,7 +122,7 @@
     </select>
 
     <insert id="add" useGeneratedKeys="true" keyProperty="id">
-        insert into `actnews` (`corid`,`content`,`title`,`isnews`,`releaseuser`
+        insert into `actnews` (`corid`,`content`,`title`,`releaseuser`
         <trim prefix="," suffixOverrides=",">
             <if test="deptId!=null">
                 `deptid`,
