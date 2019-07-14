@@ -205,5 +205,6 @@
     <update id="delete">
         UPDATE `actnews`
         SET actnews`.isnews = 0
+        WHERE id = #{id}
     </update>
 </mapper>
