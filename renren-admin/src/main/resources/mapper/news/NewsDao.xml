@@ -157,31 +157,15 @@
             <if test="content!=null">
                 `content` = #{content,jdbcType=VARCHAR},
             </if>
-            <!--            <if test="videoid != null and videoid!=''">-->
-            <!--                `videoid` = #{videoId,jdbcType=INTEGER},-->
-            <!--            </if>-->
             <if test="deptid != null">
                 `deptid` = #{deptId,jdbcType=INTEGER},
             </if>
             <if test="title!=null">
                 `title` = #{title,jdbcType=VARCHAR},
             </if>
-            <!--<if test="isNews!=null">-->
-            <!--`isnews` = #{isNews,jdbcType=INTEGER},-->
-            <!--</if>-->
-            <!--<if test="releaseuser!=null">-->
-            <!--`releaseuser` = #{releaseuser,jdbcType=INTEGER},-->
-            <!--</if>-->
         </set>
         WHERE `id` = #{newsId,jdbcType=INTEGER}
     </update>
-    <!--<select id="" resultMap="newsReplice">-->
-        <!--SELECT news_replies.`id`,news_replies.`userid`,news_replies.`parentid`,-->
-        <!--news_replies.`topicid`,news_replies.`createtime`,-->
-        <!--news_replies.`repliescontent`,news_replies.`repliesuserid`,news_replies.`states`-->
-        <!--FROM news_replies-->
-        <!--WHERE news_replies.`topicid` = #{pd.topicid} AND news_replies.`parentid` = #{pd.parentid}-->
-    <!--</select>-->
     <select id="getNewNewsReplice" resultMap="newsReplice">
         SELECT news_replies.`id`,news_replies.`userid`,news_replies.`parentid`,
         news_replies.`topicid`,news_replies.`createtime`,
@@ -189,7 +173,7 @@
         FROM news_replies
         WHERE news_replies.`topicid` = #{topicid} AND news_replies.`parentid` = #{parentid}
     </select>
-    <select id="selectlikeuser" resultType="io.renren.common.entity.PageData">
+    <select id="selectlikeuser" resultType="Long">
         SELECT userid FROM bbs_replies_like WHERE repliesid = #{id}
     </select>
     <select id="selectlikenum" resultType="io.renren.common.entity.PageData">
