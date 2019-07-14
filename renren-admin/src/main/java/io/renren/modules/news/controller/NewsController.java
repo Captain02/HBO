@@ -218,11 +218,13 @@ public class NewsController extends BaseController {
         return R.ok();
     }
 
-    @GetMapping("/delete")
+    @PostMapping("/delete")
     public R delete() throws Exception {
         PageData pageData = this.getPageData();
 
         newsService.delete(pageData);
         return R.ok();
     }
+
+//    public R likenews(){}
 }

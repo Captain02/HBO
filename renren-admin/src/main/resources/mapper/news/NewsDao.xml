@@ -203,8 +203,8 @@
         values (#{userid},#{parentid},#{topicid},#{repliescontent},#{repliesuserid});
     </insert>
     <update id="delete">
-        UPDATE `actnews`
-        SET actnews`.isnews = 0
-        WHERE id = #{id}
+        UPDATE actnews
+        SET actnews.`isnews` = '0'
+        WHERE actnews.`id` = #{id}
     </update>
 </mapper>
