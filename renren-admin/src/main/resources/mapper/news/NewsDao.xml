@@ -4,16 +4,19 @@
 <mapper namespace="NewsDao">
     <resultMap id="newsReplice" type="io.renren.common.entity.PageData">
         <id column="id" property="id"></id>
-        <association property="RepliceUser" select="io.renren.modules.sys.dao.SysUserDao.getinfoByIdNotContentRoleDept" column="{id=userid}"></association>
-        <association property="ReplicedUser" select="io.renren.modules.sys.dao.SysUserDao.getinfoByIdNotContentRoleDept" column="{id=repliesuserid}"></association>
+        <association property="RepliceUser" select="io.renren.modules.sys.dao.SysUserDao.getinfoByIdNotContentRoleDept"
+                     column="{id=userid}"></association>
+        <association property="ReplicedUser" select="io.renren.modules.sys.dao.SysUserDao.getinfoByIdNotContentRoleDept"
+                     column="{id=repliesuserid}"></association>
         <association property="likenum" column="id" select="selectlikenum"></association>
         <collection property="likeuser" column="id" select="selectlikeuser"></collection>
-        <collection property="getNewsReplice" column="{topicid=topicid,parentid=id}" select="getNewNewsReplice"></collection>
+        <collection property="getNewsReplice" column="{topicid=topicid,parentid=id}"
+                    select="getNewNewsReplice"></collection>
     </resultMap>
 
     <resultMap id="newsPageData" type="io.renren.common.entity.PageData">
         <id column="id" property="id"></id>
-<!--        <association property="video" column="{id=videoid}" select="FileDao.selectById"/>-->
+        <!--        <association property="video" column="{id=videoid}" select="FileDao.selectById"/>-->
         <association property="releaseuser" column="{id=releaseuser}"
                      select="io.renren.modules.sys.dao.SysUserDao.getinfoByIdNotContentRoleDept"/>
         <association property="deptInfo" column="{deptId=deptid}"
@@ -27,7 +30,7 @@
         <id column="id" property="id"></id>
         <association property="replicenum" column="id" select="replicenum"></association>
         <association property="likenum" column="id" select="likenum"></association>
-<!--        <association property="video" column="{id=videoid}" select="FileDao.selectById"/>-->
+        <!--        <association property="video" column="{id=videoid}" select="FileDao.selectById"/>-->
         <association property="releaseuser" column="{id=releaseuser}"
                      select="io.renren.modules.sys.dao.SysUserDao.getinfoByIdNotContentRoleDept"/>
         <association property="deptInfo" column="{deptId=deptid}"
@@ -124,9 +127,9 @@
             <if test="deptid!=null">
                 `deptid`,
             </if>
-<!--            <if test="videoid != null and videoid!=''">-->
-<!--                `videoid`,-->
-<!--            </if>-->
+            <!--            <if test="videoid != null and videoid!=''">-->
+            <!--                `videoid`,-->
+            <!--            </if>-->
         </trim>
         )
         values(#{corId,jdbcType=INTEGER},
@@ -135,9 +138,9 @@
         #{isNews,jdbcType=INTEGER},
         #{releaseuser,jdbcType=INTEGER}
         <trim prefix="," suffixOverrides=",">
-<!--            <if test="videoid != null and videoid!=''">-->
-<!--                #{videoId,jdbcType=INTEGER},-->
-<!--            </if>-->
+            <!--            <if test="videoid != null and videoid!=''">-->
+            <!--                #{videoId,jdbcType=INTEGER},-->
+            <!--            </if>-->
             <if test="deptid != null">
                 #{deptId,jdbcType=INTEGER},
             </if>
@@ -154,9 +157,9 @@
             <if test="content!=null">
                 `content` = #{content,jdbcType=VARCHAR},
             </if>
-<!--            <if test="videoid != null and videoid!=''">-->
-<!--                `videoid` = #{videoId,jdbcType=INTEGER},-->
-<!--            </if>-->
+            <!--            <if test="videoid != null and videoid!=''">-->
+            <!--                `videoid` = #{videoId,jdbcType=INTEGER},-->
+            <!--            </if>-->
             <if test="deptid != null">
                 `deptid` = #{deptId,jdbcType=INTEGER},
             </if>
@@ -164,22 +167,21 @@
                 `title` = #{title,jdbcType=VARCHAR},
             </if>
             <!--<if test="isNews!=null">-->
-                <!--`isnews` = #{isNews,jdbcType=INTEGER},-->
+            <!--`isnews` = #{isNews,jdbcType=INTEGER},-->
             <!--</if>-->
             <!--<if test="releaseuser!=null">-->
-                <!--`releaseuser` = #{releaseuser,jdbcType=INTEGER},-->
+            <!--`releaseuser` = #{releaseuser,jdbcType=INTEGER},-->
             <!--</if>-->
         </set>
         WHERE `id` = #{newsId,jdbcType=INTEGER}
     </update>
-    <select id="
-" resultMap="newsReplice">
-        SELECT news_replies.`id`,news_replies.`userid`,news_replies.`parentid`,
-        news_replies.`topicid`,news_replies.`createtime`,
-        news_replies.`repliescontent`,news_replies.`repliesuserid`,news_replies.`states`
-        FROM news_replies
-        WHERE news_replies.`topicid` = #{pd.topicid} AND news_replies.`parentid` = #{pd.parentid}
-    </select>
+    <!--<select id="" resultMap="newsReplice">-->
+        <!--SELECT news_replies.`id`,news_replies.`userid`,news_replies.`parentid`,-->
+        <!--news_replies.`topicid`,news_replies.`createtime`,-->
+        <!--news_replies.`repliescontent`,news_replies.`repliesuserid`,news_replies.`states`-->
+        <!--FROM news_replies-->
+        <!--WHERE news_replies.`topicid` = #{pd.topicid} AND news_replies.`parentid` = #{pd.parentid}-->
+    <!--</select>-->
     <select id="getNewNewsReplice" resultMap="newsReplice">
         SELECT news_replies.`id`,news_replies.`userid`,news_replies.`parentid`,
         news_replies.`topicid`,news_replies.`createtime`,
