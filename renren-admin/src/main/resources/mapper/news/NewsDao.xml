@@ -124,7 +124,7 @@
     <insert id="add" useGeneratedKeys="true" keyProperty="id">
         insert into `actnews` (`corid`,`content`,`title`,`isnews`,`releaseuser`
         <trim prefix="," suffixOverrides=",">
-            <if test="deptid!=null">
+            <if test="deptId!=null">
                 `deptid`,
             </if>
             <!--            <if test="videoid != null and videoid!=''">-->
@@ -135,13 +135,12 @@
         values(#{corId,jdbcType=INTEGER},
         #{content,jdbcType=VARCHAR},
         #{title,jdbcType=VARCHAR},
-        #{isNews,jdbcType=INTEGER},
         #{releaseuser,jdbcType=INTEGER}
         <trim prefix="," suffixOverrides=",">
             <!--            <if test="videoid != null and videoid!=''">-->
             <!--                #{videoId,jdbcType=INTEGER},-->
             <!--            </if>-->
-            <if test="deptid != null">
+            <if test="deptId != null">
                 #{deptId,jdbcType=INTEGER},
             </if>
         </trim>
