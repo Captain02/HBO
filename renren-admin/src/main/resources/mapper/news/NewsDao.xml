@@ -176,7 +176,7 @@
     <select id="selectlikeuser" resultType="Long">
         SELECT userid FROM bbs_replies_like WHERE repliesid = #{id}
     </select>
-    <select id="selectlikenum" resultType="io.renren.common.entity.PageData">
+    <select id="selectlikenum" resultType="Long">
         SELECT count(*) num FROM bbs_replies_like WHERE repliesid = #{id}
     </select>
     <insert id="likereplies">
