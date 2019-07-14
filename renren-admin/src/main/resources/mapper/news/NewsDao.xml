@@ -214,4 +214,11 @@
     <delete id="unlikeTopic">
         DELETE FROM news_like WHERE userid = #{userid} AND topicid = #{topicid}
     </delete>
+    <select id="getNewsReplicelistPage" resultMap="newsReplice">
+        SELECT news_replies.`id`,news_replies.`userid`,news_replies.`parentid`,
+        news_replies.`topicid`,news_replies.`createtime`,
+        news_replies.`repliescontent`,news_replies.`repliesuserid`,news_replies.`states`
+        FROM news_replies
+        WHERE news_replies.`topicid` = #{pd.topicid} AND news_replies.`parentid` = #{pd.parentid}
+    </select>
 </mapper>
