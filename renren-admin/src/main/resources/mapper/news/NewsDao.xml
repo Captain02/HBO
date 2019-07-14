@@ -165,9 +165,9 @@
             <if test="isNews!=null">
                 `isnews` = #{isNews,jdbcType=INTEGER},
             </if>
-            <if test="releaseuser!=null">
-                `releaseuser` = #{releaseuser,jdbcType=INTEGER},
-            </if>
+            <!--<if test="releaseuser!=null">-->
+                <!--`releaseuser` = #{releaseuser,jdbcType=INTEGER},-->
+            <!--</if>-->
         </set>
         WHERE `id` = #{newsId,jdbcType=INTEGER}
     </update>
