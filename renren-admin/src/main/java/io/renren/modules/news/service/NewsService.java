@@ -27,4 +27,8 @@ public interface NewsService {
     void replies(PageData pageData) throws Exception;
 
     void delete(PageData pageData) throws Exception;
+
+    void likeTopic(PageData pageData) throws Exception;
+
+    void unlikeTopic(PageData pageData) throws Exception;
 }

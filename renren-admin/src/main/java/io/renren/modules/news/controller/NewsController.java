@@ -226,5 +226,22 @@ public class NewsController extends BaseController {
         return R.ok();
     }
 
-//    public R likenews(){}
+    @ApiOperation(value = "新闻点赞",tags = {"新闻"},notes = "{'type':'状态（1：点赞，0取消点赞）','userid':'用户id','topicid':'主题id'}")
+    @PostMapping(value = "/likeTopic")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "type",paramType = "query",value = "状态（1：点赞，0取消点赞）", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "userid",paramType = "query",value = "用户id", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "topicid",paramType = "query", value = "主题id", required = true, dataType = "Integer"),
+    })
+    public R likeTopic() throws Exception {
+
+        PageData pageData = this.getPageData();
+
+        if (pageData.getValueOfInteger("type")==1){
+            newsService.likeTopic(pageData);
+        }else {
+            newsService.unlikeTopic(pageData);
+        }
+        return R.ok();
+    }
 }

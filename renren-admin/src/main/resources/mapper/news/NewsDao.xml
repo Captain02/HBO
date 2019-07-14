@@ -66,6 +66,7 @@
         FROM `actnews` n
         LEFT JOIN `corporation` c ON c.`id`=n.`corid`
         WHERE 1 = 1
+        AND n.`isnews` = 1
         <if test="pd.corid != null and pd.corid!=''">
             AND c.`id`=#{pd.corid,jdbcType=INTEGER}
         </if>
@@ -207,4 +208,10 @@
         SET actnews.`isnews` = '0'
         WHERE actnews.`id` = #{id}
     </update>
+    <insert id="likeTopic">
+        insert into news_like (userid,topicid) values (#{userid},#{topicid});
+    </insert>
+    <delete id="unlikeTopic">
+        DELETE FROM news_like WHERE userid = #{userid} AND topicid = #{topicid}
+    </delete>
 </mapper>
