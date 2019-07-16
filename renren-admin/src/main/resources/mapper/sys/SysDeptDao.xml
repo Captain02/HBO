@@ -60,7 +60,7 @@
 	</select>
 
     <select id="selectAllDept" resultType="io.renren.common.entity.PageData">
-        SELECT dept_id,`name`,`parent_id` FROM sys_dept WHERE corid = #{corid} AND d.`del_flag`= 0
+        SELECT dept_id,`name`,`parent_id` FROM sys_dept WHERE corid = #{corid} AND sys_dept.`del_flag`= 0
     </select>
 
 </mapper>
