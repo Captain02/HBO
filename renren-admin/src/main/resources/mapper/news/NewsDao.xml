@@ -36,7 +36,6 @@
         <association property="deptInfo" column="{deptId=deptid}"
                      select="io.renren.modules.sys.dao.SysDeptDao.selectDeptById"></association>
         <association property="news_like" column="id" select="newslikeDao.selectLikeById"/>
-        <association property="deptinfo" column="{deptId=deptid}" select="io.renren.modules.sys.dao.SysDeptDao.selectDeptById"></association>
         <collection property="likePeople" column="id" select="selectLikePeopleById"></collection>
     </resultMap>
 
@@ -123,28 +122,12 @@
     </select>
 
     <insert id="add" useGeneratedKeys="true" keyProperty="id">
-        insert into `actnews` (`corid`,`content`,`title`,`releaseuser`
-        <trim prefix="," suffixOverrides=",">
-            <if test="deptId!=null">
-                `deptid`,
-            </if>
-            <!--            <if test="videoid != null and videoid!=''">-->
-            <!--                `videoid`,-->
-            <!--            </if>-->
-        </trim>
-        )
+        insert into `actnews` (`corid`,`content`,`title`,`releaseuser`,`deptid`)
         values(#{corId,jdbcType=INTEGER},
         #{content,jdbcType=VARCHAR},
         #{title,jdbcType=VARCHAR},
         #{releaseuser,jdbcType=INTEGER}
-        <trim prefix="," suffixOverrides=",">
-            <!--            <if test="videoid != null and videoid!=''">-->
-            <!--                #{videoId,jdbcType=INTEGER},-->
-            <!--            </if>-->
-            <if test="deptId != null">
-                #{deptId,jdbcType=INTEGER},
-            </if>
-        </trim>
+        #{deptId,jdbcType=INTEGER},
         )
     </insert>
 
@@ -157,7 +140,7 @@
             <if test="content!=null">
                 `content` = #{content,jdbcType=VARCHAR},
             </if>
-            <if test="deptid != null">
+            <if test="deptId != null">
                 `deptid` = #{deptId,jdbcType=INTEGER},
             </if>
             <if test="title!=null">
