@@ -83,7 +83,7 @@ public class CorporationController extends BaseController {
     public R selectByCorId() {
         PageData pageData = this.getPageData();
         //校验参数
-        CheckParameterUtil.checkParameterMap(pageData, "corId");
+        CheckParameterUtil.checkParameterMap(pageData, "corid");
         try {
             //获取社团详情
             List<PageData> corporation = corporationService.selectByCorId(pageData);

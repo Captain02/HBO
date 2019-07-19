@@ -75,7 +75,7 @@
         LEFT JOIN `filetable` f1 ON f1.`id` = cor.`fileid`
         LEFT JOIN  filetable f2 ON f2.`id` = cor.`bannerid`
         LEFT JOIN filetable f3 ON f3.`id` = cor.`videofile`
-        WHERE cor.`id`=#{corId} AND cor.`iscor` = 1
+        WHERE cor.`id`=#{corid} AND cor.`iscor` = 1
     </select>
 
     <insert id="add" useGeneratedKeys="true" keyProperty="id">
