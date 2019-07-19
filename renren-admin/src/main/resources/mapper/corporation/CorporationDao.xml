@@ -62,20 +62,20 @@
 
     <select id="selectByCorId" resultType="io.renren.common.entity.PageData">
         SELECT cor.`id`,`corname`,`corleading`,`cortercher`,`corworkspace`,cor.`createtime`,`descs`,
-                sd1.`value` corforcollege,
+--                 sd1.`value` corforcollege,
                 sd2.`value` corcollege,
                 sd3.`value` corfaculty,
                 f1.`filepath` filefile,
                 f2.`filepath` bannerfile,
                 f3.`filepath` videofile
         FROM `corporation` cor
-        LEFT JOIN `sys_dict` sd1 ON sd1.`id` = cor.`corforcollege`
+--         LEFT JOIN `sys_dict` sd1 ON sd1.`id` = cor.`corforcollege`
         LEFT JOIN `sys_dict` sd2 ON sd2.`id` = cor.`corcollege`
         LEFT JOIN `sys_dict` sd3 ON sd3.`id` = cor.`corfaculty`
         LEFT JOIN `filetable` f1 ON f1.`id` = cor.`fileid`
         LEFT JOIN  filetable f2 ON f2.`id` = cor.`bannerid`
         LEFT JOIN filetable f3 ON f3.`id` = cor.`videofile`
-        WHERE cor.`id`=#{id} AND cor.`iscor` = 1
+        WHERE cor.`id`=#{corId} AND cor.`iscor` = 1
     </select>
 
     <insert id="add" useGeneratedKeys="true" keyProperty="id">

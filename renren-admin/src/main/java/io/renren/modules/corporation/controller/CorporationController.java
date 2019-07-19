@@ -79,11 +79,11 @@ public class CorporationController extends BaseController {
      */
     @GetMapping("/selectByCorId")
     @ApiOperation(value = "根据社团id获取社团详情", notes = "根据社团id获取社团详情", httpMethod = "GET")
-    @ApiImplicitParam(paramType = "query", name = "id", value = "社团id", required = true, dataType = "Integer")
+    @ApiImplicitParam(paramType = "query", name = "corId", value = "社团id", required = true, dataType = "Integer")
     public R selectByCorId() {
         PageData pageData = this.getPageData();
         //校验参数
-        CheckParameterUtil.checkParameterMap(pageData, "id");
+        CheckParameterUtil.checkParameterMap(pageData, "corId");
         try {
             //获取社团详情
             List<PageData> corporation = corporationService.selectByCorId(pageData);
