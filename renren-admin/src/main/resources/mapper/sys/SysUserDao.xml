@@ -390,7 +390,7 @@
       WHERE sys_user.`username`=#{username}
     </select>
 
-    <!--查询学号是否存在-->
+    <!--查询用户名是否存在-->
     <select id="selectCountByUserName" resultType="Long">
         SELECT COUNT(*) FROM sys_user
         WHERE sys_user.`username` = #{username}
@@ -407,4 +407,17 @@
         SELECT `user_id` userId FROM sys_user
         WHERE sys_user.`username` = #{corleading}
     </select>
+
+    <!--查询学号是否存在-->
+    <select id="selectCountByPersionnum" resultType="Long">
+        SELECT COUNT(*) FROM sys_user
+        WHERE sys_user.`persionnum` = #{persionnum}
+    </select>
+
+    <insert id="add">
+		INSERT INTO `sys_user` (`username`,`password`,`salt`,`mobile`,`persionnum`,
+	        `wechart`,`QQ`,`college`,`collegetie`,`gender`,`name`)
+        VALUES (#{username},#{password},#{salt},#{phone},#{persionnum},#{wechat},#{qq},#{college},#{collegetie},#{qq},#{gender},#{name})
+	</insert>
+
 </mapper>

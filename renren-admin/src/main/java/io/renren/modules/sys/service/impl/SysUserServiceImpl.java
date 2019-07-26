@@ -183,17 +183,17 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 
     @Override
     public List<PageData> selectCorByUserCorid(PageData usercor) throws Exception {
-        return (List<PageData>) daoSupport.findForList("io.renren.modules.sys.dao.SysUserDao.selectCorByUserCorid",usercor);
+        return (List<PageData>) daoSupport.findForList("io.renren.modules.sys.dao.SysUserDao.selectCorByUserCorid", usercor);
     }
 
     @Override
     public List<PageData> getUserCorsByUserName(PageData pageData) throws Exception {
-        return (List<PageData>) daoSupport.findForList("io.renren.modules.sys.dao.SysUserDao.getUserCorsByUserName",pageData);
+        return (List<PageData>) daoSupport.findForList("io.renren.modules.sys.dao.SysUserDao.getUserCorsByUserName", pageData);
     }
 
     @Override
     public Long selectCountByUserName(PageData pageData) throws Exception {
-        return (Long) daoSupport.findForObject("io.renren.modules.sys.dao.SysUserDao.selectCountByUserName",pageData);
+        return (Long) daoSupport.findForObject("io.renren.modules.sys.dao.SysUserDao.selectCountByUserName", pageData);
     }
 
 
@@ -276,7 +276,17 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 
     @Override
     public PageData selectEmailAndPhoneByUserName(PageData pageData) throws Exception {
-        return (PageData) daoSupport.findForObject("io.renren.modules.sys.dao.SysUserDao.selectEmailAndPhoneByUserName",pageData);
+        return (PageData) daoSupport.findForObject("io.renren.modules.sys.dao.SysUserDao.selectEmailAndPhoneByUserName", pageData);
+    }
+
+    @Override
+    public Boolean selectUserByPersionnum(PageData pageData) throws Exception {
+        return (Long) daoSupport.findForObject("io.renren.modules.sys.dao.SysUserDao.selectCountByPersionnum", pageData) > 0 ? true : false;
+    }
+
+    @Override
+    public void add(PageData pageData) throws Exception {
+        daoSupport.save("io.renren.modules.sys.dao.SysUserDao.add", pageData);
     }
 
 
