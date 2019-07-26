@@ -88,10 +88,10 @@ pageSqlId: '.*listPage.*'
 #文件路径
 fileUploudPath: '/home/docker/nginx'
 #地址
-pcConfig: '140.143.201.244:82'
-HBOConfig: '140.143.201.244:8081'
+pcConfig: '47.105.58.149:82'
+HBOConfig: '47.105.58.149:8081'
 #域名信息
-DNSConfig: 'www.yuezhonghao.cn:82'
+DNSConfig: 'www.btzmpro.com:82'
 ##异常路径
 #errorPath: '/HBO/401'
 
