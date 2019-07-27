@@ -281,11 +281,17 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 
     @Override
     public Boolean selectUserByPersionnum(PageData pageData) throws Exception {
-        return (Long) daoSupport.findForObject("io.renren.modules.sys.dao.SysUserDao.selectCountByPersionnum", pageData) > 0 ? true : false;
+        return (Long) daoSupport.findForObject("io.renren.modules.sys.dao.SysUserDao.selectCountByUserName", pageData) > 0 ? true : false;
     }
 
     @Override
     public void add(PageData pageData) throws Exception {
+        //sha256加密
+        String salt = RandomStringUtils.randomAlphanumeric(20);
+        pageData.put("salt", salt);
+        String password = pageData.getValueOfString("password");
+        pageData.put("password", ShiroUtils.sha256(password, salt));
+
         daoSupport.save("io.renren.modules.sys.dao.SysUserDao.add", pageData);
     }
 

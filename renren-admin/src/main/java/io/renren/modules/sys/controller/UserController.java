@@ -37,18 +37,23 @@ public class UserController extends BaseController {
         return R.ok();
     }
 
+    /**
+     * 校验字段
+     * @param pageData
+     * @return
+     */
     public String Verify(PageData pageData){
-        CheckParameterUtil.checkParameterMap(pageData,"name","gender","persionnum","password","confirmPassword","phone","wechat","qq","college","collegetie");
-        if(!pageData.getValueOfString("confirmPassword").equals(pageData.getValueOfString("password"))){
-            return "两次密码不一致";
-        }
-        if(!CheckParameterUtil.isMobile(pageData.getValueOfString("phone"))){
-            return "手机号不正确";
+        CheckParameterUtil.checkParameterMap(pageData,"name","gender","username","password","mobile","wechart","qq","college","collegetie");
+//        if(!pageData.getValueOfString("confirmPassword").equals(pageData.getValueOfString("password"))){
+//            return "两次密码不一致";
+//        }
+        if(!CheckParameterUtil.isMobile(pageData.getValueOfString("mobile"))){
+            return "手机号格式不正确";
         }
         if(!CheckParameterUtil.checkQQ(pageData.getValueOfString("qq"))){
             return "QQ格式不正确";
         }
-        if(!CheckParameterUtil.checkWechat(pageData.getValueOfString("wechat"))){
+        if(!CheckParameterUtil.checkWechat(pageData.getValueOfString("wechart"))){
             return "微信号格式不正确";
         }
         return "";
