@@ -16,6 +16,7 @@
 		<result property="fileid" column="fileid"/>
 		<result property="videofile" column="videofile"/>
 		<result property="userfilepath" column="userfilepath"/>
+		<result property="deptname" column="deptname"/>
 		<collection property="corcrowdList" column="id" select="io.renren.modules.corporation.dao.CorcrowdDao.findcorcrowdById" />
 	</resultMap>
 
@@ -24,8 +25,12 @@
 	(SELECT filepath FROM filetable WHERE id = fileid)fileid,
 	(SELECT filepath FROM filetable WHERE id = bannerid)bannerid,
 	(SELECT filepath FROM filetable WHERE id = videofile)videofile,
+	(SELECT `name` FROM sys_dept WHERE dept_id = deptid)deptname,
 	(SELECT filepath FROM sys_user U LEFT JOIN filetable F ON F.id=U.fileid WHERE user_id = corleading)userfilepath
 	FROM corporation
+	<if test="pd.scale == istrue">
+		order by corscale DESC
+	</if>
     </select>
 
 	<select id="byPrimaryId" resultType="map" parameterType="java.lang.Long">

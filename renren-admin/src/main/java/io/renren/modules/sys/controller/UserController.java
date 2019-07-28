@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Api(tags = "用户")
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/sys/user")
 public class UserController extends BaseController {
     @Autowired
     private SysUserService sysUserService;
