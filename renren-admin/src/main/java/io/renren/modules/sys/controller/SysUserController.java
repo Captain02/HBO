@@ -445,4 +445,42 @@ public class SysUserController extends BaseController {
         PageData captcha = captchaService.captcha(response);
         return R.ok().put("data",captcha);
     }
+
+    //登录界面用户注册
+    @PostMapping("/add")
+    public R save() throws Exception {
+        PageData pageData = this.getPageData();
+        String msg = Verify(pageData);
+        if(msg.length()>0){
+            return R.error(msg);
+        }
+//        Boolean isSave = sysUserService.selectUserByPersionnum(pageData);
+//        if (!isSave) {
+//            return R.error("用户已存在");
+//        }
+        sysUserService.add(pageData);
+        return R.ok();
+    }
+
+    /**
+     * 校验字段
+     * @param pageData
+     * @return
+     */
+    public String Verify(PageData pageData){
+        CheckParameterUtil.checkParameterMap(pageData,"name","gender","username","password","mobile","wechart","qq","college","collegetie");
+//        if(!pageData.getValueOfString("confirmPassword").equals(pageData.getValueOfString("password"))){
+//            return "两次密码不一致";
+//        }
+        if(!CheckParameterUtil.isMobile(pageData.getValueOfString("mobile"))){
+            return "手机号格式不正确";
+        }
+        if(!CheckParameterUtil.checkQQ(pageData.getValueOfString("qq"))){
+            return "QQ格式不正确";
+        }
+        if(!CheckParameterUtil.checkWechat(pageData.getValueOfString("wechart"))){
+            return "微信号格式不正确";
+        }
+        return "";
+    }
 }

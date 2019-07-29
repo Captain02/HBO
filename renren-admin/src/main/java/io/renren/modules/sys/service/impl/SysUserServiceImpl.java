@@ -295,5 +295,4 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
         daoSupport.save("io.renren.modules.sys.dao.SysUserDao.add", pageData);
     }
 
-
 }

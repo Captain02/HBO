@@ -128,6 +128,11 @@
         <include refid="corSql"/>
     </insert>
 
+    <insert id="addCorUser" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `cor_user`(`userid`,`corid`,`status`)
+        VALUES(#{userId,jdbcType=INTEGER},#{id,jdbcType=INTEGER},1)
+    </insert>
+
     <update id="update">
         UPDATE corporation set iscor = 0 WHERE id = #{id}
     </update>

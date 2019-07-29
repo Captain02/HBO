@@ -33,6 +33,15 @@ public class CorporationServiceImpl implements CorporationService {
 
     @Override
     @Transactional
+    public void apply(PageData pageData) throws Exception {
+        //插入社团表
+        daoSupport.save("CorporationDao.add",pageData);
+        //插入社团用户表
+        daoSupport.save("CorporationDao.addCorUser",pageData);
+    }
+
+    @Override
+    @Transactional
     public void add(PageData pageData) throws Exception {
         //插入文件表
         daoSupport.save("FileDao.add",pageData);
