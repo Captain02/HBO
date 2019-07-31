@@ -19,5 +19,8 @@
         LEFT JOIN filetable ON filetable.id = sys_user.fileid
         WHERE user_id = #{id}
     </select>
+    <insert id="saveuserwehartinfo" useGeneratedKeys="true" keyProperty="user_id">
+      insert into sys_user (`name`,`gender`,`fileid`) values (#{name},#{gender},#{fileid});
+    </insert>
 
 </mapper>

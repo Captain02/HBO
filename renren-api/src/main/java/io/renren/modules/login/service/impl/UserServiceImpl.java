@@ -83,4 +83,9 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
 
         return null;
     }
+
+    @Override
+    public void saveuserwehartinfo(PageData pageData) throws Exception {
+        daoSupport.save("io.renren.modules.login.dao.UserDao.saveuserwehartinfo",pageData);
+    }
 }

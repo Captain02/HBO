@@ -117,7 +117,7 @@ public class CorporationController extends BaseController{
      *社团报名
      * @return
      */
-    @Login
+//    @Login
     @PostMapping("addCor")
     @ApiOperation(value ="社团报名", httpMethod = "POST",tags = {"社团"})
     @ApiImplicitParams({
