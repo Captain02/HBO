@@ -22,7 +22,7 @@ public class UserInfoController {
     @Autowired
     UserService userService;
 
-    @ApiOperation(value = "用户认证保存的信息",tags = {"个人信息"},notes = "{'name':姓名,'gender':1男/0女}")
+    @ApiOperation(value = "用户认证保存的信息",tags = {"个人信息"},notes = "{'nickName':姓名,'gender':1男/0女}")
     @PostMapping(value = "/saveuserwehartinfo", produces = "application/json;charset=utf-8")
     public R saveuserwehartinfo(@RequestBody String json) throws Exception {
         Map o = JsonUtils.parseStringToObject(json, Map.class);
