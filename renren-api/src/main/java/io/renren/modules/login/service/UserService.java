@@ -35,4 +35,5 @@ public interface UserService extends IService<UserEntity> {
 	String userLogin(PageData pageData) throws Exception;
 
 
+	void saveuserwehartinfo(PageData pageData) throws Exception;
 }
