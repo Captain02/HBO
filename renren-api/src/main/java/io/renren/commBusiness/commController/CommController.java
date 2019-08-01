@@ -27,7 +27,7 @@ public class CommController extends BaseController {
     //
     /*{TypeId}/{parentValue}*/
 
-    @ApiOperation(value = "用户信息修改", tags = {"通用类"}, notes = "" +
+    @ApiOperation(value = "学院和专业下拉菜单", tags = {"通用类"}, notes = "" +
             "{'typeId':类型id，当类型为1并且,parentValue不填时，查询所有学院，当类型id=2并且parentValue也为实参时，查询专业" +
             "'parentValue':parentValue，学院id," +
             "}" +
