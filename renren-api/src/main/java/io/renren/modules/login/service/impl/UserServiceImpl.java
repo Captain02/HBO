@@ -88,4 +88,14 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
     public void saveuserwehartinfo(PageData pageData) throws Exception {
         daoSupport.save("io.renren.modules.login.dao.UserDao.saveuserwehartinfo",pageData);
     }
+
+    @Override
+    public void updateuser(PageData pageData) throws Exception {
+        daoSupport.update("io.renren.modules.login.dao.UserDao.updateUser",pageData);
+    }
+
+    @Override
+    public Long selectUserByusername(PageData o) throws Exception {
+        return (Long) daoSupport.findForObject("io.renren.modules.login.dao.UserDao.selectUserByusername",o);
+    }
 }

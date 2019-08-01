@@ -23,4 +23,53 @@
       insert into sys_user (`name`,`gender`,`fileid`) values (#{name},#{gender},#{fileid});
     </insert>
 
+    <update id="updateUser">
+        UPDATE sys_user
+        <trim prefix="set" suffixOverrides=",">
+            <if test="username != null and username != 'null'">
+                `username` = #{username},
+            </if>
+            <if test="newpassword != null and newpassword != 'null'">
+                `password` = #{newpassword},
+            </if>
+            <if test="salt != null and salt != 'null'">
+                `salt` = #{salt},
+            </if>
+            <if test="email != null and email != 'null'">
+                `email` = #{email},
+            </if>
+            <if test="mobile != null and mobile != 'null'">
+                `mobile` = #{mobile},
+            </if>
+            <if test="username != null and username != 'null'">
+                `persionnum` = #{username},
+            </if>
+            <if test="wechart != null and wechart != 'null'">
+                `wechart` = #{wechart},
+            </if>
+            <if test="qq != null and qq != 'null'">
+                `qq` = #{qq},
+            </if>
+            <if test="college != null and college != 'null'">
+                `college` = #{college},
+            </if>
+            <if test="collegetie != null and collegetie != 'null'">
+                `collegetie` = #{collegetie},
+            </if>
+            <if test="descs != null and descs != 'null'">
+                `descs` = #{descs},
+            </if>
+            <if test="name != null and name != 'null'">
+                `name` = #{name},
+            </if>
+        </trim>
+        WHERE user_id = #{user_id}
+    </update>
+
+    <select id="selectUserByusername" resultType="Long">
+        SELECT COUNT(*) num
+        FROM sys_user
+        WHERE sys_user.`username` = #{username}
+    </select>
+
 </mapper>
