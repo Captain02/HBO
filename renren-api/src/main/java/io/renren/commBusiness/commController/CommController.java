@@ -32,7 +32,7 @@ public class CommController extends BaseController {
             "'parentValue':parentValue，学院id," +
             "}" +
             "比如:typeId:1,查询所有学院；" +
-            "typeId:1,parentValue:4,查询id=4的学院下的所有专业；"
+            "typeId:2,parentValue:4,查询id=4的学院下的所有专业；"
     )
     @GetMapping(value = "/getselectes", produces = "application/json;charset=utf-8")
     public R getselectes(@RequestBody String json) throws Exception {
