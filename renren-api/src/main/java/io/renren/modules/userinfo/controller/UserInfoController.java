@@ -43,7 +43,7 @@ public class UserInfoController {
         return R.ok().put("data", pageData);
     }
 
-    @ApiOperation(value = "用户信息修改", tags = {"个人信息"}, notes = "" +
+    @ApiOperation(value = "用户信息修改（除了学号和密码其他的信息）", tags = {"个人信息"}, notes = "" +
             "'email':邮箱," +
             "'mobile':手机," +
             "'wechart':微信," +
@@ -62,7 +62,7 @@ public class UserInfoController {
     }
 
 
-    @ApiOperation(value = "用户信息修改", tags = {"个人信息"}, notes = "" +
+    @ApiOperation(value = "用户信息修改（学号和密码）", tags = {"个人信息"}, notes = "" +
             "{'username':学号," +
             "'password':密码," +
             "}")
