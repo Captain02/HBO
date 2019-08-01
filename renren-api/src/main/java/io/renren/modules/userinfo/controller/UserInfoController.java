@@ -57,7 +57,6 @@ public class UserInfoController {
     public R updateuser(@RequestBody String json) throws Exception {
         PageData o = JsonUtils.parseStringToObject(json, PageData.class);
         CheckParameterUtil.checkParameterMap(o, "user_id");
-        Long num = userService.selectUserByusername(o);
         userService.updateuser(o);
         return R.ok();
     }
