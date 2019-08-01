@@ -1,5 +1,6 @@
 package io.renren.commBusiness.commController;
 
+import io.renren.comm.util.JsonUtils;
 import io.renren.commBusiness.commService.CommService;
 import io.renren.common.controller.BaseController;
 import io.renren.common.entity.PageData;
@@ -16,7 +17,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Api(tags = "通用类")
-@RestController("sys/comm")
+@RestController
+@RequestMapping("/sys/comm")
 public class CommController extends BaseController {
 
     @Autowired
@@ -24,17 +26,17 @@ public class CommController extends BaseController {
 
     //
     /*{TypeId}/{parentValue}*/
-    @ApiOperation(value = "根据类型id和父类id得到列表",tags = {"通用类"})
-    @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "query",dataType = "Integer",name="typeId",value = "类型id",required = false),
-            @ApiImplicitParam(paramType = "query",dataType = "Integer",name="parentValue",value = "父类id",required = false)
-    })
-    @GetMapping("/getselectes")
-    public R getselectes(@RequestParam(value = "typeId", required = false) Integer typeId,
-                         @RequestParam(value = "parentValue", required = false) Integer parentValue) throws Exception {
-        PageData pageData = new PageData();
-        pageData.put("typeId", typeId);
-        pageData.put("parentValue", parentValue);
+
+    @ApiOperation(value = "用户信息修改", tags = {"通用类"}, notes = "" +
+            "{'typeId':类型id，当类型为1并且,parentValue不填时，查询所有学院，当类型id=2并且parentValue也为实参时，查询专业" +
+            "'parentValue':parentValue，学院id," +
+            "}" +
+            "比如:typeId:1,查询所有学院；" +
+            "typeId:1,parentValue:4,查询id=4的学院下的所有专业；"
+    )
+    @GetMapping(value = "/getselectes", produces = "application/json;charset=utf-8")
+    public R getselectes(@RequestBody String json) throws Exception {
+        PageData pageData = JsonUtils.parseStringToObject(json,PageData.class);
         List<PageData> data = commService.getselectes(pageData);
         return R.ok().put("data", data);
     }
