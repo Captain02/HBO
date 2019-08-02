@@ -107,8 +107,7 @@ public class CorporationController extends BaseController {
             @ApiImplicitParam(paramType = "query", name = "cortercher", value = "负责老师", required = true, dataType = "String"),
             @ApiImplicitParam(paramType = "query", name = "corworkspace", value = "工作地点", required = true, dataType = "String"),
             @ApiImplicitParam(paramType = "query", name = "corcollege", value = "学院", required = true, dataType = "String"),
-            @ApiImplicitParam(paramType = "query", name = "corfaculty", value = "系别", required = true, dataType = "String"),
-            @ApiImplicitParam(paramType = "query", name = "url", value = "社团主页连接", required = true, dataType = "String")
+            @ApiImplicitParam(paramType = "query", name = "corscale", value = "社团规模", required = true, dataType = "Integer")
     })
     public R add(HttpServletRequest request) throws Exception {
         PageData pageData = this.getPageData();
@@ -117,6 +116,11 @@ public class CorporationController extends BaseController {
         CheckParameterUtil.checkParameterMap(pageData, parameters);
         //查找负责人id
         pageData.put("corleading", sysUserService.queryByUserName(pageData));
+
+        Integer userId = sysUserService.queryByUserName(pageData);
+        if (userId == null) {
+            return R.error("社团负责人未注册");
+        }
         //添加社团
         try {
 //            System.out.println("request.getContextPath(): "+request.getContextPath()+"/upload/QrCode/");
@@ -125,7 +129,7 @@ public class CorporationController extends BaseController {
             //添加社团
             corporationService.add(pageData);
             //创建二维码
-            String url = "http://" + DOMAIN_NAME + "/#/code-map?Id=" + pageData.getValueOfInteger("id") + "&type=" + Const.CORPORATION_TYPE;
+            String url = "https://" + DOMAIN_NAME + "/#/code-map?Id=" + pageData.getValueOfInteger("id") + "&type=" + Const.CORPORATION_TYPE;
             QrCodeUtils.encodeByqrCodeName(url, FILEUPLOUD + "/file/QrCode/Corporation/", pageData.get("corName").toString());
             return R.ok().put("data", pageData);
         } catch (Exception e) {
