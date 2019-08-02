@@ -28,7 +28,7 @@
 	(SELECT `name` FROM sys_dept WHERE dept_id = deptid)deptname,
 	(SELECT filepath FROM sys_user U LEFT JOIN filetable F ON F.id=U.fileid WHERE user_id = corleading)userfilepath
 	FROM corporation
-	<if test="pd.scale == istrue">
+	<if test="pd.scale == 'istrue'">
 		order by corscale DESC
 	</if>
     </select>
