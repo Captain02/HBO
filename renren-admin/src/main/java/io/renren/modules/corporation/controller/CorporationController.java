@@ -1,5 +1,6 @@
 package io.renren.modules.corporation.controller;
 
+import io.renren.common.commBusiness.commService.CommService;
 import io.renren.common.controller.BaseController;
 import io.renren.common.dao.DaoSupport;
 import io.renren.common.entity.Page;
@@ -11,24 +12,28 @@ import io.renren.common.utils.R;
 import io.renren.modules.corporation.service.CorporationService;
 import io.renren.common.utils.QrCodeUtils;
 import io.renren.modules.dict.service.DictService;
+import io.renren.modules.qqcodefile.service.QqCodeFileService;
 import io.renren.modules.sys.service.SysUserService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController()
 @RequestMapping("/sys/corporation")
+@Api(value = "/sys/corporation", tags = "社团模块")
 public class CorporationController extends BaseController {
 
     @Autowired
@@ -39,6 +44,10 @@ public class CorporationController extends BaseController {
     private SysUserService sysUserService;
     @Autowired
     DaoSupport daoSupport;
+    @Autowired
+    private QqCodeFileService qqCodeFileService;
+    @Autowired
+    private CommService commService;
 
     //文件上传路径
     @Value("${fileUploudPath}")
@@ -212,6 +221,114 @@ public class CorporationController extends BaseController {
         } catch (Exception e) {
             e.printStackTrace();
             return R.error("更新失败");
+        }
+    }
+
+    /**
+     * 根据社团id获取qq纳新群二维码
+     *
+     * @return
+     */
+    @GetMapping("/qqCodeFileList")
+    @ApiOperation(value = "根据社团id获取qq纳新群二维码", notes = "根据社团id获取qq纳新群二维码", httpMethod = "GET")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "corId", value = "社团id", paramType = "query", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "pageSize", value = "每页显示记录数", paramType = "query", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "currPage", value = "当前页", paramType = "query", required = true, dataType = "Integer"),
+    })
+    public R qqCodeFileList(@ApiIgnore Page page) throws Exception {
+        PageData pageData = this.getPageData();
+        CheckParameterUtil.checkParameterMap(pageData, "corId");
+        page.setPd(pageData);
+        List<PageData> data = qqCodeFileService.getQQCodeList(page);
+        return R.ok().put("page", page).put("data", data);
+
+    }
+
+    /**
+     * 单个qq纳新群二维码上传
+     *
+     * @return
+     */
+    @PostMapping("/save")
+    @ApiOperation(value = "单个qq纳新群二维码上传", notes = "单个qq纳新群二维码上传", httpMethod = "POST")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "form", name = "qqCodeFile", value = "图片文件", required = true, dataType = "File"),
+            @ApiImplicitParam(name = "corId", value = "社团id", required = true, dataType = "Integer")
+    })
+    public R save(@RequestParam("qqCodeFile") MultipartFile qqCodeFile, HttpServletRequest request) throws Exception {
+        System.out.println("单个qq纳新群二维码上传");
+        //文件上传
+        PageData pageData = this.getPageData();
+        CheckParameterUtil.checkParameterMap(pageData, "corId");
+        String path = commService.uploadFile(qqCodeFile, request, "/file/qqCodeFile/");
+        if (path == null) {
+            return R.error("单个qq纳新群二维码上传失败");
+        }
+        //保存到数据库
+        pageData.put("path", path);
+        pageData.put("filename", qqCodeFile.getOriginalFilename());
+        qqCodeFileService.save(pageData);
+        return R.ok().put("data", pageData);
+    }
+
+    /**
+     * 批量qq纳新群二维码上传
+     *
+     * @return
+     */
+    @PostMapping("/batch")
+    @ApiOperation(value = "批量qq纳新群二维码上传", notes = "批量qq纳新群二维码上传", httpMethod = "POST")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "form", name = "qqCodeFile", value = "多个图片文件",
+                    allowMultiple = true, required = true, dataType = "File"),
+            @ApiImplicitParam(name = "corId", value = "社团id", required = true, dataType = "Integer")
+    })
+    public R batch(@RequestParam("qqCodeFile") MultipartFile[] qqCodeFile, HttpServletRequest request) throws Exception {
+        System.out.println("执行了多个qq纳新群二维码上传");
+
+        Map<String, Object> pageDataMap = new HashMap<>();
+        //文件上传
+        PageData pageData = this.getPageData();
+        CheckParameterUtil.checkParameterMap(pageData, "corId");
+
+        for (int i = 0; i < qqCodeFile.length; i++) {
+            String path = commService.uploadFile(qqCodeFile[i], request, "/file/qqCodeFile/");
+            if (path == null) {
+                return R.error("文件上传失败");
+            }
+            //保存到数据库
+            pageData.put("path", path);
+            pageData.put("filename", qqCodeFile[i].getOriginalFilename());
+            qqCodeFileService.save(pageData);
+            pageDataMap.put(Integer.toString(i), pageData);
+        }
+        System.out.println(pageDataMap);
+        //将文件在服务器的存储路径返回
+        return R.ok().put("data", pageDataMap);
+    }
+
+    /**
+     *
+     * @param request
+     * @return
+     */
+    @PostMapping("/delQqCodeFile")
+    @ApiOperation(value = "删除纳新群二维码", notes = "删除纳新群二维码", httpMethod = "POST")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "path", value = "纳新群二维码路径", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "id", value = "图片id", required = true, dataType = "Integer")
+    })
+    public R delQqCodeFile(HttpServletRequest request) throws Exception {
+        PageData pageData = this.getPageData();
+        CheckParameterUtil.checkParameterMap(pageData, new String[]{"path", "id"});
+        StringBuffer url = new StringBuffer();
+        url.append("/home/docker/nginx").append((String) pageData.get("path"));
+        System.out.println("delurl" + url);
+        if (commService.deleteFile(url.toString()) && qqCodeFileService.del(pageData)) {
+            return R.ok("删除成功");
+        } else {
+            return R.error("删除失败");
         }
     }
 

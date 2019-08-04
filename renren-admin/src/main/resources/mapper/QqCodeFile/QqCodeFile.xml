@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="QqCodeFileDao">
+
+    <select id="qqCodeFilelistPage" resultType="io.renren.common.entity.PageData">
+        SELECT id,corid,`filename`,createtime,`path`
+        FROM `QQfile`
+        WHERE corid = #{pd.corId}
+    </select>
+
+    <insert id="save" useGeneratedKeys="true" keyProperty="id">
+        <!--
+            新插入一条数据返回新插入的id
+                方法一：
+                    useGeneratedKeys="true" keyProperty="id" keyColumn="id"
+                方法二：
+                <selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
+                    <select Last_insert_id() as id
+                </selectKey>
+        -->
+        INSERT INTO QQfile(filename,path,corid) VALUES (#{filename},#{path},#{corId})
+    </insert>
+
+    <delete id="delete">
+        DELETE FROM QQfile WHERE id = #{id}
+    </delete>
+
+</mapper>
