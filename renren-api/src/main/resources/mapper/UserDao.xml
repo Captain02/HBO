@@ -72,4 +72,14 @@
         WHERE sys_user.`username` = #{username}
     </select>
 
+    <select id="selectUserInfoByusername" resultType="io.renren.common.entity.PageData">
+        SELECT
+        sys_user.user_id,sys_user.username,sys_user.college,
+        sys_user.collegetie,sys_user.gender,sys_user.descs,filetable.filepath,sys_user.`name`,
+        filetable.`filepath` headpath
+        FROM sys_user
+        LEFT JOIN filetable ON filetable.id = sys_user.fileid
+        WHERE sys_user.username = #{username}
+    </select>
+
 </mapper>

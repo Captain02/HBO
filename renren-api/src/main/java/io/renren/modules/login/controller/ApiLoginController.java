@@ -10,11 +10,13 @@ package io.renren.modules.login.controller;
 
 
 import io.renren.annotation.Login;
+import io.renren.annotation.LoginUser;
 import io.renren.common.controller.BaseController;
 import io.renren.common.entity.PageData;
 import io.renren.common.utils.JWTUtil;
 import io.renren.common.utils.R;
 import io.renren.common.utils.RedisUtils;
+import io.renren.modules.login.entity.UserEntity;
 import io.renren.modules.login.service.TokenService;
 import io.renren.modules.login.service.UserService;
 import io.swagger.annotations.Api;
@@ -26,6 +28,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.UUID;
@@ -91,5 +94,16 @@ public class ApiLoginController extends BaseController {
         return R.ok();
     }
 
+    @Login
+    @GetMapping("/getuserInfo")
+    @ApiOperation(value="获取用户信息")
+    public R userInfo(HttpServletRequest req) throws Exception {
+        String tokenReq = req.getHeader("Authorization");
+        String username = JWTUtil.getUsername(tokenReq);
+        PageData pageData = new PageData();
+        pageData.put("username",username);
+        PageData user = userService.selectUserInfoByusername(pageData);
+        return R.ok().put("user", user);
+    }
 
 }

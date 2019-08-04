@@ -98,4 +98,9 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
     public Long selectUserByusername(PageData o) throws Exception {
         return (Long) daoSupport.findForObject("io.renren.modules.login.dao.UserDao.selectUserByusername",o);
     }
+
+    @Override
+    public PageData selectUserInfoByusername(PageData pageData) throws Exception {
+        return (PageData) daoSupport.findForObject("io.renren.modules.login.dao.UserDao.selectUserInfoByusername",pageData);
+    }
 }

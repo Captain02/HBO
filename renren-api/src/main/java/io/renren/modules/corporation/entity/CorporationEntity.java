@@ -30,6 +30,7 @@ public class CorporationEntity implements Serializable {
 	private String corleading;
 	private String cortercher;
 	private String corworkspace;
+	private String deptname;
 	/**
 	 * 创建时间
 	 */
