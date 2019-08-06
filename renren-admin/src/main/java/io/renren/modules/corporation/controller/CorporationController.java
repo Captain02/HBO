@@ -121,7 +121,7 @@ public class CorporationController extends BaseController {
     public R add(HttpServletRequest request) throws Exception {
         PageData pageData = this.getPageData();
         //校验参数
-        String[] parameters = {"corName", "corleading", "corTercher", "corWorkspace", "corCollege", "corFaculty"};
+        String[] parameters = {"corName", "corleading", "corTercher", "corWorkspace", "corCollege"};
         CheckParameterUtil.checkParameterMap(pageData, parameters);
         //查找负责人id
         pageData.put("corleading", sysUserService.queryByUserName(pageData));
