@@ -164,7 +164,7 @@ public class CorporationController extends BaseController {
 //        pageData.put("username",pageData.getValueOfString("corleading"));
         //校验负责人是否注册
         Integer userId = sysUserService.queryByUserName(pageData);
-        if (userId == null) {
+        if (userId == 0) {
             return R.error("社团负责人未注册");
         }else {
             pageData.put("userId",userId);
