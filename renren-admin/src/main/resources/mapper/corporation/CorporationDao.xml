@@ -61,7 +61,7 @@
     </select>
 
     <select id="selectByCorId" resultType="io.renren.common.entity.PageData">
-        SELECT cor.`id`,`corname`,`corleading`,`cortercher`,`corworkspace`,cor.`createtime`,`descs`,
+        SELECT cor.`id`,`corname`,`corleading`,`cortercher`,`corworkspace`,cor.`createtime`,cor.`descs`,
                 sd2.`value` corcollege,
                 sd3.`value` corfaculty,
                 f1.`filepath` filefile,
