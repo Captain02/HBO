@@ -67,7 +67,9 @@
                 sd3.`value` corfaculty,
                 f1.`filepath` filefile,
                 f2.`filepath` bannerfile,
-                f3.`filepath` videofile
+                f3.`filepath` videofile,
+                su.`username` leadusername,
+                su.`name` leadingname
         FROM `corporation` cor
 --         LEFT JOIN `sys_dict` sd1 ON sd1.`id` = cor.`corforcollege`
         LEFT JOIN `sys_dict` sd2 ON sd2.`id` = cor.`corcollege`
@@ -75,6 +77,7 @@
         LEFT JOIN `filetable` f1 ON f1.`id` = cor.`fileid`
         LEFT JOIN  filetable f2 ON f2.`id` = cor.`bannerid`
         LEFT JOIN filetable f3 ON f3.`id` = cor.`videofile`
+        LEFT JOIN sys_user su ON su.user_id = cor.corleading
         WHERE cor.`id`=#{corid} AND cor.`iscor` = 1
     </select>
 
