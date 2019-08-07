@@ -226,6 +226,25 @@ public class CorporationController extends BaseController {
         }
     }
 
+    @PostMapping("/updateCorBanner")
+    @ApiOperation(value = "更新社团banner", notes = "更新社团banner", httpMethod = "POST")
+    public R updateCorBanner(MultipartFile banner, HttpServletRequest request) throws Exception {
+        PageData pageData = this.getPageData();
+        //文件上传
+        CheckParameterUtil.checkParameterMap(pageData, "corId");
+        String path = commService.uploadFile(banner, request, "/file/corbanner/");
+        if (path == null) {
+            return R.error("banner上传失败");
+        }
+        //保存到数据库
+        pageData.put("path", path);
+        pageData.put("filePath", path+banner.getOriginalFilename());
+        pageData.put("filename", banner.getOriginalFilename());
+        pageData.put("fileName", banner.getOriginalFilename());
+        corporationService.updatefile(pageData,banner,request);
+        return R.ok().put("filePath",path+banner.getOriginalFilename());
+    }
+
     /**
      * 根据社团id获取qq纳新群二维码
      *

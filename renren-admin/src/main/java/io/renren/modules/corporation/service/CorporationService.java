@@ -22,4 +22,6 @@ public interface CorporationService {
     List<PageData> selectByCorId(PageData pageData) throws Exception;
 
     void apply(PageData pageData) throws Exception;
+
+    void updatefile(PageData pageData, MultipartFile qqCodeFile, HttpServletRequest request) throws Exception;
 }
