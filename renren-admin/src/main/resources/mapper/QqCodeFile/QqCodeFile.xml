@@ -5,7 +5,7 @@
 
     <select id="qqCodeFilelistPage" resultType="io.renren.common.entity.PageData">
         SELECT id,corid,`filename`,createtime,`path`
-        FROM `QQfile`
+        FROM `qqfile`
         WHERE corid = #{pd.corId}
     </select>
 
@@ -23,7 +23,7 @@
     </insert>
 
     <delete id="delete">
-        DELETE FROM QQfile WHERE id = #{id}
+        DELETE FROM qqfile WHERE id = #{id}
     </delete>
 
 </mapper>
