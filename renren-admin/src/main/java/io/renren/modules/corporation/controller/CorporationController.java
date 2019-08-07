@@ -241,11 +241,11 @@ public class CorporationController extends BaseController {
         }
         //保存到数据库
         pageData.put("path", path);
-        pageData.put("filePath", path + file.getOriginalFilename());
+        pageData.put("filePath", path);
         pageData.put("filename", file.getOriginalFilename());
         pageData.put("fileName", file.getOriginalFilename());
         corporationService.updatefile(pageData, file, request, "bannerId");
-        return R.ok().put("filePath", path + file.getOriginalFilename());
+        return R.ok().put("filePath", path);
     }
 
 
@@ -265,11 +265,11 @@ public class CorporationController extends BaseController {
         }
         //保存到数据库
         pageData.put("path", path);
-        pageData.put("filePath", path + file.getOriginalFilename());
+        pageData.put("filePath", path);
         pageData.put("filename", file.getOriginalFilename());
         pageData.put("fileName", file.getOriginalFilename());
         corporationService.updatefile(pageData, file, request, "videoId");
-        return R.ok().put("filePath", path + file.getOriginalFilename());
+        return R.ok().put("filePath", path);
     }
 
     /**
