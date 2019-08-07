@@ -8,9 +8,9 @@ import io.renren.common.entity.PageData;
 import io.renren.common.util.Const;
 import io.renren.common.util.DateTool;
 import io.renren.common.utils.CheckParameterUtil;
+import io.renren.common.utils.QrCodeUtils;
 import io.renren.common.utils.R;
 import io.renren.modules.corporation.service.CorporationService;
-import io.renren.common.utils.QrCodeUtils;
 import io.renren.modules.dict.service.DictService;
 import io.renren.modules.qqcodefile.service.QqCodeFileService;
 import io.renren.modules.sys.service.SysUserService;
@@ -20,7 +20,6 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import springfox.documentation.annotations.ApiIgnore;
@@ -166,16 +165,16 @@ public class CorporationController extends BaseController {
         Integer userId = sysUserService.queryByUserName(pageData);
         if (userId == 0) {
             return R.error("社团负责人未注册");
-        }else {
-            pageData.put("userId",userId);
-            pageData.put("corleading",userId);
+        } else {
+            pageData.put("userId", userId);
+            pageData.put("corleading", userId);
         }
         //封装参数
-        pageData.put("corName",pageData.getValueOfString("corname"));
-        pageData.put("corTercher",pageData.getValueOfString("cortercher"));
-        pageData.put("corWorkspace",pageData.getValueOfString("corworkspace"));
-        pageData.put("corScale",pageData.getValueOfInteger("corscale"));
-        pageData.put("corCollege",pageData.getValueOfInteger("corcollege"));
+        pageData.put("corName", pageData.getValueOfString("corname"));
+        pageData.put("corTercher", pageData.getValueOfString("cortercher"));
+        pageData.put("corWorkspace", pageData.getValueOfString("corworkspace"));
+        pageData.put("corScale", pageData.getValueOfInteger("corscale"));
+        pageData.put("corCollege", pageData.getValueOfInteger("corcollege"));
         //社团申请
         corporationService.apply(pageData);
         return R.ok();
@@ -232,21 +231,21 @@ public class CorporationController extends BaseController {
             @ApiImplicitParam(paramType = "query", name = "corid", value = "社团id", required = true, dataType = "String"),
             @ApiImplicitParam(paramType = "query", name = "file", value = "社团id", required = true, dataType = "file"),
     })
-    public R updateCorBanner(MultipartFile banner, HttpServletRequest request) throws Exception {
+    public R updateCorBanner(@RequestParam("file") MultipartFile file, HttpServletRequest request) throws Exception {
         PageData pageData = this.getPageData();
         //文件上传
         CheckParameterUtil.checkParameterMap(pageData, "corid");
-        String path = commService.uploadFile(banner, request, "/file/corBanner/");
+        String path = commService.uploadFile(file, request, "/file/corBanner/");
         if (path == null) {
             return R.error("banner上传失败");
         }
         //保存到数据库
         pageData.put("path", path);
-        pageData.put("filePath", path+banner.getOriginalFilename());
-        pageData.put("filename", banner.getOriginalFilename());
-        pageData.put("fileName", banner.getOriginalFilename());
-        corporationService.updatefile(pageData,banner,request,"bannerId");
-        return R.ok().put("filePath",path+banner.getOriginalFilename());
+        pageData.put("filePath", path + file.getOriginalFilename());
+        pageData.put("filename", file.getOriginalFilename());
+        pageData.put("fileName", file.getOriginalFilename());
+        corporationService.updatefile(pageData, file, request, "bannerId");
+        return R.ok().put("filePath", path + file.getOriginalFilename());
     }
 
 
@@ -256,21 +255,21 @@ public class CorporationController extends BaseController {
             @ApiImplicitParam(paramType = "query", name = "corid", value = "社团id", required = true, dataType = "String"),
             @ApiImplicitParam(paramType = "query", name = "file", value = "社团id", required = true, dataType = "file"),
     })
-    public R updateCorVideo(MultipartFile banner, HttpServletRequest request) throws Exception {
+    public R updateCorVideo(@RequestParam("file") MultipartFile file, HttpServletRequest request) throws Exception {
         PageData pageData = this.getPageData();
         //文件上传
         CheckParameterUtil.checkParameterMap(pageData, "corid");
-        String path = commService.uploadFile(banner, request, "/file/corVideo/");
+        String path = commService.uploadFile(file, request, "/file/corVideo/");
         if (path == null) {
             return R.error("banner上传失败");
         }
         //保存到数据库
         pageData.put("path", path);
-        pageData.put("filePath", path+banner.getOriginalFilename());
-        pageData.put("filename", banner.getOriginalFilename());
-        pageData.put("fileName", banner.getOriginalFilename());
-        corporationService.updatefile(pageData,banner,request,"videoId");
-        return R.ok().put("filePath",path+banner.getOriginalFilename());
+        pageData.put("filePath", path + file.getOriginalFilename());
+        pageData.put("filename", file.getOriginalFilename());
+        pageData.put("fileName", file.getOriginalFilename());
+        corporationService.updatefile(pageData, file, request, "videoId");
+        return R.ok().put("filePath", path + file.getOriginalFilename());
     }
 
     /**
@@ -358,7 +357,6 @@ public class CorporationController extends BaseController {
     }
 
     /**
-     *
      * @param request
      * @return
      */
