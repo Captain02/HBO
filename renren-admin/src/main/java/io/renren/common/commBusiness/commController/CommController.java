@@ -51,6 +51,9 @@ public class CommController extends BaseController {
     public R uploadFile(@RequestParam("picture") MultipartFile picture, HttpServletRequest request) {
         PageData pageData = this.getPageData();
         String path = (String) pageData.get("path");
+        if (path==null||path.equals("")){
+            path = "/file/QrCode/FuFile/";
+        }
         path = commService.uploadFile(picture, request, path);
         if (path != null) {
             return R.ok().put("data", path);
@@ -58,6 +61,7 @@ public class CommController extends BaseController {
             return R.error("文件上传失败");
         }
     }
+
 
     /**
      * 文件名称保存到数据库
