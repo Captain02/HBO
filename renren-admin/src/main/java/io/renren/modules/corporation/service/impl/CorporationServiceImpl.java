@@ -47,10 +47,10 @@ public class CorporationServiceImpl implements CorporationService {
 
     @Override
     @Transactional
-    public void updatefile(PageData pageData, MultipartFile qqCodeFile, HttpServletRequest request) throws Exception {
+    public void updatefile(PageData pageData, MultipartFile qqCodeFile, HttpServletRequest request,String type) throws Exception {
         Integer fileId = commService.addFile2DB(pageData);
         PageData pageData1 = new PageData();
-        pageData1.put("bannerId",fileId);
+        pageData1.put(type,fileId);
         pageData1.put("corid",pageData.getValueOfString("corid"));
         updateCor(pageData1);
     }

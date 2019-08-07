@@ -228,11 +228,15 @@ public class CorporationController extends BaseController {
 
     @PostMapping("/updateCorBanner")
     @ApiOperation(value = "更新社团banner", notes = "更新社团banner", httpMethod = "POST")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", name = "corid", value = "社团id", required = true, dataType = "String"),
+            @ApiImplicitParam(paramType = "query", name = "file", value = "社团id", required = true, dataType = "file"),
+    })
     public R updateCorBanner(MultipartFile banner, HttpServletRequest request) throws Exception {
         PageData pageData = this.getPageData();
         //文件上传
-        CheckParameterUtil.checkParameterMap(pageData, "corId");
-        String path = commService.uploadFile(banner, request, "/file/corbanner/");
+        CheckParameterUtil.checkParameterMap(pageData, "corid");
+        String path = commService.uploadFile(banner, request, "/file/corBanner/");
         if (path == null) {
             return R.error("banner上传失败");
         }
@@ -241,7 +245,31 @@ public class CorporationController extends BaseController {
         pageData.put("filePath", path+banner.getOriginalFilename());
         pageData.put("filename", banner.getOriginalFilename());
         pageData.put("fileName", banner.getOriginalFilename());
-        corporationService.updatefile(pageData,banner,request);
+        corporationService.updatefile(pageData,banner,request,"bannerId");
+        return R.ok().put("filePath",path+banner.getOriginalFilename());
+    }
+
+
+    @PostMapping("/updateCorVideo")
+    @ApiOperation(value = "更新社团Video", notes = "更新社团Video", httpMethod = "POST")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", name = "corid", value = "社团id", required = true, dataType = "String"),
+            @ApiImplicitParam(paramType = "query", name = "file", value = "社团id", required = true, dataType = "file"),
+    })
+    public R updateCorVideo(MultipartFile banner, HttpServletRequest request) throws Exception {
+        PageData pageData = this.getPageData();
+        //文件上传
+        CheckParameterUtil.checkParameterMap(pageData, "corid");
+        String path = commService.uploadFile(banner, request, "/file/corVideo/");
+        if (path == null) {
+            return R.error("banner上传失败");
+        }
+        //保存到数据库
+        pageData.put("path", path);
+        pageData.put("filePath", path+banner.getOriginalFilename());
+        pageData.put("filename", banner.getOriginalFilename());
+        pageData.put("fileName", banner.getOriginalFilename());
+        corporationService.updatefile(pageData,banner,request,"videoId");
         return R.ok().put("filePath",path+banner.getOriginalFilename());
     }
 

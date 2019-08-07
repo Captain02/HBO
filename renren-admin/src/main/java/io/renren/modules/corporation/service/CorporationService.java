@@ -23,5 +23,5 @@ public interface CorporationService {
 
     void apply(PageData pageData) throws Exception;
 
-    void updatefile(PageData pageData, MultipartFile qqCodeFile, HttpServletRequest request) throws Exception;
+    void updatefile(PageData pageData, MultipartFile banner, HttpServletRequest request, String video)throws Exception;
 }
