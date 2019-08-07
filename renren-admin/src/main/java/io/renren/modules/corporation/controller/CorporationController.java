@@ -209,12 +209,14 @@ public class CorporationController extends BaseController {
      */
     @PostMapping("/update")
     @ApiOperation(value = "根据社团id更新社团", notes = "根据社团id更新社团", httpMethod = "POST")
-    @ApiImplicitParam(paramType = "query", name = "id", value = "社团id", required = true, dataType = "Integer")
+    @ApiImplicitParam(paramType = "query", name = "corid", value = "社团id", required = true, dataType = "Integer")
     public R update() {
         PageData pageData = this.getPageData();
         //校验参数
         CheckParameterUtil.checkParameterMap(pageData, "id");
         try {
+            //查找负责人id
+            pageData.put("corleading", sysUserService.queryByUserName(pageData));
             //更新
             corporationService.updateCor(pageData);
             return R.ok("更新成功");

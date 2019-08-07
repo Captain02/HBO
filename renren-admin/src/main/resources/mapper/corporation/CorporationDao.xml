@@ -156,9 +156,6 @@
             <if test="corCollege!=null">
                 `corcollege`=#{corCollege,jdbcType=INTEGER},
             </if>
-            <if test="corFaculty!=null">
-                `corfaculty`=#{corFaculty,jdbcType=INTEGER},
-            </if>
             <if test="corScale!=null">
                 `corscale`=#{corScale,jdbcType=INTEGER},
             </if>
@@ -184,7 +181,7 @@
                 `corid`=#{corId,jdbcType=INTEGER},
             </if>
         </set>
-        WHERE id = #{id}
+        WHERE id = #{corid}
     </update>
 
 </mapper>
