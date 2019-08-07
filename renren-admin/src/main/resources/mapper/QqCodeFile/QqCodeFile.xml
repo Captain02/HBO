@@ -19,7 +19,7 @@
                     <select Last_insert_id() as id
                 </selectKey>
         -->
-        INSERT INTO QQfile(filename,path,corid) VALUES (#{filename},#{path},#{corId})
+        INSERT INTO qqfile(filename,path,corid) VALUES (#{filename},#{path},#{corId})
     </insert>
 
     <delete id="delete">
