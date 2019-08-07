@@ -52,7 +52,7 @@ public class CorporationServiceImpl implements CorporationService {
         PageData pageData1 = new PageData();
         pageData1.put(type,fileId);
         pageData1.put("corid",pageData.getValueOfString("corid"));
-        updateCor(pageData1);
+        daoSupport.update("CorporationDao.updateCor", pageData);
     }
 
     @Override
