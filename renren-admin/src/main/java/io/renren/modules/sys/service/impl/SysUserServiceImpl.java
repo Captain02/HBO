@@ -295,4 +295,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
         daoSupport.save("io.renren.modules.sys.dao.SysUserDao.add", pageData);
     }
 
+    @Override
+    public List<PageData> getusersByusernameAndcor(PageData pageData) throws Exception {
+        return (List<PageData>) daoSupport.findForList("io.renren.modules.sys.dao.SysUserDao.getusersByusernameAndcor",pageData);
+    }
+
 }

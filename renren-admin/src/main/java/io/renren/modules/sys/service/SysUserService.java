@@ -105,4 +105,6 @@ public interface SysUserService extends IService<SysUserEntity> {
     Boolean selectUserByPersionnum(PageData pageData) throws Exception;
 
     void add(PageData pageData) throws Exception;
+
+    List<PageData> getusersByusernameAndcor(PageData pageData) throws Exception;
 }

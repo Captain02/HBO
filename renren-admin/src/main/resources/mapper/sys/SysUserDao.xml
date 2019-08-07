@@ -389,6 +389,20 @@
       LEFT JOIN sys_user ON sys_user.user_id = cor_user.userid
       WHERE sys_user.`username`=#{username}
     </select>
+    <select id="getusersByusernameAndcor" resultType="io.renren.common.entity.PageData">
+        select sys_user.user_id,sys_user.`username`,sys_user.`name` from corporation
+        LEFT JOIN cor_user ON cor_user.corid = corporation.id
+        LEFT JOIN sys_user ON sys_user.user_id = cor_user.userid
+        WHERE cor_user.corid = #{corid}
+        <choose>
+            <when test="userid != null ">
+                AND cor_user.userid=#{userid}
+            </when>
+            <when test="username != null ">
+                AND sys_user.username LIKE "%"#{username}"%"
+            </when>
+        </choose>
+    </select>
 
     <!--查询用户名是否存在-->
     <select id="selectCountByUserName" resultType="Long">

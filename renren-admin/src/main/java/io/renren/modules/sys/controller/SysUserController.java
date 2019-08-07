@@ -28,6 +28,7 @@ import io.renren.modules.sys.service.SysUserService;
 import io.renren.modules.sys.shiro.ShiroUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import oracle.jdbc.proxy.annotation.Post;
 import org.apache.commons.lang.StringUtils;
@@ -482,5 +483,18 @@ public class SysUserController extends BaseController {
             return "微信号格式不正确";
         }
         return "";
+    }
+
+    @GetMapping("/getusersByusernameAndcor")
+    @ApiOperation(value = "根据社团id和学号获取个户", notes = "用户", httpMethod = "GET")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "username", value = "学号", required = true, dataType = "String",paramType = "query"),
+            @ApiImplicitParam(name = "corid", value = "社团id", required = true, dataType = "Integer",paramType = "query"),
+    })
+    public R getusersByusernameAndcor() throws Exception {
+        PageData pageData = this.getPageData();
+        List<PageData> data = sysUserService.getusersByusernameAndcor(pageData);
+
+        return R.ok().put("data",data);
     }
 }
