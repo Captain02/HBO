@@ -48,6 +48,10 @@ public class CommController extends BaseController {
      * @throws Exception
      */
     @PostMapping("/upload")
+    @ApiOperation(value = "通用文件上传",tags = {"通用类"})
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query",dataType = "file",name="picture",value = "类型id",required = true),
+    })
     public R uploadFile(@RequestParam("picture") MultipartFile picture, HttpServletRequest request) {
         PageData pageData = this.getPageData();
         String path = (String) pageData.get("path");
