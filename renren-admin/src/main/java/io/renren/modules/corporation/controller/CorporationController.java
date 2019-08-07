@@ -212,7 +212,7 @@ public class CorporationController extends BaseController {
     public R update() {
         PageData pageData = this.getPageData();
         //校验参数
-        CheckParameterUtil.checkParameterMap(pageData, "id");
+        CheckParameterUtil.checkParameterMap(pageData, "corid");
         try {
             //查找负责人id
             pageData.put("corleading", sysUserService.queryByUserName(pageData));
