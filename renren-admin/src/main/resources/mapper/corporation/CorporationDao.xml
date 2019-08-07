@@ -157,8 +157,8 @@
             <if test="corCollege!=null">
                 `corcollege`=#{corCollege,jdbcType=INTEGER},
             </if>
-            <if test="corScale!=null">
-                `corscale`=#{corScale,jdbcType=INTEGER},
+            <if test="corscale!=null">
+                `corscale`=#{corscale,jdbcType=INTEGER},
             </if>
             <if test="fileId!=null">
                 `fileid`=#{fileId,jdbcType=INTEGER},
