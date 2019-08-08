@@ -129,6 +129,7 @@ public class CorporationController extends BaseController {
         if (userId == null) {
             return R.error("社团负责人未注册");
         }
+        pageData.put("userid",userId);
         //添加社团
         try {
 //            System.out.println("request.getContextPath(): "+request.getContextPath()+"/upload/QrCode/");

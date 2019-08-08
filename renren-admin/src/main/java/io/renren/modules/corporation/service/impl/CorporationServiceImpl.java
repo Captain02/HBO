@@ -62,6 +62,8 @@ public class CorporationServiceImpl implements CorporationService {
         daoSupport.save("FileDao.add", pageData);
         //插入社团表
         daoSupport.save("CorporationDao.add", pageData);
+        pageData.put("corid",pageData.getValueOfString("id"));
+        daoSupport.save("CorporationDao.addCorUser",pageData);
     }
 
     @Override
