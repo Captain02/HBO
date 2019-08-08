@@ -60,6 +60,7 @@ public class CorporationServiceImpl implements CorporationService {
     public void add(PageData pageData) throws Exception {
         //插入文件表
         daoSupport.save("FileDao.add", pageData);
+        pageData.put("fileId",pageData.getValueOfString("id"));
         //插入社团表
         daoSupport.save("CorporationDao.add", pageData);
         pageData.put("corid",pageData.getValueOfString("id"));

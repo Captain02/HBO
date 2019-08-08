@@ -86,7 +86,7 @@
             <if test="corName!=null and corName!=''">
                 `corname`,
             </if>
-            <if test="corleading!=null">
+            <if test="userid!=null">
                 `corleading`,
             </if>
             <if test="corTercher!=null and corTercher!=''">
@@ -101,7 +101,7 @@
             <if test="corFaculty!=null">
                 `corfaculty`,
             </if>
-            <if test="corScale!=null">
+            <if test="corscale!=null">
                 `corscale`,
             </if>
             <if test="fileId!=null">
@@ -131,8 +131,8 @@
             <if test="corName!=null and corName!=''">
                 #{corName,jdbcType=VARCHAR},
             </if>
-            <if test="corleading!=null">
-                #{corleading,jdbcType=INTEGER},
+            <if test="userid!=null">
+                #{userId,jdbcType=INTEGER},
             </if>
             <if test="corTercher!=null and corTercher!=''">
                 #{corTercher,jdbcType=VARCHAR},
@@ -146,8 +146,8 @@
             <if test="corFaculty!=null">
                 #{corFaculty,jdbcType=INTEGER},
             </if>
-            <if test="corScale!=null">
-                #{corScale,jdbcType=INTEGER},
+            <if test="corscale!=null">
+                #{corscale,jdbcType=INTEGER},
             </if>
             <if test="fileId!=null">
                 #{fileId,jdbcType=INTEGER},
