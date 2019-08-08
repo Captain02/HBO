@@ -126,7 +126,8 @@ public class CorporationController extends BaseController {
         pageData.put("corleading", sysUserService.queryByUserName(pageData));
 
         Long userId = sysUserService.queryByUserName(pageData);
-        if (userId == 0) {
+        System.out.println("userId"+userId);
+        if (userId==null || userId == 0) {
             return R.error("社团负责人未注册");
         }
         pageData.put("username",pageData.getValueOfString("corleading"));
