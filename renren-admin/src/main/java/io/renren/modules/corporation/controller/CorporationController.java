@@ -125,7 +125,7 @@ public class CorporationController extends BaseController {
         //查找负责人id
         pageData.put("corleading", sysUserService.queryByUserName(pageData));
 
-        Integer userId = sysUserService.queryByUserName(pageData);
+        Long userId = sysUserService.queryByUserName(pageData);
         if (userId == 0) {
             return R.error("社团负责人未注册");
         }
@@ -165,7 +165,7 @@ public class CorporationController extends BaseController {
         CheckParameterUtil.checkParameterMap(pageData, "corname", "corleading", "cortercher", "corworkspace", "corscale", "corcollege");
 //        pageData.put("username",pageData.getValueOfString("corleading"));
         //校验负责人是否注册
-        Integer userId = sysUserService.queryByUserName(pageData);
+        Long userId = sysUserService.queryByUserName(pageData);
         if (userId == 0) {
             return R.error("社团负责人未注册");
         } else {
