@@ -417,7 +417,7 @@
     </select>
 
     <!--查询学号查询id-->
-    <select id="selectIdByUserName" resultType="integer">
+    <select id="selectIdByUserName" resultType="Long">
         SELECT count(*) num FROM sys_user
         WHERE sys_user.`username` = #{corleading}
     </select>

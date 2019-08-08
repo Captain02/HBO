@@ -126,10 +126,12 @@ public class CorporationController extends BaseController {
         pageData.put("corleading", sysUserService.queryByUserName(pageData));
 
         Integer userId = sysUserService.queryByUserName(pageData);
-        if (userId == null) {
+        if (userId == 0) {
             return R.error("社团负责人未注册");
         }
-        pageData.put("userid",userId);
+        pageData.put("username",pageData.getValueOfString("corleading"));
+        PageData pageData1 = sysUserService.selectUserByUsername(pageData);
+        pageData.put("userid",pageData1.getValueOfString("user_id"));
         //添加社团
         try {
 //            System.out.println("request.getContextPath(): "+request.getContextPath()+"/upload/QrCode/");
