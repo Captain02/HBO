@@ -127,7 +127,50 @@
             </if>
         </trim>
         VALUES
-        <include refid="corSql"/>
+        <trim prefix="(" suffixOverrides="," suffix=")">
+            <if test="corName!=null and corName!=''">
+                #{corName,jdbcType=VARCHAR},
+            </if>
+            <if test="corleading!=null">
+                #{corleading,jdbcType=INTEGER},
+            </if>
+            <if test="corTercher!=null and corTercher!=''">
+                #{corTercher,jdbcType=VARCHAR},
+            </if>
+            <if test="corWorkspace!=null and corWorkspace!=''">
+                #{corWorkspace,jdbcType=VARCHAR},
+            </if>
+            <if test="corCollege!=null">
+                #{corCollege,jdbcType=INTEGER},
+            </if>
+            <if test="corFaculty!=null">
+                #{corFaculty,jdbcType=INTEGER},
+            </if>
+            <if test="corScale!=null">
+                #{corScale,jdbcType=INTEGER},
+            </if>
+            <if test="fileId!=null">
+                #{fileId,jdbcType=INTEGER},
+            </if>
+            <if test="descs!=null and descs!=''">
+                #{descs,jdbcType=VARCHAR},
+            </if>
+            <if test="videoId!=null">
+                #{videoId,jdbcType=INTEGER},
+            </if>
+            <if test="bannerId!=null">
+                #{bannerId,jdbcType=INTEGER},
+            </if>
+            <if test="isCor!=null">
+                1,
+            </if>
+            <if test="deptId!=null">
+                #{deptId,jdbcType=INTEGER},
+            </if>
+            <if test="corId!=null">
+                #{corId,jdbcType=INTEGER},
+            </if>
+        </trim>
     </insert>
 
     <insert id="addCorUser" useGeneratedKeys="true" keyProperty="id">
