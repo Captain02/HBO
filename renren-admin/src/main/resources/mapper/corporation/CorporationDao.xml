@@ -244,7 +244,7 @@
         <foreach collection="corcrowdList" item="item" index="index" separator=",">
             (
             #{corid},
-            #{item},
+            #{item}
             )
         </foreach>
     </insert>
