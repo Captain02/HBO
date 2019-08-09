@@ -144,7 +144,7 @@
                 #{corName,jdbcType=VARCHAR},
             </if>
             <if test="userid!=null">
-                #{userId,jdbcType=INTEGER},
+                #{userid,jdbcType=INTEGER},
             </if>
             <if test="corTercher!=null and corTercher!=''">
                 #{corTercher,jdbcType=VARCHAR},
@@ -187,7 +187,7 @@
 
     <insert id="addCorUser" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO `cor_user`(`userid`,`corid`,`status`)
-        VALUES(#{userId,jdbcType=INTEGER},#{id,jdbcType=INTEGER},1)
+        VALUES(#{userid,jdbcType=INTEGER},#{id,jdbcType=INTEGER},1)
     </insert>
 
     <update id="update">
