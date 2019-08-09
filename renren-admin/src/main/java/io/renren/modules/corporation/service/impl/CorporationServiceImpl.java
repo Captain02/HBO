@@ -75,7 +75,10 @@ public class CorporationServiceImpl implements CorporationService {
     }
 
     @Override
+    @Transactional
     public void updateCor(PageData pageData) throws Exception {
         daoSupport.update("CorporationDao.updateCor", pageData);
+        daoSupport.delete("CorporationDao.delCorcrowd",pageData);
+        daoSupport.save("CorporationDao.addCorcrowd",pageData);
     }
 }

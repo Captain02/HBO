@@ -152,39 +152,39 @@ public class CorporationController extends BaseController {
         }
     }
 
-    @PostMapping("/apply")
-    @ApiOperation(value = "社团申请", notes = "社团申请", httpMethod = "POST")
-    @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "query", name = "corname", value = "社团名称", required = true, dataType = "String"),
-            @ApiImplicitParam(paramType = "query", name = "corleading", value = "负责人", required = true, dataType = "String"),
-            @ApiImplicitParam(paramType = "query", name = "cortercher", value = "负责老师", required = true, dataType = "String"),
-            @ApiImplicitParam(paramType = "query", name = "corworkspace", value = "工作地点", required = true, dataType = "String"),
-            @ApiImplicitParam(paramType = "query", name = "corcollege", value = "所属学院", required = true, dataType = "Integer"),
-            @ApiImplicitParam(paramType = "query", name = "corscale", value = "社团规模", required = true, dataType = "Integer")
-    })
-    public R apply() throws Exception {
-        PageData pageData = this.getPageData();
-        //校验参数
-        CheckParameterUtil.checkParameterMap(pageData, "corname", "corleading", "cortercher", "corworkspace", "corscale", "corcollege");
-//        pageData.put("username",pageData.getValueOfString("corleading"));
-        //校验负责人是否注册
-        Long userId = sysUserService.queryByUserName(pageData);
-        if (userId == 0) {
-            return R.error("社团负责人未注册");
-        } else {
-            pageData.put("userId", userId);
-            pageData.put("corleading", userId);
-        }
-        //封装参数
-        pageData.put("corName", pageData.getValueOfString("corname"));
-        pageData.put("corTercher", pageData.getValueOfString("cortercher"));
-        pageData.put("corWorkspace", pageData.getValueOfString("corworkspace"));
-        pageData.put("corScale", pageData.getValueOfInteger("corscale"));
-        pageData.put("corCollege", pageData.getValueOfInteger("corcollege"));
-        //社团申请
-        corporationService.apply(pageData);
-        return R.ok();
-    }
+//    @PostMapping("/apply")
+//    @ApiOperation(value = "社团申请", notes = "社团申请", httpMethod = "POST")
+//    @ApiImplicitParams({
+//            @ApiImplicitParam(paramType = "query", name = "corname", value = "社团名称", required = true, dataType = "String"),
+//            @ApiImplicitParam(paramType = "query", name = "corleading", value = "负责人", required = true, dataType = "String"),
+//            @ApiImplicitParam(paramType = "query", name = "cortercher", value = "负责老师", required = true, dataType = "String"),
+//            @ApiImplicitParam(paramType = "query", name = "corworkspace", value = "工作地点", required = true, dataType = "String"),
+//            @ApiImplicitParam(paramType = "query", name = "corcollege", value = "所属学院", required = true, dataType = "Integer"),
+//            @ApiImplicitParam(paramType = "query", name = "corscale", value = "社团规模", required = true, dataType = "Integer")
+//    })
+//    public R apply() throws Exception {
+//        PageData pageData = this.getPageData();
+//        //校验参数
+//        CheckParameterUtil.checkParameterMap(pageData, "corname", "corleading", "cortercher", "corworkspace", "corscale", "corcollege");
+////        pageData.put("username",pageData.getValueOfString("corleading"));
+//        //校验负责人是否注册
+//        Long userId = sysUserService.queryByUserName(pageData);
+//        if (userId == 0) {
+//            return R.error("社团负责人未注册");
+//        } else {
+//            pageData.put("userId", userId);
+//            pageData.put("corleading", userId);
+//        }
+//        //封装参数
+//        pageData.put("corName", pageData.getValueOfString("corname"));
+//        pageData.put("corTercher", pageData.getValueOfString("cortercher"));
+//        pageData.put("corWorkspace", pageData.getValueOfString("corworkspace"));
+//        pageData.put("corScale", pageData.getValueOfInteger("corscale"));
+//        pageData.put("corCollege", pageData.getValueOfInteger("corcollege"));
+//        //社团申请
+//        corporationService.apply(pageData);
+//        return R.ok();
+//    }
 
     /**
      * 删除社团
@@ -220,10 +220,17 @@ public class CorporationController extends BaseController {
         //校验参数
         CheckParameterUtil.checkParameterMap(pageData, "corid");
         try {
+            //取出面向人群
+            String corcrowdStr = pageData.getValueOfString("corcrowd");
+            String[] split = corcrowdStr.split(",");
+            List<String> corcrowdList = new ArrayList<>(Arrays.asList(split));
+            pageData.put("corcrowdList",corcrowdList);
+
             //查找负责人id
             pageData.put("username",pageData.getValueOfString("corleading"));
             PageData pageData1 = sysUserService.selectUserByUsernameNotContentCor(pageData);
             pageData.put("corleading",pageData1.getValueOfString("user_id"));
+            pageData.put("userid",pageData1.getValueOfString("user_id"));
 //            pageData.put("corleading", sysUserService.queryByUserName(pageData));
             //更新
             corporationService.updateCor(pageData);

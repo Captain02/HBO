@@ -190,6 +190,11 @@
         VALUES(#{userid,jdbcType=INTEGER},#{id,jdbcType=INTEGER},1)
     </insert>
 
+    <delete id="delCorcrowd">
+        DELETE FROM corcrowd
+        WHERE corid = #{corid}
+    </delete>
+
     <update id="update">
         UPDATE corporation set iscor = 0 WHERE id = #{id}
     </update>
