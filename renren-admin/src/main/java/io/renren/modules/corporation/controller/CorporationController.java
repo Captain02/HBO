@@ -119,13 +119,13 @@ public class CorporationController extends BaseController {
         //校验参数
         String[] parameters = {"corName", "corleading", "corTercher", "corWorkspace", "corCollege"};
         CheckParameterUtil.checkParameterMap(pageData, parameters);
-        //查找负责人id
-        pageData.put("corleading", sysUserService.queryByUserName(pageData));
+//        pageData.put("corleading", sysUserService.queryByUserName(pageData));
 
         Long userId = sysUserService.queryByUserName(pageData);
         if (userId==null || userId == 0) {
             return R.error("社团负责人未注册");
         }
+        //查找负责人id
         pageData.put("username",pageData.getValueOfString("corleading"));
         PageData pageData1 = sysUserService.selectUserByUsernameNotContentCor(pageData);
         pageData.put("userid",pageData1.getValueOfString("user_id"));
