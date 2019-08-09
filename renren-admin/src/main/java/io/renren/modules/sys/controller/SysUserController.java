@@ -451,6 +451,12 @@ public class SysUserController extends BaseController {
     @PostMapping("/add")
     public R save() throws Exception {
         PageData pageData = this.getPageData();
+        String gender = pageData.getValueOfString("gender");
+        if (gender.equals("男")){
+            pageData.put("fileid",7);
+        }else {
+            pageData.put("fileid",8);
+        }
         String msg = Verify(pageData);
         if(msg.length()>0){
             return R.error(msg);
