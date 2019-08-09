@@ -25,10 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController()
 @RequestMapping("/sys/corporation")
@@ -135,6 +132,12 @@ public class CorporationController extends BaseController {
         pageData.put("userid",pageData1.getValueOfString("user_id"));
         //添加社团
         try {
+            //取出面向人群
+            String corcrowdStr = pageData.getValueOfString("corcrowd");
+            String[] split = corcrowdStr.split(",");
+            List<String> corcrowdList = new ArrayList<>(Arrays.asList(split));
+            pageData.put("corcrowdList",corcrowdList);
+
 //            System.out.println("request.getContextPath(): "+request.getContextPath()+"/upload/QrCode/");
             pageData.put("fileName", DateTool.dateToStringYYHHDD(new Date()) + pageData.get("corName").toString() + ".jpg");
             pageData.put("filePath", "/file/QrCode/Corporation/" + pageData.getValueOfString("fileName"));

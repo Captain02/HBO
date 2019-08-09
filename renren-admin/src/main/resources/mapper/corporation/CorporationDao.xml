@@ -227,5 +227,14 @@
         </set>
         WHERE id = #{corid}
     </update>
+    <insert id="addCorcrowd">
+        insert into corcrowd (`corid`,`crowdid`) values
+        <foreach collection="corcrowdList" item="item" index="index" separator=",">
+            (
+            #{corid},
+            #{item},
+            )
+        </foreach>
+    </insert>
 
 </mapper>
