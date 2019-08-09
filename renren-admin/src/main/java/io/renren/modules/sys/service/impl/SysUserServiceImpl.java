@@ -300,4 +300,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
         return (List<PageData>) daoSupport.findForList("io.renren.modules.sys.dao.SysUserDao.getusersByusernameAndcor",pageData);
     }
 
+    @Override
+    public PageData selectUserByUsernameNotContentCor(PageData pageData) throws Exception {
+        return (PageData) daoSupport.findForObject("io.renren.modules.sys.dao.SysUserDao.selectUserByUsernameNotContentCor",pageData);
+    }
+
 }

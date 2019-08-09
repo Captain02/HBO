@@ -123,12 +123,11 @@ public class CorporationController extends BaseController {
         pageData.put("corleading", sysUserService.queryByUserName(pageData));
 
         Long userId = sysUserService.queryByUserName(pageData);
-        System.out.println("userId"+userId);
         if (userId==null || userId == 0) {
             return R.error("社团负责人未注册");
         }
         pageData.put("username",pageData.getValueOfString("corleading"));
-        PageData pageData1 = sysUserService.selectUserByUsername(pageData);
+        PageData pageData1 = sysUserService.selectUserByUsernameNotContentCor(pageData);
         pageData.put("userid",pageData1.getValueOfString("user_id"));
         //添加社团
         try {
@@ -222,7 +221,10 @@ public class CorporationController extends BaseController {
         CheckParameterUtil.checkParameterMap(pageData, "corid");
         try {
             //查找负责人id
-            pageData.put("corleading", sysUserService.queryByUserName(pageData));
+            pageData.put("username",pageData.getValueOfString("corleading"));
+            PageData pageData1 = sysUserService.selectUserByUsernameNotContentCor(pageData);
+            pageData.put("corleading",pageData1.getValueOfString("user_id"));
+//            pageData.put("corleading", sysUserService.queryByUserName(pageData));
             //更新
             corporationService.updateCor(pageData);
             return R.ok("更新成功");

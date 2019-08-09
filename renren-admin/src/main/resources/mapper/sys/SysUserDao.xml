@@ -428,6 +428,11 @@
         WHERE sys_user.`persionnum` = #{persionnum}
     </select>
 
+    <select id="selectUserByUsernameNotContentCor" resultType="io.renren.common.entity.PageData">
+        SELECT user_id,`username` FROM sys_user
+        WHERE sys_user.`username` = #{username}
+    </select>
+
     <insert id="add">
 		INSERT INTO `sys_user` (`username`,`password`,`salt`,`mobile`,`persionnum`,
 	        `wechart`,`QQ`,`college`,`collegetie`,`gender`,`name`)
