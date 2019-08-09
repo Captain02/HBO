@@ -141,7 +141,7 @@ public class CorporationController extends BaseController {
             //添加社团
             corporationService.add(pageData);
             //创建二维码
-            String url = "https://" + DOMAIN_NAME + "/#/code-map?Id=" + pageData.getValueOfInteger("id") + "&type=" + Const.CORPORATION_TYPE;
+            String url = "http://" + DOMAIN_NAME + "/#/code-map?Id=" + pageData.getValueOfInteger("id") + "&type=" + Const.CORPORATION_TYPE;
             QrCodeUtils.encodeByqrCodeName(url, FILEUPLOUD + "/file/QrCode/Corporation/", pageData.get("corName").toString());
             return R.ok().put("data", pageData);
         } catch (Exception e) {
