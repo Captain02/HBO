@@ -3,6 +3,11 @@
 
 <mapper namespace="CorporationDao">
 
+    <resultMap id="corDetail" type="io.renren.common.entity.PageData">
+        <id column="id" property="id"></id>
+        <association property="corcrowd" column="id" select="selectCrowdByCorid"></association>
+    </resultMap>
+
     <sql id="corSql">
         <trim prefix="(" suffixOverrides="," suffix=")">
             <if test="corName!=null and corName!=''">
@@ -60,7 +65,7 @@
         WHERE cor.`iscor` = 1
     </select>
 
-    <select id="selectByCorId" resultType="io.renren.common.entity.PageData">
+    <select id="selectByCorId" resultMap="corDetail">
         SELECT cor.`id`,`corname`,`corleading`,`cortercher`,`corworkspace`,cor.`createtime`,cor.`descs`,cor.corscale,
                 corcollege,
                 sd2.`value` corcollegename,
@@ -78,6 +83,13 @@
         LEFT JOIN filetable f3 ON f3.`id` = cor.`videofile`
         LEFT JOIN sys_user su ON su.user_id = cor.corleading
         WHERE cor.`id`=#{corid} AND cor.`iscor` = 1
+    </select>
+
+    <select id="selectCrowdByCorid" resultType="io.renren.common.entity.PageData">
+        SELECT id FROM
+        corcrowd
+        WHERE
+        corid = #{id}
     </select>
 
     <insert id="add" useGeneratedKeys="true" keyProperty="id">
