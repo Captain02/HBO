@@ -174,7 +174,7 @@ public class psersionController extends BaseController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "file",paramType = "query",value = "文件类型", required = true, dataType = "file"),
     })
-    public R upActBananer(@RequestBody MultipartFile file, HttpServletRequest request) throws Exception {
+    public R upActBananer(MultipartFile file, HttpServletRequest request) throws Exception {
         PageData pageData = this.getPageData();
         upload(pageData, file, "/file/persionTopic/images/", request);
         Integer fileId = commService.addFile2DB(pageData);
@@ -187,7 +187,7 @@ public class psersionController extends BaseController {
         if (filePath == null) {
             return false;
         }
-        pageData.put("filePath", filePath);
+        pageData.put("filePath", path+file.getOriginalFilename());
         pageData.put("fileName", file.getOriginalFilename());
         return true;
     }
