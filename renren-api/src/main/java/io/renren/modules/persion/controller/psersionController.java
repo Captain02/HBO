@@ -6,6 +6,9 @@ import io.renren.commBusiness.commService.CommService;
 import io.renren.common.controller.BaseController;
 import io.renren.common.entity.Page;
 import io.renren.common.entity.PageData;
+import io.renren.common.util.DateTool;
+import io.renren.common.util.DateUtil;
+import io.renren.common.utils.DateUtils;
 import io.renren.common.utils.R;
 import io.renren.modules.persion.service.PersionTopicService;
 import io.swagger.annotations.Api;
@@ -187,8 +190,9 @@ public class psersionController extends BaseController {
         if (filePath == null) {
             return false;
         }
-        pageData.put("filePath", path+file.getOriginalFilename());
-        pageData.put("fileName", file.getOriginalFilename());
+        String s = DateUtil.getSdfTimes() + ".jpg";
+        pageData.put("filePath", path+s);
+        pageData.put("fileName", s);
         return true;
     }
 }
