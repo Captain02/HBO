@@ -112,7 +112,7 @@
                 `deptid`,
             </if>
             <if test="enclosureid != null">
-                #{enclosure,jdbcType=INTEGER},
+                enclosure,
             </if>
         </trim>
         )
