@@ -128,7 +128,7 @@
             <if test="bannerId!=null">
                 `bannerid`,
             </if>
-            <if test="isCor!=null">
+            <if test="isCor==null">
                 `iscor`,
             </if>
             <if test="deptId!=null">
@@ -173,7 +173,7 @@
             <if test="bannerId!=null">
                 #{bannerId,jdbcType=INTEGER},
             </if>
-            <if test="isCor!=null">
+            <if test="isCor==null">
                 1,
             </if>
             <if test="deptId!=null">
