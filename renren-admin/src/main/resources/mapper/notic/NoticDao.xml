@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="NoticDao">
+
+    <insert id="add">
+        INSERT INTO `notic`(`notictop`,`noticcontent`,`notictuserid`,`corid`,`noticteduserid`)
+        <foreach collection="receiveUserList" item="item" index="index" separator=",">
+            VALUES(#{title},#{content},#{publishUser},#{corId},#{item})
+        </foreach>
+    </insert>
+
+    <select id="noticListPage" resultType="io.renren.common.entity.PageData">
+        SELECT n.`notictop`,n.`noticcontent`,n.`createtime`,
+        u.`username`,n.`corid`,u1.`username`
+        FROM `notic` n
+        LEFT JOIN `sys_user` u ON n.`notictuserid` = u.`user_id`
+        LEFT JOIN `sys_user` u1 ON n.`noticteduserid` = u1.`user_id`
+        <where>
+            <if test="pd.publishUser != null and pd.publishUser != ''">
+                AND u.`username` LIKE CONCAT('%',#{pd.publishUser,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="pd.receiveUser != null and pd.receiveUser != ''">
+                AND u1.`username` LIKE CONCAT('%',#{pd.receiveUser,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="pd.startTime != null and pd.startTime != '' and pd.endTime != null and pd.endTime != ''">
+                AND n.`createtime` between date_format(#{startTime},'%Y%m%d')
+                AND date_format(#{endTime},'%Y%m%d')
+            </if>
+        </where>
+    </select>
+</mapper>
