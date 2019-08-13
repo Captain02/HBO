@@ -94,7 +94,7 @@ public class UserInfoController {
     }
 
     //登录界面用户注册
-    @ApiOperation(value = "用户信息修改（除了学号和密码其他的信息）", tags = {"个人信息"}, notes = "" +
+    @ApiOperation(value = "用户添加", tags = {"个人信息"}, notes = "" +
             "'mobile':手机," +
             "'gender':行吧," +
             "'name':姓名," +
