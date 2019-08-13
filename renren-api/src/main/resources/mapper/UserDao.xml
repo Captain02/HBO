@@ -82,7 +82,7 @@
         WHERE sys_user.username = #{username}
     </select>
 
-    <insert id="add">
+    <insert id="add" useGeneratedKeys="true" keyProperty="user_id">
         INSERT INTO `sys_user` (`username`,`password`,`salt`,`mobile`,`persionnum`,
 	        `gender`,`name`,`fileid`)
         VALUES (#{username},#{password},#{salt},#{mobile},#{username},#{gender},#{name},#{fileid})
