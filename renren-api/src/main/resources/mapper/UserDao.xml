@@ -82,4 +82,10 @@
         WHERE sys_user.username = #{username}
     </select>
 
+    <insert id="add">
+        INSERT INTO `sys_user` (`username`,`password`,`salt`,`mobile`,`persionnum`,
+	        `gender`,`name`,`fileid`)
+        VALUES (#{username},#{password},#{salt},#{mobile},#{username},#{gender},#{name},#{fileid})
+    </insert>
+
 </mapper>
