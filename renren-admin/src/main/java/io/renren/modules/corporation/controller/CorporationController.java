@@ -99,6 +99,24 @@ public class CorporationController extends BaseController {
         }
     }
 
+
+    @GetMapping("/selectByCorIdForQR")
+    @ApiOperation(value = "根据社团id获取社团详情", notes = "根据社团id获取社团详情", httpMethod = "GET")
+    @ApiImplicitParam(paramType = "query", name = "corid", value = "社团id", required = true, dataType = "Integer")
+    public R selectByCorIdForQR() {
+        PageData pageData = this.getPageData();
+        //校验参数
+        CheckParameterUtil.checkParameterMap(pageData, "corid");
+        try {
+            //获取社团详情
+            List<PageData> corporation = corporationService.selectByCorId(pageData);
+            return R.ok().put("data", corporation);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return R.error(e.getMessage());
+        }
+    }
+
     /**
      * 添加社团
      *
