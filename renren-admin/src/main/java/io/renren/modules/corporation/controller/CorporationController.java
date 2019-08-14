@@ -109,7 +109,7 @@ public class CorporationController extends BaseController {
         CheckParameterUtil.checkParameterMap(pageData, "corid");
         try {
             //获取社团详情
-            List<PageData> corporation = corporationService.selectByCorId(pageData);
+            List<PageData> corporation = corporationService.selectByCorIdForQR(pageData);
             return R.ok().put("data", corporation);
         } catch (Exception e) {
             e.printStackTrace();

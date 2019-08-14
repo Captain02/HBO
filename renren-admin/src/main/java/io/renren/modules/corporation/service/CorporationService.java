@@ -24,4 +24,6 @@ public interface CorporationService {
     void apply(PageData pageData) throws Exception;
 
     void updatefile(PageData pageData, MultipartFile banner, HttpServletRequest request, String video)throws Exception;
+
+    List<PageData> selectByCorIdForQR(PageData pageData) throws Exception;
 }
