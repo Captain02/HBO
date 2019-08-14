@@ -7,9 +7,9 @@
         <id column="id" property="id"></id>
         <association property="corcrowd" column="id" select="selectCrowdByCorid"></association>
     </resultMap>
-    <resultMap id="selectCrowdByCoridForQR" type="io.renren.common.entity.PageData">
+    <resultMap id="corDetailForQR" type="io.renren.common.entity.PageData">
         <id column="id" property="id"></id>
-        <association property="corcrowd" column="id" select="selectCrowdByCorid"></association>
+        <association property="corcrowd" column="id" select="selectCrowdByCoridForQR"></association>
     </resultMap>
 
     <sql id="corSql">
