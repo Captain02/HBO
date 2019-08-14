@@ -151,9 +151,15 @@ public class CorporationController extends BaseController {
         try {
             //取出面向人群
             String corcrowdStr = pageData.getValueOfString("corcrowd");
-            String[] split = corcrowdStr.split(",");
-            List<String> corcrowdList = new ArrayList<>(Arrays.asList(split));
-            pageData.put("corcrowdList",corcrowdList);
+            if ("".equals(corcrowdStr)){
+                List<String> corcrowdList = new ArrayList<>();
+                corcrowdList.add("127");
+                pageData.put("corcrowdList",corcrowdList);
+            }else {
+                String[] split = corcrowdStr.split(",");
+                List<String> corcrowdList = new ArrayList<>(Arrays.asList(split));
+                pageData.put("corcrowdList",corcrowdList);
+            }
 
 //            System.out.println("request.getContextPath(): "+request.getContextPath()+"/upload/QrCode/");
             pageData.put("fileName", DateTool.dateToStringYYHHDD(new Date()) + pageData.get("corName").toString() + ".jpg");
