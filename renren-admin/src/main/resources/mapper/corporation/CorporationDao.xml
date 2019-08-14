@@ -90,7 +90,7 @@
         WHERE cor.`id`=#{corid} AND cor.`iscor` = 1
     </select>
 
-    <select id="selectByCorId" resultMap="corDetail">
+    <select id="selectByCorId" resultMap="corDetailForQR">
         SELECT cor.`id`,`corname`,`corleading`,`cortercher`,`corworkspace`,cor.`createtime`,cor.`descs`,cor.corscale,
                 corcollege,
                 sd2.`value` corcollegename,
