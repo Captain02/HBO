@@ -55,11 +55,12 @@ public class WechartController {
             PageData usercor = new PageData();
             usercor.put("userid", usernamePD.getValueOfInteger("user_id"));
             usercor.put("corid", corid);
+
             //添加社团
             if (type.equals("1")) {
                 List<PageData> corsByUserName = sysUserService.selectCorByUserCorid(usercor);
                 //判断社团是否存在该用户，若存在转到重复社团重复注册
-                if (corsByUserName!=null){
+                if (corsByUserName.size()>0){
                     pcRedirectUrl.append("redirect:").append("http://").append(pcConfig).append("/#/register?")
                             .append("code=").append(505);
                     logger.info(pcRedirectUrl.toString());
@@ -78,6 +79,9 @@ public class WechartController {
             logger.info(pcRedirectUrl.toString());
             return pcRedirectUrl.toString();
         }
+
+
+
         pcRedirectUrl.append("redirect:").append("http://").append(pcConfig).append("/#/register?")
                 .append("code=").append(500).append("&openid=").append(openid)
                 .append("&corid=").append(corid).append("&type=").append(type);
