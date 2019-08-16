@@ -161,17 +161,19 @@ public class SysUserController extends BaseController {
         PageData pageData = this.getPageData();
         SysUserEntity isSave = sysUserService.selectUserByUsernameCorporaition(pageData);
         if (isSave != null) {
-            return R.error("用户已存在");
-        }
-        PageData userinfo = sysUserService.selectUserByUsername(pageData);
-        if (userinfo != null) {
             sysUserService.saveUserCor(user, corid);
             return R.ok();
-        } else {
-            user.setPersionnum(user.getUsername());
-            sysUserService.saveUser(user, corid);
-            return R.ok();
         }
+        return R.error(503,"用户不存在");
+//        PageData userinfo = sysUserService.selectUserByUsername(pageData);
+//        if (userinfo != null) {
+//            sysUserService.saveUserCor(user, corid);
+//            return R.ok();
+//        } else {
+//            user.setPersionnum(user.getUsername());
+//            sysUserService.saveUser(user, corid);
+//            return R.ok();
+//        }
     }
 
     /*
