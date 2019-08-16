@@ -68,7 +68,8 @@ public class NoticController extends BaseController {
             @ApiImplicitParam(name = "currPage", value = "当前页", required = true, dataType = "Integer"),
             @ApiImplicitParam(name = "publishUser", value = "发送人姓名", required = false, dataType = "String"),
             @ApiImplicitParam(name = "receiveUser", value = "接收人姓名", required = false, dataType = "String"),
-            @ApiImplicitParam(name = "title ", value = "公告标题", required = false, dataType = "String"),
+            @ApiImplicitParam(name = "title", value = "公告标题", required = false, dataType = "String"),
+            @ApiImplicitParam(name = "corId", value = "社团id", required = false, dataType = "Integer"),
             @ApiImplicitParam(name = "startTime", value = "开始时间", required = false, dataType = "String"),
             @ApiImplicitParam(name = "endTime", value = "结束时间", required = false, dataType = "String")
     })

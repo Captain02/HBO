@@ -20,6 +20,9 @@
             <if test="pd.publishUser != null and pd.publishUser != ''">
                 AND u.`username` LIKE CONCAT('%',#{pd.publishUser,jdbcType=VARCHAR},'%')
             </if>
+            <if test="pd.corId != null">
+                AND u.`corid` = #{pd.corId,jdbcType=INTEGER}
+            </if>
             <if test="pd.receiveUser != null and pd.receiveUser != ''">
                 AND u1.`username` LIKE CONCAT('%',#{pd.receiveUser,jdbcType=VARCHAR},'%')
             </if>
