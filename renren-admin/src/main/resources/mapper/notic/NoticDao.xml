@@ -27,8 +27,24 @@
                 AND u1.`username` LIKE CONCAT('%',#{pd.receiveUser,jdbcType=VARCHAR},'%')
             </if>
             <if test="pd.startTime != null and pd.startTime != '' and pd.endTime != null and pd.endTime != ''">
-                AND n.`createtime` between date_format(#{startTime},'%Y%m%d')
-                AND date_format(#{endTime},'%Y%m%d')
+                AND n.`createtime` between date_format(#{pd.startTime},'%Y%m%d')
+                AND date_format(#{pd.endTime},'%Y%m%d')
+            </if>
+        </where>
+    </select>
+
+    <select id="homeListPage" resultType="io.renren.common.entity.PageData">
+        SELECT n.`notictop`,n.`noticcontent`,n.`createtime`,
+        u.`username`,n.`corid`,u1.`username`
+        FROM `notic` n
+        LEFT JOIN `sys_user` u ON n.`notictuserid` = u.`user_id`
+        LEFT JOIN `sys_user` u1 ON n.`noticteduserid` = u1.`user_id`
+        <where>
+            <if test="pd.corId != null">
+                AND n.`corid` = #{pd.corId,jdbcType=INTEGER}
+            </if>
+            <if test="pd.receiveUser != null and pd.receiveUser != ''">
+                AND u1.`username` = #{pd.receiveUser,jdbcType=VARCHAR}
             </if>
         </where>
     </select>

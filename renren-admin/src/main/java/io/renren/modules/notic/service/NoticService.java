@@ -9,4 +9,6 @@ public interface NoticService {
     void add(PageData pageData) throws Exception;
 
     List<PageData> noticListPage(Page page) throws Exception;
+
+    List<PageData> homeListPage(Page page) throws Exception;
 }
