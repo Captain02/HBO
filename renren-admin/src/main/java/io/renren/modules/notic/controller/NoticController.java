@@ -80,4 +80,26 @@ public class NoticController extends BaseController {
         List<PageData> list = noticService.noticListPage(page);
         return R.ok().put("page", page).put("data", list);
     }
+
+    /**
+     * 通知列表(没有权限的查询)
+     * corId：社团id
+     *
+     * @return
+     * @throws Exception
+     */
+    @ApiOperation(value = "活动分页信息", notes = "活动分页信息", httpMethod = "GET")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "pageSize", value = "每页显示记录数", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "currPage", value = "当前页", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "receiveUser", value = "接收人姓名", required = false, dataType = "String"),
+            @ApiImplicitParam(name = "corId", value = "社团id", required = false, dataType = "Integer")
+    })
+    @GetMapping("/homelist")
+    public R homelist(Page page) throws Exception {
+        PageData pageData = this.getPageData();
+        page.setPd(pageData);
+        List<PageData> list = noticService.homeListPage(page);
+        return R.ok().put("page", page).put("data", list);
+    }
 }
