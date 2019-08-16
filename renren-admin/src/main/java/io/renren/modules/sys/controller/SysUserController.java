@@ -181,7 +181,18 @@ public class SysUserController extends BaseController {
     public R QRSave() throws Exception {
         PageData pageData = this.getPageData();
         CheckParameterUtil.checkParameterMap(pageData, "username", "password");
-        sysUserService.QRSave(pageData);
+        List<PageData> list = sysUserService.selectCorByUserCorid(pageData);
+        if (list.size()>0){
+            return R.error("用户已提交申请");
+        }
+        PageData user = sysUserService.selectUserByUsername(pageData);
+        if (user!=null){
+            pageData.put("userid", user.getValueOfInteger("user_id"));
+            pageData.put("corid", pageData.getValueOfInteger("corid"));
+            sysUserService.saveExiceUserCOR(pageData);
+        }else {
+            sysUserService.QRSave(pageData);
+        }
         return R.ok();
     }
 

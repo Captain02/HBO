@@ -22,10 +22,11 @@ public class CommServiceImpl implements CommService {
 
     @Override
     public List<PageData> getselectes(PageData pageData) throws Exception {
-        return (List<PageData>) daoSupport.findForList("commDao.selectComm",pageData);
+        return (List<PageData>) daoSupport.findForList("commDao.selectComm", pageData);
     }
+
     @Override
-    public String uploadFile(MultipartFile picture, HttpServletRequest request,String RelativePath){
+    public String uploadFile(MultipartFile picture, HttpServletRequest request, String RelativePath) {
         /*request.getScheme() + "://"+ request.getServerName() + ":" + request.getServerPort()+request.getContextPath();*/
         //savepath为访问路径
         StringBuffer savepath = new StringBuffer();
@@ -38,12 +39,12 @@ public class CommServiceImpl implements CommService {
         StringBuffer stringBuffer = new StringBuffer();
         //拼接文件名
         String date = DateTool.dateToStringYYHHDD(new Date());
-        savepath.append(date).append(picture.getOriginalFilename());
-        stringBuffer.append(path).append(date+picture.getOriginalFilename());
-        File file = new File(path,date+picture.getOriginalFilename());
+        savepath.append(date).append(".jpg");
+        stringBuffer.append(path).append(date + ".jpg");
+        File file = new File(path, date + ".jpg");
 
         //创建文件夹
-        if (!file.getParentFile().exists()){
+        if (!file.getParentFile().exists()) {
             file.getParentFile().mkdirs();
         }
         try {
@@ -58,18 +59,19 @@ public class CommServiceImpl implements CommService {
 
     //文件删除
     @Override
-    public boolean deleteFile(String filenameAndPath){
+    public boolean deleteFile(String filenameAndPath) {
         File delFile = new File(filenameAndPath);
-        if(delFile.isFile() && delFile.exists()) {
+        if (delFile.isFile() && delFile.exists()) {
             delFile.delete();
             return true;
-        }else {
+        } else {
             return false;
         }
     }
+
     //保存文件到数据库
     public Integer addFile2DB(PageData pageData) throws Exception {
-        daoSupport.save("FileDao.add",pageData);
+        daoSupport.save("FileDao.add", pageData);
         return pageData.getValueOfInteger("id");
     }
 

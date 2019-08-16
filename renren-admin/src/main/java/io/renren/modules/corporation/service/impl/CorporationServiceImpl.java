@@ -56,6 +56,11 @@ public class CorporationServiceImpl implements CorporationService {
     }
 
     @Override
+    public List<PageData> selectByCorIdForQR(PageData pageData) throws Exception {
+        return (List<PageData>) daoSupport.findForList("CorporationDao.selectByCorIdForQR", pageData);
+    }
+
+    @Override
     @Transactional
     public void add(PageData pageData) throws Exception {
         //插入文件表

@@ -99,6 +99,24 @@ public class CorporationController extends BaseController {
         }
     }
 
+
+    @GetMapping("/selectByCorIdForQR")
+    @ApiOperation(value = "根据社团id获取社团详情", notes = "根据社团id获取社团详情", httpMethod = "GET")
+    @ApiImplicitParam(paramType = "query", name = "corid", value = "社团id", required = true, dataType = "Integer")
+    public R selectByCorIdForQR() {
+        PageData pageData = this.getPageData();
+        //校验参数
+        CheckParameterUtil.checkParameterMap(pageData, "corid");
+        try {
+            //获取社团详情
+            List<PageData> corporation = corporationService.selectByCorIdForQR(pageData);
+            return R.ok().put("data", corporation);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return R.error(e.getMessage());
+        }
+    }
+
     /**
      * 添加社团
      *
@@ -133,9 +151,15 @@ public class CorporationController extends BaseController {
         try {
             //取出面向人群
             String corcrowdStr = pageData.getValueOfString("corcrowd");
-            String[] split = corcrowdStr.split(",");
-            List<String> corcrowdList = new ArrayList<>(Arrays.asList(split));
-            pageData.put("corcrowdList",corcrowdList);
+            if ("".equals(corcrowdStr)){
+                List<String> corcrowdList = new ArrayList<>();
+                corcrowdList.add("127");
+                pageData.put("corcrowdList",corcrowdList);
+            }else {
+                String[] split = corcrowdStr.split(",");
+                List<String> corcrowdList = new ArrayList<>(Arrays.asList(split));
+                pageData.put("corcrowdList",corcrowdList);
+            }
 
 //            System.out.println("request.getContextPath(): "+request.getContextPath()+"/upload/QrCode/");
             pageData.put("fileName", DateTool.dateToStringYYHHDD(new Date()) + pageData.get("corName").toString() + ".jpg");
@@ -143,7 +167,7 @@ public class CorporationController extends BaseController {
             //添加社团
             corporationService.add(pageData);
             //创建二维码
-            String url = "http://" + DOMAIN_NAME + "/#/code-map?Id=" + pageData.getValueOfInteger("id") + "&type=" + Const.CORPORATION_TYPE;
+            String url = "http://" + DOMAIN_NAME + "/#/join?Id=" + pageData.getValueOfInteger("corid") + "&type=" + Const.CORPORATION_TYPE;
             QrCodeUtils.encodeByqrCodeName(url, FILEUPLOUD + "/file/QrCode/Corporation/", pageData.get("corName").toString());
             return R.ok().put("data", pageData);
         } catch (Exception e) {

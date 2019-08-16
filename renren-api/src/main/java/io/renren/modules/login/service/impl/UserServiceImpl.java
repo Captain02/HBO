@@ -25,6 +25,7 @@ import io.renren.modules.login.entity.UserEntity;
 import io.renren.modules.login.service.TokenService;
 import io.renren.modules.login.service.UserService;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
@@ -102,5 +103,16 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
     @Override
     public PageData selectUserInfoByusername(PageData pageData) throws Exception {
         return (PageData) daoSupport.findForObject("io.renren.modules.login.dao.UserDao.selectUserInfoByusername",pageData);
+    }
+
+    @Override
+    public void add(PageData pageData) throws Exception {
+        //sha256加密
+        String salt = RandomStringUtils.randomAlphanumeric(20);
+        pageData.put("salt", salt);
+        String password = pageData.getValueOfString("password");
+        pageData.put("password", ShiroUtils.sha256(password, salt));
+
+        daoSupport.save("io.renren.modules.login.dao.UserDao.add", pageData);
     }
 }

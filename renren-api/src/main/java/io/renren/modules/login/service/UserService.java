@@ -42,4 +42,6 @@ public interface UserService extends IService<UserEntity> {
 	Long selectUserByusername(PageData o) throws Exception;
 
 	PageData selectUserInfoByusername(PageData pageData) throws Exception;
+
+    void add(PageData pageData) throws Exception;
 }

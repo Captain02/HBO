@@ -52,6 +52,10 @@
 		  WHERE user_id = #{userId}
 	</update>
 
+    <update id="updateUserOpenid">
+        UPDATE sys_user SET openid = #{openid}
+        WHERE user_id = #{userid}
+    </update>
     <!-- 查询用户的所有权限 -->
     <select id="queryAllPerms" resultType="string">
 		SELECT DISTINCT IFNULL(m.perms,'') FROM sys_menu m

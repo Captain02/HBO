@@ -109,4 +109,6 @@ public interface SysUserService extends IService<SysUserEntity> {
     List<PageData> getusersByusernameAndcor(PageData pageData) throws Exception;
 
     PageData selectUserByUsernameNotContentCor(PageData pageData) throws Exception;
+
+    void saveExiceUserCOR(PageData pageData) throws Exception;
 }

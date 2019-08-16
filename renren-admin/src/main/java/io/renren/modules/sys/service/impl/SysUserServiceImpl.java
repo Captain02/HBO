@@ -305,4 +305,11 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
         return (PageData) daoSupport.findForObject("io.renren.modules.sys.dao.SysUserDao.selectUserByUsernameNotContentCor",pageData);
     }
 
+    @Override
+    @Transactional
+    public void saveExiceUserCOR(PageData pageData) throws Exception {
+        daoSupport.update("io.renren.modules.sys.dao.SysUserDao.updateUserOpenid",pageData);
+        daoSupport.save("io.renren.modules.sys.dao.SysUserDao.QRsaveUserCor", pageData);
+    }
+
 }

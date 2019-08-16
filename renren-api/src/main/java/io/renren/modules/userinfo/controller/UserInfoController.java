@@ -92,4 +92,55 @@ public class UserInfoController {
         userService.updateuser(o);
         return R.ok().put("token", token);
     }
+
+    //登录界面用户注册
+    @ApiOperation(value = "用户添加", tags = {"个人信息"}, notes = "" +
+            "'mobile':手机," +
+            "'gender':行吧," +
+            "'name':姓名," +
+            "'password':密码," +
+            "'username':学号," +
+            "}")
+    @PostMapping("/addPersion")
+    public R save(@RequestBody String json) throws Exception {
+//        PageData pageData = this.getPageData();
+        PageData pageData = JsonUtils.parseStringToObject(json, PageData.class);
+        Long aLong = userService.selectUserByusername(pageData);
+        if (aLong != 0){
+            return R.error("已存在该用户");
+        }
+        String gender = pageData.getValueOfString("gender");
+        if (gender.equals("男")){
+            pageData.put("fileid",7);
+        }else {
+            pageData.put("fileid",8);
+        }
+//        String msg = Verify(pageData);
+//        if(msg.length()>0){
+//            return R.error(msg);
+//        }
+//        Boolean isSave = sysUserService.selectUserByPersionnum(pageData);
+//        if (!isSave) {
+//            return R.error("用户已存在");
+//        }
+        userService.add(pageData);
+        return R.ok();
+    }
+
+    public String Verify(PageData pageData){
+        CheckParameterUtil.checkParameterMap(pageData,"name","gender","username","password","mobile","wechart","qq","college","collegetie");
+//        if(!pageData.getValueOfString("confirmPassword").equals(pageData.getValueOfString("password"))){
+//            return "两次密码不一致";
+//        }
+        if(!CheckParameterUtil.isMobile(pageData.getValueOfString("mobile"))){
+            return "手机号格式不正确";
+        }
+        if(!CheckParameterUtil.checkQQ(pageData.getValueOfString("qq"))){
+            return "QQ格式不正确";
+        }
+        if(!CheckParameterUtil.checkWechat(pageData.getValueOfString("wechart"))){
+            return "微信号格式不正确";
+        }
+        return "";
+    }
 }

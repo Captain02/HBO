@@ -27,6 +27,7 @@
         FROM
         persiontopic
         LEFT JOIN filetable ON filetable.`id` = persiontopic.`imageid`
+        ORDER BY persiontopic.`id` DESC
     </select>
     <select id="selectLikeNum" resultType="io.renren.common.entity.PageData">
         SELECT COUNT(*) num FROM news_like WHERE topicid = #{id}

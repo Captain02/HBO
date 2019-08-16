@@ -190,9 +190,8 @@ public class psersionController extends BaseController {
         if (filePath == null) {
             return false;
         }
-        String s = DateUtil.getSdfTimes() + ".jpg";
-        pageData.put("filePath", path+s);
-        pageData.put("fileName", s);
+        pageData.put("filePath", path);
+//        pageData.put("fileName", s);
         return true;
     }
 }
