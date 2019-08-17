@@ -224,6 +224,16 @@ public class SysUserController extends BaseController {
     @ApiOperation(value = "修改用户个人信息", notes = "修改用户个人信息", httpMethod = "POST")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "userId", value = "用户id", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "email", value = "电子邮箱", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "mobile", value = "电话", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "wechart", value = "微信", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "QQ", value = "qq", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "college", value = "院", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "collegetie", value = "专业", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "gender", value = "性别", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "descs", value = "描述", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "name", value = "姓名", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "fileId", value = "头像文件id", required = true, dataType = "Integer"),
     })
     @PostMapping("/updatePersionInfo")
     public R updatePersionInfo() throws Exception {
