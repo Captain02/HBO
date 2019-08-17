@@ -219,6 +219,20 @@ public class SysUserController extends BaseController {
         return R.ok();
     }
 
+
+    //修改用户基本信息
+    @ApiOperation(value = "修改用户个人信息", notes = "修改用户个人信息", httpMethod = "POST")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userId", value = "用户id", required = true, dataType = "Integer"),
+    })
+    @PostMapping("/updatePersionInfo")
+    public R updatePersionInfo() throws Exception {
+        PageData pageData = this.getPageData();
+        CheckParameterUtil.checkParameterMap(pageData, "userId");
+        sysUserService.updateUserInfo(pageData);
+        return R.ok();
+    }
+
     /**
      * 上传头像
      *
@@ -227,19 +241,19 @@ public class SysUserController extends BaseController {
     @PostMapping("/chatHead")
     @ApiOperation(value = "上传头像", notes = "上传头像", httpMethod = "POST")
     @ApiImplicitParam(paramType = "query", name = "chatHead", value = "图片文件", required = true, dataType = "String")
-    public R chatHead(@RequestParam("chatHead") MultipartFile chatHead, HttpServletRequest request) {
+    public R chatHead(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
         System.out.println("上传头像");
         //文件上传
         PageData pageData = this.getPageData();
 //        pageData.put("chatHead",chatHead);
 //        CheckParameterUtil.checkParameterMap(pageData,"chatHead");
-        String path = commService.uploadFile(chatHead, request, "/file/chatHead/");
+        String path = commService.uploadFile(file, request, "/file/chatHead/");
         if (path == null) {
             return R.error("文件上传失败");
         }
         //保存到数据库
         pageData.put("url", path);
-        pageData.put("fileName", chatHead.getOriginalFilename());
+        pageData.put("fileName", file.getOriginalFilename());
         try {
             sysUserService.save(pageData);
             return R.ok("上传头像成功").put("data", pageData);
