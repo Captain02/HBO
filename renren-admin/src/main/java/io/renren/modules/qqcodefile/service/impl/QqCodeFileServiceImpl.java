@@ -31,4 +31,9 @@ public class QqCodeFileServiceImpl implements QqCodeFileService {
         daoSupport.delete("QqCodeFileDao.delete", pageData);
         return true;
     }
+
+    @Override
+    public List<PageData> getQqCodeFileForQr(PageData pageData) throws Exception {
+        return (List<PageData>) daoSupport.findForList("QqCodeFileDao.getQqCodeFileForQr",pageData);
+    }
 }

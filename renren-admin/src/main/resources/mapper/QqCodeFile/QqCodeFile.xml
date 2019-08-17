@@ -9,6 +9,12 @@
         WHERE corid = #{pd.corId}
     </select>
 
+    <select id="getQqCodeFileForQr" resultType="io.renren.common.entity.PageData">
+        SELECT id,corid,`filename`,createtime,`path`
+        FROM `qqfile`
+        WHERE corid = #{corid}
+    </select>
+
     <insert id="save" useGeneratedKeys="true" keyProperty="id">
         <!--
             新插入一条数据返回新插入的id

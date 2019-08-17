@@ -419,4 +419,16 @@ public class CorporationController extends BaseController {
         }
     }
 
+    @GetMapping("/getQqCodeFileForQr")
+    @ApiOperation(value = "根据社团id获取qq纳新群二维码（扫描二维码添加社团）", notes = "根据社团id获取qq纳新群二维码", httpMethod = "GET")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "corid", value = "社团id", paramType = "query", required = true, dataType = "Integer"),
+    })
+    public R getQqCodeFileForQr() throws Exception {
+        PageData pageData = this.getPageData();
+        List<PageData> data = qqCodeFileService.getQqCodeFileForQr(pageData);
+
+        return R.ok().put("data",data);
+    }
+
 }

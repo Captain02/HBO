@@ -11,4 +11,6 @@ public interface QqCodeFileService {
     void save(PageData pageData) throws Exception;
 
     boolean del(PageData pageData) throws Exception;
+
+    List<PageData> getQqCodeFileForQr(PageData pageData) throws Exception;
 }
