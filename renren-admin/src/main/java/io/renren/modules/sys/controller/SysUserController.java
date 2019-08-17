@@ -159,12 +159,16 @@ public class SysUserController extends BaseController {
     @RequestMapping("/save")
     public R save(SysUserEntity user, Long corid) throws Exception {
         PageData pageData = this.getPageData();
+        List<PageData> list = sysUserService.selectCorByUserCorid(pageData);
+        if (list.size() != 0) {
+            return R.error(505, "该账户重复注册社团！");
+        }
         SysUserEntity isSave = sysUserService.selectUserByUsernameCorporaition(pageData);
         if (isSave != null) {
             sysUserService.saveUserCor(user, corid);
             return R.ok();
         }
-        return R.error(503,"用户不存在");
+        return R.error(503,"用户不存在,请注册！");
 //        PageData userinfo = sysUserService.selectUserByUsername(pageData);
 //        if (userinfo != null) {
 //            sysUserService.saveUserCor(user, corid);
