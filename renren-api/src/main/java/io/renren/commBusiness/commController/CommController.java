@@ -34,9 +34,9 @@ public class CommController extends BaseController {
             "比如:typeId:1,查询所有学院；" +
             "typeId:2,parentValue:4,查询id=4的学院下的所有专业；"
     )
-    @GetMapping(value = "/getselectes", produces = "application/json;charset=utf-8")
-    public R getselectes(@RequestBody String json) throws Exception {
-        PageData pageData = JsonUtils.parseStringToObject(json,PageData.class);
+    @GetMapping(value = "/getselectes")
+    public R getselectes() throws Exception {
+        PageData pageData = this.getPageData();
         List<PageData> data = commService.getselectes(pageData);
         return R.ok().put("data", data);
     }
