@@ -160,6 +160,7 @@ public class psersionController extends BaseController {
 //    })
     public R releaseTopic(@RequestBody String json) throws Exception {
         Map o = JsonUtils.parseStringToObject(json, Map.class);
+        System.out.println(o.get("userid"));
         Integer userid = (Integer) o.get("userid");
         Integer imageid = (Integer) o.get("imageid");
         String content = (String) o.get("content");
