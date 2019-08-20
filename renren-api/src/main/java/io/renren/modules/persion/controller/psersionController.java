@@ -16,6 +16,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import springfox.documentation.annotations.ApiIgnore;
@@ -33,6 +34,8 @@ public class psersionController extends BaseController {
     PersionTopicService persionTopicService;
     @Autowired
     CommService commService;
+
+
 
     @GetMapping("/persionTopic")
     @ApiOperation(value = "用户发布分页信息",tags = {"用户发布"})
