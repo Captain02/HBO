@@ -124,7 +124,7 @@ public class UserInfoController {
 //            return R.error("用户已存在");
 //        }
         PageData data = userService.add(pageData);
-        return R.ok().put("data",data);
+        return R.ok().put("token",data.getValueOfString("token")).put("user_id",data.getValueOfString("user_id"));
     }
 
     public String Verify(PageData pageData){
