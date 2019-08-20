@@ -270,6 +270,10 @@ public class SysUserController extends BaseController {
         pageData.put("fileName", file.getOriginalFilename());
         try {
             sysUserService.save(pageData);
+            PageData userfile = new PageData();
+            userfile.put("fileId",pageData.getValueOfString("id"));
+            userfile.put("userId",pageData.getValueOfString("userId"));
+            sysUserService.updateUserInfo(userfile);
             return R.ok("上传头像成功").put("data", pageData);
         } catch (Exception e) {
             e.printStackTrace();
