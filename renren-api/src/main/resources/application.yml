@@ -7,10 +7,10 @@ server:
   port: 8082
   servlet:
     context-path: /HBOFRONT
-#  ssl:
-#    key-store: classpath:2582634_btzmpro.com.pfx
-#    key-store-password: ly5Pvdzz
-#    keyStoreType: PKCS12
+  ssl:
+    key-store: classpath:2582634_btzmpro.com.pfx
+    key-store-password: ly5Pvdzz
+    keyStoreType: PKCS12
 
 # mysql
 spring:
