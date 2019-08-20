@@ -43,5 +43,5 @@ public interface UserService extends IService<UserEntity> {
 
 	PageData selectUserInfoByusername(PageData pageData) throws Exception;
 
-    String add(PageData pageData) throws Exception;
+	PageData add(PageData pageData) throws Exception;
 }

@@ -106,7 +106,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
     }
 
     @Override
-    public String add(PageData pageData) throws Exception {
+    public PageData add(PageData pageData) throws Exception {
         //sha256加密
         String salt = RandomStringUtils.randomAlphanumeric(20);
         pageData.put("salt", salt);
@@ -117,6 +117,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
         redisUtils.set(pageData.getValueOfString("username"), token, 60 * 60 * 1);
 
         daoSupport.save("io.renren.modules.login.dao.UserDao.add", pageData);
-        return token;
+        pageData.put("token",token);
+        return pageData;
     }
 }

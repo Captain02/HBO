@@ -123,8 +123,8 @@ public class UserInfoController {
 //        if (!isSave) {
 //            return R.error("用户已存在");
 //        }
-        String token = userService.add(pageData);
-        return R.ok().put("token",token);
+        PageData data = userService.add(pageData);
+        return R.ok().put("data",data);
     }
 
     public String Verify(PageData pageData){
