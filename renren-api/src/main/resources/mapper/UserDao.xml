@@ -62,6 +62,9 @@
             <if test="name != null and name != 'null'">
                 `name` = #{name},
             </if>
+            <if test="fileid != null and fileid != 'null'">
+                `fileid` = #{fileid},
+            </if>
         </trim>
         WHERE user_id = #{user_id}
     </update>
