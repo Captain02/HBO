@@ -79,6 +79,7 @@
         SELECT
         sys_user.user_id,sys_user.username,sys_user.college,
         sys_user.collegetie,sys_user.gender,sys_user.descs,filetable.filepath,sys_user.`name`,
+        sys_user.`qq`,sys_user.`email`,sys_user.`mobile`,sys_user.`wechart`,
         filetable.`filepath` headpath
         FROM sys_user
         LEFT JOIN filetable ON filetable.id = sys_user.fileid
