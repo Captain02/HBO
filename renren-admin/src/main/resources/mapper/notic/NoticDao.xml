@@ -4,7 +4,7 @@
 <mapper namespace="NoticDao">
 
     <insert id="add">
-        <foreach collection="receiveUserList" item="item" index="index" separator=",">
+        <foreach collection="receiveUserList" item="item" index="index" separator=";">
             INSERT INTO `notic`(`notictop`,`noticcontent`,`notictuserid`,`corid`,`noticteduserid`)
             VALUES(#{title},#{content},#{publishUser},#{corId},#{item})
         </foreach>
