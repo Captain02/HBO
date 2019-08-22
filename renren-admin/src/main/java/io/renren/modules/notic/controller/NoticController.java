@@ -50,7 +50,7 @@ public class NoticController extends BaseController {
         String receiveUserStr = pageData.getValueOfString("receiveUserIds");
         String[] split = receiveUserStr.split(",");
         List<String> receiveUserList = new ArrayList<>(Arrays.asList(split));
-        pageData.put("receiveUserList",receiveUserList);
+        pageData.put("receiveUserList", receiveUserList);
         noticService.add(pageData);
         return R.ok();
     }
@@ -79,6 +79,22 @@ public class NoticController extends BaseController {
         page.setPd(pageData);
         List<PageData> list = noticService.noticListPage(page);
         return R.ok().put("page", page).put("data", list);
+    }
+
+    /**
+     * 查看公告详情
+     *
+     * @param noticId
+     * @return
+     */
+    @GetMapping("/{noticId}")
+    @ApiOperation(value = "公告详情", notes = "公告详情", httpMethod = "GET")
+    @ApiImplicitParam(name = "noticId", value = "公告id", required = true, dataType = "Integer")
+    public R info(@PathVariable("noticId") Integer noticId) throws Exception {
+        PageData pageData = this.getPageData();
+        pageData.put("noticId", noticId);
+        PageData notice = noticService.info(pageData);
+        return R.ok().put("data", notice);
     }
 
     /**

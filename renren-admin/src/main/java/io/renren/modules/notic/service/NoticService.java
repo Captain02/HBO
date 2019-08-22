@@ -11,4 +11,6 @@ public interface NoticService {
     List<PageData> noticListPage(Page page) throws Exception;
 
     List<PageData> homeListPage(Page page) throws Exception;
+
+    PageData info(PageData pageData) throws Exception;
 }

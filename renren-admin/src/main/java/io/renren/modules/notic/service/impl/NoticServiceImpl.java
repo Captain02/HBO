@@ -29,4 +29,9 @@ public class NoticServiceImpl implements NoticService {
     public List<PageData> homeListPage(Page page) throws Exception {
         return (List<PageData>) daoSupport.findForList("NoticDao.homeListPage", page);
     }
+
+    @Override
+    public PageData info(PageData pageData) throws Exception {
+        return (PageData) daoSupport.findForObject("NoticDao.info",pageData);
+    }
 }
