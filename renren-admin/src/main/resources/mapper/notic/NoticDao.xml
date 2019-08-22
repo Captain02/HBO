@@ -12,7 +12,7 @@
 
     <select id="noticListPage" resultType="io.renren.common.entity.PageData">
         SELECT n.`notictop`,n.`noticcontent`,n.`createtime`,
-        u.`username`,n.`corid`,u1.`username`
+        u.`username` publishUser,n.`corid`,u1.`username` receiveUser
         FROM `notic` n
         LEFT JOIN `sys_user` u ON n.`notictuserid` = u.`user_id`
         LEFT JOIN `sys_user` u1 ON n.`noticteduserid` = u1.`user_id`
@@ -35,7 +35,7 @@
 
     <select id="homeListPage" resultType="io.renren.common.entity.PageData">
         SELECT n.`notictop`,n.`noticcontent`,n.`createtime`,
-        u.`username`,n.`corid`,u1.`username`
+        u.`username` publishUser,n.`corid`,u1.`username` receiveUser
         FROM `notic` n
         LEFT JOIN `sys_user` u ON n.`notictuserid` = u.`user_id`
         LEFT JOIN `sys_user` u1 ON n.`noticteduserid` = u1.`user_id`
@@ -43,8 +43,8 @@
             <if test="pd.corId != null">
                 AND n.`corid` = #{pd.corId,jdbcType=INTEGER}
             </if>
-            <if test="pd.receiveUser != null and pd.receiveUser != ''">
-                AND u1.`username` = #{pd.receiveUser,jdbcType=VARCHAR}
+            <if test="pd.receiveUserId != null">
+                AND u1.`user_id` = #{pd.receiveUserId,jdbcType=INTEGER}
             </if>
         </where>
     </select>

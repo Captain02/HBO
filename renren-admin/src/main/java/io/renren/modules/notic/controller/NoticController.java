@@ -92,7 +92,7 @@ public class NoticController extends BaseController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "pageSize", value = "每页显示记录数", required = true, dataType = "Integer"),
             @ApiImplicitParam(name = "currPage", value = "当前页", required = true, dataType = "Integer"),
-            @ApiImplicitParam(name = "receiveUser", value = "接收人姓名", required = false, dataType = "String"),
+            @ApiImplicitParam(name = "receiveUserId", value = "接收人id", required = false, dataType = "Integer"),
             @ApiImplicitParam(name = "corId", value = "社团id", required = false, dataType = "Integer")
     })
     @GetMapping("/homelist")
