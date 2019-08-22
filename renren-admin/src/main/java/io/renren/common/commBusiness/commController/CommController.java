@@ -83,4 +83,37 @@ public class CommController extends BaseController {
         }
     }
 
+    /**
+     * 上传文件，然后返回文件的id和路径
+     * @param picture
+     * @param request
+     * @return
+     */
+    @PostMapping("/uploadFileAndSave2DB")
+    @ApiOperation(value = "上传文件，然后返回文件的id和路径",tags = {"上传文件，然后返回文件的id和路径"})
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query",dataType = "file",name="picture",value = "类型id",required = true),
+    })
+    public R uploadFileAndSave2DB(@RequestParam("picture") MultipartFile picture, HttpServletRequest request) throws Exception {
+        PageData pageData = this.getPageData();
+        String path = (String) pageData.get("path");
+        if (path==null||path.equals("")){
+            path = "/file/QrCode/FuFile/";
+        }
+        path = commService.uploadFile(picture, request, path);
+        if (path != null) {
+            String filePath = "http://www.btzmpro.com:82"+path;
+            pageData.put("filePath",filePath);
+            pageData.put("fileName",picture.getOriginalFilename());
+            Integer fileId = commService.addFile2DB(pageData);
+            if (fileId != null) {
+                return R.ok().put("path",filePath).put("fileid", fileId);
+            } else {
+                return R.error("文件上传失败");
+            }
+        } else {
+            return R.error("文件上传失败");
+        }
+    }
+
 }
