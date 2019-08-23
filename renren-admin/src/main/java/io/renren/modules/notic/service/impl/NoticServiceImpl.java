@@ -22,12 +22,12 @@ public class NoticServiceImpl implements NoticService {
 
     @Override
     public List<PageData> noticListPage(Page page) throws Exception {
-        return (List<PageData>) daoSupport.findForList("NoticDao.noticListPage", page);
+        return (List<PageData>) daoSupport.findForList("NoticDao.noticlistPage", page);
     }
 
     @Override
     public List<PageData> homeListPage(Page page) throws Exception {
-        return (List<PageData>) daoSupport.findForList("NoticDao.homeListPage", page);
+        return (List<PageData>) daoSupport.findForList("NoticDao.homelistPage", page);
     }
 
     @Override

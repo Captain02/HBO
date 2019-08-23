@@ -10,7 +10,7 @@
         </foreach>
     </insert>
 
-    <select id="noticListPage" resultType="io.renren.common.entity.PageData">
+    <select id="noticlistPage" resultType="io.renren.common.entity.PageData">
         SELECT n.`notictop`,n.`noticcontent`,n.`createtime`,n.`noticid`,
         u.`name` publishUser,n.`corid`,u1.`name` receiveUser
         FROM `notic` n
@@ -33,7 +33,7 @@
         </where>
     </select>
 
-    <select id="homeListPage" resultType="io.renren.common.entity.PageData">
+    <select id="homelistPage" resultType="io.renren.common.entity.PageData">
         SELECT n.`notictop`,n.`noticcontent`,n.`createtime`,n.`noticid`,
         u.`name` publishUser,n.`corid`,u1.`name` receiveUser
         FROM `notic` n
