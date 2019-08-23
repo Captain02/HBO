@@ -194,7 +194,7 @@ public class psersionController extends BaseController {
         if (filePath == null) {
             return false;
         }
-        pageData.put("filePath", path);
+        pageData.put("filePath", filePath);
 //        pageData.put("fileName", s);
         return true;
     }
