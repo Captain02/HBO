@@ -188,7 +188,7 @@ public class SysUserController extends BaseController {
     public R QRSave() throws Exception {
         PageData pageData = this.getPageData();
         CheckParameterUtil.checkParameterMap(pageData, "username", "password");
-        System.out.println("user.getValueOfInteger(user_id)"+pageData.getValueOfInteger("username"));
+        System.out.println("user.getValueOfInteger(user_id)"+pageData.getValueOfString("username"));
         System.out.println("pageData.getValueOfInteger(\"corid\")"+pageData.getValueOfInteger("corid"));
         List<PageData> list = sysUserService.selectCorByUserCorid(pageData);
         if (list.size()>0){
