@@ -163,8 +163,8 @@ public class SysUserController extends BaseController {
         if (list.size() != 0) {
             return R.error(505, "该账户重复注册社团！");
         }
-        SysUserEntity isSave = sysUserService.selectUserByUsernameCorporaition(pageData);
-        if (isSave != null) {
+        PageData data = sysUserService.selectUserByUsername(pageData);
+        if (data != null) {
             sysUserService.saveUserCor(user, corid);
             return R.ok();
         }
