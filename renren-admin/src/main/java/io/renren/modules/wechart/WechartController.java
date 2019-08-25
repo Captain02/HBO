@@ -43,8 +43,8 @@ public class WechartController {
         PageData usernamePD = sysUserService.selectByOpenid(data);
 //        sysUserService.
         String[] split = state.split(",");
-        String type = split[0];
-        String corid = split[1];
+        String type = split[1];
+        String corid = split[0];
         logger.info("type:" + type + ",openid:" + openid + ",corid:" + corid + ",state:" + state);
         logger.info("usernamePD:" + usernamePD);
 
