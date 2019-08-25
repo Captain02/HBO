@@ -76,6 +76,18 @@ public class WechartController {
                         .append("code=").append("0").append("&corid=").append(corid).append("&opid=").append(openid)
                         .append("&type=").append(1);
                 return success.toString();
+            }else if (type.equals("3")) {
+                usercor.put("actid", corid);
+                List<PageData> selectActByuserAct = sysUserService.selectActByuserAct(usercor);
+                if (selectActByuserAct.size()>0){
+                    pcRedirectUrl.append("redirect:").append("http://").append(pcConfig).append("/#/result?")
+                            .append("code=").append(505)
+                            .append("&corid=").append(corid)
+                            .append("&opid=").append(openid)
+                            .append("&type=").append(3);
+                    logger.info(pcRedirectUrl.toString());
+                    return pcRedirectUrl.toString();
+                }
             }
         //用户没有注册过，就直接转到注册
         } else {

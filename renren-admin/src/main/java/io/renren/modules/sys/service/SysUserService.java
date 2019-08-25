@@ -111,4 +111,6 @@ public interface SysUserService extends IService<SysUserEntity> {
     PageData selectUserByUsernameNotContentCor(PageData pageData) throws Exception;
 
     void saveExiceUserCOR(PageData pageData) throws Exception;
+
+    List<PageData> selectActByuserAct(PageData usercor) throws Exception;
 }

@@ -312,4 +312,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
         daoSupport.save("io.renren.modules.sys.dao.SysUserDao.QRsaveUserCor", pageData);
     }
 
+    @Override
+    public List<PageData> selectActByuserAct(PageData usercor) throws Exception {
+        return (List<PageData>) daoSupport.findForList("io.renren.modules.sys.dao.SysUserDao.selectActByuserAct",usercor);
+    }
+
 }

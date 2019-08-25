@@ -370,6 +370,15 @@
         INSERT INTO cor_user (userid,corid) VALUES (#{userid},#{corid})
     </insert>
 
+    <select id="selectActByuserAct" resultType="io.renren.common.entity.PageData">
+        SELECT enrollid
+        FROM actenroll
+        WHERE
+        userid = #{userid}
+        AND
+        actid = #{actid}
+    </select>
+
     <!--查询属于的社团-->
     <select id="selectCorByUserCorid" resultType="io.renren.common.entity.PageData">
         select corporation.id from corporation
