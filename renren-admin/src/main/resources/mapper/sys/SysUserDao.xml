@@ -367,7 +367,7 @@
 
     <!--扫码添加社团成员-->
     <insert id="insertUserCor">
-        INSERT INTO sys_user (userid,corid) VALUES (#{userid},#{corid})
+        INSERT INTO cor_user (userid,corid) VALUES (#{userid},#{corid})
     </insert>
 
     <!--查询属于的社团-->
