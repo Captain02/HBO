@@ -15,7 +15,6 @@ import io.renren.common.commBusiness.commService.MailService;
 import io.renren.common.controller.BaseController;
 import io.renren.common.entity.Page;
 import io.renren.common.entity.PageData;
-import io.renren.common.exception.RRException;
 import io.renren.common.util.Tools;
 import io.renren.common.utils.CheckParameterUtil;
 import io.renren.common.utils.JWTUtil;
@@ -30,7 +29,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import oracle.jdbc.proxy.annotation.Post;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -40,7 +38,10 @@ import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -205,7 +206,7 @@ public class SysUserController extends BaseController {
                 sysUserService.QRSave(pageData);
             }
             return R.ok();
-        }else if (type == 3){
+        } else if (type == 3) {
             List<PageData> data = sysUserService.selectActByuserAct(pageData);
             pageData.put("actid", pageData.getValueOfInteger("corid"));
             if (data.size() > 0) {
@@ -216,13 +217,13 @@ public class SysUserController extends BaseController {
                 pageData.put("userid", user.getValueOfInteger("user_id"));
                 sysUserService.saveExiceUserAct(pageData);
                 return R.ok();
-            }
-            else {
+            } else {
                 sysUserService.QRSave(pageData);
             }
-        }else{
+        } else {
             return R.error();
         }
+        return R.error();
     }
 
     /**
