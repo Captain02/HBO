@@ -452,4 +452,8 @@
         VALUES (#{username},#{password},#{salt},#{mobile},#{wechart},#{qq},#{college},#{collegetie},#{qq},#{gender},#{name},#{fileid})
 	</insert>
 
+    <insert id="QRsaveUserAct">
+        INSERT INTO actenroll (userid,actid)VALUES (#{userid},#{actid})
+    </insert>
+
 </mapper>

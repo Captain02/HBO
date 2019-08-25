@@ -150,7 +150,7 @@ public class ActivityController extends BaseController {
     public R add(@RequestParam(value = "enclosure", required = false) MultipartFile enclosure, HttpServletRequest request) throws Exception {
         PageData pageData = this.getPageData();
         CheckParameterUtil.checkParameterMap(pageData, "actCorId", "actName", "actLeader", "actStartTime",
-                "actEndTime",  "profile", "processNodes");
+                "actEndTime", "profile", "processNodes");
 
         activityService.add(pageData, enclosure, request);
         //创建二维码

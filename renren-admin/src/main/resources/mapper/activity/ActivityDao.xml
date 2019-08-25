@@ -49,6 +49,7 @@
         <collection property="crowdpeople" column="actid" select="selectCrowdPeopleByactId"/>
         <collection property="likePeople" column="actid" select="selectLikePeopleByActId"></collection>
         <collection property="collectionPeople" column="actid" select="selectcollectionPeopleByActId"></collection>
+        <collection property="joinfile" column="{id=fileid}" select="FileDao.selectById"></collection>
     </resultMap>
 
     <select id="activitylistPage" resultMap="activityListPage">

@@ -169,7 +169,7 @@ public class SysUserController extends BaseController {
             sysUserService.saveUserCor(user, corid);
             return R.ok();
         }
-        return R.error(503,"用户不存在,请注册！");
+        return R.error(503, "用户不存在,请注册！");
 //        PageData userinfo = sysUserService.selectUserByUsername(pageData);
 //        if (userinfo != null) {
 //            sysUserService.saveUserCor(user, corid);
@@ -188,21 +188,41 @@ public class SysUserController extends BaseController {
     public R QRSave() throws Exception {
         PageData pageData = this.getPageData();
         CheckParameterUtil.checkParameterMap(pageData, "username", "password");
-        System.out.println("user.getValueOfInteger(user_id)"+pageData.getValueOfString("username"));
-        System.out.println("pageData.getValueOfInteger(\"corid\")"+pageData.getValueOfInteger("corid"));
-        List<PageData> list = sysUserService.selectCorByUserCorid(pageData);
-        if (list.size()>0){
-            return R.error("用户已提交申请");
+        System.out.println("user.getValueOfInteger(user_id)" + pageData.getValueOfString("username"));
+        System.out.println("pageData.getValueOfInteger(\"corid\")" + pageData.getValueOfInteger("corid"));
+        Integer type = pageData.getValueOfInteger("type");
+        if (type == 1) {
+            List<PageData> list = sysUserService.selectCorByUserCorid(pageData);
+            if (list.size() > 0) {
+                return R.error("用户已提交申请");
+            }
+            PageData user = sysUserService.selectUserByUsername(pageData);
+            if (user != null) {
+                pageData.put("userid", user.getValueOfInteger("user_id"));
+                pageData.put("corid", pageData.getValueOfInteger("corid"));
+                sysUserService.saveExiceUserCOR(pageData);
+            } else {
+                sysUserService.QRSave(pageData);
+            }
+            return R.ok();
+        }else if (type == 3){
+            List<PageData> data = sysUserService.selectActByuserAct(pageData);
+            pageData.put("actid", pageData.getValueOfInteger("corid"));
+            if (data.size() > 0) {
+                return R.error("用户已提交申请");
+            }
+            PageData user = sysUserService.selectUserByUsername(pageData);
+            if (user != null) {
+                pageData.put("userid", user.getValueOfInteger("user_id"));
+                sysUserService.saveExiceUserAct(pageData);
+                return R.ok();
+            }
+            else {
+                sysUserService.QRSave(pageData);
+            }
+        }else{
+            return R.error();
         }
-        PageData user = sysUserService.selectUserByUsername(pageData);
-        if (user!=null){
-            pageData.put("userid", user.getValueOfInteger("user_id"));
-            pageData.put("corid", pageData.getValueOfInteger("corid"));
-            sysUserService.saveExiceUserCOR(pageData);
-        }else {
-            sysUserService.QRSave(pageData);
-        }
-        return R.ok();
     }
 
     /**
@@ -274,8 +294,8 @@ public class SysUserController extends BaseController {
         try {
             sysUserService.save(pageData);
             PageData userfile = new PageData();
-            userfile.put("fileId",pageData.getValueOfString("id"));
-            userfile.put("userId",pageData.getValueOfString("userId"));
+            userfile.put("fileId", pageData.getValueOfString("id"));
+            userfile.put("userId", pageData.getValueOfString("userId"));
             sysUserService.updateUserInfo(userfile);
             return R.ok("上传头像成功").put("data", pageData);
         } catch (Exception e) {
@@ -410,13 +430,13 @@ public class SysUserController extends BaseController {
     @PostMapping("/getUserInfo")
     public R getUserInfo() throws Exception {
         PageData pageData = this.getPageData();
-        CheckParameterUtil.checkParameterMap(pageData, "username","captcha","key");
+        CheckParameterUtil.checkParameterMap(pageData, "username", "captcha", "key");
         //获取redis中的验证码
         String trueCaptcha = redisUtils.get(pageData.getValueOfString("key"));
         if (trueCaptcha == null || "".equals(trueCaptcha)) {
             return R.error("验证码已失效");
         }
-        if(!pageData.getValueOfString("captcha").equals(trueCaptcha)){
+        if (!pageData.getValueOfString("captcha").equals(trueCaptcha)) {
             return R.error("验证码不正确");
         }
         Long count = sysUserService.selectCountByUserName(pageData);
@@ -425,9 +445,9 @@ public class SysUserController extends BaseController {
         }
         pageData = sysUserService.selectEmailAndPhoneByUserName(pageData);
         PageData data = new PageData();
-        data.put("email",pageData.getValueOfString("email"));
-        data.put("mobile",pageData.getValueOfString("mobile"));
-        data.put("username",pageData.getValueOfString("username"));
+        data.put("email", pageData.getValueOfString("email"));
+        data.put("mobile", pageData.getValueOfString("mobile"));
+        data.put("username", pageData.getValueOfString("username"));
         return R.ok().put("data", data);
     }
 
@@ -481,10 +501,10 @@ public class SysUserController extends BaseController {
     @PostMapping("/resetPwd")
     public R resetPwd() throws Exception {
         PageData pageData = this.getPageData();
-        CheckParameterUtil.checkParameterMap(pageData,"password","username");
+        CheckParameterUtil.checkParameterMap(pageData, "password", "username");
         PageData user = sysUserService.selectEmailAndPhoneByUserName(pageData);
-        pageData.put("userId",user.getValueOfInteger("userId"));
-        pageData.put("password",ShiroUtils.sha256(pageData.getValueOfString("password"),user.getValueOfString("salt")));
+        pageData.put("userId", user.getValueOfInteger("userId"));
+        pageData.put("password", ShiroUtils.sha256(pageData.getValueOfString("password"), user.getValueOfString("salt")));
         sysUserService.updateUserInfo(pageData);
         return R.ok();
     }
@@ -492,7 +512,7 @@ public class SysUserController extends BaseController {
     @GetMapping("/kaptcha.jpg")
     public R captcha(HttpServletResponse response) throws IOException {
         PageData captcha = captchaService.captcha(response);
-        return R.ok().put("data",captcha);
+        return R.ok().put("data", captcha);
     }
 
     //登录界面用户注册
@@ -500,13 +520,13 @@ public class SysUserController extends BaseController {
     public R save() throws Exception {
         PageData pageData = this.getPageData();
         String gender = pageData.getValueOfString("gender");
-        if (gender.equals("男")){
-            pageData.put("fileid",7);
-        }else {
-            pageData.put("fileid",8);
+        if (gender.equals("男")) {
+            pageData.put("fileid", 7);
+        } else {
+            pageData.put("fileid", 8);
         }
         String msg = Verify(pageData);
-        if(msg.length()>0){
+        if (msg.length() > 0) {
             return R.error(msg);
         }
 //        Boolean isSave = sysUserService.selectUserByPersionnum(pageData);
@@ -519,21 +539,22 @@ public class SysUserController extends BaseController {
 
     /**
      * 校验字段
+     *
      * @param pageData
      * @return
      */
-    public String Verify(PageData pageData){
-        CheckParameterUtil.checkParameterMap(pageData,"name","gender","username","password","mobile","wechart","qq","college","collegetie");
+    public String Verify(PageData pageData) {
+        CheckParameterUtil.checkParameterMap(pageData, "name", "gender", "username", "password", "mobile", "wechart", "qq", "college", "collegetie");
 //        if(!pageData.getValueOfString("confirmPassword").equals(pageData.getValueOfString("password"))){
 //            return "两次密码不一致";
 //        }
-        if(!CheckParameterUtil.isMobile(pageData.getValueOfString("mobile"))){
+        if (!CheckParameterUtil.isMobile(pageData.getValueOfString("mobile"))) {
             return "手机号格式不正确";
         }
-        if(!CheckParameterUtil.checkQQ(pageData.getValueOfString("qq"))){
+        if (!CheckParameterUtil.checkQQ(pageData.getValueOfString("qq"))) {
             return "QQ格式不正确";
         }
-        if(!CheckParameterUtil.checkWechat(pageData.getValueOfString("wechart"))){
+        if (!CheckParameterUtil.checkWechat(pageData.getValueOfString("wechart"))) {
             return "微信号格式不正确";
         }
         return "";
@@ -542,13 +563,13 @@ public class SysUserController extends BaseController {
     @GetMapping("/getusersByusernameAndcor")
     @ApiOperation(value = "根据社团id和学号获取个户", notes = "用户", httpMethod = "GET")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "username", value = "学号", required = true, dataType = "String",paramType = "query"),
-            @ApiImplicitParam(name = "corid", value = "社团id", required = true, dataType = "Integer",paramType = "query"),
+            @ApiImplicitParam(name = "username", value = "学号", required = true, dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "corid", value = "社团id", required = true, dataType = "Integer", paramType = "query"),
     })
     public R getusersByusernameAndcor() throws Exception {
         PageData pageData = this.getPageData();
         List<PageData> data = sysUserService.getusersByusernameAndcor(pageData);
 
-        return R.ok().put("data",data);
+        return R.ok().put("data", data);
     }
 }

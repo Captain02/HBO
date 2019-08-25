@@ -157,23 +157,44 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 
     @Override
     public void QRSave(PageData pageData) throws Exception {
-        //sha256加密
-        String salt = RandomStringUtils.randomAlphanumeric(20);
-        pageData.put("salt", salt);
-        pageData.put("persionnum", pageData.getValueOfString("username"));
-        String password = pageData.getValueOfString("password");
-        pageData.put("password", ShiroUtils.sha256(password, salt));
+        Integer type = pageData.getValueOfInteger("type");
+        if (type == 1) {
+            //sha256加密
+            String salt = RandomStringUtils.randomAlphanumeric(20);
+            pageData.put("salt", salt);
+            pageData.put("persionnum", pageData.getValueOfString("username"));
+            String password = pageData.getValueOfString("password");
+            pageData.put("password", ShiroUtils.sha256(password, salt));
 
-        if (pageData.getValueOfString("gender").equals("男")) {
-            pageData.put("fileid", 7);
-        } else {
-            pageData.put("fileid", 8);
+            if (pageData.getValueOfString("gender").equals("男")) {
+                pageData.put("fileid", 7);
+            } else {
+                pageData.put("fileid", 8);
+            }
+            daoSupport.save("io.renren.modules.sys.dao.SysUserDao.QRSave", pageData);
+
+            pageData.put("userid", pageData.getValueOfInteger("user_id"));
+            pageData.put("corid", pageData.getValueOfInteger("corid"));
+            daoSupport.save("io.renren.modules.sys.dao.SysUserDao.QRsaveUserCor", pageData);
+        }else {
+            //sha256加密
+            String salt = RandomStringUtils.randomAlphanumeric(20);
+            pageData.put("salt", salt);
+            pageData.put("persionnum", pageData.getValueOfString("username"));
+            String password = pageData.getValueOfString("password");
+            pageData.put("password", ShiroUtils.sha256(password, salt));
+
+            if (pageData.getValueOfString("gender").equals("男")) {
+                pageData.put("fileid", 7);
+            } else {
+                pageData.put("fileid", 8);
+            }
+            daoSupport.save("io.renren.modules.sys.dao.SysUserDao.QRSave", pageData);
+
+            pageData.put("userid", pageData.getValueOfInteger("user_id"));
+            pageData.put("actid", pageData.getValueOfInteger("corid"));
+            daoSupport.save("io.renren.modules.sys.dao.SysUserDao.QRsaveUserAct", pageData);
         }
-        daoSupport.save("io.renren.modules.sys.dao.SysUserDao.QRSave", pageData);
-
-        pageData.put("userid", pageData.getValueOfInteger("user_id"));
-        pageData.put("corid", pageData.getValueOfInteger("corid"));
-        daoSupport.save("io.renren.modules.sys.dao.SysUserDao.QRsaveUserCor", pageData);
     }
 
     @Override
@@ -297,24 +318,32 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 
     @Override
     public List<PageData> getusersByusernameAndcor(PageData pageData) throws Exception {
-        return (List<PageData>) daoSupport.findForList("io.renren.modules.sys.dao.SysUserDao.getusersByusernameAndcor",pageData);
+        return (List<PageData>) daoSupport.findForList("io.renren.modules.sys.dao.SysUserDao.getusersByusernameAndcor", pageData);
     }
 
     @Override
     public PageData selectUserByUsernameNotContentCor(PageData pageData) throws Exception {
-        return (PageData) daoSupport.findForObject("io.renren.modules.sys.dao.SysUserDao.selectUserByUsernameNotContentCor",pageData);
+        return (PageData) daoSupport.findForObject("io.renren.modules.sys.dao.SysUserDao.selectUserByUsernameNotContentCor", pageData);
     }
 
     @Override
     @Transactional
     public void saveExiceUserCOR(PageData pageData) throws Exception {
-        daoSupport.update("io.renren.modules.sys.dao.SysUserDao.updateUserOpenid",pageData);
+        daoSupport.update("io.renren.modules.sys.dao.SysUserDao.updateUserOpenid", pageData);
         daoSupport.save("io.renren.modules.sys.dao.SysUserDao.QRsaveUserCor", pageData);
+
     }
 
     @Override
     public List<PageData> selectActByuserAct(PageData usercor) throws Exception {
-        return (List<PageData>) daoSupport.findForList("io.renren.modules.sys.dao.SysUserDao.selectActByuserAct",usercor);
+        return (List<PageData>) daoSupport.findForList("io.renren.modules.sys.dao.SysUserDao.selectActByuserAct", usercor);
+    }
+
+    @Override
+    @Transactional
+    public void saveExiceUserAct(PageData pageData) throws Exception {
+        daoSupport.update("io.renren.modules.sys.dao.SysUserDao.updateUserOpenid", pageData);
+        daoSupport.save("io.renren.modules.sys.dao.SysUserDao.QRsaveUserAct", pageData);
     }
 
 }
