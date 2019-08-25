@@ -72,7 +72,7 @@ public class WechartController {
                 //若不存在直接加入社团
                 sysUserService.insertUserCor(usercor);
                 StringBuffer success = new StringBuffer();
-                success.append("http://").append(pcConfig).append("/#/result?")
+                success.append("redirect:").append("http://").append(pcConfig).append("/#/result?")
                         .append("code=").append("0").append("&corid=").append(corid).append("&opid=").append(openid)
                         .append("&type=").append(1);
                 return success.toString();
