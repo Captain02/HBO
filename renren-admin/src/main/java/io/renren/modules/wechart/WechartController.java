@@ -68,8 +68,9 @@ public class WechartController {
                 }
                 //若不存在直接加入社团
                 sysUserService.insertUserCor(usercor);
-                pcRedirectUrl.append("http://").append(pcConfig).append("/#/register?")
-                        .append("code=").append("0");
+                pcRedirectUrl.append("http://").append(pcConfig).append("/#/result?")
+                        .append("code=").append("0").append("&corid=").append(corid).append("&opid=").append(openid)
+                        .append("&type=").append(1);
             }
         //用户没有注册过，就直接转到注册
         } else {
