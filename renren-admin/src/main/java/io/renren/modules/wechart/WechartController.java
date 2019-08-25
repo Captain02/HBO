@@ -61,8 +61,11 @@ public class WechartController {
                 List<PageData> corsByUserName = sysUserService.selectCorByUserCorid(usercor);
                 //判断社团是否存在该用户，若存在转到重复社团重复注册
                 if (corsByUserName.size()>0){
-                    pcRedirectUrl.append("redirect:").append("http://").append(pcConfig).append("/#/register?")
-                            .append("code=").append(505);
+                    pcRedirectUrl.append("redirect:").append("http://").append(pcConfig).append("/#/result?")
+                            .append("code=").append(505)
+                            .append("&corid=").append(corid)
+                            .append("&opid=").append(openid)
+                            .append("&type=").append(1);
                     logger.info(pcRedirectUrl.toString());
                     return pcRedirectUrl.toString();
                 }
