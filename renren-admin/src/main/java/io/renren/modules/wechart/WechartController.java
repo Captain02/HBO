@@ -74,6 +74,7 @@ public class WechartController {
                 pcRedirectUrl.append("http://").append(pcConfig).append("/#/result?")
                         .append("code=").append("0").append("&corid=").append(corid).append("&opid=").append(openid)
                         .append("&type=").append(1);
+                return pcRedirectUrl.toString();
             }
         //用户没有注册过，就直接转到注册
         } else {
