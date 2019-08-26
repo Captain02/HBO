@@ -36,4 +36,6 @@ public interface ActivityService {
     void delRepliesLike(PageData pageData) throws Exception;
 
     List<PageData> getActivityUserId(PageData pageData) throws Exception;
+
+    void uploadqqcodeFile(PageData pageData) throws Exception;
 }

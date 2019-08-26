@@ -184,5 +184,13 @@ public class ActivityServiceImpl implements ActivityService {
         return (List<PageData>) daoSupport.findForList("ActivityDao.getActivityUserId",pageData);
     }
 
+    @Transactional
+    @Override
+    public void uploadqqcodeFile(PageData pageData) throws Exception {
+        daoSupport.save("QqCodeFileDao.save",pageData);
+        pageData.put("qqfileId",pageData.getValueOfInteger("id"));
+        daoSupport.update("ActivityDao.updateAct",pageData);
+    }
+
 
 }

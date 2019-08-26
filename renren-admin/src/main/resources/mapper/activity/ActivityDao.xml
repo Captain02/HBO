@@ -175,6 +175,9 @@
             <if test="enclosureid!=null">
                 `enclosureid` = #{enclosureid,jdbcType=VARCHAR},
             </if>
+            <if test="qqfileid!=null">
+                `qqfile` = #{qqfileId,jdbcType=INTEGER},
+            </if>
         </set>
         WHERE `actid` = #{actId,jdbcType=INTEGER}
     </update>

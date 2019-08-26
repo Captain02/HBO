@@ -361,5 +361,37 @@ public class ActivityController extends BaseController {
         return value;
     }
 
+    /**
+     * 上传活动QQ群二维码
+     * @param qqCodeFile
+     * @param request
+     * @return
+     */
+    @PostMapping("/uploadqqcodeFile")
+    @ApiOperation(value = "上传活动QQ群二维码", httpMethod = "POST")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query",dataType = "file",name="qqCodeFile",value = "上传的文件",required = true),
+            @ApiImplicitParam(paramType = "query",dataType = "Integer",name="actId",value = "活动id",required = true),
+            @ApiImplicitParam(paramType = "query",dataType = "Integer",name="corId",value = "社团id",required = true)
+    })
+    public R uploadqqcodeFile(@RequestParam("qqCodeFile") MultipartFile qqCodeFile, HttpServletRequest request) throws Exception {
+        PageData pageData = this.getPageData();
+        CheckParameterUtil.checkParameterMap(pageData,"actId","corId");
+        //上传文件
+        String path = (String) pageData.get("path");
+        if (path==null||path.equals("")){
+            path = "/file/qqCodeFile/";
+        }
+        String filePath = commService.uploadFile(qqCodeFile, request, path);
+        if (filePath != null) {
+            pageData.put("path",filePath);
+            pageData.put("filename",qqCodeFile.getOriginalFilename());
+            activityService.uploadqqcodeFile(pageData);
+            return R.ok();
+        } else {
+            return R.error("文件上传失败");
+        }
+    }
+
 
 }
