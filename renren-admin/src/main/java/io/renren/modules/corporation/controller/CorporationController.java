@@ -248,6 +248,9 @@ public class CorporationController extends BaseController {
             String corcrowdStr = pageData.getValueOfString("corcrowd");
             String[] split = corcrowdStr.split(",");
             List<String> corcrowdList = new ArrayList<>(Arrays.asList(split));
+            if (corcrowdList.size() == 0){
+                corcrowdList.add("127");
+            }
             pageData.put("corcrowdList",corcrowdList);
 
             //查找负责人id
