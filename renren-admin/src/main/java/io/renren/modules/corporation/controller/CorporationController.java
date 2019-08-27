@@ -59,7 +59,7 @@ public class CorporationController extends BaseController {
      * @return
      */
     @GetMapping("/list")
-    @ApiOperation(value = "获取社团详情", notes = "获取社团详情", httpMethod = "GET")
+    @ApiOperation(value = "获取社团列表", notes = "获取社团列表", httpMethod = "GET")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "pageSize", value = "每页显示记录数", required = true, dataType = "Integer"),
             @ApiImplicitParam(name = "currPage", value = "当前页", required = true, dataType = "Integer"),

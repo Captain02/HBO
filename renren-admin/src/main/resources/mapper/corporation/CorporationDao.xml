@@ -119,7 +119,7 @@
 
     <select id="selectCrowdByCoridForQR" resultType="Long">
         SELECT id FROM
-        corcrowd
+        crowdid
         WHERE
         corid = #{id}
     </select>
