@@ -449,7 +449,8 @@
     <insert id="add">
 		INSERT INTO `sys_user` (`username`,`password`,`salt`,`mobile`,`persionnum`,
 	        `wechart`,`QQ`,`college`,`collegetie`,`gender`,`name`,`fileid`)
-        VALUES (#{username},#{password},#{salt},#{mobile},#{wechart},#{qq},#{college},#{collegetie},#{qq},#{gender},#{name},#{fileid})
+        VALUES (#{username},#{password},#{salt},#{mobile},#{username},#{wechart},#{qq},
+        #{college},#{collegetie},#{gender},#{name},#{fileid})
 	</insert>
 
     <insert id="QRsaveUserAct">
