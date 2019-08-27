@@ -111,15 +111,15 @@
     </select>
 
     <select id="selectCrowdByCorid" resultType="io.renren.common.entity.PageData">
-        SELECT id FROM
+        SELECT corcrowd FROM
         corcrowd
         WHERE
         corid = #{id}
     </select>
 
     <select id="selectCrowdByCoridForQR" resultType="Long">
-        SELECT id FROM
-        crowdid
+        SELECT crowdid FROM
+        corcrowd
         WHERE
         corid = #{id}
     </select>
