@@ -246,6 +246,7 @@ public class CorporationController extends BaseController {
         try {
             //取出面向人群
             String corcrowdStr = pageData.getValueOfString("corcrowd");
+            System.out.println("corcrowd"+corcrowdStr);
             String[] split = corcrowdStr.split(",");
             List<String> corcrowdList = new ArrayList<>(Arrays.asList(split));
             if (corcrowdList.size() == 0){
