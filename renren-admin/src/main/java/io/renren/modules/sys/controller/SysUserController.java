@@ -545,7 +545,7 @@ public class SysUserController extends BaseController {
      * @return
      */
     public String Verify(PageData pageData) {
-        CheckParameterUtil.checkParameterMap(pageData, "name", "gender", "username", "password", "mobile", "wechart", "qq", "college", "collegetie");
+        CheckParameterUtil.checkParameterMap(pageData, "name", "gender", "username", "password", "mobile", "qq", "college", "collegetie");
 //        if(!pageData.getValueOfString("confirmPassword").equals(pageData.getValueOfString("password"))){
 //            return "两次密码不一致";
 //        }
