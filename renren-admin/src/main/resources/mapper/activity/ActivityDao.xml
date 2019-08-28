@@ -55,7 +55,8 @@
 
     <select id="activitylistPage" resultMap="activityListPage">
         SELECT DISTINCT c.`actname`,c.`actstarttame`,c.`actendtime`,c.`createtime`,c.`actid`,c.`actcorid`,
-        c1.`corname`,c.`actleading`,c.`fileid`,c.`videoid`,c.`images`,c.`profile`,c.`enclosure`,c.`deptid`
+        c1.`corname`,c.`actleading`,c.`fileid`,c.`videoid`,c.`images`,c.`profile`,c.`enclosure`,c.`deptid`,
+        c.`qqfile`
         FROM `coractivity` c
         LEFT JOIN `corporation` c1 ON c1.`id` = c.`actcorid`
         LEFT JOIN actcrowd ac ON ac.actid = c.`actid`
