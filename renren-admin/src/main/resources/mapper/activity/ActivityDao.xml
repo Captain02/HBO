@@ -175,7 +175,7 @@
             <if test="enclosureid!=null">
                 `enclosureid` = #{enclosureid,jdbcType=VARCHAR},
             </if>
-            <if test="qqfileid!=null">
+            <if test="qqfileId!=null">
                 `qqfile` = #{qqfileId,jdbcType=INTEGER},
             </if>
         </set>
