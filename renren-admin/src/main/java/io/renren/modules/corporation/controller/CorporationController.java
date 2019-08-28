@@ -249,7 +249,7 @@ public class CorporationController extends BaseController {
             System.out.println("corcrowd"+corcrowdStr);
             String[] split = corcrowdStr.split(",");
             List<String> corcrowdList = new ArrayList<>(Arrays.asList(split));
-            if ("".equals(corcrowdStr)){
+            if ("".equals(corcrowdStr.trim())||corcrowdList.size()==0){
                 corcrowdList.add("127");
             }
             pageData.put("corcrowdList",corcrowdList);
