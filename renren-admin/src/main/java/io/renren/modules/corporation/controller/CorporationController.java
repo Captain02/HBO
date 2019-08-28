@@ -249,8 +249,15 @@ public class CorporationController extends BaseController {
             System.out.println("corcrowd"+corcrowdStr);
             String[] split = corcrowdStr.split(",");
             List<String> corcrowdList = new ArrayList<>(Arrays.asList(split));
+            for (String s : corcrowdList) {
+                System.out.println("corcrowdListcorcrowdListcorcrowdListcorcrowdListcorcrowdListcorcrowdListcorcrowdList:"+s);
+            }
             if ("".equals(corcrowdStr.trim())||corcrowdList.size()==0){
                 corcrowdList.add("127");
+            }
+            System.out.println("----------------------------------------------------------------------");
+            for (String s : corcrowdList) {
+                System.out.println("corcrowdListcorcrowdListcorcrowdListcorcrowdListcorcrowdListcorcrowdListcorcrowdList:"+s);
             }
             pageData.put("corcrowdList",corcrowdList);
 

@@ -86,7 +86,6 @@ public class CorporationServiceImpl implements CorporationService {
         daoSupport.update("CorporationDao.updateCor", pageData);
         daoSupport.delete("CorporationDao.delCorcrowd",pageData);
         List<PageData> list = (ArrayList<PageData>)pageData.get("corcrowdList");
-        System.out.println("List<PageData> list = (ArrayList<PageData>)pageData.get(corcrowdList)"+list.size());
         daoSupport.save("CorporationDao.addCorcrowd",pageData);
     }
 }
