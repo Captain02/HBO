@@ -241,39 +241,26 @@ public class ResumeController extends BaseController {
      *
      * @return
      */
-    @PostMapping("/chart")
+    @GetMapping("/chart")
     public R chart() {
         PageData pageData = this.getPageData();
-        CheckParameterUtil.checkParameterMap(pageData, "corId");
+        CheckParameterUtil.checkParameterMap(pageData,"corId");
         try {
-            if (!pageData.containsKey("status") || "".equals(pageData.getValueOfString("status"))) {
-                pageData.put("status", 0);
-            }
             //性别
-            pageData.put("column", "gender");
+            pageData.put("column", "sys_user.gender AS gender");
+            pageData.put("column2", "sys_user.gender");
             List<PageData> genderList = resumeService.chart(pageData);
             //学院
-            pageData.put("column", "college");
+            pageData.put("column", "sys_user.college AS college");
+            pageData.put("column2", "sys_user.college");
             List<PageData> collegeList = resumeService.chart(pageData);
             //年级
-            pageData.put("column", "persionnum");
+            pageData.put("column", "LEFT(sys_user.`username`,4) AS persionnum");
+            pageData.put("column2", "LEFT(sys_user.`username`,4)");
             List<PageData> persionnumList = resumeService.chart(pageData);
-            for (int i = 0; i <persionnumList.size() ; i++) {
-                if(persionnumList.get(i).getValueOfString("persionnum").length()<4){
-                    throw new Exception("学号长度不能小于四位");
-                }
-                //截取学号前四位
-                persionnumList.get(i).put("persionnum",persionnumList.get(i).getValueOfString("persionnum").substring(0,4));
-                //相同学号数量合并
-                if(i>0){
-                    if(persionnumList.get(i).getValueOfString("persionnum").equals(persionnumList.get(i-1).getValueOfString("persionnum"))){
-                        persionnumList.get(i).put("num",persionnumList.get(i).getValueOfInteger("num")+persionnumList.get(i-1).getValueOfInteger("num"));
-                        persionnumList.remove(--i);
-                    }
-                }
-            }
             //专业
-            pageData.put("column", "collegetie");
+            pageData.put("column", "sys_user.collegetie AS collegetie");
+            pageData.put("column2", "sys_user.collegetie");
             List<PageData> collegetieList = resumeService.chart(pageData);
 
             return R.ok().put("genderData", genderList)

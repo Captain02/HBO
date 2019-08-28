@@ -61,7 +61,12 @@
     </select>
 
     <select id="chart" resultType="io.renren.common.entity.PageData">
-        CALL `chart_count`(#{corId,jdbcType=INTEGER},#{status,jdbcType=INTEGER},#{column,jdbcType=INTEGER});
+        SELECT ${COLUMN},COUNT(*) num
+        FROM sys_user
+        LEFT JOIN cor_user ON cor_user.`userid` = sys_user.`user_id`
+        LEFT JOIN corporation ON corporation.`id`= cor_user.`corid`
+        WHERE corporation.`id` = #{corId,jdbcType=INTEGER}
+        GROUP BY ${column2}
     </select>
 
     <update id="update">
