@@ -165,8 +165,20 @@
             <if test="profile!=null">
                 `profile` = #{profile,jdbcType=VARCHAR},
             </if>
-            <if test="enclosureid!=null">
+            <if test="enclosureid!=null and enclosureid!=''">
                 `enclosureid` = #{enclosureid,jdbcType=VARCHAR},
+            </if>
+            <if test="videoid!=null and videoid!=''">
+                `videoid` = #{videoid},
+            </if>
+            <if test="images!=null and images!=''">
+                `images` = #{images},
+            </if>
+            <if test="fileid!=null and fileid!=''">
+                `fileid` = #{fileid},
+            </if>
+            <if test="qqfile!=null and qqfile!=''">
+                `qqfile` = #{qqfile},
             </if>
         </set>
         WHERE `actid` = #{actId,jdbcType=INTEGER}

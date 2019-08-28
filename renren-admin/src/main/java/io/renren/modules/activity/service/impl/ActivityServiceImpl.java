@@ -40,7 +40,7 @@ public class ActivityServiceImpl implements ActivityService {
         pageData.put("filePath", "/file/QrCode/Activity/" + pageData.getValueOfString("fileName"));
         Integer fileId = commService.addFile2DB(pageData);
         if (fileId != null) {
-            pageData.put("fileId", fileId);
+            pageData.put("fileid", fileId);
         }
         //上传附件
         if (enclosure != null && !enclosure.isEmpty()) {
@@ -194,8 +194,8 @@ public class ActivityServiceImpl implements ActivityService {
     @Transactional
     @Override
     public void uploadqqcodeFile(PageData pageData) throws Exception {
-        daoSupport.save("QqCodeFileDao.save",pageData);
-        pageData.put("qqfileId",pageData.getValueOfInteger("id"));
+        daoSupport.save("FileDao.add",pageData);
+        pageData.put("qqfile",pageData.getValueOfInteger("id"));
         daoSupport.update("ActivityDao.updateAct",pageData);
     }
 

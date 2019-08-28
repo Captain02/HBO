@@ -30,5 +30,10 @@
         FROM filetable
         WHERE `id` = #{id}
     </select>
+    <select id="selectqqfileById" resultType="io.renren.common.entity.PageData">
+        SELECT `id`,`filename`,`filepath`
+        FROM qqfile
+        WHERE `id` = #{id}
+    </select>
 
 </mapper>
