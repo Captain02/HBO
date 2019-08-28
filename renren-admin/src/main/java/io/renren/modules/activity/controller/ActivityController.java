@@ -387,7 +387,7 @@ public class ActivityController extends BaseController {
             pageData.put("path",filePath);
             pageData.put("filename",qqCodeFile.getOriginalFilename());
             activityService.uploadqqcodeFile(pageData);
-            return R.ok();
+            return R.ok().put("path",path);
         } else {
             return R.error("文件上传失败");
         }

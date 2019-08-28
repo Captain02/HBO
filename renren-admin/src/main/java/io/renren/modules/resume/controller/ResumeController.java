@@ -244,7 +244,7 @@ public class ResumeController extends BaseController {
     @GetMapping("/chart")
     public R chart() {
         PageData pageData = this.getPageData();
-        CheckParameterUtil.checkParameterMap(pageData,"corId");
+        CheckParameterUtil.checkParameterMap(pageData,"corId","status");
         try {
             //性别
             pageData.put("column", "sys_user.gender AS gender");

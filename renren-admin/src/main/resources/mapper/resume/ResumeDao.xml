@@ -66,6 +66,7 @@
         LEFT JOIN cor_user ON cor_user.`userid` = sys_user.`user_id`
         LEFT JOIN corporation ON corporation.`id`= cor_user.`corid`
         WHERE corporation.`id` = #{corId,jdbcType=INTEGER}
+        AND cor_user.`status`=#{status,jdbcType=INTEGER}
         GROUP BY ${column2}
     </select>
 
