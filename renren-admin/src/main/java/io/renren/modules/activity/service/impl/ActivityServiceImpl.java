@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -99,9 +100,15 @@ public class ActivityServiceImpl implements ActivityService {
         }
         daoSupport.delete("ActivityDao.delActCroWdPeopleByActId",pageData);
         String croWdPeopleStr = pageData.getValueOfString("croWdPeople");
-        String[] split = croWdPeopleStr.split(",");
-        List<String> list = Arrays.asList(split);
-        pageData.put("list",list);
+        if ("".equals(croWdPeopleStr.trim())){
+            List<String> corcrowdList = new ArrayList<>();
+            corcrowdList.add("127");
+            pageData.put("list",corcrowdList);
+        }else {
+            String[] split = croWdPeopleStr.split(",");
+            List<String> corcrowdList = new ArrayList<>(Arrays.asList(split));
+            pageData.put("list",corcrowdList);
+        }
         daoSupport.save("ActivityDao.addActCroWdPeople", pageData);
         //上传附件
         if (enclosure != null && !enclosure.isEmpty()) {

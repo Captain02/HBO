@@ -126,6 +126,7 @@ public class ActivityController extends BaseController {
     public R updateAct(@RequestParam(value = "enclosure", required = false) MultipartFile enclosure, HttpServletRequest request) throws Exception {
         PageData pageData = this.getPageData();
         CheckParameterUtil.checkParameterMap(pageData, "actId");
+        pageData.put("actid",pageData.getValueOfString("actId"));
         activityService.updateAct(pageData, enclosure, request);
         return R.ok();
     }

@@ -160,23 +160,11 @@
             <if test="actdetails!=null">
                 `actdetails` = #{actdetails,jdbcType=VARCHAR},
             </if>
-            <if test="videoid!=null">
-                `videoid` = #{videoid,jdbcType=INTEGER},
-            </if>
-            <if test="images!=null">
-                `images` = #{images,jdbcType=INTEGER},
-            </if>
-            <if test="fileId!=null">
-                `fileid` = #{fileId,jdbcType=VARCHAR},
-            </if>
             <if test="profile!=null">
                 `profile` = #{profile,jdbcType=VARCHAR},
             </if>
             <if test="enclosureid!=null">
                 `enclosureid` = #{enclosureid,jdbcType=VARCHAR},
-            </if>
-            <if test="qqfileId!=null">
-                `qqfile` = #{qqfileId,jdbcType=INTEGER},
             </if>
         </set>
         WHERE `actid` = #{actId,jdbcType=INTEGER}
