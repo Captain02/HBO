@@ -151,7 +151,7 @@ public class CorporationController extends BaseController {
         try {
             //取出面向人群
             String corcrowdStr = pageData.getValueOfString("corcrowd");
-            if ("".equals(corcrowdStr)){
+            if ("".equals(corcrowdStr.trim())){
                 List<String> corcrowdList = new ArrayList<>();
                 corcrowdList.add("127");
                 pageData.put("corcrowdList",corcrowdList);
@@ -246,20 +246,15 @@ public class CorporationController extends BaseController {
         try {
             //取出面向人群
             String corcrowdStr = pageData.getValueOfString("corcrowd");
-            System.out.println("corcrowd"+corcrowdStr);
-            String[] split = corcrowdStr.split(",");
-            List<String> corcrowdList = new ArrayList<>(Arrays.asList(split));
-            for (String s : corcrowdList) {
-                System.out.println("corcrowdListcorcrowdListcorcrowdListcorcrowdListcorcrowdListcorcrowdListcorcrowdList:"+s);
-            }
-            if ("".equals(corcrowdStr.trim())||corcrowdList.size()==0){
+            if ("".equals(corcrowdStr.trim())){
+                List<String> corcrowdList = new ArrayList<>();
                 corcrowdList.add("127");
+                pageData.put("corcrowdList",corcrowdList);
+            }else {
+                String[] split = corcrowdStr.split(",");
+                List<String> corcrowdList = new ArrayList<>(Arrays.asList(split));
+                pageData.put("corcrowdList",corcrowdList);
             }
-            System.out.println("----------------------------------------------------------------------");
-            for (String s : corcrowdList) {
-                System.out.println("corcrowdListcorcrowdListcorcrowdListcorcrowdListcorcrowdListcorcrowdListcorcrowdList:"+s);
-            }
-            pageData.put("corcrowdList",corcrowdList);
 
             //查找负责人id
             pageData.put("username",pageData.getValueOfString("corleading"));
