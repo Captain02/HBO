@@ -386,7 +386,9 @@ public class ActivityController extends BaseController {
         }
         String filePath = commService.uploadFile(qqCodeFile, request, path);
         if (filePath != null) {
-            pageData.put("path",filePath);
+            pageData.put("filepath",filePath);
+            pageData.put("filePath",filePath);
+            pageData.put("fileName",qqCodeFile.getOriginalFilename());
             pageData.put("filename",qqCodeFile.getOriginalFilename());
             activityService.uploadqqcodeFile(pageData);
             return R.ok().put("path",filePath);
