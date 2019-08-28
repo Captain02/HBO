@@ -377,8 +377,9 @@ public class ActivityController extends BaseController {
     })
     public R uploadqqcodeFile(@RequestParam("qqCodeFile") MultipartFile qqCodeFile, HttpServletRequest request) throws Exception {
         PageData pageData = this.getPageData();
-        CheckParameterUtil.checkParameterMap(pageData,"actid");
+        CheckParameterUtil.checkParameterMap(pageData,"actId");
         //上传文件
+        pageData.put("actid",pageData.getValueOfString("actId"));
         String path = (String) pageData.get("path");
         if (path==null||path.equals("")){
             path = "/file/qqCodeFile/";
