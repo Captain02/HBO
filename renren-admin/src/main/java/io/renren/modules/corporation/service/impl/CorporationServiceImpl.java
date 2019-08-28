@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service("CorporationService")
@@ -84,6 +85,8 @@ public class CorporationServiceImpl implements CorporationService {
     public void updateCor(PageData pageData) throws Exception {
         daoSupport.update("CorporationDao.updateCor", pageData);
         daoSupport.delete("CorporationDao.delCorcrowd",pageData);
+        List<PageData> list = (ArrayList<PageData>)pageData.get("corcrowdList");
+        System.out.println("List<PageData> list = (ArrayList<PageData>)pageData.get(corcrowdList)"+list.size());
         daoSupport.save("CorporationDao.addCorcrowd",pageData);
     }
 }
