@@ -6,6 +6,7 @@ import io.renren.common.entity.PageData;
 import io.renren.modules.notic.service.NoticService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -16,8 +17,10 @@ public class NoticServiceImpl implements NoticService {
     private DaoSupport daoSupport;
 
     @Override
+    @Transactional
     public void add(PageData pageData) throws Exception {
         daoSupport.save("NoticDao.add", pageData);
+        daoSupport.save("NoticDao.addnoticuser", pageData);
     }
 
     @Override
