@@ -64,12 +64,6 @@
     FROM `notic`
     WHERE `noticid`=#{noticId,jdbcType=INTEGER}
 
---         SELECT n.`notictop`,n.`noticcontent`,n.`createtime`,n.`noticid`,
---         u.`name` publishUser,n.`corid`,u1.`name` receiveUser
---         FROM `notic` n
---         LEFT JOIN `sys_user` u ON n.`notictuserid` = u.`user_id`
---         LEFT JOIN `sys_user` u1 ON n.`noticteduserid` = u1.`user_id`
---         WHERE n.`noticid`=#{noticId,jdbcType=INTEGER}
     </select>
 
     <select id="selectreceiveUser" resultType="io.renren.common.entity.PageData">
