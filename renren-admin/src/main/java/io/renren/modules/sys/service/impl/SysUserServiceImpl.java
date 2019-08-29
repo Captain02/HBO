@@ -346,4 +346,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
         daoSupport.save("io.renren.modules.sys.dao.SysUserDao.QRsaveUserAct", pageData);
     }
 
+    @Override
+    public void insertUserAct(PageData usercor) throws Exception {
+        daoSupport.save("io.renren.modules.sys.dao.SysUserDao.insertUserAct", usercor);
+    }
+
 }

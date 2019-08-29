@@ -115,4 +115,6 @@ public interface SysUserService extends IService<SysUserEntity> {
     List<PageData> selectActByuserAct(PageData usercor) throws Exception;
 
     void saveExiceUserAct(PageData pageData) throws Exception;
+
+    void insertUserAct(PageData usercor) throws Exception;
 }

@@ -456,5 +456,9 @@
     <insert id="QRsaveUserAct">
         INSERT INTO actenroll (userid,actid)VALUES (#{userid},#{actid})
     </insert>
+    
+    <insert id="insertUserAct">
+        insert into actenroll (userid,actid) values (#{userid},#{actid});
+    </insert>
 
 </mapper>

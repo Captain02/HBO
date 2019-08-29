@@ -64,7 +64,7 @@ public class WechartController {
                     pcRedirectUrl.append("redirect:").append("http://").append(pcConfig).append("/#/result?")
                             .append("code=").append(505)
                             .append("&corid=").append(corid)
-                            .append("&opid=").append(openid)
+                            .append("&openid=").append(openid)
                             .append("&type=").append(1);
                     logger.info(pcRedirectUrl.toString());
                     return pcRedirectUrl.toString();
@@ -73,7 +73,7 @@ public class WechartController {
                 sysUserService.insertUserCor(usercor);
                 StringBuffer success = new StringBuffer();
                 success.append("redirect:").append("http://").append(pcConfig).append("/#/result?")
-                        .append("code=").append("0").append("&corid=").append(corid).append("&opid=").append(openid)
+                        .append("code=").append("0").append("&corid=").append(corid).append("&openid=").append(openid)
                         .append("&type=").append(1);
                 return success.toString();
             }else if (type.equals("3")) {
@@ -83,11 +83,17 @@ public class WechartController {
                     pcRedirectUrl.append("redirect:").append("http://").append(pcConfig).append("/#/result?")
                             .append("code=").append(505)
                             .append("&corid=").append(corid)
-                            .append("&opid=").append(openid)
+                            .append("&openid=").append(openid)
                             .append("&type=").append(3);
                     logger.info(pcRedirectUrl.toString());
                     return pcRedirectUrl.toString();
                 }
+                StringBuffer success = new StringBuffer();
+                sysUserService.insertUserAct(usercor);
+                success.append("redirect:").append("http://").append(pcConfig).append("/#/result?")
+                        .append("code=").append("0").append("&corid=").append(corid).append("&openid=").append(openid)
+                        .append("&type=").append(3);
+                return success.toString();
             }
         //用户没有注册过，就直接转到注册
         } else {
