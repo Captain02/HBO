@@ -61,7 +61,7 @@
     </select>
 
     <select id="chart" resultType="io.renren.common.entity.PageData">
-        SELECT ${COLUMN},COUNT(*) num
+        SELECT ${column},COUNT(*) num
         FROM sys_user
         LEFT JOIN cor_user ON cor_user.`userid` = sys_user.`user_id`
         LEFT JOIN corporation ON corporation.`id`= cor_user.`corid`
