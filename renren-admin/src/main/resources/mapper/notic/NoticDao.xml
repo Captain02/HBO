@@ -38,8 +38,10 @@
                 AND u1.`name` LIKE CONCAT('%',#{pd.receiveUser,jdbcType=VARCHAR},'%')
             </if>
             <if test="pd.startTime != null and pd.startTime != '' and pd.endTime != null and pd.endTime != ''">
-                AND n.`createtime` between #{pd.startTime}
-                and #{pd.endTime}
+                <![CDATA[
+                AND n.`createtime` >= #{pd.startTime}
+                AND n.`createtime` <= #{pd.endTime}
+                ]]>
             </if>
         </where>
     </select>
