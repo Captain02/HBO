@@ -8,23 +8,25 @@
         </association>
     </resultMap>
 
+
     <insert id="add" useGeneratedKeys="true" keyProperty="noticid">
             INSERT INTO `notic`(`notictop`,`noticcontent`,`notictuserid`,`corid`)
             VALUES(#{title},#{content},#{publishUser},#{corId})
     </insert>
     <insert id="addnoticuser">
         insert into noticeduser (noticid,noticteduserid) values
-        <foreach collection="receiveUserList" item="item" separator="," open="(" close=")">
-            #{noticid},#{item}
+        <foreach collection="receiveUserList" item="item" separator=",">
+            (#{noticid},#{item})
         </foreach>
     </insert>
 
     <select id="noticlistPage" resultType="io.renren.common.entity.PageData">
-        SELECT n.`notictop`,n.`noticcontent`,n.`createtime`,n.`noticid`,
-        u.`name` publishUser,n.`corid`,u1.`name` receiveUser
+        SELECT DISTINCT n.`notictop`,n.`noticcontent`,n.`createtime`,n.`noticid`,
+        u.`name` publishUser,n.`corid`
         FROM `notic` n
         LEFT JOIN `sys_user` u ON n.`notictuserid` = u.`user_id`
-        LEFT JOIN `sys_user` u1 ON n.`noticteduserid` = u1.`user_id`
+        LEFT JOIN noticeduser nd ON  nd.`noticid` = n.`noticid`
+        LEFT JOIN `sys_user` u1 ON nd.`noticteduserid` = u1.`user_id`
         <where>
             <if test="pd.publishUser != null and pd.publishUser != ''">
                 AND u.`name` LIKE CONCAT('%',#{pd.publishUser,jdbcType=VARCHAR},'%')
@@ -43,11 +45,12 @@
     </select>
 
     <select id="homelistPage" resultType="io.renren.common.entity.PageData">
-        SELECT n.`notictop`,n.`noticcontent`,n.`createtime`,n.`noticid`,
-        u.`name` publishUser,n.`corid`,u1.`name` receiveUser
+        SELECT DISTINCT n.`notictop`,n.`noticcontent`,n.`createtime`,n.`noticid`,
+        u.`name` publishUser,n.`corid`
         FROM `notic` n
         LEFT JOIN `sys_user` u ON n.`notictuserid` = u.`user_id`
-        LEFT JOIN `sys_user` u1 ON n.`noticteduserid` = u1.`user_id`
+        LEFT JOIN noticeduser nd ON  nd.`noticid` = n.`noticid`
+        LEFT JOIN `sys_user` u1 ON nd.`noticteduserid` = u1.`user_id`
         <where>
             <if test="pd.corId != null">
                 AND n.`corid` = #{pd.corId,jdbcType=INTEGER}
@@ -56,10 +59,11 @@
                 AND u1.`user_id` = #{pd.receiveUserId,jdbcType=INTEGER}
             </if>
         </where>
+
     </select>
 
     <select id="info" resultMap="noticdetail">
-    select  `notictop`,`noticcontent`,`createTime`,`notictuserid`,`corid`,
+    select  `notictop`,`noticcontent`,`createTime`,`notictuserid`,`corid`,`noticid`,
     (SELECT `name` FROM sys_user WHERE sys_user.user_id = notictuserid) `name`
     FROM `notic`
     WHERE `noticid`=#{noticId,jdbcType=INTEGER}
@@ -70,6 +74,6 @@
         SELECT id,noticid,noticteduserid,
         (SELECT `name` FROM sys_user WHERE sys_user.user_id = noticteduserid) `name`
         FROM noticeduser
-        WHERE id=#{id}
+        WHERE noticid=#{id}
     </select>
 </mapper>
