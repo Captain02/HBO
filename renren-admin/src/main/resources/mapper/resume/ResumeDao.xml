@@ -71,10 +71,10 @@
     </select>
 
     <update id="update">
-        UPDATE `sys_user` u
-        LEFT JOIN `cor_user` cu ON u.`user_id`=cu.`userid`
-        SET cu.`status` = #{status,jdbcType=INTEGER}
-        WHERE u.`user_id` = #{resumeId,jdbcType=INTEGER}
+    DELETE FROM cor_user WHERE
+    userid = #{userid}
+    AND
+    corid = #{corid}
     </update>
 
 </mapper>

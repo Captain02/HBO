@@ -113,8 +113,8 @@ public class ResumeController extends BaseController {
     @PostMapping("/delete")
     public R delete() {
         PageData pageData = this.getPageData();
-        CheckParameterUtil.checkParameterMap(pageData, "resumeId");
-        pageData.put("status", 0);
+//        CheckParameterUtil.checkParameterMap(pageData, "resumeId");
+//        pageData.put("status", 0);
         try {
             resumeService.delete(pageData);
             return R.ok("删除成功");
