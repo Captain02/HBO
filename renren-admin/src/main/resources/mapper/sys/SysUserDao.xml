@@ -101,8 +101,10 @@
     <!--void removeUserByIds(List<Long> collect, Long corid);-->
     <!--删除社团成员-->
     <update id="removeUserByIds" parameterType="java.util.List">
-        UPDATE cor_user SET status = 0
-        WHERE corid = #{corid} AND userid IN
+        DELETE FROM cor_user WHERE
+        corid = #{corid}
+        AND
+        userid IN
         <foreach collection="list" index="index" item="ids" open="(" separator="," close=")">
             #{ids}
         </foreach>

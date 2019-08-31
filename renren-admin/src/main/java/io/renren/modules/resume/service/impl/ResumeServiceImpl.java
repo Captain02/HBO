@@ -39,7 +39,7 @@ public class ResumeServiceImpl implements ResumeService {
 
     @Override
     public void delete(PageData pageData) throws Exception {
-        daoSupport.findForList("ResumeDao.update", pageData);
+        daoSupport.findForList("ResumeDao.deleteResume", pageData);
     }
 
     @Override

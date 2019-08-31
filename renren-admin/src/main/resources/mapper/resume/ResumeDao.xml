@@ -70,11 +70,11 @@
         GROUP BY ${column2}
     </select>
 
-    <update id="update">
+    <delete id="deleteResume">
     DELETE FROM cor_user WHERE
     userid = #{userid}
     AND
     corid = #{corid}
-    </update>
+    </delete>
 
 </mapper>
