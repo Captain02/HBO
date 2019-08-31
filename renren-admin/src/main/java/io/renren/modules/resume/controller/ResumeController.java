@@ -246,7 +246,7 @@ public class ResumeController extends BaseController {
         PageData pageData = this.getPageData();
         CheckParameterUtil.checkParameterMap(pageData,"corId");
         if (!pageData.containsKey("status") || "".equals(pageData.getValueOfString("status"))) {
-            pageData.put("status", 0);
+            pageData.put("status", 5);
         }
         try {
             //性别
