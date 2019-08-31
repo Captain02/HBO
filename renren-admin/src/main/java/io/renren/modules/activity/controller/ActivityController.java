@@ -397,7 +397,7 @@ public class ActivityController extends BaseController {
         }
     }
 
-    public R getActQQfile(){
+    public R getActQQfile() throws Exception {
         PageData pageData = this.getPageData();
         PageData data = activityService.getActQQfile(pageData);
 
