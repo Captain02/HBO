@@ -402,7 +402,7 @@ public class ActivityController extends BaseController {
         PageData pageData = this.getPageData();
         PageData data = activityService.getActQQfile(pageData);
 
-        return R.ok();
+        return R.ok().put("data",data);
 
     }
 
