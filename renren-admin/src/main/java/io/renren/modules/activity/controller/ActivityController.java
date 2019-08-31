@@ -397,5 +397,13 @@ public class ActivityController extends BaseController {
         }
     }
 
+    public R getActQQfile(){
+        PageData pageData = this.getPageData();
+        PageData data = activityService.getActQQfile(pageData);
+
+        return R.ok();
+
+    }
+
 
 }

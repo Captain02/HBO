@@ -38,4 +38,6 @@ public interface ActivityService {
     List<PageData> getActivityUserId(PageData pageData) throws Exception;
 
     void uploadqqcodeFile(PageData pageData) throws Exception;
+
+    PageData getActQQfile(PageData pageData) throws Exception;
 }

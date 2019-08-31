@@ -309,4 +309,12 @@
         DELETE FROM bbs_replies_like WHERE userid = #{userid} AND repliesid = #{repliesid}
     </delete>
 
+    <select id="getActQQfile" resultType="io.renren.common.entity.PageData">
+        SELECT `actid`, `qqfile`,
+        (SELECT filepath FROM filetable WHERE id = qqfile) qqfilepath
+        FROM coractivity
+        WHERE
+        `actid` = #{actid}
+    </select>
+
 </mapper>

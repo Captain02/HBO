@@ -199,5 +199,10 @@ public class ActivityServiceImpl implements ActivityService {
         daoSupport.update("ActivityDao.updateAct",pageData);
     }
 
+    @Override
+    public PageData getActQQfile(PageData pageData) throws Exception {
+        return (PageData) daoSupport.findForObject("ActivityDao.getActQQfile",pageData);
+    }
+
 
 }
