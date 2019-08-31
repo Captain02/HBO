@@ -245,9 +245,9 @@ public class ResumeController extends BaseController {
     public R chart() {
         PageData pageData = this.getPageData();
         CheckParameterUtil.checkParameterMap(pageData,"corId");
-        if (!pageData.containsKey("status") || "".equals(pageData.getValueOfString("status"))) {
-            pageData.put("status", 5);
-        }
+//        if (!pageData.containsKey("status") || "".equals(pageData.getValueOfString("status"))) {
+//            pageData.put("status", 5);
+//        }
         try {
             //性别
             pageData.put("column", "sys_user.gender AS gender");
