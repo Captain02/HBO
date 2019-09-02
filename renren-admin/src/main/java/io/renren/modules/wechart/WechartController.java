@@ -34,7 +34,6 @@ public class WechartController {
         String state = request.getParameter("state");
         String redirectUrl = acquireOpenIDUrlWithCode(code);
         String responseText = HttpClientUtil.doGet(redirectUrl);
-
         JSONObject wechatEntity = JSONObject.parseObject(responseText);
         String openid = wechatEntity.getString("openid");
 
