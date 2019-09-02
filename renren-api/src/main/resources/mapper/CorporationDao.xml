@@ -28,6 +28,16 @@
 	(SELECT `name` FROM sys_dept WHERE dept_id = deptid)deptname,
 	(SELECT filepath FROM sys_user U LEFT JOIN filetable F ON F.id=U.fileid WHERE user_id = corleading)userfilepath
 	FROM corporation
+	WHERE 1 = 1
+	<if test="corname!=null and corname!=''">
+		and corname like '%${corname}%'
+	</if>
+	<if test="corcollege!=null and corcollege!=''">
+		and corcollege = #{corcollege}
+	</if>
+	<if test="corname!=null and corname!=''">
+			and corname = #{corname}
+	</if>
 	<if test="pd.scale == 'istrue'">
 		order by corscale DESC
 	</if>

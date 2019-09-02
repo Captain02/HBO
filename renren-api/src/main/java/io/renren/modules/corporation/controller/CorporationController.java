@@ -46,6 +46,8 @@ public class CorporationController extends BaseController{
     @ApiImplicitParams({
             @ApiImplicitParam(name = "pageSize",paramType = "query",value = "每页显示记录数", required = true, dataType = "Integer"),
             @ApiImplicitParam(name = "currPage",paramType = "query", value = "当前页", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "corname",paramType = "query", value = "社团名称", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "corcollege",paramType = "query", value = "所属社团（提交id）", required = true, dataType = "String"),
     })
     public R getListPage(@ApiIgnore Page page) {
         PageData pageData = this.getPageData();
