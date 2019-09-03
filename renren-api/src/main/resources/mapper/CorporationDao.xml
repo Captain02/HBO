@@ -28,16 +28,16 @@
 	(SELECT `name` FROM sys_dept WHERE dept_id = deptid)deptname,
 	(SELECT filepath FROM sys_user U LEFT JOIN filetable F ON F.id=U.fileid WHERE user_id = corleading)userfilepath
 	FROM corporation
-	WHERE 1 = 1
-	<if test="pd.corname!=null and pd.corname!=''">
-		and corname like '%${pd.corname}%'
-	</if>
-	<if test="pd.corcollege!=null and pd.corcollege!=''">
-		and corcollege = #{pd.corcollege}
-	</if>
-	<if test="pd.scale == 'istrue'">
-		order by corscale DESC
-	</if>
+	<!--WHERE 1 = 1-->
+	<!--<if test="pd.corname!=null and pd.corname!=''">-->
+		<!--and corname like '%${pd.corname}%'-->
+	<!--</if>-->
+	<!--<if test="pd.corcollege!=null and pd.corcollege!=''">-->
+		<!--and corcollege = #{pd.corcollege}-->
+	<!--</if>-->
+	<!--<if test="pd.scale == 'istrue'">-->
+		<!--order by corscale DESC-->
+	<!--</if>-->
     </select>
 
 	<select id="byPrimaryId" resultType="map" parameterType="java.lang.Long">
