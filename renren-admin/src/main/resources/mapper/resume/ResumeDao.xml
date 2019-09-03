@@ -77,4 +77,11 @@
     corid = #{corid}
     </delete>
 
+    <update id="update">
+        UPDATE cor_user SET status = #{status} WHERE
+        corid = #{corid}
+        AND
+        userid = #{userid}
+    </update>
+
 </mapper>

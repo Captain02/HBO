@@ -95,7 +95,7 @@ public class ResumeController extends BaseController {
     @PostMapping("/edit")
     public R edit() {
         PageData pageData = this.getPageData();
-        CheckParameterUtil.checkParameterMap(pageData, "resumeId", "status");
+        CheckParameterUtil.checkParameterMap(pageData, "userid", "status", "corid");
         try {
             resumeService.update(pageData);
             return R.ok("修改成功");
