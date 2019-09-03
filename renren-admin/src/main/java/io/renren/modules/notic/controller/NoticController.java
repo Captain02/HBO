@@ -10,6 +10,9 @@ import io.renren.common.utils.QrCodeUtils;
 import io.renren.common.utils.R;
 import io.renren.modules.notic.service.NoticService;
 import io.renren.modules.notic.service.impl.NoticServiceImpl;
+import io.renren.modules.sms.com.chuanglan.sms.service.SmsService;
+import io.renren.modules.sys.entity.SysDictEntity;
+import io.renren.modules.sys.service.SysDictService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -19,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -32,6 +36,12 @@ public class NoticController extends BaseController {
 
     @Autowired
     private NoticService noticService;
+
+    @Autowired
+    SmsService smsService;
+
+    @Autowired
+    SysDictService sysDictService;
 
 
     @PostMapping("/add")
@@ -52,6 +62,16 @@ public class NoticController extends BaseController {
         List<String> receiveUserList = new ArrayList<>(Arrays.asList(split));
         pageData.put("receiveUserList", receiveUserList);
         noticService.add(pageData);
+        pageData.put("noticeid",pageData.getValueOfString("noticid"));
+        pageData.put("num",receiveUserList.size());
+
+        SysDictEntity isConsume = sysDictService.getById(128);
+        @NotBlank(message = "字典码不能为空") String code = isConsume.getCode();
+        int i = Integer.parseInt(code);
+        if (i != 0){
+            smsService.consumerSMS(pageData);
+        }
+
         return R.ok();
     }
 
