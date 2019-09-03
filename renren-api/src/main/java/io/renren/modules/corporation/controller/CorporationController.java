@@ -54,6 +54,7 @@ public class CorporationController extends BaseController{
         int currPage = Integer.parseInt(pageData.getValueOfString("currPage"));
         page.setPageSize(pageData.getValueOfInteger("pageSize"));
         page.setCurrPage(pageData.getValueOfInteger("currPage"));
+        page.setPd(pageData);
         try {
             List<PageData> corporations = corporationService.getListPage(page);
             if (currPage != page.getCurrPage()) {
