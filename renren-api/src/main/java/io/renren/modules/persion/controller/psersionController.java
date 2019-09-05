@@ -201,9 +201,9 @@ public class psersionController extends BaseController {
 
     @ApiOperation(value = "查询用户在所属社团的状态", tags = {"用户发布"}, notes = "{'user_id':用户id}")
     @GetMapping(value = "/getUserCorStatus", produces = "application/json;charset=utf-8")
-    public R getUserCorStatus(@RequestBody String json) throws Exception {
-        PageData pageData = JsonUtils.parseStringToObject(json, PageData.class);
-//        PageData pageData = this.getPageData();
+    public R getUserCorStatus() throws Exception {
+//        PageData pageData = JsonUtils.parseStringToObject(json, PageData.class);
+        PageData pageData = this.getPageData();
         List<PageData> data = persionTopicService.getUserCorStatus(pageData);
         return R.ok().put("data",data);
     }
