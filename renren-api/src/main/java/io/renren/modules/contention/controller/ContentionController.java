@@ -106,4 +106,30 @@ public class ContentionController  extends BaseController {
             return R.error(e.getMessage());
         }
     }
+
+
+    /**
+     * 获取评论列表
+     * @return
+     */
+    @GetMapping("/getRepliesListByid")
+    @ApiOperation(value = "评论分页", notes = "评论分页", httpMethod = "GET",tags = {"社团活动"})
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "pageSize", value = "每页显示记录数", paramType = "query",required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "currPage", value = "当前页",paramType = "query", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "topicid", value = "主题id",paramType = "query", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "id", value = "评论主键id",paramType = "query", required = true, dataType = "Integer"),
+    })
+    public  R getRepliesListByid(@ApiIgnore Page page){
+        PageData pageData = this.getPageData();
+        try {
+            pageData.put("id",0);
+            page.setPd(pageData);
+            List<PageData> repliesList = repliesService.getListPage(page);
+            return R.ok().put("page", page).put("date", repliesList);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return R.error(e.getMessage());
+        }
+    }
 }

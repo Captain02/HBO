@@ -8,12 +8,19 @@
         <association property="likeNumber" column="repliesid" select="getLikeNumber"></association>
         <association property="likePeopleDetail" column="{id=userid}" select="getinfoByIdNotContentRoleDept"></association>
         <collection property="likePeople" column="repliesid" select="getlikePeople"></collection>
-        <collection property="child" column="{topicid=topicid,repliesid=repliesid}" 	select="getReplies"></collection>
+        <collection property="child" column="{topicid=topicid,repliesid=repliesid}" select="getReplies"></collection>
+        <collection property="Repliesuserinfo" column="{id=userid}" select="getinfoByIdNotContentRoleDept"></collection>
     </resultMap>
     <select id="getReplieslistPage" resultMap="bbsReplies">
         SELECT `repliesid`,`userid`,`parentid`,`topicid`,`createtime`,`repliescontent`,`states`
         FROM replies
-        WHERE `topicid` = #{pd.topicid} AND `parentid` = #{pd.repliesid}
+        WHERE `topicid` = #{pd.topicid}
+        <if test="pd.repliesid!=null and pd.repliesid!=''">
+            AND `parentid` = #{pd.repliesid}
+        </if>
+        <if test="pd.id!=null and pd.id!=''">
+            AND `repliesid` = #{pd.id}
+        </if>
     </select>
 
     <select id="getReplies" resultMap="bbsReplies">
