@@ -106,4 +106,21 @@
         </if>
         );
     </insert>
+
+    <select id="getUserCorStatus" resultType="io.renren.common.entity.PageData">
+        SELECT
+        cp.corname ,
+        CASE
+            WHEN cu.`status`='1' THEN '录用'
+            WHEN cu.`status`='2' THEN '未录用'
+            WHEN cu.`status`='3' THEN '面试'
+            WHEN cu.`status`='4' THEN '笔试'
+            WHEN cu.`status`='5' THEN '未处理'
+        END `status`
+        FROM
+        sys_user u
+        LEFT JOIN cor_user cu ON cu.userid = u.user_id
+        LEFT JOIN corporation cp ON cp.id = cu.corid
+        WHERE u.`user_id` = #{user_id}
+    </select>
 </mapper>

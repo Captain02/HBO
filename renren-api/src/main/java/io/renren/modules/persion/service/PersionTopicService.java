@@ -23,4 +23,6 @@ public interface PersionTopicService {
     void unlikepersionTopicReplies(PageData pageData) throws Exception;
 
     void releaseTopic(PageData pageData) throws Exception;
+
+    List<PageData> getUserCorStatus(PageData pageData) throws Exception;
 }

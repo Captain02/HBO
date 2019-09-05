@@ -58,4 +58,9 @@ public class PersionTopicServiceImpl implements PersionTopicService {
     public void releaseTopic(PageData pageData) throws Exception {
         daoSupport.save("persionTopicdao.releaseTopic",pageData);
     }
+
+    @Override
+    public List<PageData> getUserCorStatus(PageData pageData) throws Exception {
+        return (List<PageData>) daoSupport.findForList("persionTopicdao.getUserCorStatus",pageData);
+    }
 }

@@ -36,12 +36,11 @@ public class psersionController extends BaseController {
     CommService commService;
 
 
-
     @GetMapping("/persionTopic")
-    @ApiOperation(value = "用户发布分页信息",tags = {"用户发布"})
+    @ApiOperation(value = "用户发布分页信息", tags = {"用户发布"})
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "pageSize",paramType = "query",value = "每页显示记录数", required = true, dataType = "Integer"),
-            @ApiImplicitParam(name = "currPage",paramType = "query", value = "当前页", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "pageSize", paramType = "query", value = "每页显示记录数", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "currPage", paramType = "query", value = "当前页", required = true, dataType = "Integer"),
     })
     public R persionTopic(@ApiIgnore Page page) throws Exception {
         int currPage = page.getCurrPage();
@@ -50,39 +49,40 @@ public class psersionController extends BaseController {
         page.setPd(pageData);
         List<PageData> data = persionTopicService.perspersionTopic(page);
         int currPage1 = page.getCurrPage();
-        if (currPage != currPage1){
+        if (currPage != currPage1) {
             return R.ok();
         }
 
-        return R.ok().put("data",data);
+        return R.ok().put("data", data);
     }
+
     @GetMapping("/getDetailed")
-    @ApiOperation(value = "信息详情",tags = {"用户发布"})
+    @ApiOperation(value = "信息详情", tags = {"用户发布"})
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "topicid",paramType = "query",value = "信息主键", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "topicid", paramType = "query", value = "信息主键", required = true, dataType = "Integer"),
     })
     public R getDetailed() throws Exception {
         PageData data = this.getPageData();
         PageData pageData = persionTopicService.getDetailed(data);
-        return R.ok().put("data",pageData);
+        return R.ok().put("data", pageData);
     }
 
     @GetMapping("/getReplies")
-    @ApiOperation(value = "信息评论",tags = {"用户发布"})
+    @ApiOperation(value = "信息评论", tags = {"用户发布"})
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "topicid",paramType = "query",value = "信息主键", required = true, dataType = "Integer"),
-            @ApiImplicitParam(name = "pageSize",paramType = "query",value = "每页显示记录数", required = true, dataType = "Integer"),
-            @ApiImplicitParam(name = "currPage",paramType = "query", value = "当前页", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "topicid", paramType = "query", value = "信息主键", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "pageSize", paramType = "query", value = "每页显示记录数", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "currPage", paramType = "query", value = "当前页", required = true, dataType = "Integer"),
     })
     public R getReplies(@ApiIgnore Page page) throws Exception {
         PageData pageData = this.getPageData();
         page.setPd(pageData);
         List<PageData> data = persionTopicService.getReplies(page);
-        return R.ok().put("data",data);
+        return R.ok().put("data", data);
     }
 
     @PostMapping(value = "/replies", produces = "application/json;charset=utf-8")
-    @ApiOperation(value = "进行评论",tags = {"用户发布"},notes = "{'repliceid':被回复id,'userid':用户id,'topicid':信息主键,'parentid':父评论id,'reolicecontent':'回复内容'}")
+    @ApiOperation(value = "进行评论", tags = {"用户发布"}, notes = "{'repliceid':被回复id,'userid':用户id,'topicid':信息主键,'parentid':父评论id,'reolicecontent':'回复内容'}")
 //    @ApiImplicitParams({
 //            @ApiImplicitParam(name = "userid",paramType = "query",value = "用户id", required = true, dataType = "Integer"),
 //            @ApiImplicitParam(name = "repliceid",paramType = "query",value = "被回复id", required = true, dataType = "Integer"),
@@ -98,17 +98,17 @@ public class psersionController extends BaseController {
         Integer parentid = (Integer) o.get("parentid");
         String reolicecontent = (String) o.get("reolicecontent");
         PageData pageData = this.getPageData();
-        pageData.put("userid",userid);
-        pageData.put("repliceid",repliceid);
-        pageData.put("topicid",topicid);
-        pageData.put("parentid",parentid);
-        pageData.put("reolicecontent",reolicecontent);
+        pageData.put("userid", userid);
+        pageData.put("repliceid", repliceid);
+        pageData.put("topicid", topicid);
+        pageData.put("parentid", parentid);
+        pageData.put("reolicecontent", reolicecontent);
         persionTopicService.replies(pageData);
         return R.ok();
     }
 
     @PostMapping(value = "/likepersionTopic", produces = "application/json;charset=utf-8")
-    @ApiOperation(value = "信息点赞",tags = {"用户发布"},notes = "{'type':状态（1：点赞，0取消点赞）,'userid':用户id,'主题id':topicid}")
+    @ApiOperation(value = "信息点赞", tags = {"用户发布"}, notes = "{'type':状态（1：点赞，0取消点赞）,'userid':用户id,'主题id':topicid}")
 //    @ApiImplicitParams({
 //            @ApiImplicitParam(name = "type",paramType = "query",value = "状态（1点赞，0取消点赞）", required = true, dataType = "Integer"),
 //            @ApiImplicitParam(name = "userid",paramType = "query",value = "用户主键", required = true, dataType = "Integer"),
@@ -120,18 +120,18 @@ public class psersionController extends BaseController {
         Integer userid = (Integer) o.get("userid");
         Integer type = (Integer) o.get("type");
         Integer topicid = (Integer) o.get("topicid");
-        pageData.put("userid",userid);
-        pageData.put("topicid",topicid);
-        if (type == 1){
+        pageData.put("userid", userid);
+        pageData.put("topicid", topicid);
+        if (type == 1) {
             persionTopicService.likepersionTopic(pageData);
-        }else {
+        } else {
             persionTopicService.unlikepersionTopic(pageData);
         }
         return R.ok();
     }
 
     @PostMapping(value = "/likepersionTopicReplies", produces = "application/json;charset=utf-8")
-    @ApiOperation(value = "评论点赞",tags = {"用户发布"},notes = "{'type':状态（1：点赞，0取消点赞）,'userid':用户id,'repliceid':评论id}")
+    @ApiOperation(value = "评论点赞", tags = {"用户发布"}, notes = "{'type':状态（1：点赞，0取消点赞）,'userid':用户id,'repliceid':评论id}")
 //    @ApiImplicitParams({
 //            @ApiImplicitParam(name = "type",paramType = "query",value = "状态（1点赞，0取消点赞）", required = true, dataType = "Integer"),
 //            @ApiImplicitParam(name = "userid",paramType = "query",value = "用户主键", required = true, dataType = "Integer"),
@@ -143,11 +143,11 @@ public class psersionController extends BaseController {
         Integer type = (Integer) o.get("type");
         Integer repliceid = (Integer) o.get("repliceid");
         PageData pageData = this.getPageData();
-        pageData.put("userid",userid);
-        pageData.put("repliceid",repliceid);
-        if (type == 1){
+        pageData.put("userid", userid);
+        pageData.put("repliceid", repliceid);
+        if (type == 1) {
             persionTopicService.likepersionTopicReplies(pageData);
-        }else {
+        } else {
             persionTopicService.unlikepersionTopicReplies(pageData);
         }
         return R.ok();
@@ -155,7 +155,7 @@ public class psersionController extends BaseController {
 
     @Login
     @PostMapping(value = "/releaseTopic", produces = "application/json;charset=utf-8")
-    @ApiOperation(value = "发表贴(改接口必须登录加入token)",tags = {"用户发布"},notes = "{'content':'内容','userid':用户id,'imageid':照片id}")
+    @ApiOperation(value = "发表贴(改接口必须登录加入token)", tags = {"用户发布"}, notes = "{'content':'内容','userid':用户id,'imageid':照片id}")
 //    @ApiImplicitParams({
 //            @ApiImplicitParam(name = "userid",paramType = "query",value = "用户id", required = true, dataType = "Integer"),
 //            @ApiImplicitParam(name = "content",paramType = "query",value = "内容", required = true, dataType = "String"),
@@ -168,18 +168,18 @@ public class psersionController extends BaseController {
         Integer imageid = (Integer) o.get("imageid");
         String content = (String) o.get("content");
         PageData pageData = this.getPageData();
-        pageData.put("userid",userid);
-        pageData.put("imageid",imageid);
-        pageData.put("content",content);
+        pageData.put("userid", userid);
+        pageData.put("imageid", imageid);
+        pageData.put("content", content);
         persionTopicService.releaseTopic(pageData);
         return R.ok();
     }
 
-//    @Login
+    //    @Login
     @PostMapping("/uploudpersionTopic")
-    @ApiOperation(value = "上传文件(改接口必须登录加入token)",tags = {"用户发布"})
+    @ApiOperation(value = "上传文件(改接口必须登录加入token)", tags = {"用户发布"})
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "file",paramType = "query",value = "文件类型", required = true, dataType = "file"),
+            @ApiImplicitParam(name = "file", paramType = "query", value = "文件类型", required = true, dataType = "file"),
     })
     public R upActBananer(MultipartFile file, HttpServletRequest request) throws Exception {
         PageData pageData = this.getPageData();
@@ -197,5 +197,14 @@ public class psersionController extends BaseController {
         pageData.put("filePath", filePath);
 //        pageData.put("fileName", s);
         return true;
+    }
+
+    @ApiOperation(value = "查询用户在所属社团的状态", tags = {"用户发布"}, notes = "{'user_id':用户id}")
+    @GetMapping(value = "/getUserCorStatus", produces = "application/json;charset=utf-8")
+    public R getUserCorStatus(@RequestBody String json) throws Exception {
+        PageData pageData = JsonUtils.parseStringToObject(json, PageData.class);
+//        PageData pageData = this.getPageData();
+        List<PageData> data = persionTopicService.getUserCorStatus(pageData);
+        return R.ok().put("data",data);
     }
 }
