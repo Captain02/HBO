@@ -123,7 +123,7 @@ public class ContentionController  extends BaseController {
     public  R getRepliesListByid(@ApiIgnore Page page){
         PageData pageData = this.getPageData();
         try {
-            pageData.put("id",0);
+            pageData.put("repliesid",0);
             page.setPd(pageData);
             List<PageData> repliesList = repliesService.getListPage(page);
             return R.ok().put("page", page).put("date", repliesList);
