@@ -122,5 +122,8 @@
         LEFT JOIN cor_user cu ON cu.userid = u.user_id
         LEFT JOIN corporation cp ON cp.id = cu.corid
         WHERE u.`user_id` = #{user_id}
+        <if test="status!=null and status!=''">
+            AND cu.`status` = #{status}
+        </if>
     </select>
 </mapper>
