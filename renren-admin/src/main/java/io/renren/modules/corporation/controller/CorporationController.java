@@ -437,4 +437,23 @@ public class CorporationController extends BaseController {
         return R.ok().put("data",data);
     }
 
+    //批量修改状态
+    @PostMapping("/batchUpdateUserStatus")
+    @ApiOperation(value = "批量修改用户状态", notes = "根据社团id获取qq纳新群二维码", httpMethod = "GET")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "corid", value = "社团id", paramType = "query", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "status", value = "状态", paramType = "query", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "userids", value = "用户id（用逗号分隔如1,2,3）", paramType = "query", required = true, dataType = "Integer"),
+    })
+    public R batchUpdateUserStatus() throws Exception {
+        PageData pageData = this.getPageData();
+        String status = pageData.getValueOfString("userids");
+        String[] split = status.split(",");
+        List<String> userids = Arrays.asList(split);
+        pageData.put("list",userids);
+        corporationService.batchUpdateUserStatus(pageData);
+
+        return R.ok();
+    }
+
 }

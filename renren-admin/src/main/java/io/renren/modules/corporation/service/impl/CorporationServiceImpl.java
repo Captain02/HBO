@@ -62,6 +62,11 @@ public class CorporationServiceImpl implements CorporationService {
     }
 
     @Override
+    public void batchUpdateUserStatus(PageData pageData) throws Exception {
+        daoSupport.save("CorporationDao.batchUpdateUserStatus",pageData);
+    }
+
+    @Override
     @Transactional
     public void add(PageData pageData) throws Exception {
         //插入文件表

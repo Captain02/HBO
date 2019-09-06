@@ -285,5 +285,17 @@
             )
         </foreach>
     </insert>
+    
+    <update id="batchUpdateUserStatus">
+        UPDATE cor_user
+        SET status = #{status},
+        WHERE
+        corid = #{corid}
+        AND
+        userid IN
+        <foreach collection="list" item="item" open="(" close=")" separator=",">
+            ${item}
+        </foreach>
+    </update>
 
 </mapper>
