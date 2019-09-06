@@ -56,7 +56,7 @@ public class UserInfoController {
     @PostMapping(value = "/updateuser", produces = "application/json;charset=utf-8")
     public R updateuser(@RequestBody String json) throws Exception {
         PageData o = JsonUtils.parseStringToObject(json, PageData.class);
-        CheckParameterUtil.checkParameterMap(o, "user_id");
+//        CheckParameterUtil.checkParameterMap(o, "user_id");
         userService.updateuser(o);
         return R.ok();
     }
