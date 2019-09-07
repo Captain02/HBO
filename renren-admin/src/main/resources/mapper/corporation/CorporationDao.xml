@@ -288,7 +288,7 @@
     
     <update id="batchUpdateUserStatus">
         UPDATE cor_user
-        SET status = #{status},
+        SET status = #{status}
         WHERE
         corid = #{corid}
         AND
