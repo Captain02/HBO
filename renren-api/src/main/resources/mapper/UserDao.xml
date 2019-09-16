@@ -26,43 +26,43 @@
     <update id="updateUser">
         UPDATE sys_user
         <trim prefix="set" suffixOverrides=",">
-            <if test="username != null and username != 'null'">
+            <if test="username != null and username != ''">
                 `username` = #{username},
             </if>
-            <if test="newpassword != null and newpassword != 'null'">
+            <if test="newpassword != null and newpassword != ''">
                 `password` = #{newpassword},
             </if>
-            <if test="salt != null and salt != 'null'">
+            <if test="salt != null and salt != ''">
                 `salt` = #{salt},
             </if>
-            <if test="email != null and email != 'null'">
+            <if test="email != null and email != ''">
                 `email` = #{email},
             </if>
-            <if test="mobile != null and mobile != 'null'">
+            <if test="mobile != null and mobile != ''">
                 `mobile` = #{mobile},
             </if>
-            <if test="username != null and username != 'null'">
+            <if test="username != null and username != ''">
                 `persionnum` = #{username},
             </if>
-            <if test="wechart != null and wechart != 'null'">
-                `wechart` = #{wechart},
+            <if test="wechar != null and wechar != ''">
+                `wechart` = #{wechar},
             </if>
-            <if test="qq != null and qq != 'null'">
-                `qq` = #{qq},
+            <if test="QQ != null and QQ != ''">
+                `qq` = #{QQ},
             </if>
-            <if test="college != null and college != 'null'">
+            <if test="college != null and college != ''">
                 `college` = #{college},
             </if>
-            <if test="collegetie != null and collegetie != 'null'">
+            <if test="collegetie != null and collegetie != ''">
                 `collegetie` = #{collegetie},
             </if>
-            <if test="descs != null and descs != 'null'">
+            <if test="descs != null and descs != ''">
                 `descs` = #{descs},
             </if>
-            <if test="name != null and name != 'null'">
+            <if test="name != null and name != ''">
                 `name` = #{name},
             </if>
-            <if test="fileid != null and fileid != 'null'">
+            <if test="fileid != null and fileid != ''">
                 `fileid` = #{fileid},
             </if>
         </trim>
