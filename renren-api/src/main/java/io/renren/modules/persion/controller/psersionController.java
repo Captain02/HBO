@@ -161,13 +161,13 @@ public class psersionController extends BaseController {
 //            @ApiImplicitParam(name = "content",paramType = "query",value = "内容", required = true, dataType = "String"),
 //            @ApiImplicitParam(name = "imageid",paramType = "query",value = "图片id", required = false, dataType = "Integer"),
 //    })
-    public R releaseTopic(@RequestBody String json) throws Exception {
-        Map o = JsonUtils.parseStringToObject(json, Map.class);
-        System.out.println(o.get("userid"));
+    public R releaseTopic() throws Exception {
+        PageData o = this.getPageData();
         Integer userid = (Integer) o.get("userid");
         Integer imageid = (Integer) o.get("imageid");
         String content = (String) o.get("content");
         PageData pageData = this.getPageData();
+        System.out.println("releaseTopic:"+userid+":"+content);
         pageData.put("userid", userid);
         pageData.put("imageid", imageid);
         pageData.put("content", content);
