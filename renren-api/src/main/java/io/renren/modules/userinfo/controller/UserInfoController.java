@@ -2,6 +2,7 @@ package io.renren.modules.userinfo.controller;
 
 import io.renren.comm.util.JsonUtils;
 import io.renren.comm.util.ShiroUtils;
+import io.renren.common.controller.BaseController;
 import io.renren.common.entity.PageData;
 import io.renren.common.utils.CheckParameterUtil;
 import io.renren.common.utils.JWTUtil;
@@ -22,7 +23,7 @@ import java.util.Map;
 @RestController
 @Api(tags = {"个人信息"})
 @RequestMapping("/sys/userinfo")
-public class UserInfoController {
+public class UserInfoController extends BaseController {
 
     @Autowired
     UserService userService;
@@ -55,9 +56,9 @@ public class UserInfoController {
             "}")
     @PostMapping(value = "/updateuser", produces = "application/json;charset=utf-8")
     public R updateuser(@RequestBody String json) throws Exception {
-        PageData o = JsonUtils.parseStringToObject(json, PageData.class);
 //        CheckParameterUtil.checkParameterMap(o, "user_id");
-        userService.updateuser(o);
+        PageData pageData = this.getPageData();
+        userService.updateuser(pageData);
         return R.ok();
     }
 
