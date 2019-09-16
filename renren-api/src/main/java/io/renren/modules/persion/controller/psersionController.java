@@ -162,15 +162,7 @@ public class psersionController extends BaseController {
 //            @ApiImplicitParam(name = "imageid",paramType = "query",value = "图片id", required = false, dataType = "Integer"),
 //    })
     public R releaseTopic() throws Exception {
-        PageData o = this.getPageData();
-        Integer userid = (Integer) o.get("userid");
-        Integer imageid = (Integer) o.get("imageid");
-        String content = (String) o.get("content");
         PageData pageData = this.getPageData();
-        System.out.println("releaseTopic:"+userid+":"+content);
-        pageData.put("userid", userid);
-        pageData.put("imageid", imageid);
-        pageData.put("content", content);
         persionTopicService.releaseTopic(pageData);
         return R.ok();
     }

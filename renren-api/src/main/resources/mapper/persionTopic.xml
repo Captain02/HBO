@@ -93,7 +93,7 @@
         insert into persiontopic (
         userid,
         content,
-        <if test="#{imageid}!=null">
+        <if test="imageid!=null and imageid != ''">
             imageid
         </if>
         )
@@ -101,7 +101,7 @@
         (
         #{userid},
         #{content},
-        <if test="#{imageid}!=null">
+        <if test="imageid!=null and imageid != ''">
             #{imageid}
         </if>
         );
