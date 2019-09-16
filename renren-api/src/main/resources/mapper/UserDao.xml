@@ -44,11 +44,11 @@
             <if test="username != null and username != ''">
                 `persionnum` = #{username},
             </if>
-            <if test="wechar != null and wechar != ''">
-                `wechart` = #{wechar},
+            <if test="wechart != null and wechart != ''">
+                `wechart` = #{wechart},
             </if>
-            <if test="QQ != null and QQ != ''">
-                `qq` = #{QQ},
+            <if test="qq != null and qq != ''">
+                `qq` = #{qq},
             </if>
             <if test="college != null and college != ''">
                 `college` = #{college},
