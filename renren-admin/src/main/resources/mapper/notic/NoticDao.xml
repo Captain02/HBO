@@ -61,7 +61,6 @@
                 AND u1.`user_id` = #{pd.receiveUserId,jdbcType=INTEGER}
             </if>
         </where>
-
     </select>
 
     <select id="info" resultMap="noticdetail">
@@ -69,7 +68,6 @@
     (SELECT `name` FROM sys_user WHERE sys_user.user_id = notictuserid) `name`
     FROM `notic`
     WHERE `noticid`=#{noticId,jdbcType=INTEGER}
-
     </select>
 
     <select id="selectreceiveUser" resultType="io.renren.common.entity.PageData">
@@ -78,4 +76,6 @@
         FROM noticeduser
         WHERE noticid=#{id}
     </select>
+
+
 </mapper>
