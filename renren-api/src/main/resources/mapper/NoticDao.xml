@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="NoticDao">
+    <resultMap id="noticdetail" type="io.renren.common.entity.PageData">
+        <id property="noticid" column="noticid"></id>
+        <association property="receiveUser" column="{id=noticid}" select="selectreceiveUser">
+        </association>
+    </resultMap>
+
+
+    <insert id="add" useGeneratedKeys="true" keyProperty="noticid">
+            INSERT INTO `notic`(`notictop`,`noticcontent`,`notictuserid`,`corid`)
+            VALUES(#{title},#{content},#{publishUser},#{corId})
+    </insert>
+    <insert id="addnoticuser">
+        insert into noticeduser (noticid,noticteduserid) values
+        <foreach collection="receiveUserList" item="item" separator=",">
+            (#{noticid},#{item})
+        </foreach>
+    </insert>
+
+    <select id="noticlistPage" resultType="io.renren.common.entity.PageData">
+        SELECT DISTINCT n.`notictop`,n.`noticcontent`,n.`createtime`,n.`noticid`,
+        u.`name` publishUser,n.`corid`,cpt.corname
+        FROM `notic` n
+        LEFT JOIN `sys_user` u ON n.`notictuserid` = u.`user_id`
+        LEFT JOIN noticeduser nd ON nd.`noticid` = n.`noticid`
+        LEFT JOIN `sys_user` u1 ON nd.`noticteduserid` = u1.`user_id`
+        LEFT JOIN `corporation` cpt ON cpt.`id` = n.`corid`
+        WHERE 1 = 1
+        <if test="pd.receiveUserId != null and pd.receiveUserId != ''">
+            AND u1.`user_id` = #{pd.receiveUserId,jdbcType=INTEGER}
+        </if>
+    </select>
+
+    <select id="homelistPage" resultType="io.renren.common.entity.PageData">
+        SELECT DISTINCT n.`notictop`,n.`noticcontent`,n.`createtime`,n.`noticid`,
+        u.`name` publishUser,n.`corid`
+        FROM `notic` n
+        LEFT JOIN `sys_user` u ON n.`notictuserid` = u.`user_id`
+        LEFT JOIN noticeduser nd ON nd.`noticid` = n.`noticid`
+        LEFT JOIN `sys_user` u1 ON nd.`noticteduserid` = u1.`user_id`
+        <where>
+            <if test="pd.corId != null">
+                AND n.`corid` = #{pd.corId,jdbcType=INTEGER}
+            </if>
+            <if test="pd.receiveUserId != null">
+                AND u1.`user_id` = #{pd.receiveUserId,jdbcType=INTEGER}
+            </if>
+        </where>
+
+    </select>
+
+    <select id="info" resultMap="noticdetail">
+     select  `notictop`,`noticcontent`,`createTime`,`notictuserid`,`corid`,notic.`noticid`,
+    (SELECT `name` FROM sys_user WHERE sys_user.user_id = notictuserid) `notictname`,
+    (SELECT `corname` FROM corporation WHERE corporation.id = notic.`corid`) `corname`
+    FROM `notic`
+    LEFT JOIN noticeduser nd ON nd.`noticid` = notic.`noticid`
+	LEFT JOIN `sys_user` u ON notic.`notictuserid` = u.`user_id`
+    WHERE notic.`noticid`=#{noticid,jdbcType=INTEGER}
+      AND u.`user_id` = #{receiveUserId,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectreceiveUser" resultType="io.renren.common.entity.PageData">
+        SELECT id,noticid,noticteduserid,
+        (SELECT `name` FROM sys_user WHERE sys_user.user_id = noticteduserid) `name`
+        FROM noticeduser
+        WHERE noticid=#{id}
+    </select>
+
+
+</mapper>
