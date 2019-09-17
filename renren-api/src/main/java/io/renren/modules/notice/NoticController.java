@@ -32,9 +32,14 @@ public class NoticController extends BaseController {
     })
     @GetMapping("/list")
     public R list(Page page) throws Exception {
+        int currPage = page.getCurrPage();
         PageData pageData = this.getPageData();
         page.setPd(pageData);
         List<PageData> list = noticService.noticListPage(page);
+        Integer currPage1 = Integer.parseInt(pageData.get("currPage").toString());
+        if (currPage1!=currPage){
+            return R.ok();
+        }
         return R.ok().put("page", page).put("data", list);
     }
 
