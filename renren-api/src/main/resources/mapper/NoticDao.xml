@@ -53,7 +53,7 @@
     </select>
 
     <select id="info" resultMap="noticdetail">
-     select  `notictop`,`noticcontent`,`createTime`,`notictuserid`,`corid`,notic.`noticid`,
+     select DISTINCT `notictop`,`noticcontent`,`createTime`,`notictuserid`,`corid`,notic.`noticid`,
     (SELECT `name` FROM sys_user WHERE sys_user.user_id = notictuserid) `notictname`,
     (SELECT `corname` FROM corporation WHERE corporation.id = notic.`corid`) `corname`
     FROM `notic`
