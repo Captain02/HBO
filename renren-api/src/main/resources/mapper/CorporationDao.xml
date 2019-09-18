@@ -35,12 +35,12 @@
 	<if test="pd.corcollege!=null and pd.corcollege!=''">
 		and corcollege = #{pd.corcollege}
 	</if>
-	<if test="pd.scale == 'istrue'">
-		order by corscale DESC, ordernum ASC
-	</if>
-	<if test="pd.scale != 'istrue'">
+	<!--<if test="pd.scale == 'istrue'">-->
+		<!--order by corscale DESC, ordernum ASC-->
+	<!--</if>-->
+	<!--<if test="pd.scale != 'istrue'">-->
+	<!--</if>-->
 		order by ordernum ASC
-	</if>
 
 	</select>
 
