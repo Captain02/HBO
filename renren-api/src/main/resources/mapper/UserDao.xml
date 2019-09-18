@@ -65,6 +65,9 @@
             <if test="fileid != null and fileid != ''">
                 `fileid` = #{fileid},
             </if>
+            <if test="gender != null and gender != ''">
+                `gender` = #{gender},
+            </if>
         </trim>
         WHERE user_id = #{user_id}
     </update>
