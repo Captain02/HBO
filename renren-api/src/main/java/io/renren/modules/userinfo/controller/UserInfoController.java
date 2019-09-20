@@ -102,7 +102,7 @@ public class UserInfoController extends BaseController {
             "'password':密码," +
             "'username':学号," +
             "}")
-    @PostMapping(value = "/addPersion", produces = "application/json;charset=utf-8")
+    @PostMapping(value = "/addPersion", produces = "application/json")
     public R save(@RequestBody String json) throws Exception {
 //        PageData pageData = this.getPageData();
         PageData pageData = JsonUtils.parseStringToObject(json, PageData.class);
