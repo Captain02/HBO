@@ -55,7 +55,7 @@ public class UserInfoController extends BaseController {
             "'name':姓名," +
             "}")
     @PostMapping(value = "/updateuser", produces = "application/json;charset=utf-8")
-    public R updateuser(@RequestBody String json) throws Exception {
+    public R updateuser() throws Exception {
 //        CheckParameterUtil.checkParameterMap(o, "user_id");
         PageData pageData = this.getPageData();
         userService.updateuser(pageData);
@@ -102,7 +102,7 @@ public class UserInfoController extends BaseController {
             "'password':密码," +
             "'username':学号," +
             "}")
-    @PostMapping("/addPersion")
+    @PostMapping(value = "/addPersion", produces = "application/json;charset=utf-8")
     public R save(@RequestBody String json) throws Exception {
 //        PageData pageData = this.getPageData();
         PageData pageData = JsonUtils.parseStringToObject(json, PageData.class);
