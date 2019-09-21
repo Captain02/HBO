@@ -11,8 +11,10 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import oracle.jdbc.proxy.annotation.Post;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -75,8 +77,10 @@ public class TimeTableController extends BaseController {
 //            System.out.print("输入学期�?1�?2�?:");
 //            term = input.nextInt();
 //            connectJWGL.getStudentGrade(year,term);
+            connectJWGL.logout();
+        }else{
+            return R.error("账号密码不正确");
         }
-        connectJWGL.logout();
 
         return R.ok().put("data", data);
     }
@@ -115,9 +119,36 @@ public class TimeTableController extends BaseController {
                     data.put("jd", lesson.getString("jd"));
                 }
             }
+            connectJWGL.logout();
+        }else{
+            return R.error("账号密码不正确");
         }
-        connectJWGL.logout();
 
         return R.ok().put("data", data);
+    }
+
+
+
+    @ApiOperation(value = "成绩信息", notes = "成绩信息", httpMethod = "GET", tags = {"课表与成绩"})
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "stuNum", paramType = "query", value = "学号", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "password", paramType = "query", value = "教务系统密码", required = true, dataType = "String")
+    })
+    @PostMapping("/loginOfficialWeb")
+    public R loginOfficialWeb() throws Exception {
+        PageData pageData = this.getPageData();
+
+        String stuNum = pageData.getValueOfString("stuNum");
+        String password = pageData.getValueOfString("password");
+        ConnectJWGL connectJWGL = new ConnectJWGL(stuNum, password);
+        connectJWGL.init();
+        PageData data = new PageData();
+        if (connectJWGL.beginLogin()) {
+            connectJWGL.logout();
+            return R.ok().put("data", "登录成功");
+        }else{
+            return R.error("账号密码不正确");
+        }
+
     }
 }
