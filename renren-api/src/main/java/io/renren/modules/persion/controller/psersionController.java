@@ -90,19 +90,19 @@ public class psersionController extends BaseController {
 //            @ApiImplicitParam(name = "parentid",paramType = "query",value = "父评论id", required = true, dataType = "Integer"),
 //            @ApiImplicitParam(name = "topicid",paramType = "query",value = "信息主键", required = true, dataType = "Integer"),
 //    })
-    public R replies(@RequestBody String json) throws Exception {
-        Map o = JsonUtils.parseStringToObject(json, Map.class);
-        Integer userid = (Integer) o.get("userid");
-        Integer repliceid = (Integer) o.get("repliceid");
-        Integer topicid = (Integer) o.get("topicid");
-        Integer parentid = (Integer) o.get("parentid");
-        String reolicecontent = (String) o.get("reolicecontent");
+    public R replies() throws Exception {
+//        Map o = JsonUtils.parseStringToObject(json, Map.class);
+//        Integer userid = (Integer) o.get("userid");
+//        Integer repliceid = (Integer) o.get("repliceid");
+//        Integer topicid = (Integer) o.get("topicid");
+//        Integer parentid = (Integer) o.get("parentid");
+//        String reolicecontent = (String) o.get("reolicecontent");
         PageData pageData = this.getPageData();
-        pageData.put("userid", userid);
-        pageData.put("repliceid", repliceid);
-        pageData.put("topicid", topicid);
-        pageData.put("parentid", parentid);
-        pageData.put("reolicecontent", reolicecontent);
+//        pageData.put("userid", userid);
+//        pageData.put("repliceid", repliceid);
+//        pageData.put("topicid", topicid);
+//        pageData.put("parentid", parentid);
+//        pageData.put("reolicecontent", reolicecontent);
         persionTopicService.replies(pageData);
         return R.ok();
     }
