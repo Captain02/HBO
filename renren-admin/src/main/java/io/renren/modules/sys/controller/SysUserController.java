@@ -526,10 +526,10 @@ public class SysUserController extends BaseController {
         } else {
             pageData.put("fileid", 8);
         }
-        String msg = Verify(pageData);
-        if (msg.length() > 0) {
-            return R.error(msg);
-        }
+//        String msg = Verify(pageData);
+//        if (msg.length() > 0) {
+//            return R.error(msg);
+//        }
 //        Boolean isSave = sysUserService.selectUserByPersionnum(pageData);
 //        if (!isSave) {
 //            return R.error("用户已存在");

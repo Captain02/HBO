@@ -103,9 +103,10 @@ public class UserInfoController extends BaseController {
             "'username':学号," +
             "}")
     @PostMapping(value = "/addPersion", produces = "application/json")
-    public R save(@RequestBody String json) throws Exception {
+    public R save() throws Exception {
 //        PageData pageData = this.getPageData();
-        PageData pageData = JsonUtils.parseStringToObject(json, PageData.class);
+//        PageData pageData = JsonUtils.parseStringToObject(json, PageData.class);
+        PageData pageData = this.getPageData();
         Long aLong = userService.selectUserByusername(pageData);
         if (aLong != 0){
             return R.error("已存在该用户");
