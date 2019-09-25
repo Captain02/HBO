@@ -58,6 +58,9 @@
         persiontopic_replice.`userid`
         FROM persiontopic_replice
         WHERE topicid = #{pd.topicid}
+        <if test="id != null">
+            persiontopic_replice.`id` = #{id}
+        </if>
     </select>
     <select id="selectchildpersion" resultMap="persionreplies">
         SELECT

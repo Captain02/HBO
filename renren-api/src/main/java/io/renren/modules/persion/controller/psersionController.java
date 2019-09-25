@@ -56,7 +56,7 @@ public class psersionController extends BaseController {
         return R.ok().put("data", data);
     }
 
-    @GetMapping("/getDetailed")
+        @GetMapping("/getDetailed")
     @ApiOperation(value = "信息详情", tags = {"用户发布"})
     @ApiImplicitParams({
             @ApiImplicitParam(name = "topicid", paramType = "query", value = "信息主键", required = true, dataType = "Integer"),
@@ -79,6 +79,20 @@ public class psersionController extends BaseController {
         page.setPd(pageData);
         List<PageData> data = persionTopicService.getReplies(page);
         return R.ok().put("data", data);
+    }
+
+    @ApiOperation(value = "评论详情", tags = {"用户发布"})
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", paramType = "query", value = "评论主键", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "pageSize", paramType = "query", value = "每页显示记录数", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "currPage", paramType = "query", value = "当前页", required = true, dataType = "Integer"),
+    })
+    @GetMapping("/repliesDetail")
+    public R repliesDetail(@ApiIgnore Page page) throws Exception {
+        PageData pageData = this.getPageData();
+        page.setPd(pageData);
+        List<PageData> data = persionTopicService.getReplies(page);
+        return R.ok().put("data",data);
     }
 
     @PostMapping(value = "/replies", produces = "application/json;charset=utf-8")
