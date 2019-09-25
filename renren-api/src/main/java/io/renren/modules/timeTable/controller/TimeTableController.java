@@ -85,6 +85,50 @@ public class TimeTableController extends BaseController {
         return R.ok().put("data", data);
     }
 
+    public static void main(String[] args) throws Exception {
+        PageData pageData = new PageData();
+        pageData.put("stuNum","201801005021");
+        pageData.put("password","Yangguizhu1026");
+        pageData.put("year","2019");
+        pageData.put("term","1");
+
+        String stuNum = pageData.getValueOfString("stuNum");
+        String password = pageData.getValueOfString("password");
+        ConnectJWGL connectJWGL = new ConnectJWGL(stuNum, password);
+        connectJWGL.init();
+        PageData data = new PageData();
+        if (connectJWGL.beginLogin()) {
+            System.out.println("---查询课表---");
+            System.out.print("输入学年�?2018-2019就输2018�?:");
+            Integer year = pageData.getValueOfInteger("year");
+            System.out.print("输入学期�?1�?2�?:");
+            Integer term = pageData.getValueOfInteger("term");
+            JSONArray studentTimetable = connectJWGL.getStudentTimetable(year, term);
+            if (studentTimetable == null) {
+//                return R.error("暂无课程安排");
+            } else {
+                for (Iterator iterator = studentTimetable.iterator(); iterator.hasNext(); ) {
+                    JSONObject lesson = (JSONObject) iterator.next();
+                    data.put("xqjmc", lesson.getString("xqjmc"));
+                    data.put("jc", lesson.getString("jc"));
+                    data.put("kcmc", lesson.getString("kcmc"));
+                    data.put("xm", lesson.getString("xm"));
+                    data.put("xqmc", lesson.getString("xqmc"));
+                    data.put("cdmc", lesson.getString("cdmc"));
+                    data.put("zcd", lesson.getString("zcd"));
+                }
+            }
+//            System.out.print("输入学年�?2018-2019就输2018�?:");
+//            year = input.nextInt();
+//            System.out.print("输入学期�?1�?2�?:");
+//            term = input.nextInt();
+//            connectJWGL.getStudentGrade(year,term);
+            connectJWGL.logout();
+        }else{
+//            return R.error("账号密码不正确");
+        }
+    }
+
     @ApiOperation(value = "成绩信息", notes = "成绩信息", httpMethod = "GET", tags = {"课表与成绩"})
     @ApiImplicitParams({
             @ApiImplicitParam(name = "stuNum", paramType = "query", value = "学号", required = true, dataType = "String"),

@@ -95,7 +95,8 @@ public class ConnectJWGL {
         connection.data("xnm",String.valueOf(year));
         connection.data("xqm",String.valueOf(term * term * 3));
         response = connection.cookies(cookies).method(Connection.Method.POST).ignoreContentType(true).execute();
-        JSONObject jsonObject = JSON.parseObject(response.body());
+        String body = response.body();
+        JSONObject jsonObject = JSON.parseObject(body);
         if(jsonObject.get("kbList") == null){
             System.out.println("暂时没有安排课程");
             return null;

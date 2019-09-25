@@ -15,9 +15,9 @@
         SELECT `repliesid`,`userid`,`parentid`,`topicid`,`createtime`,`repliescontent`,`states`
         FROM replies
         WHERE `topicid` = #{pd.topicid}
-        <if test="pd.repliesid!=null and pd.repliesid!=''">
+
             AND `parentid` = #{pd.repliesid}
-        </if>
+
         <if test="pd.id!=null and pd.id!=''">
             AND `repliesid` = #{pd.id}
         </if>
