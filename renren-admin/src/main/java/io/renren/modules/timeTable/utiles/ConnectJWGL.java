@@ -89,16 +89,17 @@ public class ConnectJWGL {
         }
     }
     // 获取课表信息
-    public void getStudentTimetable(int year , int term) throws Exception {
+    public JSONArray getStudentTimetable(int year , int term) throws Exception {
         connection = Jsoup.connect(url+ "/jwglxt/kbcx/xskbcx_cxXsKb.html?gnmkdm=N2151");
         connection.header("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:29.0) Gecko/20100101 Firefox/29.0");
         connection.data("xnm",String.valueOf(year));
         connection.data("xqm",String.valueOf(term * term * 3));
         response = connection.cookies(cookies).method(Connection.Method.POST).ignoreContentType(true).execute();
-        JSONObject jsonObject = JSON.parseObject(response.body());
+        String body = response.body();
+        JSONObject jsonObject = JSON.parseObject(body);
         if(jsonObject.get("kbList") == null){
             System.out.println("暂时没有安排课程");
-            return;
+            return null;
         }
         JSONArray timeTable = JSON.parseArray(jsonObject.getString("kbList"));
         System.out.println(String.valueOf(year) + " -- " + String.valueOf(year + 1) + "学年 " + "�?" + term + "学期");
@@ -112,10 +113,12 @@ public class ConnectJWGL {
                     lesson.getString("cdmc") + " " +
                     lesson.getString("zcd"));
         }
+
+        return timeTable;
     }
 
     // 获取成绩信息
-    public void getStudentGrade(int year , int term) throws Exception {
+    public JSONArray getStudentGrade(int year , int term) throws Exception {
         Map<String,String> datas = new HashMap<>();
         datas.put("xnm",String.valueOf(year));
         datas.put("xqm",String.valueOf(term * term * 3));
@@ -138,6 +141,9 @@ public class ConnectJWGL {
                 .data(datas).ignoreContentType(true).execute();
         JSONObject jsonObject = JSON.parseObject(response.body());
         JSONArray gradeTable = JSON.parseArray(jsonObject.getString("items"));
+        if (gradeTable == null){
+            return null;
+        }
         for (Iterator iterator = gradeTable.iterator(); iterator.hasNext();) {
             JSONObject lesson = (JSONObject) iterator.next();
             System.out.println(lesson.getString("kcmc") + " " +
@@ -145,6 +151,7 @@ public class ConnectJWGL {
                     lesson.getString("bfzcj") + " " +
                     lesson.getString("jd"));
         }
+        return gradeTable;
     }
 
     public void logout() throws Exception {
